@@ -1,0 +1,31 @@
+svn checkout http://community.i2b2.org/repos/i2b2/trunk/related/i2b2Wizard/
+cd i2b2Wizard
+find . -name "*.sh" -type f -exec dos2unix {} \;
+chmod +x wizard.sh
+
+cp scripts/os_versions/Ubuntu_14.04.1_LTS.sh scripts/os_versions/Debian_7.8.sh
+cp scripts/i2b2_versions/i2b2_1.7.03a.sh scripts/i2b2_versions/i2b2_1.7.04.sh
+cp -r config/ds-config/1.7.03a/ config/ds-config/1.7.04
+cp -r config/ds-config/inserts/1.7.03a/ config/ds-config/inserts/1.7.04
+
+# remove svn directories
+find . -name .svn -type d -print0 | xargs -0 -n1 rm -rf
+
+# apply patches
+patch -p1 < /vagrant/i2b2Wizard.patch
+
+
+ 
+# create diff for i2b2Wizard
+cd /var/tmp
+svn checkout http://community.i2b2.org/repos/i2b2/trunk/related/i2b2Wizard/
+
+diff -ru i2b2Wizard /opt/i2b2Wizard > /vagrant/i2b2Wizard.test.patch
+
+
+# apply patches
+patch -p1 < /vagrant/i2b2Wizard.patch
+
+
+# copy sources
+cp /vagrant/*.zip ./packages/
