@@ -5,7 +5,8 @@ or vagrant box add chef/debian-7.8
 vagrant init deb/wheezy-amd64
 vagrant up --provider virtualbox
 
-# login to box, execute /opt/i2b2Wizard/wizard.sh
+# sudo bash
+# login to box, cd /opt/i2b2Wizard, execute ./wizard.sh
 # System Setup / Set Defaults
 # System Setup / Download Required Packages
 # System Setup / Install Required Packages
