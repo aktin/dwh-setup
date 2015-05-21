@@ -20,3 +20,7 @@ automatisch heruntergeladen:
 * Axis2 1.6.2
 * Apache Ant 1.8.2
 * JBoss AS 7.1.1 Final
+
+Die Pakete heruntergeladenen Pakete verbleiben im packages/-Ordner
+und müssen bei zukünftigen Installationen nicht mehr neu geladen
+werden.
