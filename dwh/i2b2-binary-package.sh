@@ -17,7 +17,7 @@ cp $JBDDIR/i2b2.war.deployed $IBDIR/
 # remove axis2 files from i2b2.war subdirectory
 cd /var/tmp
 unzip /vagrant/packages/axis2-1.6.2-war.zip axis2.war
-cd $JBDIR/i2b2.war
+cd $IBDIR/i2b2.war
 zipinfo -s /var/tmp/axis2.war | grep '^-' | awk '{print $9}' | xargs -n1 rm -v
 rm /var/tmp/axis2.war
 
@@ -27,4 +27,6 @@ find . -type d -empty -delete
 # no need for oracle and mssql jdbc driver
 rm WEB-INF/lib/ojdbc6.jar WEB-INF/lib/sqljdbc4.jar
 
-tar cf /vagrant/packages/i2b2-war-bin.tar $IBDIR
+rm /vagrant/packages/i2b2-war-bin.tar
+tar cf /vagrant/packages/i2b2-war-bin.tar -C $IBDIR .
+rm -r $IBDIR
