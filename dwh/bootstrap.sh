@@ -8,6 +8,7 @@ apt-get install -y wget curl subversion dos2unix dialog
 
 cd /opt
 # Download i2b2 Wizard
+# TODO include current revision number in checkout
 svn checkout http://community.i2b2.org/repos/i2b2/trunk/related/i2b2Wizard/trunk
 mv trunk i2b2Wizard
 cd i2b2Wizard
