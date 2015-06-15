@@ -9,7 +9,7 @@ apt-get install -y wget curl subversion dos2unix dialog
 cd /opt
 # Download i2b2 Wizard
 # TODO include current revision number in checkout
-svn checkout http://community.i2b2.org/repos/i2b2/trunk/related/i2b2Wizard/trunk
+svn checkout http://community.i2b2.org/repos/i2b2/trunk/related/i2b2Wizard/trunk --revision 331
 mv trunk i2b2Wizard
 cd i2b2Wizard
 
@@ -23,12 +23,6 @@ chmod +x wizard.sh
 # link packages
 rmdir packages
 ln -s $install_root/packages packages
-
-
-cp scripts/os_versions/Ubuntu_14.04.sh scripts/os_versions/Debian_7.8.sh
-
-# apply patches
-patch -p1 < $install_root/i2b2Wizard.patch
 
 
 # additional dependencies for i2b2-wizard
