@@ -36,8 +36,14 @@ apt-get install -y openjdk-7-jdk
 # debian7.8 has ant package with required version 1.8.2, no need to compile ant from source
 
 # enable remote access to postgres
-cp /vagrant/postgres-remote-access.sh /opt/
+cp $install_root/postgres-remote-access.sh /opt/
 dos2unix /opt/postgres-remote-access.sh
 /opt/postgres-remote-access.sh
 
 # TODO: command line installation with i2b2-wizard
+cp $install_root/autoinstall.sh /opt/
+dos2unix /opt/autoinstall.sh
+cp $install_root/autoinstall.wizard.conf /opt/i2b2Wizard/config/wizard.conf
+dos2unix /opt/i2b2Wizard/config/wizard.conf
+
+#/opt/autoinstall.sh

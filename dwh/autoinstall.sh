@@ -1,15 +1,15 @@
 #!/bin/bash
 
-
-MY_PATH=$(pwd)
-export MY_PATH
+# MY_PATH=$(pwd)
+MY_PATH=/opt/i2b2Wizard
+# export MY_PATH
 
 OS_SCRIPT_IDENTIFIER="Ubuntu_14.04"
 OS_SCRIPT_IDENTIFIER="Debian_7.8"
 PRODUCT_SCRIPT_IDENTIFIER="i2b2_1.7.05"
 
-# TODO copy autoinstall.wizard.conf to MY_PATH/config/wizard.conf
 
+cd $MY_PATH
 
 . $MY_PATH/config/wizard.conf
 . $MY_PATH/scripts/wizard_features.sh
@@ -25,8 +25,19 @@ echo --------------------------
 
 autoInstallApps
 
+# TODO: sicherstellen, dass /opt/ant.. da ist, ggf. geht obiger befehl nicht richtig
+
+
+echo --------------------------
+echo Load Demodata
+echo --------------------------
+
 # TODO test on clean system
-# loadBoston
+loadBoston
+
+echo --------------------------
+echo Build Source
+echo --------------------------
 
 buildSource
 
