@@ -43,7 +43,7 @@ dos2unix /opt/postgres-remote-access.sh
 # TODO: command line installation with i2b2-wizard
 cp $install_root/autoinstall.sh /opt/
 dos2unix /opt/autoinstall.sh
-cp $install_root/autoinstall.wizard.conf /opt/i2b2Wizard/config/wizard.conf
-dos2unix /opt/i2b2Wizard/config/wizard.conf
+#cp $install_root/autoinstall.wizard.conf /opt/i2b2Wizard/config/wizard.conf
+#dos2unix /opt/i2b2Wizard/config/wizard.conf
 
 #/opt/autoinstall.sh
