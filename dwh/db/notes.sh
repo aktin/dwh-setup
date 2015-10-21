@@ -3,8 +3,42 @@
 
 
 
+IM 
+DEMO -> CRC
+HIVE    		x
+PM   			x
+meta 			x
+work 			x
 
 
+
+
+# --------- Load "Metadata" ---------
+
+	progressBar 15 "Loading Metadata (takes very long, progressbar may look stuck) ..."
+
+	cd $I2B2_SRC/edu.harvard.i2b2.data/$RELEASEPATH/NewInstall/Metadata/ 
+
+	checkJavaInstallation
+    $ANT_HOME/bin/ant -f data_build.xml create_metadata_tables_release_$I2B2RELEASE > $MY_PATH/logs/bostonload2.log 2> $MY_PATH/logs/bostonload2.err.log
+	#Ignore any error here:
+	errorHandler $LINENO "create_metadata_tables_release_$I2B2RELEASE" $MY_PATH/logs/bostonload2.log $MY_PATH/logs/bostonload2.err.log
+	
+	progressBar 20 "Loading Metadata (takes very long, progressbar may look stuck) ..."
+	
+	checkJavaInstallation
+    $ANT_HOME/bin/ant -f data_build.xml db_metadata_load_data > $MY_PATH/logs/bostonload3.log 2> $MY_PATH/logs/bostonload3.err.log
+	#Ignore any error here:
+	errorHandler $LINENO "db_metadata_load_data" $MY_PATH/logs/bostonload3.log $MY_PATH/logs/bostonload3.err.log
+
+
+
+
+
+
+
+
+# was macht IM? Daten laden?
 
 
 	# ---------------- IM: ----------------
