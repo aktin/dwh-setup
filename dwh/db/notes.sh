@@ -12,6 +12,39 @@ work 			x
 
 
 
+17:08:51,386 ERROR [stderr] (Thread-74)         at org.postgresql.jdbc2.AbstractJdbc2Statement.execute(AbstractJdbc2Sta
+ement.java:555)
+17:08:51,386 ERROR [stderr] (Thread-74)         at org.postgresql.jdbc2.AbstractJdbc2Statement.executeWithFlags(Abstrac
+Jdbc2Statement.java:417)
+17:08:51,519 ERROR [stderr] (Thread-74)         at org.postgresql.jdbc2.AbstractJdbc2Statement.executeQuery(AbstractJdb
+2Statement.java:302)
+17:08:51,520 ERROR [stderr] (Thread-74)         at org.jboss.jca.adapters.jdbc.WrappedPreparedStatement.executeQuery(Wr
+ppedPreparedStatement.java:462)
+17:08:51,521 ERROR [stderr] (Thread-74)         at edu.harvard.i2b2.crc.ejb.ProcessQueue.run(ProcessQueue.java:136)
+17:08:51,528 ERROR [stderr] (Thread-72) org.postgresql.util.PSQLException: ERROR: relation "public.qt_query_master" doe
+ not exist
+17:08:51,528 ERROR [stderr] (Thread-72)   Position: 144
+17:08:51,529 ERROR [stderr] (Thread-72)         at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryE
+ecutorImpl.java:2157)
+17:08:51,530 ERROR [stderr] (Thread-72)         at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecuto
+Impl.java:1886)
+17:08:51,534 ERROR [stderr] (Thread-72)         at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.j
+va:255)
+17:08:51,580 ERROR [stderr] (Thread-72)         at org.postgresql.jdbc2.AbstractJdbc2Statement.execute(AbstractJdbc2Sta
+ement.java:555)
+17:08:51,597 ERROR [stderr] (Thread-72)         at org.postgresql.jdbc2.AbstractJdbc2Statement.executeWithFlags(Abstrac
+Jdbc2Statement.java:417)
+17:08:51,598 ERROR [stderr] (Thread-72)         at org.postgresql.jdbc2.AbstractJdbc2Statement.executeQuery(AbstractJdb
+2Statement.java:302)
+17:08:51,602 ERROR [stderr] (Thread-72)         at org.jboss.jca.adapters.jdbc.WrappedPreparedStatement.executeQuery(Wr
+ppedPreparedStatement.java:462)
+17:08:51,639 ERROR [stderr] (Thread-72)         at edu.harvard.i2b2.crc.ejb.ProcessQueue.run(ProcessQueue.java:136)
+17:08:51,642 ERROR [stderr] (Thread-74) org.postgresql.util.PSQLException: ERROR: relation "public.qt_query_master" doe
+ not exist
+
+
+ 
+
 
 # --------- Load "Metadata" ---------
 
