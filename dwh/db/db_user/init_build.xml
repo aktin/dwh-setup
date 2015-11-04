@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Various Database Jobs" basedir=".">
+
+	<property environment="env" />
+
+	<property file="./db.properties" />
+
+	<target name="init"  description="Prepare for build">
+		<path id="classpath">
+			<pathelement location="../postgresql-9.2-1002.jdbc4.jar"/>
+		</path>
+	</target>
+
+	<!-- ================================================================================================= -->
+
+	<target name="create_POSTGRESQL_users" depends="init">
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.username}" password="${db.password}" classpathref="classpath" onerror="continue" print="true">
+			<transaction src="./scripts/create_POSTGRESQL_users.sql" />
+		</sql>
+	</target>
+
+	<target name="drop_POSTGRESQL_users" depends="init">
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.username}" password="${db.password}" classpathref="classpath" onerror="continue" print="true">
+			<transaction src="./scripts/drop_POSTGRESQL_users.sql" />
+		</sql>
+	</target>
+
+</project>
+
+

@@ -1,14 +1,54 @@
 /opt/apache-ant-1.8.2/bin/ant -f data_build.xml db_pmdata_load_data 2> $MY_PATH/logs/db_pmdata_load_data.err.log > $MY_PATH/logs/db_pmdata_load_data.log
 
 
-
-
 IM 
 DEMO -> CRC
 HIVE    		x
 PM   			x
 meta 			x
 work 			x
+
+
+
+
+
+
+
+
+# Fix bugs in the i2b2 1.7 data:
+
+		FILE=$I2B2_SRC/edu.harvard.i2b2.data/$RELEASEPATH/NewInstall/Crcdata/scripts/procedures/oracle/INSERT_EID_MAP_FROMTEMP.sql
+		restoreOriginalFile $FILE
+		changeInFile $FILE "\"I2B2DEMODATA\".\"INSERT_EID_MAP_FROMTEMP\"" "INSERT_EID_MAP_FROMTEMP";
+	
+		FILE=$I2B2_SRC/edu.harvard.i2b2.data/$RELEASEPATH/NewInstall/Crcdata/scripts/procedures/oracle/UPDATE_OBSERVATION_FACT.sql
+		restoreOriginalFile $FILE
+		changeInFile $FILE "\"I2B2DEMODATA\".\"UPDATE_OBSERVATION_FACT\"" "UPDATE_OBSERVATION_FACT";
+
+		FILE=$I2B2_SRC/edu.harvard.i2b2.data/$RELEASEPATH/NewInstall/Crcdata/scripts/procedures/postgresql/CREATE_TEMP_PROVIDER_TABLE.sql
+		restoreOriginalFile $FILE
+		changeInFile $FILE "CREATE_TEMP_PROVIDER_TABLE.sql" " ";
+	
+		FILE=$I2B2_SRC/edu.harvard.i2b2.data/$RELEASEPATH/NewInstall/Hivedata/scripts/work_db_lookup_postgresql_insert_data.sql
+		restoreOriginalFile $FILE
+		changeInFile $FILE "public" "i2b2workdata";
+	
+		FILE=$I2B2_SRC/edu.harvard.i2b2.data/$RELEASEPATH/NewInstall/Hivedata/scripts/ont_db_lookup_postgresql_insert_data.sql
+		restoreOriginalFile $FILE
+		changeInFile $FILE "public" "i2b2metadata";
+
+		FILE=$I2B2_SRC/edu.harvard.i2b2.data/$RELEASEPATH/NewInstall/Hivedata/scripts/im_db_lookup_postgresql_insert_data.sql
+		restoreOriginalFile $FILE
+		changeInFile $FILE "public" "i2b2imdata";
+
+		FILE=$I2B2_SRC/edu.harvard.i2b2.data/$RELEASEPATH/NewInstall/Hivedata/scripts/crc_db_lookup_postgresql_insert_data.sql
+		restoreOriginalFile $FILE
+		changeInFile $FILE "public" "i2b2demodata";
+
+
+
+
+
 
 
 

@@ -4,6 +4,8 @@
 
 echo create hive_db
 ./hive_db/install.sh
+echo update hive_db
+./hive_db/update.sh
 
 echo create pm_db
 ./pm_db/install.sh
