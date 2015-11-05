@@ -5,7 +5,7 @@
 # install hive!
 cd $DATA_HOME/Workdata/
 
-$ANT_HOME/bin/ant -f data_build.xml create_workdata_tables_release_1-7 > $LOG_DIR/bostonload7.log 2> $LOG_DIR/bostonload7.err.log
+$ANT_HOME/bin/ant -f data_build.xml create_workdata_tables_release_1-7 > $LOG_DIR/wrok_boston_create.log 2> $LOG_DIR/wrok_boston_create.err.log
 
 # maybe don't need this later
-$ANT_HOME/bin/ant -f data_build.xml db_workdata_load_data > $LOG_DIR/bostonload8.log 2> $LOG_DIR/bostonload8.err.log
+$ANT_HOME/bin/ant -f data_build.xml db_workdata_load_data > $LOG_DIR/wrok_boston_load.log 2> $LOG_DIR/wrok_boston_load.err.log
