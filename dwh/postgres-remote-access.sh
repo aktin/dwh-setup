@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-cd /etc/postgresql/9.1/main/
+cd /etc/postgresql/9.4/main/
 
 #
 # enable client authentication (trust)

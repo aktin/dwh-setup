@@ -34,19 +34,27 @@ $ANT_HOME/bin/ant -f init_build.xml create_POSTGRESQL_users 2> $LOG_DIR/create_d
 
 
 echo create hive_db
-./hive_db/install.sh
+cd $OTH_HOME/hive_db/
+./install.sh
 echo update hive_db
-./hive_db/update.sh
+./update.sh
 
 echo create pm_db
-./pm_db/install.sh
+cd $OTH_HOME/pm_db/
+./install.sh
 
 echo create work_db
-./work_db/install.sh
+cd $OTH_HOME/work_db/
+./install.sh
 
 echo create meta_db
-./meta_db/install.sh
+cd $OTH_HOME/meta_db/
+./install.sh
 
 echo create crc_db
-./crc_db/install.sh
-#todo add prints
+cd $OTH_HOME/crc_db/
+./install.sh
+
+
+cd $OTH_HOME/
+

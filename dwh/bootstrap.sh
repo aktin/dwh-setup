@@ -9,27 +9,27 @@ apt-get install -y wget curl subversion dos2unix dialog
 cd /opt
 # Download i2b2 Wizard
 # TODO include current revision number in checkout
-svn checkout http://community.i2b2.org/repos/i2b2/trunk/related/i2b2Wizard/trunk --revision 331
-mv trunk i2b2Wizard
-cd i2b2Wizard
+# svn checkout http://community.i2b2.org/repos/i2b2/trunk/related/i2b2Wizard/trunk --revision 331
+# mv trunk i2b2Wizard
+# cd i2b2Wizard
 
 # remove svn directories
-find . -name .svn -type d -print0 | xargs -0 -n1 rm -rf
+# find . -name .svn -type d -print0 | xargs -0 -n1 rm -rf
 
 # convert scripts
-find . -name "*.sh" -type f -exec dos2unix {} \;
-chmod +x wizard.sh
+# find . -name "*.sh" -type f -exec dos2unix {} \;
+# chmod +x wizard.sh
 
 # link packages
-rmdir packages
-ln -s $install_root/packages packages
+# rmdir packages
+# ln -s $install_root/packages packages
 
 
 # additional dependencies for i2b2-wizard
 apt-get install -y aptitude libcurl3 libapache2-mod-php5 php5-curl perl sed bc postgresql
 # jre-headless not sufficient, need full jdk
 #apt-get install -y openjdk-7-jre-headless
-apt-get install -y openjdk-7-jdk
+#apt-get install -y openjdk-8-jdk
 
 #apt-get -y dist-upgrade
 
@@ -47,3 +47,8 @@ dos2unix /opt/autoinstall.sh
 #dos2unix /opt/i2b2Wizard/config/wizard.conf
 
 #/opt/autoinstall.sh
+
+# create postgres databases for i2b2
+#cd $install_root/db
+#./i2b2_db_full_install.sh
+
