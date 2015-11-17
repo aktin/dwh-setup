@@ -106,6 +106,24 @@ if [ ! -d "$WEBSERVERDIRECTORY/webclient" ]; then
     cp -r admin $WEBSERVERDIRECTORY
 fi
 
+IP_ADDR="127.0.0.1"
+HIVE_ID=i2b2demo
+# configure webclient
+
+
+FILE=$WEBSERVERDIRECTORY/webclient/i2b2_config_data.js
+if [ ! -f "$FILE.orig" ]; then  
+   cp -i $FILE $FILE.orig
+fi
+cat $FILE.orig | sed -e 's/allowAnalysis: false/allowAnalysis: true/g;s/isSHRINE: true/isSHRINE: false/g;s/debug: false/debug: true/g;s/HarvardDemo/'"$HIVE_ID"'/g;s/i2b2demo/'"$HIVE_ID"'/g;s/webservices.i2b2.org/'"$IP_ADDR"':9090/g;s/services.i2b2.org/'"$IP_ADDR"':9090/g;s/rest/services/g' > $FILE
+   
+FILE=$WEBSERVERDIRECTORY/admin/i2b2_config_data.js
+if [ ! -f "$FILE.orig" ]; then  
+   cp -i $FILE $FILE.orig
+fi
+cat $FILE.orig | sed -e 's/HarvardDemo/'"$HIVE_ID"'/g;s/webservices.i2b2.org/'"$IP_ADDR"':9090/g;s/amdinOnly/adminOnly/g' > $FILE
+
+
 #install ant
 cd $PACKAGES
 #later check whether in packages and if not download    
