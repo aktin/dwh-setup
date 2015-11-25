@@ -1,22 +1,13 @@
 #!/usr/bin/env bash
 
+# first
+
 # installJBoss711
 
 MY_PATH=/vagrant/
-DATA_HOME=/vagrant/i2b2_install
-LOG_DIR=/vagrant/logs
-PACKAGES=/vagrant/packages
 
-BASE_APPDIR=/opt
-
-JBOSS_HOME=$BASE_APPDIR/jboss-as-7.1.1.Final
-ANT_HOME=$BASE_APPDIR/apache-ant-1.8.2
-JBOSS_LOG=$JBOSS_HOME/standalone/log/boot.log
-JBOSS_LOG_2=$JBOSS_HOME/standalone/log/server.log
-JBOSS_DEPLOY_DIR=$JBOSS_HOME/standalone/deployments
-
-WEBSERVERDIRECTORY=/var/www/html
-I2B2_SRC=$DATA_HOME/i2b2_src
+chmod +x $MY_PATH/i2b2_install/install.conf
+. $MY_PATH/i2b2_install/install.conf
 
 
 # install needed packages
@@ -39,11 +30,13 @@ if [ ! -d $JBOSS_HOME ]; then
     # Memory settings:
     
     FILE="$JBOSS_HOME/bin/appclient.conf"
+    rm $FILE.orig
     echo n | cp -i $FILE $FILE.orig
     sed -e '45,45s/-Xms64m -Xmx512m/-Xms512m -Xmx1024m/g' <$FILE.orig >$FILE 
 
     # Change JBoss server ports:
     FILE="$JBOSS_HOME/standalone/configuration/standalone.xml"
+    rm $FILE.orig
     echo n | cp -i $FILE $FILE.orig
     sed -e '296,296s/8080/9090/g;295,295s/8009/9009/g' <$FILE.orig >$FILE.tmp 
 
@@ -92,8 +85,6 @@ cp postgresql-9.2-1002.jdbc4.jar $JBOSS_DEPLOY_DIR/
 touch $JBOSS_DEPLOY_DIR/postgresql-9.2-1002.jdbc4.jar.dodeploy
 
 
-
-
 #find webclient directory
 if [ ! -d $WEBSERVERDIRECTORY ]; then  
     mkdir $WEBSERVERDIRECTORY
@@ -106,11 +97,8 @@ if [ ! -d "$WEBSERVERDIRECTORY/webclient" ]; then
     cp -r admin $WEBSERVERDIRECTORY
 fi
 
-IP_ADDR="127.0.0.1"
-HIVE_ID=i2b2demo
 # configure webclient
-
-
+echo configure webclient
 FILE=$WEBSERVERDIRECTORY/webclient/i2b2_config_data.js
 if [ ! -f "$FILE.orig" ]; then  
    cp -i $FILE $FILE.orig
@@ -125,6 +113,7 @@ cat $FILE.orig | sed -e 's/HarvardDemo/'"$HIVE_ID"'/g;s/webservices.i2b2.org/'"$
 
 
 #install ant
+echo install ant
 cd $PACKAGES
 #later check whether in packages and if not download    
 #   httpDownloadWizard apache-ant-1.8.2-bin.zip https://archive.apache.org/dist/ant/binaries/apache-ant-1.8.2-bin.zip e875a77c21714d36a6e445fe15d65fb2
@@ -135,9 +124,8 @@ if [ ! -d $ANT_HOME ]; then
     unzip -o $PACKAGES/apache-ant-1.8.2-bin.zip -d $BASE_APPDIR > $LOG_DIR/unzip_ant.log
 fi
 
-cd $MY_PATH 
-
 #restart apache
+echo restart apache
 /etc/init.d/apache2 restart > $LOG_DIR/apache_restart.log 2> $LOG_DIR/apache_restart.log
 
 cd $MY_PATH 

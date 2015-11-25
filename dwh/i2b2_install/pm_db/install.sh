@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-. init.sh
+. ../install.conf
 
 # install hive!
-cd $DATA_HOME/Pmdata/
+
+cp db.properties $I2B2_DATA/Pmdata/
+
+cd $I2B2_DATA/Pmdata/
 
 $ANT_HOME/bin/ant -f data_build.xml create_pmdata_tables_release_1-7 > $LOG_DIR/pm_create_tab.err.log > $LOG_DIR/pm_create_tab.log
 

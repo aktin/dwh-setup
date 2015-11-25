@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-. init.sh
+. ../install.conf
 
 # install tables!
-cd $DATA_HOME/Metadata/
+cp $DATA_HOME/meta_db/db.properties $I2B2_DATA/Metadata/
+
+cd $I2B2_DATA/Metadata/
 
 echo create meta tables
 $ANT_HOME/bin/ant -f data_build.xml create_metadata_tables_release_1-7 > $LOG_DIR/meta_boston_create.log 2> $LOG_DIR/meta_boston_create.err.log
