@@ -5,3 +5,4 @@ dwh/_later/
 dwh/jboss/
 *.box
 *.zip
+*.tar.gz
