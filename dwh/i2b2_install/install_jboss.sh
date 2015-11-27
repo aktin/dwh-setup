@@ -10,7 +10,19 @@ chmod +x $MY_PATH/i2b2_install/install.conf
 . $MY_PATH/i2b2_install/install.conf
 
 
-# install needed packages
+
+#install ant
+echo install ant
+cd $PACKAGES
+#later check whether in packages and if not download    
+#   httpDownloadWizard apache-ant-1.8.2-bin.zip https://archive.apache.org/dist/ant/binaries/apache-ant-1.8.2-bin.zip e875a77c21714d36a6e445fe15d65fb2
+    
+# Apache ant 1.8.2 installation: 
+
+if [ ! -d $ANT_HOME ]; then
+    unzip -o $PACKAGES/apache-ant-1.8.2-bin.zip -d $BASE_APPDIR > $LOG_DIR/unzip_ant.log
+fi
+
 
 
 #stopJBoss
@@ -60,31 +72,6 @@ if [ ! -d $JBOSS_HOME ]; then
     #cd $DATA_HOME
 fi   
 
-#deploy war
-cd $DATA_HOME/deploy
-
-cp -r i2b2.war $JBOSS_DEPLOY_DIR/i2b2.war
-touch $JBOSS_DEPLOY_DIR/i2b2.war.dodeploy
-
-cp crc-ds.xml $JBOSS_DEPLOY_DIR/
-touch $JBOSS_DEPLOY_DIR/crc-ds.xml.dodeploy
-
-cp im-ds.xml $JBOSS_DEPLOY_DIR/
-touch $JBOSS_DEPLOY_DIR/im-ds.xml.dodeploy
-
-cp ont-ds.xml $JBOSS_DEPLOY_DIR/
-touch $JBOSS_DEPLOY_DIR/ont-ds.xml.dodeploy
-
-cp pm-ds.xml $JBOSS_DEPLOY_DIR/
-touch $JBOSS_DEPLOY_DIR/pm-ds.xml.dodeploy
-
-cp work-ds.xml $JBOSS_DEPLOY_DIR/
-touch $JBOSS_DEPLOY_DIR/work-ds.xml.dodeploy
-
-cp postgresql-9.2-1002.jdbc4.jar $JBOSS_DEPLOY_DIR/
-touch $JBOSS_DEPLOY_DIR/postgresql-9.2-1002.jdbc4.jar.dodeploy
-
-
 #find webclient directory
 if [ ! -d $WEBSERVERDIRECTORY ]; then  
     mkdir $WEBSERVERDIRECTORY
@@ -111,18 +98,6 @@ if [ ! -f "$FILE.orig" ]; then
 fi
 cat $FILE.orig | sed -e 's/HarvardDemo/'"$HIVE_ID"'/g;s/webservices.i2b2.org/'"$IP_ADDR"':9090/g;s/amdinOnly/adminOnly/g' > $FILE
 
-
-#install ant
-echo install ant
-cd $PACKAGES
-#later check whether in packages and if not download    
-#   httpDownloadWizard apache-ant-1.8.2-bin.zip https://archive.apache.org/dist/ant/binaries/apache-ant-1.8.2-bin.zip e875a77c21714d36a6e445fe15d65fb2
-    
-# Apache ant 1.8.2 installation: 
-
-if [ ! -d $ANT_HOME ]; then
-    unzip -o $PACKAGES/apache-ant-1.8.2-bin.zip -d $BASE_APPDIR > $LOG_DIR/unzip_ant.log
-fi
 
 #restart apache
 echo restart apache

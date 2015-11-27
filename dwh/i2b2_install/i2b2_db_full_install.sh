@@ -9,6 +9,9 @@ MY_PATH=/vagrant/
 chmod +x $MY_PATH/i2b2_install/install.conf
 . $MY_PATH/i2b2_install/install.conf
 
+echo copy postgres driver to i2b2 folder
+cp $PACPACKAGES/postgresql-9.2-1002.jdbc4.jar $DATA_HOME/
+
 echo install postgresql
 apt-get -q -y install aptitude postgresql > $LOG_DIR/autoPackageInstall_postgresql.log 2> $LOG_DIR/autoPackageInstall_postgresql.err.log
 

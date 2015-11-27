@@ -9,6 +9,32 @@ chmod +x $MY_PATH/i2b2_install/install.conf
 
 # set configurations
 
+
+#deploy war
+cd $DATA_HOME/deploy
+
+cp -r i2b2.war $JBOSS_DEPLOY_DIR/
+touch $JBOSS_DEPLOY_DIR/i2b2.war.dodeploy
+
+cp crc-ds.xml $JBOSS_DEPLOY_DIR/
+touch $JBOSS_DEPLOY_DIR/crc-ds.xml.dodeploy
+
+cp im-ds.xml $JBOSS_DEPLOY_DIR/
+touch $JBOSS_DEPLOY_DIR/im-ds.xml.dodeploy
+
+cp ont-ds.xml $JBOSS_DEPLOY_DIR/
+touch $JBOSS_DEPLOY_DIR/ont-ds.xml.dodeploy
+
+cp pm-ds.xml $JBOSS_DEPLOY_DIR/
+touch $JBOSS_DEPLOY_DIR/pm-ds.xml.dodeploy
+
+cp work-ds.xml $JBOSS_DEPLOY_DIR/
+touch $JBOSS_DEPLOY_DIR/work-ds.xml.dodeploy
+
+cp postgresql-9.2-1002.jdbc4.jar $JBOSS_DEPLOY_DIR/
+touch $JBOSS_DEPLOY_DIR/postgresql-9.2-1002.jdbc4.jar.dodeploy
+
+
 # Working-Directories for i2b2 Webservices: 
 IM_APPDIR=$JBOSS_HOME/standalone/configuration/imapp
 CRC_APPDIR=$JBOSS_HOME/standalone/configuration/crcapp
@@ -106,14 +132,31 @@ sed -e 's/metadataschema=i2b2hive/metadataschema='"$HIVE_SCHEMA"'/g' <$FILE.orig
 
 # copy property files to jboss 
 
+#make dirs
+if [ ! -d $CRC_APPDIR ]; then
+	mkdir $CRC_APPDIR
+fi
+if [ ! -d $FR_APPDIR ]; then
+	mkdir $FR_APPDIR
+fi
+if [ ! -d $IM_APPDIR ]; then
+	mkdir $IM_APPDIR
+fi
+if [ ! -d $ONT_APPDIR ]; then
+	mkdir $ONT_APPDIR
+fi
+if [ ! -d $WORK_APPDIR ]; then
+	mkdir $WORK_APPDIR
+fi
+
 
 # configure working paths:
 
 cp -r $I2B2_SRC/edu.harvard.i2b2.crc/etc/spring/* $CRC_APPDIR
 rm $CRC_APPDIR/crc_application_directory.properties
 
-cp -r $I2B2_SRC/edu.harvard.i2b2.fr/etc/spring/* $FR_APPDIR
-rm $FR_APPDIR/fr_application_directory.properties		
+#cp -r $I2B2_SRC/edu.harvard.i2b2.fr/etc/spring/* $FR_APPDIR
+#rm $FR_APPDIR/fr_application_directory.properties		
 
 cp -r $I2B2_SRC/edu.harvard.i2b2.im/etc/spring/* $IM_APPDIR
 rm $IM_APPDIR/im_application_directory.properties
