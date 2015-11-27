@@ -3,3 +3,5 @@ dwh/i2b2wizard/
 dwh/db/postgresql-9.2-1002.jdbc4.jar
 dwh/_later/
 dwh/jboss/
+*.box
+*.zip
