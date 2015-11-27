@@ -42,13 +42,17 @@ if [ ! -d $JBOSS_HOME ]; then
     # Memory settings:
     
     FILE="$JBOSS_HOME/bin/appclient.conf"
-    rm $FILE.orig
+    if [ -f "$FILE.orig" ]; then  
+        rm $FILE.orig
+    fi
     echo n | cp -i $FILE $FILE.orig
     sed -e '45,45s/-Xms64m -Xmx512m/-Xms512m -Xmx1024m/g' <$FILE.orig >$FILE 
 
     # Change JBoss server ports:
     FILE="$JBOSS_HOME/standalone/configuration/standalone.xml"
-    rm $FILE.orig
+    if [ -f "$FILE.orig" ]; then  
+        rm $FILE.orig
+    fi
     echo n | cp -i $FILE $FILE.orig
     sed -e '296,296s/8080/9090/g;295,295s/8009/9009/g' <$FILE.orig >$FILE.tmp 
 
@@ -70,7 +74,45 @@ if [ ! -d $JBOSS_HOME ]; then
     # To check if Axis2 is working, go to: http://localhost:9090/i2b2/services/listServices
 
     #cd $DATA_HOME
+
+
+    # deploy
+    cd $JBOSS_HOME
+    tar xvfz $PACKAGES/jboss-configuration.tar.gz
+    tar xvfz $PACKAGES/jboss-deployments.tar.gz
 fi   
+
+
+# unzip i2b2 to i2b2_src
+if [ ! -d "$I2B2_SRC" ]; then  
+
+    mkdir $I2B2_SRC
+    unzip -o $PACKAGES/i2b2core-src-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
+    unzip -o $PACKAGES/i2b2createdb-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
+    unzip -o $PACKAGES/i2b2webclient-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
+
+   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Crcdata/scripts/procedures/postgresql/CREATE_TEMP_PROVIDER_TABLE.sql
+   # restoreOriginalFile $FILE
+   # changeInFile $FILE "CREATE_TEMP_PROVIDER_TABLE.sql" " ";
+
+   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Hivedata/scripts/work_db_lookup_postgresql_insert_data.sql
+   # restoreOriginalFile $FILE
+   # changeInFile $FILE "public" "i2b2workdata";
+
+   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Hivedata/scripts/ont_db_lookup_postgresql_insert_data.sql
+   # restoreOriginalFile $FILE
+   # changeInFile $FILE "public" "i2b2metadata";
+
+   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Hivedata/scripts/im_db_lookup_postgresql_insert_data.sql
+   # restoreOriginalFile $FILE
+   # changeInFile $FILE "public" "i2b2imdata";
+
+   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Hivedata/scripts/crc_db_lookup_postgresql_insert_data.sql
+   # restoreOriginalFile $FILE
+   # changeInFile $FILE "public" "i2b2demodata";
+
+
+fi
 
 #find webclient directory
 if [ ! -d $WEBSERVERDIRECTORY ]; then  
