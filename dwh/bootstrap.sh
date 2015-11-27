@@ -22,7 +22,7 @@ cd /opt
 
 # link packages
 # rmdir packages
-ln -s $install_root/packages packages
+#ln -s $install_root/packages packages
 
 
 # additional dependencies for i2b2-wizard
