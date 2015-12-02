@@ -22,11 +22,11 @@ cd /opt
 
 # link packages
 # rmdir packages
-#ln -s $install_root/packages packages
+# ln -s $install_root/packages .
 
 
 # additional dependencies for i2b2-wizard
-apt-get install -y aptitude libcurl3 libapache2-mod-php5 php5-curl perl sed bc postgresql
+apt-get install -y aptitude libcurl3 libapache2-mod-php5 php5-curl perl sed bc postgresql-9.1
 # jre-headless not sufficient, need full jdk
 #apt-get install -y openjdk-7-jre-headless
 #apt-get install -y openjdk-8-jdk
@@ -41,14 +41,15 @@ dos2unix /opt/postgres-remote-access.sh
 /opt/postgres-remote-access.sh
 
 # TODO: command line installation with i2b2-wizard
-cp $install_root/autoinstall.sh /opt/
-dos2unix /opt/autoinstall.sh
+#cp $install_root/autoinstall.sh /opt/
+#dos2unix /opt/autoinstall.sh
 #cp $install_root/autoinstall.wizard.conf /opt/i2b2Wizard/config/wizard.conf
 #dos2unix /opt/i2b2Wizard/config/wizard.conf
 
 #/opt/autoinstall.sh
 
 # create postgres databases for i2b2
-#cd $install_root/db
-#./i2b2_db_full_install.sh
+cd $install_root/i2b2_install
+dos2unix /vagrant/i2b2_install/i2b2_jboss.sh
+/vagrant/i2b2_install/i2b2_jboss.sh
 

@@ -29,7 +29,7 @@ fi
 # ./jboss-cli.sh --connect --command=:shutdown > $MY_PATH/logs/jbossstop.log 2> $MY_PATH/logs/jbossstop.log &
 
 # install
-apt-get -q -y install aptitude unzip wget curl git openjdk-7-jre-headless openjdk-7-jdk apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc 
+apt-get -q -y install aptitude unzip wget curl git openjdk-7-jre-headless  apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc # openjdk-7-jdk
 
 
 # JBoss installation:
@@ -60,57 +60,44 @@ if [ ! -d $JBOSS_HOME ]; then
     sed -e '280,280s/<inet-address value=\"\${jboss.bind.address:127.0.0.1}\"\/>/\<any-address\/\>/g' <$FILE.tmp >$FILE 
 
     # Apache Axis2 installation:    
-    #mkdir $JBOSS_DEPLOY_DIR/i2b2.war
-    #touch $JBOSS_DEPLOY_DIR/i2b2.war.dodeploy
-            
-    #cd $DATA_HOME
+    mkdir $JBOSS_DEPLOY_DIR/i2b2.war
+    touch $JBOSS_DEPLOY_DIR/i2b2.war.dodeploy
     
-    #mkdir temp
-    #unzip -o $DATA_HOME/axis2-1.6.2-war.zip -d $DATA_HOME/temp/ > $LOG_DIR/unzip_axis2.log
-    #unzip -o $DATA_HOME/temp/axis2.war -d $JBOSS_DEPLOY_DIR/i2b2.war > $LOG_DIR/unzip_axis2.log
+    cd $DATA_HOME
     
-    #rm -r temp
+    mkdir $PACKAGES/temp/
+    unzip -o $PACKAGES/axis2-1.6.2-war.zip -d $PACKAGES/temp/ > $LOG_DIR/unzip_axis2.log
+    unzip -o $PACKAGES/temp/axis2.war -d $JBOSS_DEPLOY_DIR/i2b2.war > $LOG_DIR/unzip_axis2.log
+    
+    rm -r $PACKAGES/temp/
             
     # To check if Axis2 is working, go to: http://localhost:9090/i2b2/services/listServices
 
     #cd $DATA_HOME
 
+    # unpack configurations and deployments
+    unzip -o $PACKAGES/jboss-configuration-slim.zip -d $JBOSS_HOME/standalone > $LOG_DIR/unzip_jboss_config.log
+    unzip -o $PACKAGES/jboss-deployment-xml.zip -d $JBOSS_DEPLOY_DIR/ > $LOG_DIR/unzip_jboss_deploy_xml.log
+    unzip -o $PACKAGES/jboss-deployment-i2b2war-WEB-INF.zip -d $JBOSS_DEPLOY_DIR/i2b2.war > $LOG_DIR/unzip_jboss_deploy_webinf.log
+    cp $PACKAGES/postgresql-9.2-1002.jdbc4.jar $JBOSS_DEPLOY_DIR/
 
     # deploy
-    cd $JBOSS_HOME
-    tar xvfz $PACKAGES/jboss-configuration.tar.gz
-    tar xvfz $PACKAGES/jboss-deployments.tar.gz
-fi   
+#    cd $JBOSS_HOME
+#    tar xvfz $PACKAGES/jboss-configuration.tar.gz
+#    tar xvfz $PACKAGES/jboss-deployments.tar.gz
 
+fi    
 
 # unzip i2b2 to i2b2_src
 if [ ! -d "$I2B2_SRC" ]; then  
 
     mkdir $I2B2_SRC
+    # need this for admin
     unzip -o $PACKAGES/i2b2core-src-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
+    # data base structure
     unzip -o $PACKAGES/i2b2createdb-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
+    # webclient
     unzip -o $PACKAGES/i2b2webclient-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
-
-   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Crcdata/scripts/procedures/postgresql/CREATE_TEMP_PROVIDER_TABLE.sql
-   # restoreOriginalFile $FILE
-   # changeInFile $FILE "CREATE_TEMP_PROVIDER_TABLE.sql" " ";
-
-   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Hivedata/scripts/work_db_lookup_postgresql_insert_data.sql
-   # restoreOriginalFile $FILE
-   # changeInFile $FILE "public" "i2b2workdata";
-
-   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Hivedata/scripts/ont_db_lookup_postgresql_insert_data.sql
-   # restoreOriginalFile $FILE
-   # changeInFile $FILE "public" "i2b2metadata";
-
-   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Hivedata/scripts/im_db_lookup_postgresql_insert_data.sql
-   # restoreOriginalFile $FILE
-   # changeInFile $FILE "public" "i2b2imdata";
-
-   # FILE=$I2B2_SRC/edu.harvard.i2b2.data/Release_1-7/NewInstall/Hivedata/scripts/crc_db_lookup_postgresql_insert_data.sql
-   # restoreOriginalFile $FILE
-   # changeInFile $FILE "public" "i2b2demodata";
-
 
 fi
 
@@ -145,4 +132,9 @@ cat $FILE.orig | sed -e 's/HarvardDemo/'"$HIVE_ID"'/g;s/webservices.i2b2.org/'"$
 echo restart apache
 /etc/init.d/apache2 restart > $LOG_DIR/apache_restart.log 2> $LOG_DIR/apache_restart.log
 
-cd $MY_PATH 
+rm -r $DATA_HOME/jboss
+cp -r $JBOSS_HOME $DATA_HOME/jboss
+
+cd $DATA_HOME
+
+. ./i2b2_db_full_install.sh 
