@@ -12,6 +12,4 @@ ifconfig
 
 cd /opt/jboss-as-7.1.1.Final/
 pwd
-ls standalone/deployments
-ls bin
-./bin/standalone.sh > /vagrant/logs/jboss_standalone_start.log
+# ./bin/standalone.sh > /vagrant/logs/jboss_standalone_start.log
