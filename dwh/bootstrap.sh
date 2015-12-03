@@ -49,7 +49,7 @@ dos2unix /opt/postgres-remote-access.sh
 #/opt/autoinstall.sh
 
 # create postgres databases for i2b2
-cd $install_root/autoinstall.sh
+cd $install_root
 dos2unix /vagrant/i2b2_install/install_jboss.sh
 dos2unix /vagrant/i2b2_install/i2b2_db_full_install.sh
 dos2unix /vagrant/autoinstall.sh
