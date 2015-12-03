@@ -132,8 +132,6 @@ cat $FILE.orig | sed -e 's/HarvardDemo/'"$HIVE_ID"'/g;s/webservices.i2b2.org/'"$
 echo restart apache
 /etc/init.d/apache2 restart > $LOG_DIR/apache_restart.log 2> $LOG_DIR/apache_restart.log
 
-rm -r $DATA_HOME/jboss
-cp -r $JBOSS_HOME $DATA_HOME/jboss
 
 cd $DATA_HOME
 

@@ -13,5 +13,5 @@ echo create procedures
 $ANT_HOME/bin/ant -f data_build.xml create_procedures_release_1-7 > $LOG_DIR/demo_crc_boston_create_pro.log 2> $LOG_DIR/demo_crc_boston_create_pro.err.log
 
 #maybe dont need this?
-echo load demodata
-$ANT_HOME/bin/ant -f data_build.xml db_demodata_load_data > $LOG_DIR/demo_crc_boston_load.log 2> $LOG_DIR/demo_crc_boston_load.err.log
+# echo load demodata
+# $ANT_HOME/bin/ant -f data_build.xml db_demodata_load_data > $LOG_DIR/demo_crc_boston_load.log 2> $LOG_DIR/demo_crc_boston_load.err.log
