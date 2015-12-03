@@ -3,10 +3,10 @@
 cd /vagrant/i2b2_install
 pwd
 echo install jboss
-if [ ! -d "../logs" ]; then 
-    mkdir ../logs
+if [ ! -d "/vagrant/logs" ]; then 
+    mkdir /vagrant/logs
 fi
-./install_jboss.sh > ../logs/install_jboss.log
+./install_jboss.sh > /vagrant/logs/install_jboss.log
 
 cd /opt/jboss-as-7.1.1.Final/
 pwd
