@@ -8,6 +8,8 @@ if [ ! -d "/vagrant/logs" ]; then
 fi
 ./install_jboss.sh > /vagrant/logs/install_jboss.log
 
+ifconfig
+
 cd /opt/jboss-as-7.1.1.Final/
 pwd
 ls standalone/deployments
