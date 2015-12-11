@@ -6,16 +6,16 @@ CREATE USER i2b2hive WITH PASSWORD 'i2b2hive';
 CREATE SCHEMA i2b2hive AUTHORIZATION i2b2hive;
 GRANT ALL ON SCHEMA i2b2hive to i2b2hive;
 
-CREATE USER i2b2demodata WITH PASSWORD 'i2b2demodata';
-CREATE SCHEMA i2b2demodata AUTHORIZATION i2b2demodata;
-GRANT ALL ON SCHEMA i2b2demodata to i2b2demodata;
+CREATE USER i2b2workdata WITH PASSWORD 'i2b2workdata';
+CREATE SCHEMA i2b2workdata AUTHORIZATION i2b2workdata;
+GRANT ALL ON SCHEMA i2b2workdata to i2b2workdata;
 
 CREATE USER i2b2metadata WITH PASSWORD 'i2b2metadata';
 CREATE SCHEMA i2b2metadata AUTHORIZATION i2b2metadata;
 GRANT ALL ON SCHEMA i2b2metadata to i2b2metadata;
 
-CREATE USER i2b2workdata WITH PASSWORD 'i2b2workdata';
-CREATE SCHEMA i2b2workdata AUTHORIZATION i2b2workdata;
-GRANT ALL ON SCHEMA i2b2workdata to i2b2workdata;
+CREATE USER i2b2demodata WITH PASSWORD 'i2b2demodata';
+CREATE SCHEMA i2b2demodata AUTHORIZATION i2b2demodata;
+GRANT ALL ON SCHEMA i2b2demodata to i2b2demodata;
 
 COMMIT;
