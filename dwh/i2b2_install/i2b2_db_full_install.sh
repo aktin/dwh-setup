@@ -25,26 +25,26 @@ cd $DATA_HOME/db_user
 echo create i2b2 users
 $ANT_HOME/bin/ant -f init_build.xml create_POSTGRESQL_users 2> $LOG_DIR/create_db_user.err.log > $LOG_DIR/create_db_user.log
 
-echo create hive_db
-cd $DATA_HOME/hive_db/
+echo create db_hive
+cd $DATA_HOME/db_hive/
 ./install.sh
-echo update hive_db
+echo update db_hive
 ./update.sh
 
-echo create pm_db
-cd $DATA_HOME/pm_db/
+echo create db_pm
+cd $DATA_HOME/db_pm/
 ./install.sh
 
-echo create work_db
-cd $DATA_HOME/work_db/
+echo create db_work
+cd $DATA_HOME/db_work/
 ./install.sh
 
-echo create meta_db
-cd $DATA_HOME/meta_db/
+echo create db_meta
+cd $DATA_HOME/db_meta/
 ./install.sh
 
-echo create crc_db
-cd $DATA_HOME/crc_db/
+echo create db_crc
+cd $DATA_HOME/db_crc/
 ./install.sh
 
 cd $DATA_HOME/
