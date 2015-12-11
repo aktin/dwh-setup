@@ -28,7 +28,7 @@ fi
 #stopJBoss
 # ./jboss-cli.sh --connect --command=:shutdown > $MY_PATH/logs/jbossstop.log 2> $MY_PATH/logs/jbossstop.log &
 
-# install
+# install - ant with apt install, shorten list
 apt-get -q -y install aptitude unzip wget curl git openjdk-7-jre-headless  apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc # openjdk-7-jdk
 
 
@@ -73,10 +73,10 @@ if [ ! -d $JBOSS_HOME ]; then
             
     # To check if Axis2 is working, go to: http://localhost:9090/i2b2/services/listServices
 
-    #cd $DATA_HOME
-
     # unpack configurations and deployments
     unzip -o $PACKAGES/jboss-configuration-slim.zip -d $JBOSS_HOME/standalone > $LOG_DIR/unzip_jboss_config.log
+
+    # remove and add from ant
     unzip -o $PACKAGES/jboss-deployment-xml.zip -d $JBOSS_DEPLOY_DIR/ > $LOG_DIR/unzip_jboss_deploy_xml.log
     unzip -o $PACKAGES/jboss-deployment-i2b2war-WEB-INF.zip -d $JBOSS_DEPLOY_DIR/i2b2.war > $LOG_DIR/unzip_jboss_deploy_webinf.log
     cp $PACKAGES/postgresql-9.2-1002.jdbc4.jar $JBOSS_DEPLOY_DIR/
@@ -93,8 +93,9 @@ if [ ! -d "$I2B2_SRC" ]; then
 
     mkdir $I2B2_SRC
     # need this for admin
-    unzip -o $PACKAGES/i2b2core-src-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
-    # data base structure
+    unzip -o $PACKAGES/i2b2core-src-1705.zip admin/* -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core_admin.log
+    # unzip -o $PACKAGES/i2b2core-src-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
+    # data base structure -  move to ant
     unzip -o $PACKAGES/i2b2createdb-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
     # webclient
     unzip -o $PACKAGES/i2b2webclient-1705.zip -d $I2B2_SRC > $LOG_DIR/unzip_i2b2_core.log
@@ -102,9 +103,10 @@ if [ ! -d "$I2B2_SRC" ]; then
 fi
 
 #find webclient directory
-if [ ! -d $WEBSERVERDIRECTORY ]; then  
-    mkdir $WEBSERVERDIRECTORY
-fi
+#if [ ! -d $WEBSERVERDIRECTORY ]; then  
+ #   mkdir $WEBSERVERDIRECTORY
+    # todo add rights for www
+#fi
 
 # move webclient files to webdirectory
 if [ ! -d "$WEBSERVERDIRECTORY/webclient" ]; then  
@@ -113,7 +115,7 @@ if [ ! -d "$WEBSERVERDIRECTORY/webclient" ]; then
     cp -r admin $WEBSERVERDIRECTORY
 fi
 
-# configure webclient
+# configure webclient move to ant
 echo configure webclient
 FILE=$WEBSERVERDIRECTORY/webclient/i2b2_config_data.js
 if [ ! -f "$FILE.orig" ]; then  
@@ -126,13 +128,13 @@ if [ ! -f "$FILE.orig" ]; then
    cp -i $FILE $FILE.orig
 fi
 cat $FILE.orig | sed -e 's/HarvardDemo/'"$HIVE_ID"'/g;s/webservices.i2b2.org/'"$IP_ADDR"':9090/g;s/amdinOnly/adminOnly/g' > $FILE
-
+#todo remove default user in webclient
 
 #restart apache
-echo restart apache
-/etc/init.d/apache2 restart > $LOG_DIR/apache_restart.log 2> $LOG_DIR/apache_restart.log
+# echo restart apache
+# /etc/init.d/apache2 restart > $LOG_DIR/apache_restart.log 2> $LOG_DIR/apache_restart.log
 
 
 cd $DATA_HOME
 
-. ./i2b2_db_full_install.sh 
+# . ./i2b2_db_full_install.sh 
