@@ -1,8 +1,7 @@
-# Created by i2b2 Wizard
-db.type=postgresql
-db.username=I2B2METAUSER
-db.password=I2B2METAPWD
-db.server=localhost:5432/i2b2?searchpath=I2B2METAUSER
-db.driver=org.postgresql.Driver
-db.url=jdbc:postgresql://localhost:5432/i2b2?searchpath=I2B2METAUSER
-db.project=demo
+db.type=@DBTYPE@
+db.username=@I2B2METAUSER@
+db.password=@I2B2METAPWD@
+db.server=@SERVERURL@@DBNAME@?searchpath=@I2B2METAUSER@
+db.driver=@DBDRIVER@
+db.url=@DBURL@@DBNAME@?searchpath=@I2B2METAUSER@
+db.project=@I2B2PROJECT@

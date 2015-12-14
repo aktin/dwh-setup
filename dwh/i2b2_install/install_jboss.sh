@@ -12,16 +12,16 @@ chmod +x $MY_PATH/i2b2_install/install.conf
 
 
 #install ant
-echo install ant
-cd $PACKAGES
+#echo install ant
+#cd $PACKAGES
 #later check whether in packages and if not download    
 #   httpDownloadWizard apache-ant-1.8.2-bin.zip https://archive.apache.org/dist/ant/binaries/apache-ant-1.8.2-bin.zip e875a77c21714d36a6e445fe15d65fb2
     
 # Apache ant 1.8.2 installation: 
 
-if [ ! -d $ANT_HOME ]; then
-    unzip -o $PACKAGES/apache-ant-1.8.2-bin.zip -d $BASE_APPDIR > $LOG_DIR/unzip_ant.log
-fi
+#if [ ! -d $ANT_HOME ]; then
+#    unzip -o $PACKAGES/apache-ant-1.8.2-bin.zip -d $BASE_APPDIR > $LOG_DIR/unzip_ant.log
+#fi
 
 
 
@@ -29,7 +29,11 @@ fi
 # ./jboss-cli.sh --connect --command=:shutdown > $MY_PATH/logs/jbossstop.log 2> $MY_PATH/logs/jbossstop.log &
 
 # install - ant with apt install, shorten list
-apt-get -q -y install aptitude unzip wget curl git openjdk-7-jre-headless  apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc # openjdk-7-jdk
+apt-get -q -y install aptitude unzip wget curl git apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc  
+apt-get -q -y install openjdk-8-jre-headless # openjdk-7-jdk
+
+#install ant from package manager
+apt-get -q -y install ant
 
 
 # JBoss installation:
@@ -77,9 +81,10 @@ if [ ! -d $JBOSS_HOME ]; then
     unzip -o $PACKAGES/jboss-configuration-slim.zip -d $JBOSS_HOME/standalone > $LOG_DIR/unzip_jboss_config.log
 
     # remove and add from ant
-    unzip -o $PACKAGES/jboss-deployment-xml.zip -d $JBOSS_DEPLOY_DIR/ > $LOG_DIR/unzip_jboss_deploy_xml.log
+    # will be added in ant
+    # unzip -o $PACKAGES/jboss-deployment-xml.zip -d $JBOSS_DEPLOY_DIR/ > $LOG_DIR/unzip_jboss_deploy_xml.log
     unzip -o $PACKAGES/jboss-deployment-i2b2war-WEB-INF.zip -d $JBOSS_DEPLOY_DIR/i2b2.war > $LOG_DIR/unzip_jboss_deploy_webinf.log
-    cp $PACKAGES/postgresql-9.2-1002.jdbc4.jar $JBOSS_DEPLOY_DIR/
+    # cp $PACKAGES/postgresql-9.2-1002.jdbc4.jar $JBOSS_DEPLOY_DIR/
 
     # deploy
 #    cd $JBOSS_HOME
@@ -137,4 +142,4 @@ cat $FILE.orig | sed -e 's/HarvardDemo/'"$HIVE_ID"'/g;s/webservices.i2b2.org/'"$
 
 cd $DATA_HOME
 
-# . ./i2b2_db_full_install.sh 
+ant all

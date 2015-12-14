@@ -21,64 +21,60 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     <!--     Change properties                                               -->
     <!-- =================================================================== -->
-    <target name="change_db_properties" depends="init">
+    <target name="copy_files" depends="init">
         <echo message="change propertie files and sql"/>
-        <copy file="${ant.installdata.folder}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql.orig" tofile="${ant.installdata.folder}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql" overwrite="true" />
-        <copy file="${ant.installdata.folder}/${hive.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${hive.dir}/db.properties" overwrite="true" />
-        <copy file="${ant.installdata.folder}/${pm.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${pm.dir}/db.properties" overwrite="true" />
-        <copy file="${ant.installdata.folder}/${work.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${work.dir}/db.properties" overwrite="true" />
-        <copy file="${ant.installdata.folder}/${meta.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${meta.dir}/db.properties" overwrite="true" />
-        <copy file="${ant.installdata.folder}/${crc.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${crc.dir}/db.properties" overwrite="true" />
-        <replace file="${ant.installdata.folder}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql" value="i2b2">
-            <replacefilter token="I2B2HIVEUSER" value="${db.hive.user}"/>
-            <replacefilter token="I2B2HIVEPWD" value="${db.hive.pwd}"/>
-            <replacefilter token="I2B2PMUSER" value="${db.pm.user}"/>
-            <replacefilter token="I2B2PMPWD" value="${db.pm.pwd}"/>
-            <replacefilter token="I2B2WORKUSER" value="${db.work.user}"/>
-            <replacefilter token="I2B2WORKPWD" value="${db.work.pwd}"/>
-            <replacefilter token="I2B2METAUSER" value="${db.meta.user}"/>
-            <replacefilter token="I2B2METAPWD" value="${db.meta.pwd}"/>
-            <replacefilter token="I2B2DEMOUSER" value="${db.crc.user}"/>
-            <replacefilter token="I2B2DEMOPWD" value="${db.crc.pwd}"/>
-        </replace>
-        <replace file="${ant.installdata.folder}/${hive.dir}/db.properties" value="i2b2" >
-            <replacefilter token="I2B2HIVEUSER" value="${db.hive.user}"/>
-            <replacefilter token="I2B2HIVEPWD" value="${db.hive.pwd}"/>
-        </replace>
-        <replace file="${ant.installdata.folder}/${pm.dir}/db.properties" value="i2b2" >
-            <replacefilter token="I2B2PMUSER" value="${db.pm.user}"/>
-            <replacefilter token="I2B2PMPWD" value="${db.pm.pwd}"/>
-        </replace>
-        <replace file="${ant.installdata.folder}/${work.dir}/db.properties" value="i2b2" >
-            <replacefilter token="I2B2WORKUSER" value="${db.work.user}"/>
-            <replacefilter token="I2B2WORKPWD" value="${db.work.pwd}"/>
-        </replace>
-        <replace file="${ant.installdata.folder}/${meta.dir}/db.properties" value="i2b2" >
-            <replacefilter token="I2B2METAUSER" value="${db.meta.user}"/>
-            <replacefilter token="I2B2METAPWD" value="${db.meta.pwd}"/>
-        </replace>
-        <replace file="${ant.installdata.folder}/${crc.dir}/db.properties" value="i2b2" >
-            <replacefilter token="I2B2DEMOUSER" value="${db.crc.user}"/>
-            <replacefilter token="I2B2DEMOPWD" value="${db.crc.pwd}"/>
+        <copy file="${ant.installdata.folder}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql.orig" tofile="${ant.installdata.folder}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/${hive.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${hive.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/${pm.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${pm.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/${work.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${work.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/${meta.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${meta.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/${crc.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${crc.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/crc-ds.xml.orig" tofile="${ant.installdata.folder}/jboss_xml_ds/crc-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/ont-ds.xml.orig" tofile="${ant.installdata.folder}/jboss_xml_ds/ont-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/pm-ds.xml.orig" tofile="${ant.installdata.folder}/jboss_xml_ds/pm-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/work-ds.xml.orig" tofile="${ant.installdata.folder}/jboss_xml_ds/work-ds.xml" overwrite="true"/>
+    </target> 
+    <target name="change_properties" depends="copy_files">
+        <replace dir="${ant.installdata.folder}/" value="" failOnNoReplacements="true">
+            <exclude name="build.properties"/>
+            <exclude name="**/*.orig"/>
+            <exclude name="i2b2_src/*"/>
+            <include name="**/db.properties"/>
+            <include name="**/scripts/create_POSTGRESQL_users.sql"/>
+            <include name="**/*-ds.xml"/>
+
+            <replacefilter token="${db.DBURL}" value="${db.url}"/>
+            <replacefilter token="${db.DBTYPE}" value="${db.type}"/>
+            <replacefilter token="${db.DBPROJECT}" value="${db.project}"/>
+            <replacefilter token="${db.DBNAME}" value="${db.name}"/>
+            <replacefilter token="${db.SERVERURL}" value="${db.server}"/>
+            <replacefilter token="${db.DBDRIVER}" value="${db.driver}"/>
+            <replacefilter token="${db.DBDRIVERJAR}" value="${db.driver.jar}"/>
+            <replacefilter token="${db.DBUSER}" value="${db.username}"/>
+            <replacefilter token="${db.DBPWD}" value="${db.password}"/>
+
+            <replacefilter token="${db.HIVEUSER}" value="${db.hive.user}"/>
+            <replacefilter token="${db.HIVEPWD}" value="${db.hive.pwd}"/>
+            <replacefilter token="${db.PMUSER}" value="${db.pm.user}"/>
+            <replacefilter token="${db.PMPWD}" value="${db.pm.pwd}"/>
+            <replacefilter token="${db.WORKUSER}" value="${db.work.user}"/>
+            <replacefilter token="${db.WORKPWD}" value="${db.work.pwd}"/>
+            <replacefilter token="${db.METAUSER}" value="${db.meta.user}"/>
+            <replacefilter token="${db.METAPWD}" value="${db.meta.pwd}"/>
+            <replacefilter token="${db.DEMOUSER}" value="${db.crc.user}"/>
+            <replacefilter token="${db.DEMOPWD}" value="${db.crc.pwd}"/>
         </replace>
     </target>  
-<!--        
-        <replace 
-            dir="${ant.installdata.folder}/"
-            includes="${dbuser.dir}/scripts/create_POSTGRESQL_users.sql, ${hive.dir}/db.properties, ${pm.dir}/db.properties, ${work.dir}/db.properties, ${meta.dir}/db.properties, ${crc.dir}/db.properties"
-            value="i2b2">
-          <replacefilter token="I2B2HIVEUSER" value="${db.hive.user}"/>
-          <replacefilter token="I2B2HIVEPWD" value="${db.hive.pwd}"/>
-          <replacefilter token="I2B2PMUSER" value="${db.pm.user}"/>
-          <replacefilter token="I2B2PMPWD" value="${db.pm.pwd}"/>
-          <replacefilter token="I2B2WORKUSER" value="${db.work.user}"/>
-          <replacefilter token="I2B2WORKPWD" value="${db.work.pwd}"/>
-          <replacefilter token="I2B2METAUSER" value="${db.meta.user}"/>
-          <replacefilter token="I2B2METAPWD" value="${db.meta.pwd}"/>
-          <replacefilter token="I2B2DEMOUSER" value="${db.crc.user}"/>
-          <replacefilter token="I2B2DEMOPWD" value="${db.crc.pwd}"/>
-        </replace>
-        -->
+    <target name="copy_unzip_deployments" depends="init">
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/crc-ds.xml" todir="${jboss.home}/standalone/configuration/crc-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/ont-ds.xml" todir="${jboss.home}/standalone/configuration/ont-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/pm-ds.xml" todir="${jboss.home}/standalone/configuration/pm-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/work-ds.xml" todir="${jboss.home}/standalone/configuration/work-ds.xml" overwrite="true"/>
+
+        <copy file="${packages.folder}/postgresql-9.2-1002.jdbc4.jar" todir="${jboss.home}/standalone/deployments" />
+        
+        <!--TODO UNZIP-->
+    </target>
 
 
     <!-- =================================================================== -->
@@ -213,7 +209,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="all"/>
     </target>
     <target name="all" 
-        depends="   change_db_properties, change_psql_user_password,
+        depends="   change_properties, change_psql_user_password,
                     i2b2_db_create, user_create,
                     hive_create, 
                     pm_create,
