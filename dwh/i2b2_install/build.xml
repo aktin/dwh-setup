@@ -163,7 +163,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="work: create"/>
         <copy file="${ant.installdata.folder}/${work.dir}/db.properties" todir="${ant.i2b2.data.folder}/Workdata" overwrite="true"/>
         <ant antfile="${ant.i2b2.data.folder}/Workdata/data_build.xml" target="create_workdata_tables_release_1-7" output="${log.dir}/work_create.log" inheritAll="false" useNativeBasedir="true"/>               
-        <ant antfile="${ant.installdata.folder}/${work.dir}/change_build.xml" target="insert_work_access" output="${log.dir}/work_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.folder}/${work.dir}/change_build.xml" target="insert_work_access" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/>
         <!-- ant antfile="${ant.i2b2.data.folder}/Workdata/data_build.xml" target="db_workdata_load_data" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
