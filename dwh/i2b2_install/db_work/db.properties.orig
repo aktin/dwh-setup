@@ -1,3 +1,5 @@
+# Created by AKTIN@2015
+
 db.type=@DBTYPE@
 db.username=@I2B2WORKUSER@
 db.password=@I2B2WORKPWD@
