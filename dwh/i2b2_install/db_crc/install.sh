@@ -3,7 +3,7 @@
 . ../install.conf
 
 # install tables!
-cp $DATA_HOME/crc_db/db.properties $I2B2_DATA/Crcdata/
+cp $DATA_HOME/db_crc/db.properties $I2B2_DATA/Crcdata/
 cd $I2B2_DATA/Crcdata/
 
 echo create crc tables

@@ -3,7 +3,7 @@
 . ../install.conf
 
 # install tables!
-cp $DATA_HOME/meta_db/db.properties $I2B2_DATA/Metadata/
+cp $DATA_HOME/db_meta/db.properties $I2B2_DATA/Metadata/
 
 cd $I2B2_DATA/Metadata/
 

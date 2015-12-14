@@ -87,11 +87,14 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="change_psql_user_password" depends="init">
         <echo message="change psql user password"/>
         <echo message="${db.password}"/>
-        <sql driver="${db.driver}" url="jdbc:postgresql://localhost:5432/" userid="${db.username}" password="" classpathref="classpath" onerror="continue" print="true">
+        <!-- sql driver="${db.driver}" url="jdbc:postgresql://localhost:5432/" userid="${db.username}" password="" classpathref="classpath" onerror="continue" print="true" autocommit="true">
             <transaction>
                 alter user ${db.username} with password '${db.password}';
             </transaction>
-        </sql>
+        </sql-->
+        <exec executable="sudo" inputstring="alter user ${db.username} with password '${db.password}';&#10;">
+            <arg line="-u postgres psql -f -" />
+        </exec>
     </target>    
     <target name="i2b2_db_create" depends="init">
         <echo message="create db i2b2"/>
@@ -101,7 +104,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
     <target name="user_create" depends="init">
         <echo message="database users"/>
-        <ant antfile="init_build.xml" dir="${ant.installdata.folder}/${dbuser.dir}/" target="create_POSTGRESQL_users" output="${log.dir}/user_create.log"/>
+        <ant antfile="${ant.installdata.folder}/${dbuser.dir}/init_build.xml" target="create_POSTGRESQL_users" output="${log.dir}/user_create.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="i2b2_db_delete" depends="init" description="drop user Database">
@@ -111,7 +114,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
     <target name="user_delete" depends="init" description="drop user">
         <echo message="${dbuser.dir}"/>
-        <ant antfile="init_build.xml" dir="${ant.installdata.folder}/${dbuser.dir}/" target="drop_POSTGRESQL_users" output="${log.dir}/user_delete.log"/>
+        <ant antfile="${ant.installdata.folder}/${dbuser.dir}/init_build.xml" target="drop_POSTGRESQL_users" output="${log.dir}/user_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <target name="reset_psql_user_password" depends="init" description="reset user password">
         <sql driver="${db.driver}" url="${db.url}" userid="${db.username}" password="${db.password}" classpathref="classpath" onerror="continue" print="true">
@@ -128,14 +131,14 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="hive_create" depends="init" description="init HIVE Database">
         <echo message="hive: create"/>
         <copy file="${ant.installdata.folder}/${hive.dir}/db.properties"  overwrite="true" todir="${ant.i2b2.data.folder}/Hivedata"/>
-        <ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Hivedata/" target="create_hivedata_tables_release_1-7" output="${log.dir}/hive_create.log"/>
-        <ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Hivedata/" target="db_hivedata_load_data" output="${log.dir}/hive_load.log"/>
+        <ant antfile="${ant.i2b2.data.folder}/Hivedata/data_build.xml" target="create_hivedata_tables_release_1-7" output="${log.dir}/hive_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.folder}/Hivedata/data_build.xml" target="db_hivedata_load_data" output="${log.dir}/hive_load.log" inheritAll="false" useNativeBasedir="true"/>
         <echo message="hive: update"/>
-        <ant antfile="change_build.xml" dir="${ant.installdata.folder}/${hive.dir}/" target="update_hive" output="${log.dir}/hive_update.log"/>
+        <ant antfile="${ant.installdata.folder}/${hive.dir}/change_build.xml" target="update_hive" output="${log.dir}/hive_update.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="hive_delete" depends="init" description="drop HIVE Database">
-        <ant antfile="change_build.xml" dir="${ant.installdata.folder}/${hive.dir}/" target="drop_hive" output="${log.dir}/hive_delete.log"/>
+        <ant antfile="${ant.installdata.folder}/${hive.dir}/change_build.xml" target="drop_hive" output="${log.dir}/hive_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -144,13 +147,13 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 	<target name="pm_create" depends="init" description="init PM Database">
         <echo message="pm: create"/>
         <copy file="${ant.installdata.folder}/${pm.dir}/db.properties" todir="${ant.i2b2.data.folder}/Pmdata" overwrite="true"/>
-        <ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Pmdata/" target="create_pmdata_tables_release_1-7" output="${log.dir}/pm_create.log"/>
-        <ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Pmdata/" target="create_triggers_release_1-7" output="${log.dir}/pm_create_triggers.log"/>
-        <ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Pmdata/" target="db_pmdata_load_data" output="${log.dir}/pm_load.log"/>
+        <ant antfile="${ant.i2b2.data.folder}/Pmdata/data_build.xml" target="create_pmdata_tables_release_1-7" output="${log.dir}/pm_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.folder}/Pmdata/data_build.xml" target="create_triggers_release_1-7" output="${log.dir}/pm_create_triggers.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.folder}/Pmdata/data_build.xml" target="db_pmdata_load_data" output="${log.dir}/pm_load.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="pm_delete" depends="init" description="drop PM Database">
-        <ant antfile="change_build.xml" dir="${ant.installdata.folder}/${pm.dir}/" target="drop_pm" output="${log.dir}/pm_delete.log"/>
+        <ant antfile="${ant.installdata.folder}/${pm.dir}/change_build.xml" target="drop_pm" output="${log.dir}/pm_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -159,12 +162,13 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="workdata_create" depends="init" description="init WORK Database">
         <echo message="work: create"/>
         <copy file="${ant.installdata.folder}/${work.dir}/db.properties" todir="${ant.i2b2.data.folder}/Workdata" overwrite="true"/>
-        <ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Workdata/" target="create_workdata_tables_release_1-7" output="${log.dir}/work_create.log"/>
-        <!-- ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Workdata/" target="db_workdata_load_data" output="${log.dir}/work_load.log"/-->
+        <ant antfile="${ant.i2b2.data.folder}/Workdata/data_build.xml" target="create_workdata_tables_release_1-7" output="${log.dir}/work_create.log" inheritAll="false" useNativeBasedir="true"/>               
+        <ant antfile="${ant.installdata.folder}/${work.dir}/change_build.xml" target="insert_work_access" output="${log.dir}/work_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <!-- ant antfile="${ant.i2b2.data.folder}/Workdata/data_build.xml" target="db_workdata_load_data" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
     <target name="workdata_delete" depends="init" description="drop WORK Database">
-        <ant antfile="change_build.xml" dir="${ant.installdata.folder}/${work.dir}/" target="drop_work" output="${log.dir}/work_delete.log"/>
+        <ant antfile="${ant.installdata.folder}/${work.dir}/change_build.xml" target="drop_work" output="${log.dir}/work_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -173,12 +177,12 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="metadata_create" depends="init" description="init META Database">
         <echo message="meta: create"/>
         <copy file="${ant.installdata.folder}/${meta.dir}/db.properties" todir="${ant.i2b2.data.folder}/Metadata" overwrite="true"/>
-        <ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Metadata/" target="create_metadata_tables_release_1-7" output="${log.dir}/meta_create.log"/>
-        <!-- ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Metadata/" target="db_metadata_load_data" output="${log.dir}/meta_load.log"/-->
+        <ant antfile="${ant.i2b2.data.folder}/Metadata/data_build.xml" target="create_metadata_tables_release_1-7" output="${log.dir}/meta_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <!-- ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Metadata/" target="db_metadata_load_data" output="${log.dir}/meta_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
     <target name="metadata_delete" depends="init" description="drop META Database">
-        <ant antfile="change_build.xml" dir="${ant.installdata.folder}/${meta.dir}/" target="drop_meta" output="${log.dir}/meta_delete.log"/>
+        <ant antfile="${ant.installdata.folder}/${meta.dir}/change_build.xml" target="drop_meta" output="${log.dir}/meta_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -187,22 +191,30 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="crcdata_create" depends="init" description="init CRC Database">
         <echo message="crc: create"/>
         <copy file="${ant.installdata.folder}/${crc.dir}/db.properties" todir="${ant.i2b2.data.folder}/Crcdata" overwrite="true"/>
-        <ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Crcdata/" target="create_crcdata_tables_release_1-7" output="${log.dir}/crc_create.log"/>
-        <!-- ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Crcdata/" target="db_crcdata_load_data" output="${log.dir}/crc_load.log"/-->
+        <ant antfile="${ant.i2b2.data.folder}/Crcdata/data_build.xml" target="create_crcdata_tables_release_1-7" output="${log.dir}/crc_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <!--ant antfile="${ant.i2b2.data.folder}/Crcdata/data_build.xml" target="db_crcdata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
     <target name="crcdata_delete" depends="init" description="drop CRC Database">
-        <ant antfile="change_build.xml" dir="${ant.installdata.folder}/${crc.dir}/" target="drop_crc" output="${log.dir}/crc_delete.log"/>
+        <ant antfile="${ant.installdata.folder}/${crc.dir}/change_build.xml" target="drop_crc" output="${log.dir}/crc_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
     <!--     build all                                                       -->
     <!-- =================================================================== -->
+    <target name="create_tables" 
+        depends="   
+                    hive_create, 
+                    pm_create,
+                    workdata_create,
+                    metadata_create,
+                    crcdata_create" 
+        description="call all create targets">
+        <echo message="all"/>
+    </target>
     <target name="all" 
-        depends="   change_db_properties, 
-                    change_psql_user_password, 
-                    i2b2_db_create,
-                    user_create,
+        depends="   change_db_properties, change_psql_user_password,
+                    i2b2_db_create, user_create,
                     hive_create, 
                     pm_create,
                     workdata_create,
