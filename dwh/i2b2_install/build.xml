@@ -41,6 +41,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <exclude name="i2b2_src/*"/>
             <include name="**/db.properties"/>
             <include name="**/scripts/create_POSTGRESQL_users.sql"/>
+            <include name="**/scripts/workplace_access_insert_data.sql"/>
             <include name="**/*-ds.xml"/>
 
             <replacefilter token="${db.DBURL}" value="${db.url}"/>
@@ -66,10 +67,10 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         </replace>
     </target>  
     <target name="copy_unzip_deployments" depends="init">
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/crc-ds.xml" todir="${jboss.home}/standalone/configuration/crc-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/ont-ds.xml" todir="${jboss.home}/standalone/configuration/ont-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/pm-ds.xml" todir="${jboss.home}/standalone/configuration/pm-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/work-ds.xml" todir="${jboss.home}/standalone/configuration/work-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/crc-ds.xml" todir="${jboss.home}/standalone/deployments/crc-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/ont-ds.xml" todir="${jboss.home}/standalone/deployments/ont-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/pm-ds.xml" todir="${jboss.home}/standalone/deployments/pm-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.folder}/jboss_xml_ds/work-ds.xml" todir="${jboss.home}/standalone/deployments/work-ds.xml" overwrite="true"/>
 
         <copy file="${packages.folder}/postgresql-9.2-1002.jdbc4.jar" todir="${jboss.home}/standalone/deployments" />
         
@@ -206,9 +207,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
                     metadata_create,
                     crcdata_create" 
         description="call all create targets">
-        <echo message="all"/>
     </target>
-    <target name="all" 
+    <target name="db_all" 
         depends="   change_properties, change_psql_user_password,
                     i2b2_db_create, user_create,
                     hive_create, 
@@ -217,14 +217,14 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
                     metadata_create,
                     crcdata_create" 
         description="call all create targets">
-        <echo message="all"/>
+        <echo message="db all"/>
     </target>
-    <target name="delete_all" 
+    <target name="delete_db_all" 
         depends="   i2b2_db_delete, 
                     user_delete, 
                     reset_psql_user_password" 
         description="call all create targets">
-        <echo message="delete all"/>
+        <echo message="delete db all"/>
     </target>
 
 </project>

@@ -30,7 +30,8 @@ chmod +x $MY_PATH/i2b2_install/install.conf
 
 # install - ant with apt install, shorten list
 apt-get -q -y install aptitude unzip wget curl git apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc  
-apt-get -q -y install openjdk-8-jre-headless # openjdk-7-jdk
+apt-get -q -y install openjdk-7-jre-headless # openjdk-7-jdk
+#apt-get -q -y install screen #for testing
 
 #install ant from package manager
 apt-get -q -y install ant
@@ -82,9 +83,9 @@ if [ ! -d $JBOSS_HOME ]; then
 
     # remove and add from ant
     # will be added in ant
-    # unzip -o $PACKAGES/jboss-deployment-xml.zip -d $JBOSS_DEPLOY_DIR/ > $LOG_DIR/unzip_jboss_deploy_xml.log
+     unzip -o $PACKAGES/jboss-deployment-xml.zip -d $JBOSS_DEPLOY_DIR/ > $LOG_DIR/unzip_jboss_deploy_xml.log
     unzip -o $PACKAGES/jboss-deployment-i2b2war-WEB-INF.zip -d $JBOSS_DEPLOY_DIR/i2b2.war > $LOG_DIR/unzip_jboss_deploy_webinf.log
-    # cp $PACKAGES/postgresql-9.2-1002.jdbc4.jar $JBOSS_DEPLOY_DIR/
+     cp $PACKAGES/postgresql-9.2-1002.jdbc4.jar $JBOSS_DEPLOY_DIR/
 
     # deploy
 #    cd $JBOSS_HOME
@@ -142,4 +143,4 @@ cat $FILE.orig | sed -e 's/HarvardDemo/'"$HIVE_ID"'/g;s/webservices.i2b2.org/'"$
 
 cd $DATA_HOME
 
-ant all
+ant db_all > $LOG_DIR/ant_create_db.log
