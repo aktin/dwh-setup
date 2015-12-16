@@ -1,15 +1,47 @@
 #!/bin/bash
+MY_PATH=/vagrant
 
-cd /vagrant/i2b2_install
-pwd
-echo install jboss
-if [ ! -d "/vagrant/logs" ]; then 
-    mkdir /vagrant/logs
+DATA_HOME=$MY_PATH/i2b2_install
+LOG_DIR=$MY_PATH/logs
+PACKAGES=$MY_PATH/packages
+
+BASE_APPDIR=/opt
+JBOSS_HOME=$BASE_APPDIR/jboss-as-7.1.1.Final
+
+# already covered in bootstrap
+apt-get update > $LOG_DIR/apt_update.log 2> $LOG_DIR/apt_update.err.log
+apt-get install -y wget curl dos2unix > $LOG_DIR/apt_install_1.log 2> $LOG_DIR/apt_install_1.err.log
+
+# install - shorten list
+apt-get -q -y install openjdk-7-jre-headless > $LOG_DIR/apt_install_2.log 2> $LOG_DIR/apt_install_2.err.log
+# no openjdk-7-jdk  needed
+apt-get -q -y install aptitude unzip git apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc postgresql ant > $LOG_DIR/apt_install_3.log 2> $LOG_DIR/apt_install_3.err.log
+#apt-get -q -y install screen #for testing
+
+#apt-get -y dist-upgrade
+
+# find localhost root and link it to /vagrant/webroot
+WEBROOT=$(cat /etc/apache2/sites-available/default | grep -m1 'DocumentRoot' | sed 's/DocumentRoot//g' | awk '{ printf "%s", $1}')
+echo linked Documentroot $WEBROOT to /var/webroot
+ln -s $WEBROOT /var/webroot
+
+echo enable remote access to postgres
+cp $MY_PATH/postgres-remote-access.sh /opt/
+dos2unix /opt/postgres-remote-access.sh
+/opt/postgres-remote-access.sh > $LOG_DIR/postgres_remote.log 2> $LOG_DIR/postgres_remote.err.log
+
+cd $MY_PATH/i2b2_install
+
+# create directory for logs if not existent
+if [ ! -d "$LOG_DIR" ]; then 
+    mkdir $LOG_DIR
 fi
-./install_jboss.sh > /vagrant/logs/install_jboss.log
 
-ifconfig
+echo ant scripts
+ant all > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
 
-cd /opt/jboss-as-7.1.1.Final/
-pwd
-# ./bin/standalone.sh > /vagrant/logs/jboss_standalone_start.log &
+# install jboss
+# ./install_jboss.sh > $LOG_DIR/install_jboss.log
+
+# start jboss
+$JBOSS_HOME/bin/standalone.sh > $LOG_DIR/jboss_standalone_start.log 2> $LOG_DIR/jboss_standalone_start.err.log &

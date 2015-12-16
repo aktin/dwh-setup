@@ -28,13 +28,6 @@ chmod +x $MY_PATH/i2b2_install/install.conf
 #stopJBoss
 # ./jboss-cli.sh --connect --command=:shutdown > $MY_PATH/logs/jbossstop.log 2> $MY_PATH/logs/jbossstop.log &
 
-# install - ant with apt install, shorten list
-apt-get -q -y install aptitude unzip wget curl git apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc  
-apt-get -q -y install openjdk-7-jre-headless # openjdk-7-jdk
-#apt-get -q -y install screen #for testing
-
-#install ant from package manager
-apt-get -q -y install ant
 
 
 # JBoss installation:
@@ -45,7 +38,6 @@ if [ ! -d $JBOSS_HOME ]; then
     unzip -o $PACKAGES/jboss-as-7.1.1.Final.zip -d $BASE_APPDIR > $LOG_DIR/unzip_jboss.log
 
     # Memory settings:
-    
     FILE="$JBOSS_HOME/bin/appclient.conf"
     if [ -f "$FILE.orig" ]; then  
         rm $FILE.orig
@@ -71,7 +63,7 @@ if [ ! -d $JBOSS_HOME ]; then
     cd $DATA_HOME
     
     mkdir $PACKAGES/temp/
-    unzip -o $PACKAGES/axis2-1.6.2-war.zip -d $PACKAGES/temp/ > $LOG_DIR/unzip_axis2.log
+    unzip -o $PACKAGES/axis2-1.6.3-war.zip -d $PACKAGES/temp/ > $LOG_DIR/unzip_axis2.log
     unzip -o $PACKAGES/temp/axis2.war -d $JBOSS_DEPLOY_DIR/i2b2.war > $LOG_DIR/unzip_axis2.log
     
     rm -r $PACKAGES/temp/
@@ -109,16 +101,16 @@ if [ ! -d "$I2B2_SRC" ]; then
 fi
 
 #find webclient directory
-#if [ ! -d $WEBSERVERDIRECTORY ]; then  
- #   mkdir $WEBSERVERDIRECTORY
+if [ ! -d $WEBSERVERDIRECTORY ]; then  
+    mkdir $WEBSERVERDIRECTORY
     # todo add rights for www
-#fi
+fi
 
 # move webclient files to webdirectory
+# if html there then copy there else in www
 if [ ! -d "$WEBSERVERDIRECTORY/webclient" ]; then  
-    cd $I2B2_SRC
-    cp -r webclient $WEBSERVERDIRECTORY
-    cp -r admin $WEBSERVERDIRECTORY
+    cp -r $I2B2_SRC/webclient $WEBSERVERDIRECTORY
+    cp -r $I2B2_SRC/admin $WEBSERVERDIRECTORY
 fi
 
 # configure webclient move to ant

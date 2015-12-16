@@ -11,7 +11,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 	<!-- 								INIT 								 -->
 	<!-- =================================================================== -->
 	<target name="init"  description="init">
-        <copy file="${packages.folder}/postgresql-9.2-1002.jdbc4.jar" todir="${ant.installdata.folder}" />
+        <copy file="${packages.dir}/postgresql-9.2-1002.jdbc4.jar" todir="${ant.installdata.dir}" />
 		<path id="classpath">
 			<pathelement location="postgresql-9.2-1002.jdbc4.jar"/>
 		</path>
@@ -23,19 +23,19 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     <target name="copy_files" depends="init">
         <echo message="change propertie files and sql"/>
-        <copy file="${ant.installdata.folder}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql.orig" tofile="${ant.installdata.folder}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/${hive.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${hive.dir}/db.properties" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/${pm.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${pm.dir}/db.properties" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/${work.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${work.dir}/db.properties" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/${meta.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${meta.dir}/db.properties" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/${crc.dir}/db.properties.orig" tofile="${ant.installdata.folder}/${crc.dir}/db.properties" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/crc-ds.xml.orig" tofile="${ant.installdata.folder}/jboss_xml_ds/crc-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/ont-ds.xml.orig" tofile="${ant.installdata.folder}/jboss_xml_ds/ont-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/pm-ds.xml.orig" tofile="${ant.installdata.folder}/jboss_xml_ds/pm-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/work-ds.xml.orig" tofile="${ant.installdata.folder}/jboss_xml_ds/work-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${hive.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${hive.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${pm.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${pm.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${work.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${work.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${meta.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${meta.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${crc.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${crc.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_xml_ds/crc-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/crc-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml" overwrite="true"/>
     </target> 
     <target name="change_properties" depends="copy_files">
-        <replace dir="${ant.installdata.folder}/" value="" failOnNoReplacements="true">
+        <replace dir="${ant.installdata.dir}/" value="" failOnNoReplacements="true">
             <exclude name="build.properties"/>
             <exclude name="**/*.orig"/>
             <exclude name="i2b2_src/*"/>
@@ -66,15 +66,102 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <replacefilter token="${db.DEMOPWD}" value="${db.crc.pwd}"/>
         </replace>
     </target>  
-    <target name="copy_unzip_deployments" depends="init">
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/crc-ds.xml" todir="${jboss.home}/standalone/deployments/crc-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/ont-ds.xml" todir="${jboss.home}/standalone/deployments/ont-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/pm-ds.xml" todir="${jboss.home}/standalone/deployments/pm-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.folder}/jboss_xml_ds/work-ds.xml" todir="${jboss.home}/standalone/deployments/work-ds.xml" overwrite="true"/>
+    <target name="deploy_jboss" depends="unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
+        <copy file="${packages.dir}/postgresql-9.2-1002.jdbc4.jar" todir="${jboss.home}/standalone/deployments" />
+    </target>
+    <target name="unzip_i2b2" >
+        <delete dir="${i2b2.src.dir}" quiet="true"/>
+        <mkdir dir="${i2b2.src.dir}" />
+        <unzip src="${packages.dir}/i2b2core-src-1705.zip" dest="${i2b2.src.dir}">
+            <patternset>
+                <include name="admin/**"/>
+            </patternset>
+        </unzip>
+        <unzip src="${packages.dir}/i2b2createdb-1705.zip" dest="${i2b2.src.dir}">
+            <patternset>
+                <include name="**/NewInstall/**"/>
+                <exclude name="**/NewInstall/*.jar"/>
+                <exclude name="**/NewInstall/Imdata/**"/>
+                <exclude name="**/NewInstall/Metadata/demo/**"/>
+                <exclude name="**/NewInstall/Crcdata/scripts/oracle/**"/>
+                <exclude name="**/NewInstall/Crcdata/scripts/sqlserver/**"/>
+                <exclude name="**/NewInstall/Crcdata/scripts/postgresql/**"/>    
+                <exclude name="**/NewInstall/Crcdata/scripts/expression_obs_demo_insert_data.sql"/>                   
+            </patternset>
+        </unzip>
+        <unzip src="${packages.dir}/i2b2webclient-1705.zip" dest="${i2b2.src.dir}"/>
 
-        <copy file="${packages.folder}/postgresql-9.2-1002.jdbc4.jar" todir="${jboss.home}/standalone/deployments" />
-        
-        <!--TODO UNZIP-->
+        <copy file="${i2b2.src.dir}/webclient/i2b2_config_data.js" tofile="${i2b2.src.dir}/webclient/i2b2_config_data.js.orig"/>
+        <replace file="${i2b2.src.dir}/webclient/i2b2_config_data.js">
+            <replacefilter token="allowAnalysis: false" value="allowAnalysis: true"/>
+            <replacefilter token="isSHRINE: true" value="isSHRINE: false"/>
+            <replacefilter token="debug: false" value="debug: true"/>
+            <replacefilter token="HarvardDemo" value="${db.hive.id}"/>
+            <replacefilter token="i2b2demo" value="${db.hive.id}"/>
+            <replacefilter token="webservices.i2b2.org" value="${ip.addr}:9090"/>
+            <replacefilter token="services.i2b2.org" value="${ip.addr}:9090"/>
+            <replacefilter token="rest" value="services"/>
+        </replace>   
+
+        <copy file="${i2b2.src.dir}/admin/i2b2_config_data.js" tofile="${i2b2.src.dir}/admin/i2b2_config_data.js.orig"/>
+        <replace file="${i2b2.src.dir}/admin/i2b2_config_data.js">
+            <replacefilter token="HarvardDemo" value="${db.hive.id}"/>
+            <replacefilter token="webservices.i2b2.org" value="${ip.addr}:9090"/>
+        </replace>   
+
+        <mkdir dir="${web.html.dir}" />
+        <copy todir="${web.html.dir}/admin">
+            <fileset dir="${i2b2.src.dir}/admin"/>
+        </copy>
+        <copy todir="${web.html.dir}/webclient">
+            <fileset dir="${i2b2.src.dir}/webclient"/>
+        </copy>
+    </target>
+
+    <target name="unpack_i2b2_deploy_config" depends="unzip_jboss, change_properties">
+        <delete dir="${jboss.home}/standalone/deployments/${axis2.war.name}" quiet="true"/>
+        <mkdir dir="${jboss.home}/standalone/deployments/${axis2.war.name}"/>
+        <touch file="${jboss.home}/standalone/deployments/${axis2.war.name}.dodeploy"/>
+
+        <!--unpack axis2 war-->
+        <mkdir dir="${packages.dir}/tmp"/>
+        <unzip src="${packages.dir}/${axis2.zip.name}" dest="${packages.dir}/tmp"/>
+        <unwar src="${packages.dir}/tmp/axis2.war" dest="${jboss.home}/standalone/deployments/${axis2.war.name}"/>
+        <delete dir="${packages.dir}/tmp"/>
+
+        <!--unpack built i2b2-->
+        <unzip src="${packages.dir}/jboss-configuration-slim.zip" dest="${jboss.home}/standalone/" />
+        <!--unzip src="${packages.dir}/jboss-deployment-xml.zip" dest="${jboss.home}/standalone/deployments" /-->
+        <unzip src="${packages.dir}/jboss-deployment-i2b2war-WEB-INF.zip" dest="${jboss.home}/standalone/deployments/${axis2.war.name}" />
+
+        <copy file="${ant.installdata.dir}/jboss_xml_ds/crc-ds.xml" tofile="${jboss.home}/standalone/deployments/crc-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml" tofile="${jboss.home}/standalone/deployments/ont-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml" tofile="${jboss.home}/standalone/deployments/pm-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml" tofile="${jboss.home}/standalone/deployments/work-ds.xml" overwrite="true"/>
+
+        <copy file="${jboss.home}/bin/appclient.conf" tofile="${jboss.home}/bin/appclient.conf.orig"/>
+        <replace file="${jboss.home}/bin/appclient.conf">
+            <!--Memory settings:-->
+            <replacefilter token="-Xms64m -Xmx512m" value="-Xms512m -Xmx1024m"/>
+        </replace>   
+
+        <copy file="${jboss.home}/standalone/configuration/standalone.xml" tofile="${jboss.home}/standalone/configuration/standalone.xml.orig"/>    
+        <replace file="${jboss.home}/standalone/configuration/standalone.xml">
+            <!--Change JBoss server ports:-->
+            <replacefilter token="&lt;socket-binding name=&quot;http&quot; port=&quot;8080&quot;/&gt;" value="&lt;socket-binding name=&quot;http&quot; port=&quot;9090&quot;/&gt;"/>
+            <replacefilter token="&lt;socket-binding name=&quot;ajp&quot; port=&quot;8009&quot;/&gt;" value="&lt;socket-binding name=&quot;ajp&quot; port=&quot;9009&quot;/&gt;"/>      
+            <!--Binding JBoss AS 7 to all interfaces:-->
+            <replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
+        </replace>
+    </target>
+    <target name="unzip_jboss" depends="jboss_exists" unless="${jboss.dir.exist}">
+        <echo message="unzip jboss"/>
+        <unzip src="${packages.dir}/jboss-as-7.1.1.Final.zip" dest="${app.base.dir}" />
+        <chmod dir="${jboss.home}/bin" perm="ugo+rx" includes="**/*.sh"/>
+    </target>
+    <target name="jboss_exists">
+        <available file="${jboss.home}" type="dir" property="jboss.dir.exist"/>
+        <echo message="${jboss.dir.exist}"/>
     </target>
 
 
@@ -101,7 +188,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
     <target name="user_create" depends="init">
         <echo message="database users"/>
-        <ant antfile="${ant.installdata.folder}/${dbuser.dir}/init_build.xml" target="create_POSTGRESQL_users" output="${log.dir}/user_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="create_POSTGRESQL_users" output="${log.dir}/user_create.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="i2b2_db_delete" depends="init" description="drop user Database">
@@ -111,7 +198,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
     <target name="user_delete" depends="init" description="drop user">
         <echo message="${dbuser.dir}"/>
-        <ant antfile="${ant.installdata.folder}/${dbuser.dir}/init_build.xml" target="drop_POSTGRESQL_users" output="${log.dir}/user_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="drop_POSTGRESQL_users" output="${log.dir}/user_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <target name="reset_psql_user_password" depends="init" description="reset user password">
         <sql driver="${db.driver}" url="${db.url}" userid="${db.username}" password="${db.password}" classpathref="classpath" onerror="continue" print="true">
@@ -127,15 +214,15 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     <target name="hive_create" depends="init" description="init HIVE Database">
         <echo message="hive: create"/>
-        <copy file="${ant.installdata.folder}/${hive.dir}/db.properties"  overwrite="true" todir="${ant.i2b2.data.folder}/Hivedata"/>
-        <ant antfile="${ant.i2b2.data.folder}/Hivedata/data_build.xml" target="create_hivedata_tables_release_1-7" output="${log.dir}/hive_create.log" inheritAll="false" useNativeBasedir="true"/>
-        <ant antfile="${ant.i2b2.data.folder}/Hivedata/data_build.xml" target="db_hivedata_load_data" output="${log.dir}/hive_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <copy file="${ant.installdata.dir}/${hive.dir}/db.properties"  overwrite="true" todir="${ant.i2b2.data.dir}/Hivedata"/>
+        <ant antfile="${ant.i2b2.data.dir}/Hivedata/data_build.xml" target="create_hivedata_tables_release_1-7" output="${log.dir}/hive_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Hivedata/data_build.xml" target="db_hivedata_load_data" output="${log.dir}/hive_load.log" inheritAll="false" useNativeBasedir="true"/>
         <echo message="hive: update"/>
-        <ant antfile="${ant.installdata.folder}/${hive.dir}/change_build.xml" target="update_hive" output="${log.dir}/hive_update.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${hive.dir}/change_build.xml" target="update_hive" output="${log.dir}/hive_update.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="hive_delete" depends="init" description="drop HIVE Database">
-        <ant antfile="${ant.installdata.folder}/${hive.dir}/change_build.xml" target="drop_hive" output="${log.dir}/hive_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${hive.dir}/change_build.xml" target="drop_hive" output="${log.dir}/hive_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -143,14 +230,14 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
 	<target name="pm_create" depends="init" description="init PM Database">
         <echo message="pm: create"/>
-        <copy file="${ant.installdata.folder}/${pm.dir}/db.properties" todir="${ant.i2b2.data.folder}/Pmdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.folder}/Pmdata/data_build.xml" target="create_pmdata_tables_release_1-7" output="${log.dir}/pm_create.log" inheritAll="false" useNativeBasedir="true"/>
-        <ant antfile="${ant.i2b2.data.folder}/Pmdata/data_build.xml" target="create_triggers_release_1-7" output="${log.dir}/pm_create_triggers.log" inheritAll="false" useNativeBasedir="true"/>
-        <ant antfile="${ant.i2b2.data.folder}/Pmdata/data_build.xml" target="db_pmdata_load_data" output="${log.dir}/pm_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <copy file="${ant.installdata.dir}/${pm.dir}/db.properties" todir="${ant.i2b2.data.dir}/Pmdata" overwrite="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_pmdata_tables_release_1-7" output="${log.dir}/pm_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_triggers_release_1-7" output="${log.dir}/pm_create_triggers.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="db_pmdata_load_data" output="${log.dir}/pm_load.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="pm_delete" depends="init" description="drop PM Database">
-        <ant antfile="${ant.installdata.folder}/${pm.dir}/change_build.xml" target="drop_pm" output="${log.dir}/pm_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="drop_pm" output="${log.dir}/pm_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -158,14 +245,14 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     <target name="workdata_create" depends="init" description="init WORK Database">
         <echo message="work: create"/>
-        <copy file="${ant.installdata.folder}/${work.dir}/db.properties" todir="${ant.i2b2.data.folder}/Workdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.folder}/Workdata/data_build.xml" target="create_workdata_tables_release_1-7" output="${log.dir}/work_create.log" inheritAll="false" useNativeBasedir="true"/>               
-        <ant antfile="${ant.installdata.folder}/${work.dir}/change_build.xml" target="insert_work_access" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/>
-        <!-- ant antfile="${ant.i2b2.data.folder}/Workdata/data_build.xml" target="db_workdata_load_data" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/-->
+        <copy file="${ant.installdata.dir}/${work.dir}/db.properties" todir="${ant.i2b2.data.dir}/Workdata" overwrite="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Workdata/data_build.xml" target="create_workdata_tables_release_1-7" output="${log.dir}/work_create.log" inheritAll="false" useNativeBasedir="true"/>               
+        <ant antfile="${ant.installdata.dir}/${work.dir}/change_build.xml" target="insert_work_access" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <!-- ant antfile="${ant.i2b2.data.dir}/Workdata/data_build.xml" target="db_workdata_load_data" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
     <target name="workdata_delete" depends="init" description="drop WORK Database">
-        <ant antfile="${ant.installdata.folder}/${work.dir}/change_build.xml" target="drop_work" output="${log.dir}/work_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${work.dir}/change_build.xml" target="drop_work" output="${log.dir}/work_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -173,13 +260,13 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     <target name="metadata_create" depends="init" description="init META Database">
         <echo message="meta: create"/>
-        <copy file="${ant.installdata.folder}/${meta.dir}/db.properties" todir="${ant.i2b2.data.folder}/Metadata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.folder}/Metadata/data_build.xml" target="create_metadata_tables_release_1-7" output="${log.dir}/meta_create.log" inheritAll="false" useNativeBasedir="true"/>
-        <!-- ant antfile="data_build.xml" dir="${ant.i2b2.data.folder}/Metadata/" target="db_metadata_load_data" output="${log.dir}/meta_load.log" inheritAll="false" useNativeBasedir="true"/-->
+        <copy file="${ant.installdata.dir}/${meta.dir}/db.properties" todir="${ant.i2b2.data.dir}/Metadata" overwrite="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Metadata/data_build.xml" target="create_metadata_tables_release_1-7" output="${log.dir}/meta_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <!-- ant antfile="data_build.xml" dir="${ant.i2b2.data.dir}/Metadata/" target="db_metadata_load_data" output="${log.dir}/meta_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
     <target name="metadata_delete" depends="init" description="drop META Database">
-        <ant antfile="${ant.installdata.folder}/${meta.dir}/change_build.xml" target="drop_meta" output="${log.dir}/meta_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${meta.dir}/change_build.xml" target="drop_meta" output="${log.dir}/meta_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -187,13 +274,13 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     <target name="crcdata_create" depends="init" description="init CRC Database">
         <echo message="crc: create"/>
-        <copy file="${ant.installdata.folder}/${crc.dir}/db.properties" todir="${ant.i2b2.data.folder}/Crcdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.folder}/Crcdata/data_build.xml" target="create_crcdata_tables_release_1-7" output="${log.dir}/crc_create.log" inheritAll="false" useNativeBasedir="true"/>
-        <!--ant antfile="${ant.i2b2.data.folder}/Crcdata/data_build.xml" target="db_crcdata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/-->
+        <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_crcdata_tables_release_1-7" output="${log.dir}/crc_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <!--ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_crcdata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
     <target name="crcdata_delete" depends="init" description="drop CRC Database">
-        <ant antfile="${ant.installdata.folder}/${crc.dir}/change_build.xml" target="drop_crc" output="${log.dir}/crc_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${crc.dir}/change_build.xml" target="drop_crc" output="${log.dir}/crc_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -227,6 +314,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="delete db all"/>
     </target>
 
+    <target name="all" depends="deploy_jboss, db_all" />
 </project>
 
 
