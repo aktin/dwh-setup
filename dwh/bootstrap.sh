@@ -38,4 +38,4 @@ if [ ! -d "$LOG_DIR" ]; then
     mkdir $LOG_DIR
 fi
 
-/vagrant/autoinstall.sh > $LOG_DIR/autoinstall.log 2> $LOG_DIR/autoinstall.err.log
+/vagrant/autoinstall.sh 2> $LOG_DIR/autoinstall.err.log

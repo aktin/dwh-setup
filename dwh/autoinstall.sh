@@ -9,13 +9,13 @@ BASE_APPDIR=/opt
 JBOSS_HOME=$BASE_APPDIR/jboss-as-7.1.1.Final
 
 # already covered in bootstrap
-apt-get update > $LOG_DIR/apt_update.log 2> $LOG_DIR/apt_update.err.log
-apt-get install -y wget curl dos2unix > $LOG_DIR/apt_install_1.log 2> $LOG_DIR/apt_install_1.err.log
+apt-get update > $LOG_DIR/autoupdate_apt.log 2> $LOG_DIR/autoupdate_apt.err.log
+apt-get install -y wget curl dos2unix >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
 
 # install - shorten list
-apt-get -q -y install openjdk-7-jre-headless > $LOG_DIR/apt_install_2.log 2> $LOG_DIR/apt_install_2.err.log
+apt-get -q -y install openjdk-7-jre-headless >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
 # no openjdk-7-jdk  needed
-apt-get -q -y install aptitude unzip git apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc postgresql ant > $LOG_DIR/apt_install_3.log 2> $LOG_DIR/apt_install_3.err.log
+apt-get -q -y install aptitude unzip git apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc postgresql ant >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
 #apt-get -q -y install screen #for testing
 
 #apt-get -y dist-upgrade
@@ -28,7 +28,7 @@ ln -s $WEBROOT /var/webroot
 echo enable remote access to postgres
 cp $MY_PATH/postgres-remote-access.sh /opt/
 dos2unix /opt/postgres-remote-access.sh
-/opt/postgres-remote-access.sh > $LOG_DIR/postgres_remote.log 2> $LOG_DIR/postgres_remote.err.log
+/opt/postgres-remote-access.sh
 
 cd $MY_PATH/i2b2_install
 
@@ -40,8 +40,8 @@ fi
 echo ant scripts
 ant all > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
 
-# install jboss
-# ./install_jboss.sh > $LOG_DIR/install_jboss.log
-
 # start jboss
 $JBOSS_HOME/bin/standalone.sh > $LOG_DIR/jboss_standalone_start.log 2> $LOG_DIR/jboss_standalone_start.err.log &
+
+# to stop jboss:
+# $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown > $LOG_DIR/jbossstop.log 2> $LOG_DIR/jbossstop.err.log &
