@@ -16,7 +16,11 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 			<pathelement location="postgresql-9.2-1002.jdbc4.jar"/>
 		</path>
 	</target>  
-
+    <target name="get_packages" unless="${packages.dir.exist}">
+        <get src="https://cloudstorage.uni-oldenburg.de/index.php/s/84p6lgOCbkI5nbw/download" dest="${base.dir}/p.zip"/>
+        <unzip src="${base.dir}/p.zip" dest="${base.dir}" overwrite="false"/>
+        <delete file="${base.dir}/p.zip"/>
+    </target>
 
     <!-- =================================================================== -->
     <!--     Change properties                                               -->
@@ -314,5 +318,5 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="delete db all"/>
     </target>
 
-    <target name="all" depends="deploy_jboss, db_all" />
+    <target name="all" depends="get_packages, deploy_jboss, db_all" />
 </project>

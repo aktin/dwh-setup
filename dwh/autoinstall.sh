@@ -8,6 +8,11 @@ PACKAGES=$MY_PATH/packages
 BASE_APPDIR=/opt
 JBOSS_HOME=$BASE_APPDIR/jboss-as-7.1.1.Final
 
+# create directory for logs if not existent
+if [ ! -d "$LOG_DIR" ]; then 
+    mkdir $LOG_DIR
+fi
+
 # already covered in bootstrap
 apt-get update > $LOG_DIR/autoupdate_apt.log 2> $LOG_DIR/autoupdate_apt.err.log
 apt-get install -y wget curl dos2unix >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
@@ -31,11 +36,6 @@ dos2unix /opt/postgres-remote-access.sh
 /opt/postgres-remote-access.sh
 
 cd $MY_PATH/i2b2_install
-
-# create directory for logs if not existent
-if [ ! -d "$LOG_DIR" ]; then 
-    mkdir $LOG_DIR
-fi
 
 echo ant scripts
 ant all > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
