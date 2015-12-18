@@ -21,10 +21,3 @@ automatisch heruntergeladen:
 * Apache Ant 1.8.2
 * JBoss AS 7.1.1 Final
 
-Die Pakete heruntergeladenen Pakete verbleiben im packages/-Ordner
-und müssen bei zukünftigen Installationen nicht mehr neu geladen
-werden.
-
-Unter 
-https://cloudstorage.uni-oldenburg.de/index.php/s/84p6lgOCbkI5nbw
-Kann das package als ganzes herunter geladen werden

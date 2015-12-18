@@ -13,6 +13,7 @@ if [ ! -d "$LOG_DIR" ]; then
     mkdir $LOG_DIR
 fi
 
+
 # already covered in bootstrap
 apt-get update > $LOG_DIR/autoupdate_apt.log 2> $LOG_DIR/autoupdate_apt.err.log
 apt-get install -y wget curl dos2unix >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
@@ -20,13 +21,19 @@ apt-get install -y wget curl dos2unix >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DI
 # install - shorten list
 apt-get -q -y install openjdk-7-jre-headless >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
 # no openjdk-7-jdk  needed
-apt-get -q -y install aptitude unzip git apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc postgresql ant >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
+apt-get -q -y install aptitude unzip git apt-offline libcurl3 php5-curl apache2 libaio1 libapache2-mod-php5 perl sed bc ant postgresql >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
 #apt-get -q -y install screen #for testing
+
+
+#echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' > /etc/apt/sources.list.d/pgdg.list
+#wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+#apt-get update >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
+#apt-get -q -y install  postgresql.9.4 >> $LOG_DIR/autoupdate_apt.log 2>> $LOG_DIR/autoupdate_apt.err.log
 
 #apt-get -y dist-upgrade
 
 # find localhost root and link it to /vagrant/webroot
-WEBROOT=$(cat /etc/apache2/sites-available/default | grep -m1 'DocumentRoot' | sed 's/DocumentRoot//g' | awk '{ printf "%s", $1}')
+WEBROOT=$(cat /etc/apache2/sites-available/*default* | grep -m1 'DocumentRoot' | sed 's/DocumentRoot//g' | awk '{ printf "%s", $1}')
 echo linked Documentroot $WEBROOT to /var/webroot
 ln -s $WEBROOT /var/webroot
 
