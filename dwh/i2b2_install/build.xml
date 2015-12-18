@@ -34,10 +34,22 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <copy file="${ant.installdata.dir}/${work.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${work.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${meta.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${meta.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${crc.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${crc.dir}/db.properties" overwrite="true"/>
+
+
         <copy file="${ant.installdata.dir}/jboss_xml_ds/crc-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/crc-ds.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml" overwrite="true"/>
+
+
+        <copy file="${ant.installdata.dir}/jboss_config/crcapp/crc.properties.orig" tofile="${ant.installdata.dir}/jboss_config/crcapp/crc.properties" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_config/crcapp/CRCLoaderApplicationContext.xml.orig" tofile="${ant.installdata.dir}/jboss_config/crcapp/CRCLoaderApplicationContext.xml" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_config/crcapp/edu.harvard.i2b2.crc.loader.properties.orig" tofile="${ant.installdata.dir}/jboss_config/crcapp/edu.harvard.i2b2.crc.loader.properties" overwrite="true"/>
+
+        <copy file="${ant.installdata.dir}/jboss_config/ontologyapp/ontology.properties.orig" tofile="${ant.installdata.dir}/jboss_config/ontologyapp/ontology.properties" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_config/ontologyapp/OntologyApplicationContext.xml.orig" tofile="${ant.installdata.dir}/jboss_config/ontologyapp/OntologyApplicationContext.xml" overwrite="true"/>
+
+        <copy file="${ant.installdata.dir}/jboss_config/workplaceapp/workplace.properties.orig" tofile="${ant.installdata.dir}/jboss_config/workplaceapp/workplace.properties" overwrite="true"/>
     </target> 
     <target name="change_properties" depends="copy_files">
         <replace dir="${ant.installdata.dir}/" value="" failOnNoReplacements="true">
@@ -48,14 +60,19 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <include name="**/scripts/create_POSTGRESQL_users.sql"/>
             <include name="**/scripts/workplace_access_insert_data.sql"/>
             <include name="**/*-ds.xml"/>
+            <include name="**/crcapp/*"/>
+            <include name="**/ontologyapp/*"/>
+            <include name="**/workplaceapp/*"/>
 
-            <replacefilter token="${db.DBURL}" value="${db.url}"/>
             <replacefilter token="${db.DBTYPE}" value="${db.type}"/>
+            <replacefilter token="${db.DBTYPENAME}" value="${db.type.name}"/>
             <replacefilter token="${db.DBPROJECT}" value="${db.project}"/>
+            <replacefilter token="${db.DBPROJECTNAME}" value="${db.project.name}"/>
             <replacefilter token="${db.DBNAME}" value="${db.name}"/>
             <replacefilter token="${db.SERVERURL}" value="${db.server}"/>
             <replacefilter token="${db.DBDRIVER}" value="${db.driver}"/>
             <replacefilter token="${db.DBDRIVERJAR}" value="${db.driver.jar}"/>
+            <replacefilter token="${db.DBURL}" value="${db.url}"/>
             <replacefilter token="${db.DBUSER}" value="${db.username}"/>
             <replacefilter token="${db.DBPWD}" value="${db.password}"/>
 
@@ -135,14 +152,15 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <delete dir="${packages.dir}/tmp"/>
 
         <!--unpack built i2b2-->
-        <unzip src="${packages.dir}/jboss-configuration-slim.zip" dest="${jboss.home}/standalone/" />
+        <!--unzip src="${packages.dir}/jboss-configuration-slim.zip" dest="${jboss.home}/standalone/" /-->
         <!--unzip src="${packages.dir}/jboss-deployment-xml.zip" dest="${jboss.home}/standalone/deployments" /-->
         <unzip src="${packages.dir}/jboss-deployment-i2b2war-WEB-INF.zip" dest="${jboss.home}/standalone/deployments/${axis2.war.name}" />
-
-        <copy file="${ant.installdata.dir}/jboss_xml_ds/crc-ds.xml" tofile="${jboss.home}/standalone/deployments/crc-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml" tofile="${jboss.home}/standalone/deployments/ont-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml" tofile="${jboss.home}/standalone/deployments/pm-ds.xml" overwrite="true"/>
-        <copy file="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml" tofile="${jboss.home}/standalone/deployments/work-ds.xml" overwrite="true"/>
+        <copy todir="${jboss.home}/standalone/configuration">
+            <fileset dir="${ant.installdata.dir}/jboss_config/"/>
+        </copy>
+        <copy todir="${jboss.home}/standalone/deployments">
+            <fileset dir="${ant.installdata.dir}/jboss_xml_ds/"/>
+        </copy>
 
         <copy file="${jboss.home}/bin/appclient.conf" tofile="${jboss.home}/bin/appclient.conf.orig"/>
         <replace file="${jboss.home}/bin/appclient.conf">

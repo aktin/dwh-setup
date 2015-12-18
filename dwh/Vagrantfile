@@ -6,7 +6,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-  config.vm.box = "deb/wheezy-amd64" # "deb/jessie-amd64" # "deb/debian-8.2.0-amd64"
+  config.vm.box = "deb/wheezy-amd64" # "boxcutter/debian82" # "deb/jessie-amd64"
   config.vm.provision :shell, path: "bootstrap.sh"
   
   # Troubleshooting if startup fails:
