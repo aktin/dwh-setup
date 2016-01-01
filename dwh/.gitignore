@@ -1,3 +1,4 @@
 packages/
 .vagrant
 i2b2_install/i2b2_src/*
+logs/
