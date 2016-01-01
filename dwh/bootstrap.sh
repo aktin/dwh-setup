@@ -3,29 +3,17 @@
 install_root=~/i2b2install
 install_root=/vagrant
 
+# Enable backports
+echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 apt-get update
-apt-get install -y wget curl subversion dos2unix dialog
+apt-get install -y "openjdk-8-jre-headless"
 
-: <<'END'
-# i2b2Wizard
-cd /opt
-# Download i2b2 Wizard
-# TODO include current revision number in checkout
-svn checkout http://community.i2b2.org/repos/i2b2/trunk/related/i2b2Wizard/trunk --revision 343
-mv trunk i2b2Wizard
-cd i2b2Wizard
 
-# remove svn directories
- find . -name .svn -type d -print0 | xargs -0 -n1 rm -rf
+apt-get install -y wget curl dos2unix unzip sed bc ant postgresql
 
-# convert scripts
- find . -name "*.sh" -type f -exec dos2unix {} \;
- chmod +x wizard.sh
+# web server
+apt-get install libapache2-mod-php5 php5-curl
 
-# link packages
- rmdir packages
- ln -s $install_root/packages .
-END
 
 ifconfig
 
