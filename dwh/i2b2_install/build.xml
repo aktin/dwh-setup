@@ -11,7 +11,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 	<!-- 								INIT 								 -->
 	<!-- =================================================================== -->
 	<target name="init"  description="init">
-        <copy file="${packages.dir}/postgresql-9.2-1002.jdbc4.jar" todir="${ant.installdata.dir}" />
+		<!-- TODO don't copy the psql driver, just use the patheleement -->
+		<copy file="${packages.dir}/postgresql-9.2-1002.jdbc4.jar" todir="${ant.installdata.dir}" />
 		<path id="classpath">
 			<pathelement location="postgresql-9.2-1002.jdbc4.jar"/>
 		</path>
