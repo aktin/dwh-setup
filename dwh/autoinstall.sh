@@ -8,6 +8,9 @@ PACKAGES=$MY_PATH/packages
 BASE_APPDIR=/opt
 WILDFLY_HOME=$BASE_APPDIR/wildfly-9.0.2.Final
 
+# create symlink for fixed configuration paths
+ln -s $WILDFLY_HOME /opt/jboss-as-7.1.1.Final
+
 # create directory for logs if not existent
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir $LOG_DIR
@@ -32,6 +35,7 @@ echo ant scripts
 ant all > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
 
 # start jboss
+# TODO start as service
 $WILDFLY_HOME/bin/standalone.sh > $LOG_DIR/wildfly_standalone_start.log 2> $LOG_DIR/wildfly_standalone_start.err.log &
 
 # to stop jboss:

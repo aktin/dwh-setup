@@ -27,6 +27,10 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     <!--     Change properties                                               -->
     <!-- =================================================================== -->
+    
+    
+    <!-- TODO don't change files in git folders. Use a temporary folder outside of the git repo. -->
+    
     <target name="copy_files" depends="init">
         <echo message="change propertie files and sql"/>
         <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql" overwrite="true"/>
@@ -171,16 +175,13 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 
         <copy file="${jboss.home}/standalone/configuration/standalone.xml" tofile="${jboss.home}/standalone/configuration/standalone.xml.orig"/>    
         <replace file="${jboss.home}/standalone/configuration/standalone.xml">
-            <!--Change JBoss server ports:-->
-            <replacefilter token="&lt;socket-binding name=&quot;http&quot; port=&quot;8080&quot;/&gt;" value="&lt;socket-binding name=&quot;http&quot; port=&quot;9090&quot;/&gt;"/>
-            <replacefilter token="&lt;socket-binding name=&quot;ajp&quot; port=&quot;8009&quot;/&gt;" value="&lt;socket-binding name=&quot;ajp&quot; port=&quot;9009&quot;/&gt;"/>      
-            <!--Binding JBoss AS 7 to all interfaces:-->
-            <replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
+		<!--Binding JBoss AS 7 to all interfaces:-->
+		<replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
         </replace>
     </target>
     <target name="unzip_jboss" depends="jboss_exists" unless="${jboss.dir.exist}">
         <echo message="unzip jboss"/>
-        <unzip src="${packages.dir}/jboss-as-7.1.1.Final.zip" dest="${app.base.dir}" />
+        <unzip src="${packages.dir}/wildfly-9.0.2.Final.zip" dest="${app.base.dir}" />
         <chmod dir="${jboss.home}/bin" perm="ugo+rx" includes="**/*.sh"/>
     </target>
     <target name="jboss_exists">
