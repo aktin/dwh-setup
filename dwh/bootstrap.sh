@@ -12,7 +12,7 @@ apt-get install -y "openjdk-8-jre-headless"
 apt-get install -y wget curl dos2unix unzip sed bc ant postgresql
 
 # web server
-apt-get install libapache2-mod-php5 php5-curl
+apt-get install -y libapache2-mod-php5 php5-curl
 
 
 ifconfig
