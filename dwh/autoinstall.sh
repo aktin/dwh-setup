@@ -10,6 +10,7 @@ WILDFLY_HOME=$BASE_APPDIR/wildfly-9.0.2.Final
 
 # create symlink for fixed configuration paths
 ln -s $WILDFLY_HOME /opt/jboss-as-7.1.1.Final
+ln -s $WILDFLY_HOME /opt/wildfly
 
 # create directory for logs if not existent
 if [ ! -d "$LOG_DIR" ]; then 
@@ -36,7 +37,9 @@ ant all > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
 
 # start jboss
 # TODO start as service
-$WILDFLY_HOME/bin/standalone.sh > $LOG_DIR/wildfly_standalone_start.log 2> $LOG_DIR/wildfly_standalone_start.err.log &
+cp $WILDFLY_HOME/bin/init.d/wildfly-init-debian.sh /etc/init.d/wildfly
+
+#$WILDFLY_HOME/bin/standalone.sh > $LOG_DIR/wildfly_standalone_start.log 2> $LOG_DIR/wildfly_standalone_start.err.log &
 
 # to stop jboss:
 # $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown > $LOG_DIR/jbossstop.log 2> $LOG_DIR/jbossstop.err.log &
