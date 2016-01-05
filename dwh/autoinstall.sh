@@ -36,9 +36,7 @@ echo ant scripts
 ant all 
 # > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
 
-
-# Set up wildfly
-
+##### Set up wildfly
 # Create user
 adduser --system --group --disabled-login wildfly
 chown -R wildfly:wildfly $WILDFLY_HOME
@@ -57,8 +55,6 @@ systemctl daemon-reload
 # start jboss
 service wildfly start
 # can also run /etc/init.d/wildfly start
-
-#$WILDFLY_HOME/bin/standalone.sh > $LOG_DIR/wildfly_standalone_start.log 2> $LOG_DIR/wildfly_standalone_start.err.log &
 
 # to stop jboss:
 # $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown > $LOG_DIR/jbossstop.log 2> $LOG_DIR/jbossstop.err.log &

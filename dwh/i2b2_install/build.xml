@@ -116,6 +116,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
                 <exclude name="**/NewInstall/Crcdata/scripts/expression_obs_demo_insert_data.sql"/>                   
             </patternset>
         </unzip>
+        <copy file="${ant.installdata.dir}/${db.driver.jar}" todir="${ant.i2b2.data.dir}/" overwrite="true"/>
+
         <unzip src="${packages.dir}/i2b2webclient-${i2b2.version}.zip" dest="${i2b2.src.dir}"/>
 
         <copy file="${i2b2.src.dir}/webclient/i2b2_config_data.js" tofile="${i2b2.src.dir}/webclient/i2b2_config_data.js.orig"/>
@@ -273,7 +275,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <copy file="${ant.installdata.dir}/${work.dir}/db.properties" todir="${ant.i2b2.data.dir}/Workdata" overwrite="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Workdata/data_build.xml" target="create_workdata_tables_release_1-7" output="${log.dir}/work_create.log" inheritAll="false" useNativeBasedir="true"/>               
         <ant antfile="${ant.installdata.dir}/${work.dir}/change_build.xml" target="insert_work_access" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/>
-        <!-- ant antfile="${ant.i2b2.data.dir}/Workdata/data_build.xml" target="db_workdata_load_data" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
     <target name="workdata_delete" depends="init" description="drop WORK Database">
@@ -287,7 +288,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="meta: create"/>
         <copy file="${ant.installdata.dir}/${meta.dir}/db.properties" todir="${ant.i2b2.data.dir}/Metadata" overwrite="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Metadata/data_build.xml" target="create_metadata_tables_release_1-7" output="${log.dir}/meta_create.log" inheritAll="false" useNativeBasedir="true"/>
-        <!-- ant antfile="data_build.xml" dir="${ant.i2b2.data.dir}/Metadata/" target="db_metadata_load_data" output="${log.dir}/meta_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
     <target name="metadata_delete" depends="init" description="drop META Database">
@@ -301,7 +301,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="crc: create"/>
         <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_crcdata_tables_release_1-7" output="${log.dir}/crc_create.log" inheritAll="false" useNativeBasedir="true"/>
-        <!--ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_crcdata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/-->
     </target>
     <!-- =================================================================== -->
     <target name="crcdata_delete" depends="init" description="drop CRC Database">
@@ -309,11 +308,37 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
 
     <!-- =================================================================== -->
+    <!--     load boston demo data                                           -->
+    <!-- =================================================================== -->
+    <target name="unzip_i2b2_demo">
+        <unzip src="${packages.dir}/i2b2createdb-${i2b2.version}.zip" dest="${i2b2.src.dir}">
+            <patternset>
+                <include name="**/NewInstall/Metadata/demo/postgresql/**"/>
+                <exclude name="**/NewInstall/Crcdata/scripts/oracle/**"/>
+                <exclude name="**/NewInstall/Crcdata/scripts/sqlserver/**"/>
+                <include name="**/NewInstall/Crcdata/scripts/postgresql/**"/>    
+                <include name="**/NewInstall/Crcdata/scripts/expression_obs_demo_insert_data.sql"/>                   
+            </patternset>
+        </unzip>
+    </target>
+    <target name="insert_demodata" depends="unzip_i2b2_demo" description="insert Demo Data">      
+        <path id="classpath">
+            <pathelement location="postgresql-9.2-1002.jdbc4.jar"/>
+        </path>
+        <echo message="insert demo data"/>
+        <copy file="${ant.installdata.dir}/${work.dir}/db.properties" todir="${ant.i2b2.data.dir}/Workdata" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${meta.dir}/db.properties" todir="${ant.i2b2.data.dir}/Metadata" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Workdata/data_build.xml" target="db_workdata_load_data" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Metadata/data_build.xml" target="db_metadata_load_data" output="${log.dir}/meta_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_demodata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/>
+    </target>
+
+    <!-- =================================================================== -->
     <!--     build all                                                       -->
     <!-- =================================================================== -->
     <target name="create_tables" 
-        depends="   
-                    hive_create, 
+        depends="   hive_create, 
                     pm_create,
                     workdata_create,
                     metadata_create,
@@ -339,5 +364,5 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="delete db all"/>
     </target>
 
-    <target name="all" depends="get_packages, deploy_jboss, db_all" />
+    <target name="all" depends="get_packages, deploy_jboss, db_all, insert_demodata" />
 </project>

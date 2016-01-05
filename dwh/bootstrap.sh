@@ -6,9 +6,11 @@ install_root=/vagrant
 # Enable backports
 echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 apt-get update
-apt-get install -y openjdk-8-jre-headless # java jre
+# java jre
+apt-get install -y openjdk-8-jre-headless # openjdk-8-jdk
 apt-get install -y wget curl dos2unix unzip sed bc ant postgresql
-apt-get install -y libapache2-mod-php5 php5-curl # web server
+# web server
+apt-get install -y libapache2-mod-php5 php5-curl 
 
 # restart apache to reload php modules
 # otherwise, curl might not be available until next restart
