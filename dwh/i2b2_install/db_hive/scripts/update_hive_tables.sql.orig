@@ -1,0 +1,8 @@
+UPDATE WORK_DB_LOOKUP SET c_db_fullschema = '@I2B2WORKUSER@' WHERE c_db_fullschema = 'public';
+UPDATE ONT_DB_LOOKUP SET c_db_fullschema = '@I2B2METAUSER@' WHERE c_db_fullschema = 'public';
+UPDATE CRC_DB_LOOKUP SET c_db_fullschema = '@I2B2DEMOUSER@' WHERE c_db_fullschema = 'public';
+UPDATE IM_DB_LOOKUP SET c_db_fullschema = '@I2B2DEMOUSER@' WHERE c_db_fullschema = 'public';
+UPDATE WORK_DB_LOOKUP SET C_DOMAIN_ID = 'I2B2HIVEID@';
+UPDATE ONT_DB_LOOKUP SET C_DOMAIN_ID = 'I2B2HIVEID@';
+UPDATE CRC_DB_LOOKUP SET C_DOMAIN_ID = 'I2B2HIVEID@';
+UPDATE IM_DB_LOOKUP SET C_DOMAIN_ID = 'I2B2HIVEID@';

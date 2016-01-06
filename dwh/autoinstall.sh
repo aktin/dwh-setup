@@ -44,14 +44,17 @@ chown -R wildfly:wildfly $WILDFLY_HOME
 # Copy init.d script to start as service
 cp $WILDFLY_HOME/bin/init.d/wildfly-init-debian.sh /etc/init.d/wildfly
 
+echo define jboss service configurations
 # Define startup configuration
 echo > /etc/default/wildfly
 echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly
 echo JBOSS_OPTS=\"-Djboss.http.port=9090\" >> /etc/default/wildfly
 
+echo reload daemon cache
 # reload daemon cache
 systemctl daemon-reload
 
+echo start jboss service
 # start jboss
 service wildfly start
 # can also run /etc/init.d/wildfly start

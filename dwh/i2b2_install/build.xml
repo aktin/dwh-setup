@@ -33,27 +33,33 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     
     <target name="copy_files" depends="init">
         <echo message="change propertie files and sql"/>
+
+        <!-- copy sql files-->
         <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${hive.dir}/scripts/update_hive_tables.sql.orig" tofile="${ant.installdata.dir}/${hive.dir}/scripts/update_hive_tables.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${pm.dir}/scripts/update_i2b2pm_tables.sql.orig" tofile="${ant.installdata.dir}/${pm.dir}/scripts/update_i2b2pm_tables.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${work.dir}/scripts/workplace_access_insert_data.sql.orig" tofile="${ant.installdata.dir}/${work.dir}/scripts/workplace_access_insert_data.sql" overwrite="true"/>
+
+        <!-- copy properties files-->
+        <copy file="${ant.installdata.dir}/${dbuser.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${hive.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${hive.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${pm.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${pm.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${work.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${work.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${meta.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${meta.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${crc.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${crc.dir}/db.properties" overwrite="true"/>
 
-
+        <!-- copy ds.xml files-->
         <copy file="${ant.installdata.dir}/jboss_xml_ds/crc-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/crc-ds.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml" overwrite="true"/>
 
-
+        <!-- copy jboss deployment app files-->
         <copy file="${ant.installdata.dir}/jboss_config/crcapp/crc.properties.orig" tofile="${ant.installdata.dir}/jboss_config/crcapp/crc.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_config/crcapp/CRCLoaderApplicationContext.xml.orig" tofile="${ant.installdata.dir}/jboss_config/crcapp/CRCLoaderApplicationContext.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_config/crcapp/edu.harvard.i2b2.crc.loader.properties.orig" tofile="${ant.installdata.dir}/jboss_config/crcapp/edu.harvard.i2b2.crc.loader.properties" overwrite="true"/>
-
         <copy file="${ant.installdata.dir}/jboss_config/ontologyapp/ontology.properties.orig" tofile="${ant.installdata.dir}/jboss_config/ontologyapp/ontology.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_config/ontologyapp/OntologyApplicationContext.xml.orig" tofile="${ant.installdata.dir}/jboss_config/ontologyapp/OntologyApplicationContext.xml" overwrite="true"/>
-
         <copy file="${ant.installdata.dir}/jboss_config/workplaceapp/workplace.properties.orig" tofile="${ant.installdata.dir}/jboss_config/workplaceapp/workplace.properties" overwrite="true"/>
     </target> 
     <target name="change_properties" depends="copy_files">
@@ -62,8 +68,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <exclude name="**/*.orig"/>
             <exclude name="i2b2_src/*"/>
             <include name="**/db.properties"/>
-            <include name="**/scripts/create_POSTGRESQL_users.sql"/>
-            <include name="**/scripts/workplace_access_insert_data.sql"/>
+            <include name="**/scripts/*.sql"/>
             <include name="**/*-ds.xml"/>
             <include name="**/crcapp/*"/>
             <include name="**/ontologyapp/*"/>
@@ -80,6 +85,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <replacefilter token="${db.DBURL}" value="${db.url}"/>
             <replacefilter token="${db.DBUSER}" value="${db.username}"/>
             <replacefilter token="${db.DBPWD}" value="${db.password}"/>
+
+            <replacefilter token="${db.HIVEID}" value="${db.hive.id}"/>
 
             <replacefilter token="${db.HIVEUSER}" value="${db.hive.user}"/>
             <replacefilter token="${db.HIVEPWD}" value="${db.hive.pwd}"/>
@@ -159,8 +166,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <delete dir="${packages.dir}/tmp"/>
 
         <!--unpack built i2b2-->
-        <!--unzip src="${packages.dir}/jboss-configuration-slim.zip" dest="${jboss.home}/standalone/" /-->
-        <!--unzip src="${packages.dir}/jboss-deployment-xml.zip" dest="${jboss.home}/standalone/deployments" /-->
         <unzip src="${packages.dir}/${axis2.patch.zip.name}" dest="${jboss.home}/standalone/deployments/${axis2.war.name}" />
         <copy todir="${jboss.home}/standalone/configuration">
             <fileset dir="${ant.installdata.dir}/jboss_config/"/>
@@ -198,11 +203,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="change_psql_user_password" depends="init">
         <echo message="change psql user password"/>
         <echo message="${db.password}"/>
-        <!-- sql driver="${db.driver}" url="jdbc:postgresql://localhost:5432/" userid="${db.username}" password="" classpathref="classpath" onerror="continue" print="true" autocommit="true">
-            <transaction>
-                alter user ${db.username} with password '${db.password}';
-            </transaction>
-        </sql-->
         <exec executable="sudo" inputstring="alter user ${db.username} with password '${db.password}';&#10;">
             <arg line="-u postgres psql -f -" />
         </exec>
@@ -261,6 +261,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_pmdata_tables_release_1-7" output="${log.dir}/pm_create.log" inheritAll="false" useNativeBasedir="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_triggers_release_1-7" output="${log.dir}/pm_create_triggers.log" inheritAll="false" useNativeBasedir="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="db_pmdata_load_data" output="${log.dir}/pm_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <echo message="pm: update"/>
+        <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="update_pm" output="${log.dir}/pm_update.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="pm_delete" depends="init" description="drop PM Database">
@@ -313,23 +315,17 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="unzip_i2b2_demo">
         <unzip src="${packages.dir}/i2b2createdb-${i2b2.version}.zip" dest="${i2b2.src.dir}">
             <patternset>
-                <include name="**/NewInstall/Metadata/demo/postgresql/**"/>
-                <exclude name="**/NewInstall/Crcdata/scripts/oracle/**"/>
-                <exclude name="**/NewInstall/Crcdata/scripts/sqlserver/**"/>
+                <include name="**/NewInstall/Metadata/demo/scripts/*.sql"/>
+                <include name="**/NewInstall/Metadata/demo/scripts/postgresql/**"/>
                 <include name="**/NewInstall/Crcdata/scripts/postgresql/**"/>    
                 <include name="**/NewInstall/Crcdata/scripts/expression_obs_demo_insert_data.sql"/>                   
             </patternset>
         </unzip>
     </target>
     <target name="insert_demodata" depends="unzip_i2b2_demo" description="insert Demo Data">      
-        <path id="classpath">
-            <pathelement location="postgresql-9.2-1002.jdbc4.jar"/>
-        </path>
         <echo message="insert demo data"/>
-        <copy file="${ant.installdata.dir}/${work.dir}/db.properties" todir="${ant.i2b2.data.dir}/Workdata" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${meta.dir}/db.properties" todir="${ant.i2b2.data.dir}/Metadata" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Workdata/data_build.xml" target="db_workdata_load_data" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Metadata/data_build.xml" target="db_metadata_load_data" output="${log.dir}/meta_load.log" inheritAll="false" useNativeBasedir="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_demodata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
@@ -364,5 +360,5 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="delete db all"/>
     </target>
 
-    <target name="all" depends="get_packages, deploy_jboss, db_all, insert_demodata" />
+    <target name="all" depends="get_packages, deploy_jboss, db_all" />
 </project>
