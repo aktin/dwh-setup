@@ -1,0 +1,11 @@
+TRUNCATE TABLE PM_CELL_DATA;
+Insert into PM_CELL_DATA (CELL_ID,PROJECT_PATH,NAME,METHOD_CD,URL,CAN_OVERRIDE,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) 
+values ('CRC','/','Data Repository','REST','http://@IPADDR@:9090/i2b2/services/QueryToolService/',1,null,null,null,'A');
+Insert into PM_CELL_DATA (CELL_ID,PROJECT_PATH,NAME,METHOD_CD,URL,CAN_OVERRIDE,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) 
+values ('FRC','/','File Repository ','SOAP','http://@IPADDR@:9090/i2b2/services/FRService/',1,null,null,null,'A');
+Insert into PM_CELL_DATA (CELL_ID,PROJECT_PATH,NAME,METHOD_CD,URL,CAN_OVERRIDE,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) 
+values ('ONT','/','Ontology Cell','REST','http://@IPADDR@:9090/i2b2/services/OntologyService/',1,null,null,null,'A');
+Insert into PM_CELL_DATA (CELL_ID,PROJECT_PATH,NAME,METHOD_CD,URL,CAN_OVERRIDE,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) 
+values ('WORK','/','Workplace Cell','REST','http://@IPADDR@:9090/i2b2/services/WorkplaceService/',1,null,null,null,'A');
+Insert into PM_CELL_DATA (CELL_ID,PROJECT_PATH,NAME,METHOD_CD,URL,CAN_OVERRIDE,CHANGE_DATE,ENTRY_DATE,CHANGEBY_CHAR,STATUS_CD) 
+values ('IM','/','Identity Management Cell','REST','http://@IPADDR@:9090/i2b2/services/IMService/',1,null,null,null,'A');

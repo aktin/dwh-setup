@@ -20,12 +20,12 @@ service apache2 restart
 
 # create postgres databases for i2b2
 # cd $install_root
-dos2unix /vagrant/autoinstall.sh
+dos2unix $install_root/autoinstall.sh
 
 # TODO dont write logfiles to /vagrant
-LOG_DIR=/vagrant/logs
+LOG_DIR=$install_root/logs
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir $LOG_DIR
 fi
 
-/vagrant/autoinstall.sh 2> $LOG_DIR/autoinstall.err.log
+$install_root/autoinstall.sh 2> $LOG_DIR/autoinstall.err.log

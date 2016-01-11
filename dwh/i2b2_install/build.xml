@@ -18,7 +18,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 		</path>
 	</target>  
     <target name="get_packages" unless="${packages.dir.noload}">
-        <get src="https://cloudstorage.uni-oldenburg.de/index.php/s/84p6lgOCbkI5nbw/download" dest="${base.dir}/p.zip"/>
+        <get src="${packages.url}" dest="${base.dir}/p.zip"/>
         <unzip src="${base.dir}/p.zip" dest="${base.dir}" overwrite="false"/>
         <delete file="${base.dir}/p.zip"/>
     </target>
@@ -36,7 +36,14 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 
         <!-- copy sql files-->
         <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_POSTGRESQL_users.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_hive_user.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_hive_user.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_pm_user.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_pm_user.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_im_user.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_im_user.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_meta_user.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_meta_user.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_work_user.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_work_user.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${dbuser.dir}/scripts/create_crc_user.sql.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/scripts/create_crc_user.sql" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${hive.dir}/scripts/update_hive_tables.sql.orig" tofile="${ant.installdata.dir}/${hive.dir}/scripts/update_hive_tables.sql" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${pm.dir}/scripts/register_cells.sql.orig" tofile="${ant.installdata.dir}/${pm.dir}/scripts/register_cells.sql" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${pm.dir}/scripts/update_i2b2pm_tables.sql.orig" tofile="${ant.installdata.dir}/${pm.dir}/scripts/update_i2b2pm_tables.sql" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${work.dir}/scripts/workplace_access_insert_data.sql.orig" tofile="${ant.installdata.dir}/${work.dir}/scripts/workplace_access_insert_data.sql" overwrite="true"/>
 
@@ -44,6 +51,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <copy file="${ant.installdata.dir}/${dbuser.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${dbuser.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${hive.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${hive.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${pm.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${pm.dir}/db.properties" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/${im.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${im.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${work.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${work.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${meta.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${meta.dir}/db.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${crc.dir}/db.properties.orig" tofile="${ant.installdata.dir}/${crc.dir}/db.properties" overwrite="true"/>
@@ -53,6 +61,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <copy file="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/ont-ds.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/pm-ds.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/work-ds.xml" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_xml_ds/im-ds.xml.orig" tofile="${ant.installdata.dir}/jboss_xml_ds/im-ds.xml" overwrite="true"/>
 
         <!-- copy jboss deployment app files-->
         <copy file="${ant.installdata.dir}/jboss_config/crcapp/crc.properties.orig" tofile="${ant.installdata.dir}/jboss_config/crcapp/crc.properties" overwrite="true"/>
@@ -61,6 +70,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <copy file="${ant.installdata.dir}/jboss_config/ontologyapp/ontology.properties.orig" tofile="${ant.installdata.dir}/jboss_config/ontologyapp/ontology.properties" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_config/ontologyapp/OntologyApplicationContext.xml.orig" tofile="${ant.installdata.dir}/jboss_config/ontologyapp/OntologyApplicationContext.xml" overwrite="true"/>
         <copy file="${ant.installdata.dir}/jboss_config/workplaceapp/workplace.properties.orig" tofile="${ant.installdata.dir}/jboss_config/workplaceapp/workplace.properties" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/jboss_config/imapp/im.properties.orig" tofile="${ant.installdata.dir}/jboss_config/imapp/im.properties" overwrite="true"/>
     </target> 
     <target name="change_properties" depends="copy_files">
         <replace dir="${ant.installdata.dir}/" value="" failOnNoReplacements="true">
@@ -73,7 +83,9 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <include name="**/crcapp/*"/>
             <include name="**/ontologyapp/*"/>
             <include name="**/workplaceapp/*"/>
+            <include name="**/imapp/*"/>
 
+            <replacefilter token="${db.IPADDR}" value="${db.ip.addr}"/>
             <replacefilter token="${db.DBTYPE}" value="${db.type}"/>
             <replacefilter token="${db.DBTYPENAME}" value="${db.type.name}"/>
             <replacefilter token="${db.DBPROJECT}" value="${db.project}"/>
@@ -92,6 +104,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <replacefilter token="${db.HIVEPWD}" value="${db.hive.pwd}"/>
             <replacefilter token="${db.PMUSER}" value="${db.pm.user}"/>
             <replacefilter token="${db.PMPWD}" value="${db.pm.pwd}"/>
+            <replacefilter token="${db.IMUSER}" value="${db.im.user}"/>
+            <replacefilter token="${db.IMPWD}" value="${db.im.pwd}"/>
             <replacefilter token="${db.WORKUSER}" value="${db.work.user}"/>
             <replacefilter token="${db.WORKPWD}" value="${db.work.pwd}"/>
             <replacefilter token="${db.METAUSER}" value="${db.meta.user}"/>
@@ -115,7 +129,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <patternset>
                 <include name="**/NewInstall/**"/>
                 <exclude name="**/NewInstall/*.jar"/>
-                <exclude name="**/NewInstall/Imdata/**"/>
+                <!-- <exclude name="**/NewInstall/Imdata/**"/> -->
                 <exclude name="**/NewInstall/Metadata/demo/**"/>
                 <exclude name="**/NewInstall/Crcdata/scripts/oracle/**"/>
                 <exclude name="**/NewInstall/Crcdata/scripts/sqlserver/**"/>
@@ -261,12 +275,23 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_pmdata_tables_release_1-7" output="${log.dir}/pm_create.log" inheritAll="false" useNativeBasedir="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_triggers_release_1-7" output="${log.dir}/pm_create_triggers.log" inheritAll="false" useNativeBasedir="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="db_pmdata_load_data" output="${log.dir}/pm_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <echo message="pm: register cells"/>
+        <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="register_cells" output="${log.dir}/pm_register_cells.log" inheritAll="false" useNativeBasedir="true"/>
         <echo message="pm: update"/>
         <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="update_pm" output="${log.dir}/pm_update.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="pm_delete" depends="init" description="drop PM Database">
         <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="drop_pm" output="${log.dir}/pm_delete.log" inheritAll="false" useNativeBasedir="true"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!--    IM Database                                                      -->
+    <!-- =================================================================== -->
+    <target name="imdata_create" depends="init" description="init IM Database">
+        <echo message="im: create"/>
+        <copy file="${ant.installdata.dir}/${im.dir}/db.properties" todir="${ant.i2b2.data.dir}/Imdata" overwrite="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Imdata/data_build.xml" target="create_imdata_tables_release_1-7" output="${log.dir}/im_create.log" inheritAll="false" useNativeBasedir="true"/>               
     </target>
 
     <!-- =================================================================== -->
@@ -302,7 +327,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="crcdata_create" depends="init" description="init CRC Database">
         <echo message="crc: create"/>
         <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_crcdata_tables_release_1-7" output="${log.dir}/crc_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_crcdata_tables_release_1-7" output="${log.dir}/crc_create.log" inheritAll="false" useNativeBasedir="true"/>        
+        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_procedures_release_1-7" output="${log.dir}/crc_create_procedures.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="crcdata_delete" depends="init" description="drop CRC Database">
@@ -336,6 +362,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="create_tables" 
         depends="   hive_create, 
                     pm_create,
+                    imdata_create,
                     workdata_create,
                     metadata_create,
                     crcdata_create" 
@@ -346,6 +373,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
                     i2b2_db_create, user_create,
                     hive_create, 
                     pm_create,
+                    imdata_create,
                     workdata_create,
                     metadata_create,
                     crcdata_create" 

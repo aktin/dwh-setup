@@ -25,10 +25,10 @@
 <!--WIZARDINSERT-->
     <!--BOSTONSTART-->
  
-    <!-- CRC DS for Demo -->
+    <!-- CRC DS for @I2B2PROJECTNAME@ -->
 	
-	<datasource jta="false" jndi-name="java:/QueryToolDemoDS"
-		pool-name="QueryToolDemoDS" enabled="true" use-ccm="false">
+	<datasource jta="false" jndi-name="java:/QueryTool@I2B2PROJECTNAME@DS"
+		pool-name="QueryTool@I2B2PROJECTNAME@DS" enabled="true" use-ccm="false">
 		<connection-url>@DBURL@@DBNAME@?searchpath=@I2B2DEMOUSER@</connection-url>
 		<driver-class>@DBDRIVER@</driver-class>
 		<driver>@DBDRIVERJAR@</driver>

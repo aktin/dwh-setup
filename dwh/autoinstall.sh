@@ -19,7 +19,7 @@ fi
 
 # TODO try without libaio1
 
-# find localhost root and link it to /vagrant/webroot
+# find localhost root and link it to /var/webroot
 WEBROOT=$(cat /etc/apache2/sites-available/*default* | grep -m1 'DocumentRoot' | sed 's/DocumentRoot//g' | awk '{ printf "%s", $1}')
 echo linking Documentroot $WEBROOT to /var/webroot
 ln -s $WEBROOT /var/webroot
@@ -61,3 +61,15 @@ service wildfly start
 
 # to stop jboss:
 # $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown > $LOG_DIR/jbossstop.log 2> $LOG_DIR/jbossstop.err.log &
+
+# cd $MY_PATH/import_server 
+# java -cp "lib/*" de.sekmi.histream.i2b2.ont.Import examples/skos-ontology.properties examples/i2b2-ont-import.properties
+
+# psql -c "COPY i2b2metadata.table_access TO '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
+# psql -c "COPY i2b2metadata.i2b2 TO '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
+# psql -c "COPY i2b2demodata.concept_dimension TO '$MY_PATH/i2b2_install/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
+
+psql -c "TRUNCATE i2b2metadata.table_access; TRUNCATE i2b2metadata.i2b2; TRUNCATE i2b2demodata.concept_dimension;" i2b2
+psql -c "COPY i2b2metadata.table_access FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
+psql -c "COPY i2b2metadata.i2b2 FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
+psql -c "COPY i2b2demodata.concept_dimension FROM '$MY_PATH/i2b2_install/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
