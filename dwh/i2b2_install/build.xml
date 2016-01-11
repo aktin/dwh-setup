@@ -128,7 +128,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <patternset>
                 <include name="**/NewInstall/**"/>
                 <exclude name="**/NewInstall/*.jar"/>
-                <!-- <exclude name="**/NewInstall/Imdata/**"/> -->
                 <exclude name="**/NewInstall/Metadata/demo/**"/>
                 <exclude name="**/NewInstall/Crcdata/scripts/oracle/**"/>
                 <exclude name="**/NewInstall/Crcdata/scripts/sqlserver/**"/>
@@ -155,6 +154,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <copy file="${i2b2.src.dir}/admin/i2b2_config_data.js" tofile="${i2b2.src.dir}/admin/i2b2_config_data.js.orig"/>
         <replace file="${i2b2.src.dir}/admin/i2b2_config_data.js">
             <replacefilter token="HarvardDemo" value="${db.hive.id}"/>
+            <replacefilter token="i2b2demo" value="${db.hive.id}"/>
             <replacefilter token="webservices.i2b2.org" value="${ip.addr}:9090"/>
         </replace>   
 

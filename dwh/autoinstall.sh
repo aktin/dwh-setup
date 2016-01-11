@@ -35,6 +35,7 @@ cd $MY_PATH/i2b2_install
 echo ant scripts
 ant all 
 # > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
+ant insert_demodata
 
 ##### Set up wildfly
 # Create user
@@ -58,12 +59,6 @@ echo start jboss service
 # start jboss
 service wildfly start
 # can also run /etc/init.d/wildfly start
-
-# to stop jboss:
-# $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown > $LOG_DIR/jbossstop.log 2> $LOG_DIR/jbossstop.err.log &
-
-# cd $MY_PATH/import_server 
-# java -cp "lib/*" de.sekmi.histream.i2b2.ont.Import examples/skos-ontology.properties examples/i2b2-ont-import.properties
 
 # sudo -u postgres psql -c "command"
 # psql -c "COPY i2b2metadata.table_access TO '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
