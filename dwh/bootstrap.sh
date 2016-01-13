@@ -6,13 +6,11 @@ install_root=/vagrant
 # Enable backports
 echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 apt-get update
-apt-get install -y "openjdk-8-jre-headless"
-
-
+# java jre
+apt-get install -y openjdk-8-jre-headless # openjdk-8-jdk
 apt-get install -y wget curl dos2unix unzip sed bc ant postgresql
-
 # web server
-apt-get install -y libapache2-mod-php5 php5-curl
+apt-get install -y libapache2-mod-php5 php5-curl 
 
 # restart apache to reload php modules
 # otherwise, curl might not be available until next restart
@@ -22,12 +20,12 @@ service apache2 restart
 
 # create postgres databases for i2b2
 # cd $install_root
-dos2unix /vagrant/autoinstall.sh
+dos2unix $install_root/autoinstall.sh
 
 # TODO dont write logfiles to /vagrant
-LOG_DIR=/vagrant/logs
+LOG_DIR=$install_root/logs
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir $LOG_DIR
 fi
 
-/vagrant/autoinstall.sh 2> $LOG_DIR/autoinstall.err.log
+$install_root/autoinstall.sh 2> $LOG_DIR/autoinstall.err.log

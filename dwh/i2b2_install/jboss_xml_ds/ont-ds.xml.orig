@@ -25,10 +25,10 @@
 	<!--WIZARDINSERT-->
     <!--BOSTONSTART-->
     
-    <!-- Ontology DS for Demo -->
+    <!-- Ontology DS for @I2B2PROJECTNAME@ -->
 	
-	<datasource jta="false" jndi-name="java:/OntologyDemoDS"
-		pool-name="OntologyDemoDS" enabled="true" use-ccm="false">
+	<datasource jta="false" jndi-name="java:/Ontology@I2B2PROJECTNAME@DS"
+		pool-name="Ontology@I2B2PROJECTNAME@DS" enabled="true" use-ccm="false">
 		<connection-url>@DBURL@@DBNAME@?searchpath=@I2B2METAUSER@</connection-url>
 		<driver-class>@DBDRIVER@</driver-class>
 		<driver>@DBDRIVERJAR@</driver>

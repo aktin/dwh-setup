@@ -6,4 +6,5 @@ db.password=@I2B2METAPWD@
 db.server=@SERVERURL@@DBNAME@?searchpath=@I2B2METAUSER@
 db.driver=@DBDRIVER@
 db.url=@DBURL@@DBNAME@?searchpath=@I2B2METAUSER@
-db.project=@I2B2PROJECT@
+db.project=demo
+db.aktinproject=@I2B2PROJECT@

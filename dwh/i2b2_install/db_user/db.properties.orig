@@ -1,0 +1,8 @@
+# Created by AKTIN@2015
+
+db.type=@DBTYPE@
+db.username=@DBUSER@
+db.password=@DBPWD@
+db.server=@SERVERURL@@DBNAME@
+db.driver=@DBDRIVER@
+db.url=@DBURL@@DBNAME@

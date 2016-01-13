@@ -19,7 +19,7 @@ fi
 
 # TODO try without libaio1
 
-# find localhost root and link it to /vagrant/webroot
+# find localhost root and link it to /var/webroot
 WEBROOT=$(cat /etc/apache2/sites-available/*default* | grep -m1 'DocumentRoot' | sed 's/DocumentRoot//g' | awk '{ printf "%s", $1}')
 echo linking Documentroot $WEBROOT to /var/webroot
 ln -s $WEBROOT /var/webroot
@@ -35,10 +35,9 @@ cd $MY_PATH/i2b2_install
 echo ant scripts
 ant all 
 # > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
+ant insert_demodata
 
-
-# Set up wildfly
-
+##### Set up wildfly
 # Create user
 adduser --system --group --disabled-login wildfly
 chown -R wildfly:wildfly $WILDFLY_HOME
@@ -46,19 +45,26 @@ chown -R wildfly:wildfly $WILDFLY_HOME
 # Copy init.d script to start as service
 cp $WILDFLY_HOME/bin/init.d/wildfly-init-debian.sh /etc/init.d/wildfly
 
+echo define jboss service configurations
 # Define startup configuration
 echo > /etc/default/wildfly
 echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly
 echo JBOSS_OPTS=\"-Djboss.http.port=9090\" >> /etc/default/wildfly
 
+echo reload daemon cache
 # reload daemon cache
 systemctl daemon-reload
 
+echo start jboss service
 # start jboss
 service wildfly start
 # can also run /etc/init.d/wildfly start
 
-#$WILDFLY_HOME/bin/standalone.sh > $LOG_DIR/wildfly_standalone_start.log 2> $LOG_DIR/wildfly_standalone_start.err.log &
-
-# to stop jboss:
-# $JBOSS_HOME/bin/jboss-cli.sh --connect --command=:shutdown > $LOG_DIR/jbossstop.log 2> $LOG_DIR/jbossstop.err.log &
+# sudo -u postgres psql -c "command"
+# psql -c "COPY i2b2metadata.table_access TO '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
+# psql -c "COPY i2b2metadata.i2b2 TO '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
+# psql -c "COPY i2b2demodata.concept_dimension TO '$MY_PATH/i2b2_install/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
+sudo -u postgres psql -c "TRUNCATE i2b2metadata.table_access; TRUNCATE i2b2metadata.i2b2; TRUNCATE i2b2demodata.concept_dimension;" i2b2
+sudo -u postgres psql -c "COPY i2b2metadata.table_access FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
+sudo -u postgres psql -c "COPY i2b2metadata.i2b2 FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
+sudo -u postgres psql -c "COPY i2b2demodata.concept_dimension FROM '$MY_PATH/i2b2_install/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
