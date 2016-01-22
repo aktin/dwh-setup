@@ -12,9 +12,9 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 	<!-- =================================================================== -->
 	<target name="init"  description="init">
 		<!-- TODO don't copy the psql driver, just use the patheleement -->
-		<copy file="${packages.dir}/postgresql-9.2-1002.jdbc4.jar" todir="${ant.installdata.dir}" />
+		<copy file="${packages.dir}/${db.driver.jar}" todir="${ant.installdata.dir}" />
 		<path id="classpath">
-			<pathelement location="postgresql-9.2-1002.jdbc4.jar"/>
+			<pathelement location="${db.driver.jar}"/>
 		</path>
 	</target>  
     <target name="get_packages" unless="${packages.dir.noload}">
@@ -113,10 +113,10 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <replacefilter token="${db.DEMOPWD}" value="${db.crc.pwd}"/>
         </replace>
     </target>  
-    <target name="deploy_jboss" depends="unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
+    <target name="deploy_jboss" depends="init, unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
         <copy file="${packages.dir}/postgresql-9.2-1002.jdbc4.jar" todir="${jboss.home}/standalone/deployments" />
     </target>
-    <target name="unzip_i2b2" >
+    <target name="unzip_i2b2" depends="init">
         <delete dir="${i2b2.src.dir}" quiet="true"/>
         <mkdir dir="${i2b2.src.dir}" />
         <unzip src="${packages.dir}/i2b2core-src-${i2b2.version}.zip" dest="${i2b2.src.dir}">
@@ -199,7 +199,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 		<replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
         </replace>
     </target>
-    <target name="unzip_jboss" depends="jboss_exists" unless="${jboss.dir.exist}">
+    <target name="unzip_jboss" depends="init, jboss_exists" unless="${jboss.dir.exist}">
         <echo message="unzip jboss"/>
         <unzip src="${packages.dir}/${jboss.zip.name}" dest="${app.base.dir}" />
         <chmod dir="${jboss.home}/bin" perm="ugo+rx" includes="**/*.sh"/>
