@@ -36,19 +36,18 @@ echo ant scripts
 ant all 
 # > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
 
-echo load aktin data
+#echo load boston demo data
+# ant insert_demodata
+
+# echo load aktin data
 # sudo -u postgres psql -c "command"
 # psql -c "COPY i2b2metadata.table_access TO '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
 # psql -c "COPY i2b2metadata.i2b2 TO '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
 # psql -c "COPY i2b2demodata.concept_dimension TO '$MY_PATH/i2b2_install/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
 # sudo -u postgres psql -c "TRUNCATE i2b2metadata.table_access; TRUNCATE i2b2metadata.i2b2; TRUNCATE i2b2demodata.concept_dimension;" i2b2
-sudo -u postgres psql -c "COPY i2b2metadata.table_access FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
-sudo -u postgres psql -c "COPY i2b2metadata.i2b2 FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
-sudo -u postgres psql -c "COPY i2b2demodata.concept_dimension FROM '$MY_PATH/i2b2_install/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
-
-#echo load boston demo data
-ant insert_demodata
-
+# sudo -u postgres psql -c "COPY i2b2metadata.table_access FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
+# sudo -u postgres psql -c "COPY i2b2metadata.i2b2 FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
+# sudo -u postgres psql -c "COPY i2b2demodata.concept_dimension FROM '$MY_PATH/i2b2_install/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
 
 ##### Set up wildfly
 # Create user
