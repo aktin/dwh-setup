@@ -8,6 +8,14 @@ PACKAGES=$MY_PATH/packages
 BASE_APPDIR=/opt
 WILDFLY_HOME=/opt/wildfly-9.0.2.Final
 
+# do not run this script if wildfly already present
+# otherwise this will likely break the installation
+if [ -f /etc/default/wildfly ]
+then
+	>&2 echo "Aborting $0, wildfly is already configured"	
+	exit 1
+fi
+
 # create symlink for fixed configuration paths in i2b2
 ln -s $WILDFLY_HOME /opt/jboss-as-7.1.1.Final
 #ln -s $WILDFLY_HOME /opt/wildfly
