@@ -18,17 +18,23 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 		</path>
 	</target>  
     <target name="get_packages" unless="${packages.dir.noload}">
+        <ant antfile="get_packages.xml" target="download_all" inheritAll="false" useNativeBasedir="true"/>
+        <!--         
         <get src="${packages.url}" dest="${base.dir}/p.zip"/>
         <unzip src="${base.dir}/p.zip" dest="${base.dir}" overwrite="false"/>
-        <delete file="${base.dir}/p.zip"/>
+        <delete file="${base.dir}/p.zip"/> 
+        -->
     </target>
-
 
     <!-- =================================================================== -->
     <!--     Change properties                                               -->
     <!-- =================================================================== -->
     
-    
+    <target name="rename_files_from_orig">
+        <renameext srcDir="${ant.installdata.dir}" includes="**" fromExtension=".sql.orig" toExtension=".sql" replace="true"/> 
+        <renameext srcDir="${ant.installdata.dir}" includes="**" fromExtension=".properties.orig" toExtension=".properties" replace="true"/> 
+    </target>
+
     <!-- TODO don't change files in git folders. Use a temporary folder outside of the git repo. -->
     
     <target name="copy_files" depends="init">
@@ -117,6 +123,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <copy file="${packages.dir}/postgresql-9.2-1002.jdbc4.jar" todir="${jboss.home}/standalone/deployments" />
     </target>
     <target name="unzip_i2b2" depends="init">
+        <!--
         <delete dir="${i2b2.src.dir}" quiet="true"/>
         <mkdir dir="${i2b2.src.dir}" />
         <unzip src="${packages.dir}/i2b2core-src-${i2b2.version}.zip" dest="${i2b2.src.dir}">
@@ -138,7 +145,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <copy file="${ant.installdata.dir}/${db.driver.jar}" todir="${ant.i2b2.data.dir}/" overwrite="true"/>
 
         <unzip src="${packages.dir}/i2b2webclient-${i2b2.version}.zip" dest="${i2b2.src.dir}"/>
-
+        --> 
         <copy file="${i2b2.src.dir}/webclient/i2b2_config_data.js" tofile="${i2b2.src.dir}/webclient/i2b2_config_data.js.orig"/>
         <replace file="${i2b2.src.dir}/webclient/i2b2_config_data.js">
             <replacefilter token="allowAnalysis: false" value="allowAnalysis: true"/>
@@ -156,7 +163,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <replacefilter token="HarvardDemo" value="${db.hive.id}"/>
             <replacefilter token="i2b2demo" value="${db.hive.id}"/>
             <replacefilter token="webservices.i2b2.org" value="${ip.addr}:9090"/>
-        </replace>   
+        </replace> 
 
         <mkdir dir="${web.html.dir}" />
         <copy todir="${web.html.dir}/admin">
@@ -314,7 +321,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="meta: create"/>
         <copy file="${ant.installdata.dir}/${meta.dir}/db.properties" todir="${ant.i2b2.data.dir}/Metadata" overwrite="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Metadata/data_build.xml" target="create_metadata_tables_release_1-7" output="${log.dir}/meta_create.log" inheritAll="false" useNativeBasedir="true"/>
-    </target>
+        <ant antfile="${ant.installdata.dir}/${meta.dir}/change_build.xml" target="db_metadata_load_data" output="${log.dir}/meta_load_aktin.log" inheritAll="false" useNativeBasedir="true"/>
+    </target>    
     <!-- =================================================================== -->
     <target name="metadata_delete" depends="init" description="drop META Database">
         <ant antfile="${ant.installdata.dir}/${meta.dir}/change_build.xml" target="drop_meta" output="${log.dir}/meta_delete.log" inheritAll="false" useNativeBasedir="true"/>
@@ -338,6 +346,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!--     load boston demo data                                           -->
     <!-- =================================================================== -->
     <target name="unzip_i2b2_demo">
+    <!--
         <unzip src="${packages.dir}/i2b2createdb-${i2b2.version}.zip" dest="${i2b2.src.dir}">
             <patternset>
                 <include name="**/NewInstall/Metadata/demo/scripts/*.sql"/>
@@ -345,13 +354,17 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
                 <include name="**/NewInstall/Crcdata/scripts/postgresql/**"/>    
                 <include name="**/NewInstall/Crcdata/scripts/expression_obs_demo_insert_data.sql"/>                   
             </patternset>
-        </unzip>
+        </unzip> 
+     -->
     </target>
     <target name="insert_demodata" depends="unzip_i2b2_demo" description="insert Demo Data">      
         <echo message="insert demo data"/>
         <copy file="${ant.installdata.dir}/${meta.dir}/db.properties" todir="${ant.i2b2.data.dir}/Metadata" overwrite="true"/>
         <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Metadata/data_build.xml" target="db_metadata_load_data" output="${log.dir}/meta_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_demodata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/>
+    </target>
+    <target name="insert_demodata_1" depends="unzip_i2b2_demo" description="insert Demo Data">      
+        <echo message="insert demo data"/>
         <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_demodata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
@@ -387,5 +400,5 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="delete db all"/>
     </target>
 
-    <target name="all" depends="get_packages, deploy_jboss, db_all" />
+    <target name="all" depends="get_packages, deploy_jboss, db_all, insert_demodata" />
 </project>

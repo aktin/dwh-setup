@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+$Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
+-->
+<project name="AKTIN DWH" basedir=".">
+
+	<property environment="env" />
+
+    <!-- =================================================================== -->
+    <!--     Change properties                                               -->
+    <!-- =================================================================== -->
+    
+    <target name="change_properties">
+        <replace file="build.properties" value="" failOnNoReplacements="false">
+            <replacefilter token="/vagrant/i2b2_install/" value="/vagrant/temp_install/"/>
+            <!-- <replacefilter token="log.dir=/vagrant/logs" value="log.dir=/var/log"/> -->
+            <!-- <replacefilter token="packages.dir=/vagrant/packages/" value="packages.dir=/vagrant/packages/"/> -->
+        </replace>
+    </target>       
+</project>

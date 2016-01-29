@@ -2,6 +2,7 @@ dwh/packages/
 dwh/.vagrant
 dwh/i2b2_install/i2b2_src/*
 dwh/logs/
+dwh/temp_install/
 *.box
 *.zip
 *.tar.gz
