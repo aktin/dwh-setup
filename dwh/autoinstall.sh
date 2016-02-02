@@ -38,11 +38,11 @@ cp $MY_PATH/postgres-remote-access.sh /opt/
 dos2unix /opt/postgres-remote-access.sh
 /opt/postgres-remote-access.sh
 
-#cp -r -f $MY_PATH/i2b2_install/* $MY_PATH/temp_install
-# cd $MY_PATH/temp_install
-# ant -f prepare_build.xml change_properties
+cp -r -f $MY_PATH/i2b2_install/* $MY_PATH/temp_install
+cd $MY_PATH/temp_install
+ant -f prepare_build.xml change_properties
 
-cd $MY_PATH/i2b2_install
+# cd $MY_PATH/i2b2_install
 
 echo ant scripts
 ant all 
