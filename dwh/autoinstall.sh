@@ -38,6 +38,9 @@ cp $MY_PATH/postgres-remote-access.sh /opt/
 dos2unix /opt/postgres-remote-access.sh
 /opt/postgres-remote-access.sh
 
+if [ ! -d "$MY_PATH/temp_install" ]; then 
+    mkdir $MY_PATH/temp_install
+fi
 cp -r -f $MY_PATH/i2b2_install/* $MY_PATH/temp_install
 cd $MY_PATH/temp_install
 ant -f prepare_build.xml change_properties
