@@ -8,6 +8,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 	<property environment="env" />
 
 	<target name="check_packages">
+		<available file="${packages.dir}" type="dir" property="package.dir.exists"/>
 		<available file="${packages.dir}/${axis2.zip.name}" type="file" property="package.axis2.zip.exists"/>
 		<available file="${packages.dir}/${axis2.patch.zip.name}" type="file" property="package.axis2.patch.zip.exists"/>
 		<available file="${packages.dir}/${i2b2.db.name}" type="file" property="package.i2b2.db.exists"/>
@@ -17,6 +18,10 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 		<available file="${packages.dir}/${db.driver.jar}" type="file" property="package.db.driver.exists"/>
 	</target>
 
+	<target name="mkdir_packages" depends="check_packages" unless="${package.dir.exists}">
+		<echo message="make packages folder"/>
+		<mkdir dir="${packages.dir}"/>
+	</target>
 	<target name="download_axis2" depends="check_packages" unless="${package.axis2.zip.exists}">
 		<echo message="dowload axis2.zip"/>
 		<get src="${axis2.zip.url}" dest="${packages.dir}/${axis2.zip.name}"/>
@@ -42,7 +47,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 		<get src="${db.driver.url}" dest="${packages.dir}/${db.driver.jar}"/>
 	</target>
 
-	<target name="download_all" depends="download_axis2, download_i2b2_db, download_i2b2_core, download_i2b2_webclient, download_jboss, download_db_driver">
+	<target name="download_all" depends="mkdir_packages, download_axis2, download_i2b2_db, download_i2b2_core, download_i2b2_webclient, download_jboss, download_db_driver">
 		<echo message="dowloaded all needed packages"/>
 	</target>
 	
