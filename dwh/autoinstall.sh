@@ -80,6 +80,8 @@ echo reload daemon cache
 systemctl daemon-reload
 
 echo start jboss service
-# start jboss
 service wildfly start
 # can also run /etc/init.d/wildfly start
+
+echo link wildfly to autostart
+ln -s /etc/init.d/wildfly /etc/rc3.d/S10wildfly
