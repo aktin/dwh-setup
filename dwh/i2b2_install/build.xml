@@ -5,18 +5,18 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 <project name="AKTIN DWH" basedir=".">
 
     <property file="build.properties"/>
-	<property environment="env" />
+    <property environment="env" />
 
-	<!-- =================================================================== -->
-	<!-- 								INIT 								 -->
-	<!-- =================================================================== -->
-	<target name="init"  description="init">
-		<!-- TODO don't copy the psql driver, just use the patheleement -->
-		<copy file="${packages.dir}/${db.driver.jar}" todir="${ant.installdata.dir}" />
-		<path id="classpath">
-			<pathelement location="${db.driver.jar}"/>
-		</path>
-	</target>  
+    <!-- =================================================================== -->
+    <!--                                INIT                                 -->
+    <!-- =================================================================== -->
+    <target name="init"  description="init">
+        <!-- TODO don't copy the psql driver, just use the patheleement -->
+        <copy file="${packages.dir}/${db.driver.jar}" todir="${ant.installdata.dir}" />
+        <path id="classpath">
+            <pathelement location="${db.driver.jar}"/>
+        </path>
+    </target>  
     <target name="get_packages" unless="${packages.dir.noload}">
         <ant antfile="get_packages.xml" target="download_all" inheritAll="false" useNativeBasedir="true"/>
         <!--         
@@ -161,7 +161,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <fileset dir="${ant.installdata.dir}/jboss_config/"/>
         </copy>
         <copy todir="${jboss.home}/standalone/deployments">
-            <fileset dir="${ant.installdata.dir}/jboss_xml_ds/"/>
+            <fileset dir="${ant.installdata.dir}/${jboss.ds-xml.dir}/"/>
         </copy>
 
         <copy file="${jboss.home}/bin/appclient.conf" tofile="${jboss.home}/bin/appclient.conf.orig"/>
@@ -172,8 +172,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 
         <copy file="${jboss.home}/standalone/configuration/standalone.xml" tofile="${jboss.home}/standalone/configuration/standalone.xml.orig"/>    
         <replace file="${jboss.home}/standalone/configuration/standalone.xml">
-		<!--Binding JBoss AS 7 to all interfaces:-->
-		<replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
+        <!--Binding JBoss AS 7 to all interfaces:-->
+        <replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
         </replace>
     </target>
     <target name="unzip_jboss" depends="init, jboss_exists" unless="${jboss.dir.exist}">
@@ -245,7 +245,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     <!--    PM Database                                                      -->
     <!-- =================================================================== -->
-	<target name="pm_create" depends="init" description="init PM Database">
+    <target name="pm_create" depends="init" description="init PM Database">
         <echo message="pm: create"/>
         <copy file="${ant.installdata.dir}/${pm.dir}/db.properties" todir="${ant.i2b2.data.dir}/Pmdata" overwrite="true"/>
         <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_pmdata_tables_release_1-7" output="${log.dir}/pm_create.log" inheritAll="false" useNativeBasedir="true"/>
