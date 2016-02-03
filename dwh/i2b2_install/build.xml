@@ -19,11 +19,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>  
     <target name="get_packages" unless="${packages.dir.noload}">
         <ant antfile="get_packages.xml" target="download_all" inheritAll="false" useNativeBasedir="true"/>
-        <!--         
-        <get src="${packages.url}" dest="${base.dir}/p.zip"/>
-        <unzip src="${base.dir}/p.zip" dest="${base.dir}" overwrite="false"/>
-        <delete file="${base.dir}/p.zip"/> 
-        -->
     </target>
 
     <!-- =================================================================== -->
@@ -34,9 +29,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <renameext srcDir="${ant.installdata.dir}" includes="**" fromExtension=".sql.orig" toExtension=".sql" replace="true"/> 
         <renameext srcDir="${ant.installdata.dir}" includes="**" fromExtension=".properties.orig" toExtension=".properties" replace="true"/> 
     </target>
-
-    <!-- TODO don't change files in git folders. Use a temporary folder outside of the git repo. -->
-    
     <target name="copy_files" depends="init">
         <echo message="change propertie files and sql"/>
         <copy todir="${ant.installdata.dir}" overwrite="true" verbose="true">
@@ -88,9 +80,9 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         </replace>
     </target>  
     <target name="deploy_jboss" depends="init, unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
-        <copy file="${packages.dir}/postgresql-9.2-1002.jdbc4.jar" todir="${jboss.home}/standalone/deployments" />
+        <copy file="${packages.dir}/${db.driver.jar}" todir="${jboss.home}/standalone/deployments" />
     </target>
-    <target name="unzip_i2b2" depends="init">
+    <target name="unzip_i2b2" depends="get_packages">
         <!--      --> 
         <delete dir="${i2b2.src.dir}" quiet="true"/>
         <mkdir dir="${i2b2.src.dir}" />
@@ -143,8 +135,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <fileset dir="${i2b2.src.dir}/webclient"/>
         </copy>
     </target>
-
-    <target name="unpack_i2b2_deploy_config" depends="unzip_jboss, change_properties">
+    <target name="unpack_i2b2_deploy_config" depends="get_packages, unzip_jboss, change_properties">
         <delete dir="${jboss.home}/standalone/deployments/${axis2.war.name}" quiet="true"/>
         <mkdir dir="${jboss.home}/standalone/deployments/${axis2.war.name}"/>
         <touch file="${jboss.home}/standalone/deployments/${axis2.war.name}.dodeploy"/>
@@ -176,7 +167,10 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
         </replace>
     </target>
-    <target name="unzip_jboss" depends="init, jboss_exists" unless="${jboss.dir.exist}">
+    <target name="deploy_dwh_j2ee_ear" depends="get_packages">
+        <copy file="${packages.dir}/${dwh.j2ee.ear}" todir="${jboss.home}/standalone/deployments" />
+    </target>
+    <target name="unzip_jboss" depends="get_packages, jboss_exists" unless="${jboss.dir.exist}">
         <echo message="unzip jboss"/>
         <unzip src="${packages.dir}/${jboss.zip.name}" dest="${app.base.dir}" />
         <chmod dir="${jboss.home}/bin" perm="ugo+rx" includes="**/*.sh"/>
