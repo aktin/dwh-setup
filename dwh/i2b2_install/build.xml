@@ -79,7 +79,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <replacefilter token="${db.DEMOPWD}" value="${db.crc.pwd}"/>
         </replace>
     </target>  
-    <target name="deploy_jboss" depends="init, unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
+    <target name="deploy_jboss" depends="init, unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config, deploy_dwh_j2ee_ear">
         <copy file="${packages.dir}/${db.driver.jar}" todir="${jboss.home}/standalone/deployments" />
     </target>
     <target name="unzip_i2b2" depends="get_packages">
@@ -107,7 +107,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 
         <unzip src="${packages.dir}/i2b2webclient-${i2b2.version}.zip" dest="${i2b2.src.dir}"/>
  
-        
         <copy file="${i2b2.src.dir}/webclient/i2b2_config_data.js" tofile="${i2b2.src.dir}/webclient/i2b2_config_data.js.orig"/>
         <replace file="${i2b2.src.dir}/webclient/i2b2_config_data.js">
             <replacefilter token="allowAnalysis: false" value="allowAnalysis: true"/>
