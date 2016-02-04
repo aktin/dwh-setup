@@ -18,8 +18,19 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <pathelement location="${db.driver.jar}"/>
         </path>
     </target>  
-    <target name="get_packages" unless="${packages.dir.noload}">
+    <target name="get_packages">
         <ant antfile="get_packages.xml" target="download_all" inheritAll="false" useNativeBasedir="true"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!--     Check log folder                                                -->
+    <!-- =================================================================== -->
+    <target name="check_log_folder">
+        <available file="${log.dir}" type="dir" property="log.dir.exists"/>
+    </target>
+    <target name="mkdir_log" depends="check_log_folder" unless="${log.dir.exists}">
+        <echo message="make log folder"/>
+        <mkdir dir="${log.dir}"/>
     </target>
 
     <!-- =================================================================== -->
@@ -80,7 +91,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <replacefilter token="${db.DEMOPWD}" value="${db.crc.pwd}"/>
         </replace>
     </target>  
-    <target name="deploy_jboss" depends="init, unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
+    <target name="deploy_jboss" depends="init, check_log_folder, unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
         <copy file="${packages.dir}/${db.driver.jar}" todir="${jboss.home}/standalone/deployments" />
     </target>
     <target name="unzip_i2b2" depends="get_packages">
