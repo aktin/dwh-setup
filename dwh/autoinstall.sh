@@ -66,7 +66,7 @@ echo define jboss service configurations
 # Define startup configuration
 echo > /etc/default/wildfly
 echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly
-echo JBOSS_OPTS=\"-Djboss.http.port=9090\" >> /etc/default/wildfly
+echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=600\" >> /etc/default/wildfly
 
 echo reload daemon cache
 # reload daemon cache
