@@ -307,32 +307,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
 
     <!-- =================================================================== -->
-    <!--     load boston demo data                                           -->
-    <!-- =================================================================== -->
-    <target name="unzip_i2b2_demo">
-    <!--
-        <unzip src="${packages.dir}/i2b2createdb-${i2b2.version}.zip" dest="${i2b2.src.dir}">
-            <patternset>
-                <include name="**/NewInstall/Metadata/demo/scripts/*.sql"/>
-                <include name="**/NewInstall/Metadata/demo/scripts/postgresql/**"/>
-                <include name="**/NewInstall/Crcdata/scripts/postgresql/**"/>    
-                <include name="**/NewInstall/Crcdata/scripts/expression_obs_demo_insert_data.sql"/>                   
-            </patternset>
-        </unzip> 
-     -->
-    </target>
-    <target name="insert_demodata" depends="unzip_i2b2_demo" description="insert Demo Data">      
-        <echo message="insert demo data"/>
-        <copy file="${ant.installdata.dir}/${meta.dir}/db.properties" todir="${ant.i2b2.data.dir}/Metadata" overwrite="true"/>
-        <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_demodata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/>
-    </target>
-    <target name="insert_demodata_1" depends="unzip_i2b2_demo" description="insert Demo Data">      
-        <echo message="insert demo data"/>
-        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_demodata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/>
-    </target>
-
-    <!-- =================================================================== -->
     <!--     build all                                                       -->
     <!-- =================================================================== -->
     <target name="create_tables" 
