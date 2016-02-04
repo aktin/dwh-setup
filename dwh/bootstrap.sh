@@ -9,8 +9,20 @@ apt-get update
 # java jre
 apt-get install -y openjdk-8-jre-headless # openjdk-8-jdk
 apt-get install -y wget curl dos2unix unzip sed bc ant postgresql
+
+
 # web server
 apt-get install -y libapache2-mod-php5 php5-curl 
+## TODO libapache2-mod-proxy (or -proxy-http) missing?
+# reverse proxy configuration
+conf=/etc/apache2/conf-available/aktin-j2ee-reverse-proxy.conf
+echo ProxyPreserveHost On > $conf
+echo ProxyPass /aktin http://localhost:9090/aktin >> $conf
+echo ProxyPassReverse /aktin http://localhost:9090/aktin >> $conf
+## TODO a2enmod php??
+a2enmod proxy_http
+a2enconf aktin-j2ee-reverse-proxy
+
 
 # restart apache to reload php modules
 # otherwise, curl might not be available until next restart
