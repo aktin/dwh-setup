@@ -34,13 +34,13 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     
     <target name="change_properties">
-        <replace file="build.properties" value="" failOnNoReplacements="false">
+        <!-- <replace file="build.properties" value="" failOnNoReplacements="false"> -->
             <!-- move the install root -->
             <!-- <replacefilter token="ant.installdata.dir=/vagrant/i2b2_install/" value="ant.installdata.dir=${project.installroot}"/>
             <replacefilter token="i2b2.src.dir=/vagrant/i2b2_install/i2b2_src" value="i2b2.src.dir=${project.installroot}/i2b2_src"/>
             <replacefilter token="log.dir=log.dir=/vagrant/logs/ant" value="log.dir=${log.dir}"/>
             <replacefilter token="packages.dir=/vagrant/packages/" value="packages.dir=${packages.dir}"/> -->
-        </replace>
+        <!-- </replace> -->
         <replaceregexp file="build.properties" match="(ant.installdata.dir=)[/_0-9a-zA-Z]" replace="\1${project.installroot}" flags="g" byline="true"/>
         <replaceregexp file="build.properties" match="(i2b2.src.dir=)[/_0-9a-zA-Z]" replace="\1${project.installroot}/i2b2_src" flags="g" byline="true"/>
         <replaceregexp file="build.properties" match="(log.dir=log.dir=)[/_0-9a-zA-Z]" replace="\1${log.dir}" flags="g" byline="true"/>
