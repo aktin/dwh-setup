@@ -1,7 +1,7 @@
 #!/bin/bash
 
 d=`date +%Y_%m_%d_%H_%M`
-logdir=/vagrant/logs/logs_2016_02_04_11_26
+logdir=/vagrant/logs/logs_$d
 
 if [ ! -d "$logdir" ]; then 
     mkdir $logdir
