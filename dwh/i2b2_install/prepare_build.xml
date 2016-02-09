@@ -21,13 +21,14 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </scriptdef>
 
 	<property environment="env" />
-    <property name="project.name" value="demo"/>
-    <capitalize string="${project.name}" to="project.cname" />
-    <upper string="${project.name}" to="project.uname" />
     <property name="project.installroot" value="/vagrant/temp_install"/>
     <property name="packages.dir" value="/vagrant/packages"/>
     <property name="log.dir" value="/vagrant/logs/ant"/>
 
+    <property name="project.name" value="demo"/>
+    <capitalize string="${project.name}" to="project.cname" />
+    <upper string="${project.name}" to="project.uname" />
+    
     <!-- =================================================================== -->
     <!--     Change properties                                               -->
     <!-- =================================================================== -->
