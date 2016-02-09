@@ -7,8 +7,7 @@ install_root=/vagrant
 echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 apt-get update
 # java jre
-apt-get install -y openjdk-8-jre-headless # openjdk-8-jdk
-apt-get install -y wget curl dos2unix unzip sed bc ant postgresql
+apt-get install -y openjdk-8-jre-headless sudo wget curl dos2unix unzip sed bc ant postgresql git
 
 
 # web server
