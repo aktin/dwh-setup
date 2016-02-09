@@ -38,8 +38,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     
     <target name="rename_files_from_orig">
-        <!-- <renameext srcDir="${ant.installdata.dir}" includes="**" fromExtension=".sql.orig" toExtension=".sql" replace="true"/>  -->
-        <!-- <renameext srcDir="${ant.installdata.dir}" includes="**" fromExtension=".properties.orig" toExtension=".properties" replace="true"/> -->
         <move todir="${ant.installdata.dir}" overwrite="true">
             <fileset dir="${ant.installdata.dir}" />
             <globmapper from="*.orig" to="*"/>
