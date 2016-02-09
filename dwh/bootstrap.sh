@@ -40,4 +40,9 @@ if [ ! -d "$LOG_DIR" ]; then
     mkdir $LOG_DIR
 fi
 
+
+chmod -R o+x $install_root
+
+ln -s $install_root /opt/aktin
+
 $install_root/autoinstall.sh 2> $LOG_DIR/autoinstall.err.log
