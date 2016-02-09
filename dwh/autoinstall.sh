@@ -1,5 +1,5 @@
 #!/bin/bash
-MY_PATH=/vagrant
+MY_PATH=/opt/aktin
 
 DATA_HOME=$MY_PATH/i2b2_install
 DATA_DEST=$MY_PATH/temp_install
@@ -48,6 +48,7 @@ ant -f prepare_build.xml change_properties
 
 echo ant scripts
 ant all 
+ant deploy_dwh_j2ee_ear
 
 echo load aktin data
 sudo -u postgres psql -c "COPY i2b2metadata.table_access FROM '$DATA_DEST/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
