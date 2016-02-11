@@ -177,7 +177,10 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <copy file="${jboss.home}/standalone/configuration/standalone.xml" tofile="${jboss.home}/standalone/configuration/standalone.xml.orig"/>    
         <replace file="${jboss.home}/standalone/configuration/standalone.xml">
         <!--Binding JBoss AS 7 to all interfaces:-->
-        <replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
+            <replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
+            <!-- extend deployment timeout to 5 min (default 60s) -->
+            <replacefilter token="&lt;deployment-scanner path=&quot;deployments&quot;" value="&lt;deployment-scanner path=&quot;deployments&quot; deployment-timeout=&quot;300&quot; "/>
+
         </replace>
     </target>
     <target name="deploy_dwh_j2ee_ear" depends="get_packages">
@@ -352,5 +355,5 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="delete db all"/>
     </target>
 
-    <target name="all" depends="get_packages, deploy_jboss, db_all" />
+    <target name="all" depends="get_packages, mkdir_log, deploy_jboss, db_all" />
 </project>

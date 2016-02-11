@@ -67,7 +67,7 @@ echo define jboss service configurations
 # Define startup configuration
 echo > /etc/default/wildfly
 echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly
-echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=600\" >> /etc/default/wildfly
+echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly
 
 echo reload daemon cache
 # reload daemon cache
@@ -79,3 +79,6 @@ service wildfly start
 
 echo link wildfly to autostart
 ln -s /etc/init.d/wildfly /etc/rc3.d/S10wildfly
+
+echo just restarting apache to be sure
+service apache2 reload
