@@ -21,6 +21,7 @@ echo ProxyPassReverse /aktin http://localhost:9090/aktin >> $conf
 ## TODO a2enmod php??
 a2enmod proxy_http
 a2enconf aktin-j2ee-reverse-proxy
+service apache2 reload
 
 
 # restart apache to reload php modules
@@ -39,6 +40,8 @@ if [ ! -d "$LOG_DIR" ]; then
     mkdir $LOG_DIR
 fi
 
+# check java version and set it to jdk8 if not already (in debian with update-alternatives --config java)
+#java -version
 
 chmod -R o+x $install_root
 
