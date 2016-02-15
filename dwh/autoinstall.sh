@@ -79,6 +79,3 @@ service wildfly start
 
 echo link wildfly to autostart
 ln -s /etc/init.d/wildfly /etc/rc3.d/S10wildfly
-
-echo just restarting apache to be sure
-service apache2 reload
