@@ -6,6 +6,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 
     <property file="build.properties"/>
     <property environment="env" />
+    <property name="ant.i2b2.data.dir" value="${i2b2.src.dir}/edu.harvard.i2b2.data/Release_1-7/NewInstall/" />
 
     <!-- =================================================================== -->
     <!--                                INIT                                 -->
@@ -17,8 +18,19 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <pathelement location="${db.driver.jar}"/>
         </path>
     </target>  
-    <target name="get_packages" unless="${packages.dir.noload}">
+    <target name="get_packages">
         <ant antfile="get_packages.xml" target="download_all" inheritAll="false" useNativeBasedir="true"/>
+    </target>
+
+    <!-- =================================================================== -->
+    <!--     Check log folder                                                -->
+    <!-- =================================================================== -->
+    <target name="check_log_folder">
+        <available file="${log.dir}" type="dir" property="log.dir.exists"/>
+    </target>
+    <target name="mkdir_log" depends="check_log_folder" unless="${log.dir.exists}">
+        <echo message="make log folder"/>
+        <mkdir dir="${log.dir}"/>
     </target>
 
     <!-- =================================================================== -->
@@ -26,8 +38,10 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     
     <target name="rename_files_from_orig">
-        <renameext srcDir="${ant.installdata.dir}" includes="**" fromExtension=".sql.orig" toExtension=".sql" replace="true"/> 
-        <renameext srcDir="${ant.installdata.dir}" includes="**" fromExtension=".properties.orig" toExtension=".properties" replace="true"/> 
+        <move todir="${ant.installdata.dir}" overwrite="true">
+            <fileset dir="${ant.installdata.dir}" />
+            <globmapper from="*.orig" to="*"/>
+        </move>
     </target>
     <target name="copy_files" depends="init">
         <echo message="change propertie files and sql"/>
@@ -79,7 +93,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <replacefilter token="${db.DEMOPWD}" value="${db.crc.pwd}"/>
         </replace>
     </target>  
-    <target name="deploy_jboss" depends="init, unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
+    <target name="deploy_jboss" depends="init, check_log_folder, unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
         <copy file="${packages.dir}/${db.driver.jar}" todir="${jboss.home}/standalone/deployments" />
     </target>
     <target name="unzip_i2b2" depends="get_packages">
@@ -158,12 +172,21 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <replace file="${jboss.home}/bin/appclient.conf">
             <!--Memory settings:-->
             <replacefilter token="-Xms64m -Xmx512m" value="-Xms512m -Xmx1024m"/>
+        </replace>           
+
+        <copy file="${jboss.home}/bin/standalone.conf" tofile="${jboss.home}/bin/standalone.conf.orig"/>
+        <replace file="${jboss.home}/bin/standalone.conf">
+            <!--Memory settings:-->
+            <replacefilter token="-Xms64m -Xmx512m" value="-Xms512m -Xmx1024m"/>
         </replace>   
 
         <copy file="${jboss.home}/standalone/configuration/standalone.xml" tofile="${jboss.home}/standalone/configuration/standalone.xml.orig"/>    
         <replace file="${jboss.home}/standalone/configuration/standalone.xml">
         <!--Binding JBoss AS 7 to all interfaces:-->
-        <replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
+            <replacefilter token="&lt;inet-address value=&quot;$${jboss.bind.address:127.0.0.1}&quot;/&gt;" value="&lt;any-address/&gt;"/>
+            <!-- extend deployment timeout to 5 min (default 60s) -->
+            <replacefilter token="&lt;deployment-scanner path=&quot;deployments&quot;" value="&lt;deployment-scanner path=&quot;deployments&quot; deployment-timeout=&quot;300&quot; "/>
+
         </replace>
     </target>
     <target name="deploy_dwh_j2ee_ear" depends="get_packages">
@@ -307,32 +330,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
 
     <!-- =================================================================== -->
-    <!--     load boston demo data                                           -->
-    <!-- =================================================================== -->
-    <target name="unzip_i2b2_demo">
-    <!--
-        <unzip src="${packages.dir}/i2b2createdb-${i2b2.version}.zip" dest="${i2b2.src.dir}">
-            <patternset>
-                <include name="**/NewInstall/Metadata/demo/scripts/*.sql"/>
-                <include name="**/NewInstall/Metadata/demo/scripts/postgresql/**"/>
-                <include name="**/NewInstall/Crcdata/scripts/postgresql/**"/>    
-                <include name="**/NewInstall/Crcdata/scripts/expression_obs_demo_insert_data.sql"/>                   
-            </patternset>
-        </unzip> 
-     -->
-    </target>
-    <target name="insert_demodata" depends="unzip_i2b2_demo" description="insert Demo Data">      
-        <echo message="insert demo data"/>
-        <copy file="${ant.installdata.dir}/${meta.dir}/db.properties" todir="${ant.i2b2.data.dir}/Metadata" overwrite="true"/>
-        <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_demodata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/>
-    </target>
-    <target name="insert_demodata_1" depends="unzip_i2b2_demo" description="insert Demo Data">      
-        <echo message="insert demo data"/>
-        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="db_demodata_load_data" output="${log.dir}/crc_load.log" inheritAll="false" useNativeBasedir="true"/>
-    </target>
-
-    <!-- =================================================================== -->
     <!--     build all                                                       -->
     <!-- =================================================================== -->
     <target name="create_tables" 
@@ -364,5 +361,5 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="delete db all"/>
     </target>
 
-    <target name="all" depends="get_packages, deploy_jboss, db_all" />
+    <target name="all" depends="get_packages, mkdir_log, deploy_jboss, db_all" />
 </project>

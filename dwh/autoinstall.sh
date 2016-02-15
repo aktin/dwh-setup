@@ -1,12 +1,14 @@
 #!/bin/bash
-MY_PATH=/vagrant
+MY_PATH=/opt/aktin
 
 DATA_HOME=$MY_PATH/i2b2_install
+DATA_DEST=$MY_PATH/temp_install
 LOG_DIR=$MY_PATH/logs
 PACKAGES=$MY_PATH/packages
 
 BASE_APPDIR=/opt
-WILDFLY_HOME=/opt/wildfly-9.0.2.Final
+WILDFLY_HOME=$BASE_APPDIR/wildfly-9.0.2.Final
+JBOSS7_DIR=$BASE_APPDIR/jboss-as-7.1.1.Final 
 
 # do not run this script if wildfly already present
 # otherwise this will likely break the installation
@@ -17,8 +19,7 @@ then
 fi
 
 # create symlink for fixed configuration paths in i2b2
-ln -s $WILDFLY_HOME /opt/jboss-as-7.1.1.Final
-#ln -s $WILDFLY_HOME /opt/wildfly
+ln -s $WILDFLY_HOME $JBOSS7_DIR
 
 # create directory for logs if not existent
 if [ ! -d "$LOG_DIR" ]; then 
@@ -38,28 +39,21 @@ cp $MY_PATH/postgres-remote-access.sh /opt/
 dos2unix /opt/postgres-remote-access.sh
 /opt/postgres-remote-access.sh
 
-if [ ! -d "$MY_PATH/temp_install" ]; then 
-    mkdir $MY_PATH/temp_install
+if [ ! -d "$DATA_DEST" ]; then 
+    mkdir $DATA_DEST
 fi
-cp -r -f $MY_PATH/i2b2_install/* $MY_PATH/temp_install
-cd $MY_PATH/temp_install
+cp -r -f $DATA_HOME/* $DATA_DEST
+cd $DATA_DEST
 ant -f prepare_build.xml change_properties
-
-# cd $MY_PATH/i2b2_install
 
 echo ant scripts
 ant all 
-# > $LOG_DIR/ant_jboss_install.log 2> $LOG_DIR/ant_jboss_install.err.log
+ant deploy_dwh_j2ee_ear
 
-# echo load aktin data
-# sudo -u postgres psql -c "command"
-# psql -c "COPY i2b2metadata.table_access TO '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
-# psql -c "COPY i2b2metadata.i2b2 TO '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
-# psql -c "COPY i2b2demodata.concept_dimension TO '$MY_PATH/i2b2_install/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
-# sudo -u postgres psql -c "TRUNCATE i2b2metadata.table_access; TRUNCATE i2b2metadata.i2b2; TRUNCATE i2b2demodata.concept_dimension;" i2b2
-sudo -u postgres psql -c "COPY i2b2metadata.table_access FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
-sudo -u postgres psql -c "COPY i2b2metadata.i2b2 FROM '$MY_PATH/i2b2_install/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
-sudo -u postgres psql -c "COPY i2b2demodata.concept_dimension FROM '$MY_PATH/i2b2_install/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
+echo load aktin data
+sudo -u postgres psql -c "COPY i2b2metadata.table_access FROM '$DATA_DEST/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
+sudo -u postgres psql -c "COPY i2b2metadata.i2b2 FROM '$DATA_DEST/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
+sudo -u postgres psql -c "COPY i2b2demodata.concept_dimension FROM '$DATA_DEST/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
 
 ##### Set up wildfly
 # Create user
@@ -73,7 +67,7 @@ echo define jboss service configurations
 # Define startup configuration
 echo > /etc/default/wildfly
 echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly
-echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=600\" >> /etc/default/wildfly
+echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly
 
 echo reload daemon cache
 # reload daemon cache

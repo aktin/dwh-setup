@@ -21,3 +21,19 @@ automatisch heruntergeladen:
 * Apache Ant 1.8.2
 * JBoss AS 7.1.1 Final
 
+
+TODO
+----
+Remove the following files from jboss-configuration.zip:
+- standalone*.xml 
+- logging.properties
+- application-*.properties
+
+Deployment to Wildfly via CLI:
+```
+/opt/wildfly-9.0.2.Final/bin/jboss-cli.sh --controller=localhost:9990 --connect
+--command="deploy ... --force"
+```
+
+Test wildfly 10.0.0
+

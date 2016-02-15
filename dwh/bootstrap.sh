@@ -2,13 +2,13 @@
 
 install_root=~/i2b2install
 install_root=/vagrant
+# install_root=$(pwd)
 
 # Enable backports
 echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 apt-get update
 # java jre
-apt-get install -y openjdk-8-jre-headless # openjdk-8-jdk
-apt-get install -y wget curl dos2unix unzip sed bc ant postgresql
+apt-get install -y openjdk-8-jre-headless sudo wget curl dos2unix unzip sed bc ant postgresql git
 
 
 # web server
@@ -22,6 +22,7 @@ echo ProxyPassReverse /aktin http://localhost:9090/aktin >> $conf
 ## TODO a2enmod php??
 a2enmod proxy_http
 a2enconf aktin-j2ee-reverse-proxy
+service apache2 reload
 
 
 # restart apache to reload php modules
@@ -39,5 +40,12 @@ LOG_DIR=$install_root/logs
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir $LOG_DIR
 fi
+
+# check java version and set it to jdk8 if not already (in debian with update-alternatives --config java)
+#java -version
+
+chmod -R o+x $install_root
+
+ln -s $install_root /opt/aktin
 
 $install_root/autoinstall.sh 2> $LOG_DIR/autoinstall.err.log
