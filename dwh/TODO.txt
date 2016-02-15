@@ -1,4 +1,0 @@
-Remove the following files from jboss-configuration.zip:
-- standalone*.xml 
-- logging.properties
-- application-*.properties
