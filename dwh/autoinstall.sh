@@ -24,23 +24,20 @@ ln -s $WILDFLY_HOME $JBOSS7_DIR
 # create directory for logs if not existent
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir $LOG_DIR
+    chmod -R 777 $LOG_DIR
 fi
 
 # TODO try without libaio1
 
-# find localhost root and link it to /var/webroot
-WEBROOT=$(cat /etc/apache2/sites-available/*default* | grep -m1 'DocumentRoot' | sed 's/DocumentRoot//g' | awk '{ printf "%s", $1}')
-echo linking Documentroot $WEBROOT to /var/webroot
-ln -s $WEBROOT /var/webroot
-
 # Postgres remote connections for debugging
-echo enable remote access to postgres
-cp $MY_PATH/postgres-remote-access.sh /opt/
-dos2unix /opt/postgres-remote-access.sh
-/opt/postgres-remote-access.sh
+# echo enable remote access to postgres
+# cp $MY_PATH/postgres-remote-access.sh /opt/
+# dos2unix /opt/postgres-remote-access.sh
+# /opt/postgres-remote-access.sh
 
 if [ ! -d "$DATA_DEST" ]; then 
     mkdir $DATA_DEST
+    chmod -R 777 $DATA_DEST
 fi
 cp -r -f $DATA_HOME/* $DATA_DEST
 cd $DATA_DEST
