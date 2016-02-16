@@ -22,7 +22,6 @@ echo ProxyPassReverse /aktin http://localhost:9090/aktin >> $conf
 echo LoadModule proxy_module libexec/apache2/mod_proxy.so >> /etc/httpd/conf/httpd.conf
 echo LoadModule proxy_http_module libexec/apache2/mod_proxy_http.so >> /etc/httpd/conf/httpd.conf
 
-apachectl reload
 apachectl restart
 
 ln -s /var/www/html /var/webroot
@@ -35,16 +34,16 @@ yum -y install postgresql94-server postgresql94-contrib
 systemctl enable postgresql-9.4
 systemctl start postgresql-9.4
 
-echo local all all trust >> /var/lib/pgsql/9.4/data/pg_hba.conf
-echo host all all 127.0.0.1/32 trust >> /var/lib/pgsql/9.4/data/pg_hba.conf
-
-systemctl restart postgresql-9.4
+# echo enable remote access to postgres
+cp $install_root/cent-postgres-remote-access.sh /opt/
+dos2unix /opt/cent-postgres-remote-access.sh
+/opt/cent-postgres-remote-access.sh
 
 # ifconfig
 
 # create postgres databases for i2b2
 # cd $install_root
-dos2unix $install_root/autoinstall.sh
+dos2unix $install_root/cent_auto.sh
 
 # TODO dont write logfiles to /vagrant
 LOG_DIR=$install_root/logs
