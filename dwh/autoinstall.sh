@@ -75,4 +75,5 @@ service wildfly start
 # can also run /etc/init.d/wildfly start
 
 echo link wildfly to autostart
+# better use update-rc.d instead of creating manual links
 ln -s /etc/init.d/wildfly /etc/rc3.d/S10wildfly
