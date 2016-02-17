@@ -15,8 +15,8 @@ cat $FILE.orig > $FILE
 echo 'host all all 192.168.0.0/16 trust' >> $FILE
 echo 'host all all 10.0.0.0/8 trust' >> $FILE
 
-echo 'local all all trust' >> $FILE
-echo 'host all all 127.0.0.1/32 trust' >> $FILE
+# echo 'local all all trust' >> $FILE
+# echo 'host all all 127.0.0.1/32 trust' >> $FILE
 # XXX maybe use md5 instead of trust for more security
 
 
@@ -33,4 +33,4 @@ cat $FILE.orig | sed -e "s/^#\?listen_addresses.*\$/listen_addresses = '*'/g" > 
 #
 # restart postgresql
 #
-systemctl restart postgresql-9.4
+systemctl restart postgresql

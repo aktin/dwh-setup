@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+$Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
+-->
+<project name="AKTIN DWH" basedir=".">
+
+	<property environment="env" />
+
+    <!-- =================================================================== -->
+    <!--     Change properties                                               -->
+    <!-- =================================================================== -->
+    
+    <target name="change_pg_file">
+        <copy file="/var/lib/pgsql/data/pg_hba.conf" tofile="/var/lib/pgsql/data/pg_hba.conf.orig" />
+        <replaceregexp file="/var/lib/pgsql/data/pg_hba.conf" match="(host\W+all\W+all\W+127.0.0.1/32\W+)ident" replace="\1trust" flags="g" byline="true"/>
+        <replaceregexp file="/var/lib/pgsql/data/pg_hba.conf" match="(local\W+all\W+all\W+)peer" replace="\1trust" flags="g" byline="true"/>
+    </target>           
+    <target name="change_selinux_file">
+        <copy file="/etc/sysconfig/selinux" tofile="/opt/aktin/selinux.orig" />
+        <replaceregexp file="/etc/sysconfig/selinux" match="SELINUX=enforcing" replace="SELINUX=disabled" flags="g" byline="true"/>
+    </target>       
+</project>

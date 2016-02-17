@@ -32,10 +32,7 @@ postgresql-setup initdb
 systemctl enable postgresql
 systemctl start postgresql
 
-# echo enable remote access to postgres
-cp $install_root/cent-postgres-remote-access.sh /opt/
-dos2unix /opt/cent-postgres-remote-access.sh
-/opt/cent-postgres-remote-access.sh
+ant -f cent_build.xml change_pg_file
 
 # ifconfig
 
@@ -56,4 +53,4 @@ chmod -R o+x $install_root
 
 ln -s $install_root /opt/aktin
 
-$install_root/cent_auto.sh 2> $LOG_DIR/autoinstall.err.log
+#$install_root/cent_auto.sh 2> $LOG_DIR/autoinstall.err.log
