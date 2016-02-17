@@ -27,27 +27,22 @@ apachectl restart
 ln -s /var/www/html /var/webroot
 
 #postgres
-yum -y install postgresql-server postgresql-contrib
-postgresql-setup initdb
-systemctl enable postgresql
-systemctl start postgresql
+# yum -y install postgresql-server postgresql-contrib
+# postgresql-setup initdb
+# systemctl enable postgresql
+# systemctl start postgresql
 
-ant -f cent_build.xml change_pg_file
-
-# ifconfig
+# ant -f cent_build.xml change_pg_file
+# chown postgres:postgres /var/lib/pgsql/data/pg_hba.conf
+# systemctl restart postgresql
 
 # create postgres databases for i2b2
-# cd $install_root
 dos2unix $install_root/cent_auto.sh
 
-# TODO dont write logfiles to /vagrant
 LOG_DIR=$install_root/logs
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir $LOG_DIR
 fi
-
-# check java version and set it to jdk8 if not already (in debian with update-alternatives --config java)
-#java -version
 
 chmod -R o+x $install_root
 
