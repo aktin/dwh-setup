@@ -19,6 +19,8 @@ echo ProxyPreserveHost On > $conf
 echo ProxyPass /aktin http://localhost:9090/aktin >> $conf
 echo ProxyPassReverse /aktin http://localhost:9090/aktin >> $conf
 
+ln -s $conf /etc/apache2/conf-enabled/
+
 echo LoadModule proxy_module libexec/apache2/mod_proxy.so >> /etc/httpd/conf/httpd.conf
 echo LoadModule proxy_http_module libexec/apache2/mod_proxy_http.so >> /etc/httpd/conf/httpd.conf
 
