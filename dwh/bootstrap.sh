@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-install_root=~/i2b2install
-install_root=/vagrant
-# install_root=$(pwd)
+# install_root=~/i2b2install
+# install_root=/vagrant
+install_root=$(pwd)
 
 # Enable backports
 echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
