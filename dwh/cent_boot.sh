@@ -29,14 +29,16 @@ apachectl restart
 ln -s /var/www/html /var/webroot
 
 #postgres
-# yum -y install postgresql-server postgresql-contrib
-# postgresql-setup initdb
-# systemctl enable postgresql
-# systemctl start postgresql
+yum -y install postgresql-server postgresql-contrib
+postgresql-setup initdb
+systemctl enable postgresql
+systemctl start postgresql
 
-# ant -f cent_build.xml change_pg_file
+sudo -u postgres ant -f cent_build.xml change_pg_file
 # chown postgres:postgres /var/lib/pgsql/data/pg_hba.conf
-# systemctl restart postgresql
+systemctl restart postgresql
+
+ant -f cent_build.xml change_selinux_file
 
 # create postgres databases for i2b2
 dos2unix $install_root/cent_auto.sh
