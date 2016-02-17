@@ -56,4 +56,4 @@ chmod -R o+x $install_root
 
 ln -s $install_root /opt/aktin
 
-$install_root/autoinstall.sh 2> $LOG_DIR/autoinstall.err.log
+$install_root/cent_auto.sh 2> $LOG_DIR/autoinstall.err.log
