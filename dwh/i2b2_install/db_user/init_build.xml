@@ -15,6 +15,11 @@
 
 	<target name="create_POSTGRESQL_users" depends="init, create_pm_user, create_hive_user, create_im_user, create_work_user, create_meta_user, create_crc_user">
 	</target>
+	<target name="create_POSTGRESQL_users_cent" depends="init">
+		<sql driver="${db.driver}" url="${db.url}" userid="${db.username}" password="${db.password}" classpathref="classpath" onerror="continue" print="true">
+			<transaction src="./scripts/create_schemas.sql" />
+		</sql>
+	</target>
 	<target name="create_pm_user" depends="init">
 		<sql driver="${db.driver}" url="${db.url}" userid="${db.username}" password="${db.password}" classpathref="classpath" onerror="continue" print="true">
 			<transaction src="./scripts/create_pm_user.sql" />

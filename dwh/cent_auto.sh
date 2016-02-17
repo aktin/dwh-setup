@@ -34,7 +34,7 @@ cd $DATA_DEST
 ant -f prepare_build.xml change_properties
 
 echo ant scripts
-ant all 
+ant -f build_cent.xml all 
 ant deploy_dwh_j2ee_ear
 
 echo load aktin data
