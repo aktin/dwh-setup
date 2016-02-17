@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /var/lib/pgsql/9.4/data/
+cd /var/lib/pgsql/data/
 
 #
 # enable client authentication (trust)
