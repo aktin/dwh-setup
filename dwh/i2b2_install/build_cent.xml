@@ -221,7 +221,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
     <target name="user_create" depends="init">
         <echo message="database users"/>
-        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="create_POSTGRESQL_users" output="${log.dir}/user_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="create_POSTGRESQL_users_cent" output="${log.dir}/user_create.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="i2b2_db_delete" depends="init" description="drop user Database">
