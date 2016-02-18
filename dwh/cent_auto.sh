@@ -41,3 +41,11 @@ echo load aktin data
 sudo -u postgres psql -c "\COPY i2b2metadata.table_access FROM '$DATA_DEST/db_aktin/i2b2metadata.table_access.data' (DELIMITER '|');" i2b2
 sudo -u postgres psql -c "\COPY i2b2metadata.i2b2 FROM '$DATA_DEST/db_aktin/i2b2metadata.i2b2.data' (DELIMITER '|');" i2b2
 sudo -u postgres psql -c "\COPY i2b2demodata.concept_dimension FROM '$DATA_DEST/db_aktin/i2b2demodata.concept_dimension.data' (DELIMITER '|');" i2b2
+
+#TODO
+# add apache to autostart
+# add wildfly to autostart
+
+# restart server!
+# apachectl restart
+# start wildfly

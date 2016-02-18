@@ -38,8 +38,8 @@ cat /var/lib/pgsql/data/pg_hba.conf.orig | sudo -u postgres sed -r -e 's|(host\W
 
 systemctl start postgresql
 
-cp /etc/sysconfig/selinux /opt/aktin/selinux.orig
-cat /opt/aktin/selinux.orig | sudo -u postgres sed 's|SELINUX=enforcing|SELINUX=disabled|' > /etc/sysconfig/selinux
+sudo cp /etc/sysconfig/selinux /opt/aktin/selinux.orig
+sudo cat /opt/aktin/selinux.orig | sudo sed 's|SELINUX=enforcing|SELINUX=disabled|' > /etc/sysconfig/selinux
 
 dos2unix $install_root/cent_auto.sh
 
@@ -52,4 +52,4 @@ chmod -R o+x $install_root
 
 ln -s $install_root /opt/aktin
 
-#$install_root/cent_auto.sh 2> $LOG_DIR/autoinstall.err.log
+$install_root/cent_auto.sh 2> $LOG_DIR/autoinstall.err.log
