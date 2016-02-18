@@ -28,6 +28,8 @@ apachectl restart
 
 ln -s /var/www/html /var/webroot
 
+ln -s $install_root /opt/aktin
+
 #postgres
 yum -y install postgresql-server postgresql-contrib
 postgresql-setup initdb
@@ -49,7 +51,5 @@ if [ ! -d "$LOG_DIR" ]; then
 fi
 
 chmod -R o+x $install_root
-
-ln -s $install_root /opt/aktin
 
 $install_root/cent_auto.sh 2> $LOG_DIR/autoinstall.err.log

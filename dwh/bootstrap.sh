@@ -32,6 +32,8 @@ WEBROOT=$(cat /etc/apache2/sites-available/*default* | grep -m1 'DocumentRoot' |
 echo linking Documentroot $WEBROOT to /var/webroot
 ln -s $WEBROOT /var/webroot
 
+ln -s $install_root /opt/aktin
+
 # ifconfig
 
 # create postgres databases for i2b2
@@ -49,7 +51,5 @@ fi
 
 
 chmod -R o+x $install_root
-
-ln -s $install_root /opt/aktin
 
 $install_root/autoinstall.sh 2> $LOG_DIR/autoinstall.err.log
