@@ -47,4 +47,4 @@ sudo -u postgres psql -c "\COPY i2b2crcdata.concept_dimension FROM '$DATA_DEST/d
 
 # restart server!
 # apachectl restart
-# start wildfly
+# /opt/wildfly-9.0.2.Final/bin/standalone.sh -Djboss.http.port=9090 > /opt/aktin/logs/wildfly.log &
