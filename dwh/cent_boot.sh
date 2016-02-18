@@ -32,15 +32,15 @@ ln -s /var/www/html /var/webroot
 yum -y install postgresql-server postgresql-contrib
 postgresql-setup initdb
 systemctl enable postgresql
+
+sudo -u postgres cp /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.orig
+cat /var/lib/pgsql/data/pg_hba.conf.orig | sudo -u postgres sed -r -e 's|(host\W+all\W+all\W+127.0.0.1/32\W+)ident|\1trust|' -e's|(host\W+all\W+all\W+::1/128\W+)ident|\1trust|' -e 's|(local\W+all\W+all\W+)peer|\1trust|' > /var/lib/pgsql/data/pg_hba.conf
+
 systemctl start postgresql
 
-sudo -u postgres ant -f cent_build.xml change_pg_file
-# chown postgres:postgres /var/lib/pgsql/data/pg_hba.conf
-systemctl restart postgresql
+cp /etc/sysconfig/selinux /opt/aktin/selinux.orig
+cat /opt/aktin/selinux.orig | sudo -u postgres sed 's|SELINUX=enforcing|SELINUX=disabled|' > /etc/sysconfig/selinux
 
-ant -f cent_build.xml change_selinux_file
-
-# create postgres databases for i2b2
 dos2unix $install_root/cent_auto.sh
 
 LOG_DIR=$install_root/logs
