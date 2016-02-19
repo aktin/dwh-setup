@@ -2,7 +2,8 @@
 
 # install_root=~/i2b2install
 # install_root=/vagrant
-install_root=$(dirname $0)/
+SCRIPT=$(readlink -f "$0")
+install_root=$(dirname "$SCRIPT")/
 
 # Enable backports
 echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list

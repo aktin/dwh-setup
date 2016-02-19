@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-install_root=$(dirname $0)/
+SCRIPT=$(readlink -f "$0")
+install_root=$(dirname "$SCRIPT")/
 
 yum clean all
 yum -y update
