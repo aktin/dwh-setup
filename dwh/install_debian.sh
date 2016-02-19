@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-install_root=~/i2b2install
-install_root=/vagrant
-# install_root=$(pwd)
+# install_root=~/i2b2install
+# install_root=/vagrant
+install_root=$(dirname $0)/
 
 # Enable backports
 echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
@@ -34,6 +34,7 @@ ln -s $WEBROOT /var/webroot
 
 ln -s $install_root /opt/aktin
 
+install_root=/opt/aktin
 # ifconfig
 
 # create postgres databases for i2b2

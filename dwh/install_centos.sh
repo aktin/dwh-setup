@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-install_root=$(pwd)
+install_root=$(dirname $0)/
 
 yum clean all
 yum -y update
@@ -30,6 +30,8 @@ ln -s /var/www/html /var/webroot
 
 ln -s $install_root /opt/aktin
 
+install_root=/opt/aktin
+
 #postgres
 yum -y install postgresql-server postgresql-contrib
 postgresql-setup initdb
@@ -40,8 +42,8 @@ cat /var/lib/pgsql/data/pg_hba.conf.orig | sudo -u postgres sed -r -e 's|(host\W
 
 systemctl start postgresql
 
-sudo cp /etc/sysconfig/selinux /opt/aktin/selinux.orig
-sudo cat /opt/aktin/selinux.orig | sudo sed 's|SELINUX=enforcing|SELINUX=disabled|' > /etc/sysconfig/selinux
+sudo cp /etc/sysconfig/selinux $install_root/selinux.orig
+sudo cat $install_root/selinux.orig | sudo sed 's|SELINUX=enforcing|SELINUX=disabled|' > /etc/sysconfig/selinux
 
 dos2unix $install_root/cent_auto.sh
 
