@@ -8,6 +8,9 @@ yum -y update
 yum -y install java-1.8.0-openjdk-headless
 yum -y install sudo wget curl dos2unix unzip sed bc ant git php php-curl 
 
+# install R libraries for reporting
+yum -y install r-xml
+
 # make centos preparations
 ln -s /etc/httpd /etc/apache2
 mkdir /etc/httpd/conf-available
