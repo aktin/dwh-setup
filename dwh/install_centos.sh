@@ -8,14 +8,6 @@ yum -y update
 yum -y install java-1.8.0-openjdk-headless
 yum -y install sudo wget curl dos2unix unzip sed bc ant git php php-curl 
 
-# install R libraries for reporting, adding fedora repos
-rpm -Uvh http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-# preparations for r-xml
-yum -y install libxml2 libxml2-devel 
-yum -y install R
-Rscript -e 'install.packages("XML", repos="https://cran.rstudio.com/")'
-Rscript -e 'install.packages("lattice", repos="https://cran.rstudio.com/")'
-
 # make centos preparations
 ln -s /etc/httpd /etc/apache2
 mkdir /etc/httpd/conf-available
@@ -60,6 +52,15 @@ LOG_DIR=$install_root/logs
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir $LOG_DIR
 fi
+
+# install R libraries for reporting, adding fedora repos
+rpm -Uvh http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+# preparations for r-xml
+yum -y install libxml2 libxml2-devel
+yum -y install R
+Rscript -e 'install.packages("XML", repos="https://cran.rstudio.com/")'
+Rscript -e 'install.packages("lattice", repos="https://cran.rstudio.com/")'
+
 
 chmod -R o+x $install_root
 

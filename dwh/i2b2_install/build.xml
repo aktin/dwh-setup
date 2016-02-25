@@ -330,6 +330,23 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
 
     <!-- =================================================================== -->
+    <!--    Insert AKTIN Data                                                -->
+    <!-- =================================================================== -->
+    <target name="aktin_insert" depends="" description="insert aktin data">
+        <echo message="aktin: insert"/>
+        <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_crcdata_tables_release_1-7" output="${log.dir}/crc_create.log" inheritAll="false" useNativeBasedir="true"/>        
+        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_procedures_release_1-7" output="${log.dir}/crc_create_procedures.log" inheritAll="false" useNativeBasedir="true"/>        
+        <ant antfile="${ant.installdata.dir}/${crc.dir}/change_build.xml" target="load_crc" output="${log.dir}/crc_load_data.log" inheritAll="false" useNativeBasedir="true"/>
+
+        <sql driver="${db.driver}" url="${db.url}" userid="${db.username}" password="${db.password}" classpathref="classpath" onerror="continue" print="true">
+            <transaction src="./db_aktin/i2b2metadata.table_access.insert.sql" />
+            <transaction src="./db_aktin/i2b2metadata.i2b2.copy.sql" />
+            <transaction src="./db_aktin/i2b2crcdata.concept_dimension.copy.sql" />
+        </sql>
+    </target>
+
+    <!-- =================================================================== -->
     <!--     build all                                                       -->
     <!-- =================================================================== -->
     <target name="create_tables" 
@@ -349,7 +366,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
                     imdata_create,
                     workdata_create,
                     metadata_create,
-                    crcdata_create" 
+                    crcdata_create, 
+                    aktin_insert" 
         description="call all create targets">
         <echo message="db all"/>
     </target>
