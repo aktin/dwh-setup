@@ -10,17 +10,11 @@ yum -y install sudo wget curl dos2unix unzip sed bc ant git php php-curl
 
 # install R libraries for reporting, adding fedora repos
 rpm -Uvh http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-yum -y install R
 # preparations for r-xml
 yum -y install libxml2 libxml2-devel 
-# R --vanilla
-# > install.packages(c("XML"))
-# > install.packages(c("lattice"))
-# alternative: 
-# wget https://cran.r-project.org/src/contrib/XML_3.98-1.3.tar.gz
-# wget https://cran.r-project.org/src/contrib/lattice_0.20-33.tar.gz
-# R CMD INSTALL XML_3.98-1.3.tar.gz
-# R CMD INSTALL lattice_0.20-33.tar.gz
+yum -y install R
+Rscript -e 'install.packages("XML", repos="https://cran.rstudio.com/")'
+Rscript -e 'install.packages("lattice", repos="https://cran.rstudio.com/")'
 
 # make centos preparations
 ln -s /etc/httpd /etc/apache2
