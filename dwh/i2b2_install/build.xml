@@ -337,9 +337,9 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <ant antfile="${ant.installdata.dir}/${crc.dir}/change_build.xml" target="load_aktin_crc_insert" output="${log.dir}/aktin_crc_load.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <target name="aktin_copy_sql" depends="init" description="copy aktin sql files">
-        <copy file="${ant.installdata.dir}/db_aktin/i2b2metadata.table_access.sql.orig" todir="${ant.installdata.dir}/${meta.dir}/scripts/" overwrite="true"/>
-        <copy file="${ant.installdata.dir}/db_aktin/i2b2metadata.i2b2.sql.orig" todir="${ant.installdata.dir}/${meta.dir}/scripts/" overwrite="true"/>
-        <copy file="${ant.installdata.dir}/db_aktin/i2b2crcdata.concept_dimension.sql.orig" todir="${ant.installdata.dir}/${crc.dir}/scripts/" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/db_aktin/i2b2metadata.table_access.sql" todir="${ant.installdata.dir}/${meta.dir}/scripts/" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/db_aktin/i2b2metadata.i2b2.sql" todir="${ant.installdata.dir}/${meta.dir}/scripts/" overwrite="true"/>
+        <copy file="${ant.installdata.dir}/db_aktin/i2b2crcdata.concept_dimension.sql" todir="${ant.installdata.dir}/${crc.dir}/scripts/" overwrite="true"/>
     </target>
 
     <!-- =================================================================== -->
