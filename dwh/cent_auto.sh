@@ -33,6 +33,10 @@ cp -r -f $DATA_HOME/* $DATA_DEST
 cd $DATA_DEST
 ant -f prepare_build.xml change_properties
 
+echo manipulate ant build file for centOS
+cp build.xml build.xml.backup
+cat build.xml.backup | sed 's|create_POSTGRESQL_users|create_POSTGRESQL_users_cent|' > build.xml
+
 echo ant scripts
 ant all
 
