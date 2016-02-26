@@ -26,11 +26,11 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!--     Check log folder                                                -->
     <!-- =================================================================== -->
     <target name="check_log_folder">
-        <available file="${log.dir}" type="dir" property="log.dir.exists"/>
+        <available file="${install-log.dir}" type="dir" property="install-log.dir.exists"/>
     </target>
-    <target name="mkdir_log" depends="check_log_folder" unless="${log.dir.exists}">
+    <target name="mkdir_log" depends="check_log_folder" unless="${install-log.dir.exists}">
         <echo message="make log folder"/>
-        <mkdir dir="${log.dir}"/>
+        <mkdir dir="${install-log.dir}"/>
     </target>
 
     <!-- =================================================================== -->
@@ -220,7 +220,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
     <target name="user_create" depends="init">
         <echo message="database users"/>
-        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="create_POSTGRESQL_users" output="${log.dir}/user_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="create_POSTGRESQL_users" output="${install-log.dir}/user_create.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="i2b2_db_delete" depends="init" description="drop user Database">
@@ -230,7 +230,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
     <target name="user_delete" depends="init" description="drop user">
         <echo message="${dbuser.dir}"/>
-        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="drop_POSTGRESQL_users" output="${log.dir}/user_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="drop_POSTGRESQL_users" output="${install-log.dir}/user_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <target name="reset_psql_user_password" depends="init" description="reset user password">
         <sql driver="${db.driver}" url="${db.url}" userid="${db.username}" password="${db.password}" classpathref="classpath" onerror="continue" print="true">
@@ -247,14 +247,14 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="hive_create" depends="init" description="init HIVE Database">
         <echo message="hive: create"/>
         <copy file="${ant.installdata.dir}/${hive.dir}/db.properties"  overwrite="true" todir="${ant.i2b2.data.dir}/Hivedata"/>
-        <ant antfile="${ant.i2b2.data.dir}/Hivedata/data_build.xml" target="create_hivedata_tables_release_1-7" output="${log.dir}/hive_create.log" inheritAll="false" useNativeBasedir="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Hivedata/data_build.xml" target="db_hivedata_load_data" output="${log.dir}/hive_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Hivedata/data_build.xml" target="create_hivedata_tables_release_1-7" output="${install-log.dir}/hive_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Hivedata/data_build.xml" target="db_hivedata_load_data" output="${install-log.dir}/hive_load.log" inheritAll="false" useNativeBasedir="true"/>
         <echo message="hive: update"/>
-        <ant antfile="${ant.installdata.dir}/${hive.dir}/change_build.xml" target="update_hive" output="${log.dir}/hive_update.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${hive.dir}/change_build.xml" target="update_hive" output="${install-log.dir}/hive_update.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="hive_delete" depends="init" description="drop HIVE Database">
-        <ant antfile="${ant.installdata.dir}/${hive.dir}/change_build.xml" target="drop_hive" output="${log.dir}/hive_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${hive.dir}/change_build.xml" target="drop_hive" output="${install-log.dir}/hive_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -263,17 +263,17 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="pm_create" depends="init" description="init PM Database">
         <echo message="pm: create"/>
         <copy file="${ant.installdata.dir}/${pm.dir}/db.properties" todir="${ant.i2b2.data.dir}/Pmdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_pmdata_tables_release_1-7" output="${log.dir}/pm_create.log" inheritAll="false" useNativeBasedir="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_triggers_release_1-7" output="${log.dir}/pm_create_triggers.log" inheritAll="false" useNativeBasedir="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="db_pmdata_load_data" output="${log.dir}/pm_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_pmdata_tables_release_1-7" output="${install-log.dir}/pm_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="create_triggers_release_1-7" output="${install-log.dir}/pm_create_triggers.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Pmdata/data_build.xml" target="db_pmdata_load_data" output="${install-log.dir}/pm_load.log" inheritAll="false" useNativeBasedir="true"/>
         <echo message="pm: register cells"/>
-        <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="register_cells" output="${log.dir}/pm_register_cells.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="register_cells" output="${install-log.dir}/pm_register_cells.log" inheritAll="false" useNativeBasedir="true"/>
         <echo message="pm: update"/>
-        <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="update_pm" output="${log.dir}/pm_update.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="update_pm" output="${install-log.dir}/pm_update.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="pm_delete" depends="init" description="drop PM Database">
-        <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="drop_pm" output="${log.dir}/pm_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${pm.dir}/change_build.xml" target="drop_pm" output="${install-log.dir}/pm_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -282,7 +282,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="imdata_create" depends="init" description="init IM Database">
         <echo message="im: create"/>
         <copy file="${ant.installdata.dir}/${im.dir}/db.properties" todir="${ant.i2b2.data.dir}/Imdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Imdata/data_build.xml" target="create_imdata_tables_release_1-7" output="${log.dir}/im_create.log" inheritAll="false" useNativeBasedir="true"/>               
+        <ant antfile="${ant.i2b2.data.dir}/Imdata/data_build.xml" target="create_imdata_tables_release_1-7" output="${install-log.dir}/im_create.log" inheritAll="false" useNativeBasedir="true"/>               
     </target>
 
     <!-- =================================================================== -->
@@ -291,12 +291,12 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="workdata_create" depends="init" description="init WORK Database">
         <echo message="work: create"/>
         <copy file="${ant.installdata.dir}/${work.dir}/db.properties" todir="${ant.i2b2.data.dir}/Workdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Workdata/data_build.xml" target="create_workdata_tables_release_1-7" output="${log.dir}/work_create.log" inheritAll="false" useNativeBasedir="true"/>               
-        <ant antfile="${ant.installdata.dir}/${work.dir}/change_build.xml" target="insert_work_access" output="${log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Workdata/data_build.xml" target="create_workdata_tables_release_1-7" output="${install-log.dir}/work_create.log" inheritAll="false" useNativeBasedir="true"/>               
+        <ant antfile="${ant.installdata.dir}/${work.dir}/change_build.xml" target="insert_work_access" output="${install-log.dir}/work_load.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="workdata_delete" depends="init" description="drop WORK Database">
-        <ant antfile="${ant.installdata.dir}/${work.dir}/change_build.xml" target="drop_work" output="${log.dir}/work_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${work.dir}/change_build.xml" target="drop_work" output="${install-log.dir}/work_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -305,12 +305,12 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="metadata_create" depends="init" description="init META Database">
         <echo message="meta: create"/>
         <copy file="${ant.installdata.dir}/${meta.dir}/db.properties" todir="${ant.i2b2.data.dir}/Metadata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Metadata/data_build.xml" target="create_metadata_tables_release_1-7" output="${log.dir}/meta_create.log" inheritAll="false" useNativeBasedir="true"/>
-        <ant antfile="${ant.installdata.dir}/${meta.dir}/change_build.xml" target="db_metadata_load_data" output="${log.dir}/meta_load_data.log" inheritAll="false" useNativeBasedir="true"/><!-- update demographics to aktin! -->
+        <ant antfile="${ant.i2b2.data.dir}/Metadata/data_build.xml" target="create_metadata_tables_release_1-7" output="${install-log.dir}/meta_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${meta.dir}/change_build.xml" target="db_metadata_load_data" output="${install-log.dir}/meta_load_data.log" inheritAll="false" useNativeBasedir="true"/><!-- update demographics to aktin! -->
     </target>    
     <!-- =================================================================== -->
     <target name="metadata_delete" depends="init" description="drop META Database">
-        <ant antfile="${ant.installdata.dir}/${meta.dir}/change_build.xml" target="drop_meta" output="${log.dir}/meta_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${meta.dir}/change_build.xml" target="drop_meta" output="${install-log.dir}/meta_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -319,13 +319,13 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <target name="crcdata_create" depends="init" description="init CRC Database">
         <echo message="crc: create"/>
         <copy file="${ant.installdata.dir}/${crc.dir}/db.properties" todir="${ant.i2b2.data.dir}/Crcdata" overwrite="true"/>
-        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_crcdata_tables_release_1-7" output="${log.dir}/crc_create.log" inheritAll="false" useNativeBasedir="true"/>        
-        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_procedures_release_1-7" output="${log.dir}/crc_create_procedures.log" inheritAll="false" useNativeBasedir="true"/>        
-        <ant antfile="${ant.installdata.dir}/${crc.dir}/change_build.xml" target="load_crc" output="${log.dir}/crc_load_data.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_crcdata_tables_release_1-7" output="${install-log.dir}/crc_create.log" inheritAll="false" useNativeBasedir="true"/>        
+        <ant antfile="${ant.i2b2.data.dir}/Crcdata/data_build.xml" target="create_procedures_release_1-7" output="${install-log.dir}/crc_create_procedures.log" inheritAll="false" useNativeBasedir="true"/>        
+        <ant antfile="${ant.installdata.dir}/${crc.dir}/change_build.xml" target="load_crc" output="${install-log.dir}/crc_load_data.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="crcdata_delete" depends="init" description="drop CRC Database">
-        <ant antfile="${ant.installdata.dir}/${crc.dir}/change_build.xml" target="drop_crc" output="${log.dir}/crc_delete.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${crc.dir}/change_build.xml" target="drop_crc" output="${install-log.dir}/crc_delete.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
 
     <!-- =================================================================== -->
@@ -333,8 +333,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     <!-- =================================================================== -->
     <target name="aktin_insert" depends="aktin_copy_sql, change_properties" description="insert aktin data">
         <echo message="aktin: insert"/>
-        <ant antfile="${ant.installdata.dir}/${meta.dir}/change_build.xml" target="load_aktin_meta_insert" output="${log.dir}/aktin_meta_load.log" inheritAll="false" useNativeBasedir="true"/>
-        <ant antfile="${ant.installdata.dir}/${crc.dir}/change_build.xml" target="load_aktin_crc_insert" output="${log.dir}/aktin_crc_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${meta.dir}/change_build.xml" target="load_aktin_meta_insert" output="${install-log.dir}/aktin_meta_load.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${crc.dir}/change_build.xml" target="load_aktin_crc_insert" output="${install-log.dir}/aktin_crc_load.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <target name="aktin_copy_sql" depends="init" description="copy aktin sql files">
         <copy file="${ant.installdata.dir}/db_aktin/i2b2metadata.table_access.sql" todir="${ant.installdata.dir}/${meta.dir}/scripts/" overwrite="true"/>
