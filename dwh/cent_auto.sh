@@ -34,7 +34,7 @@ cd $DATA_DEST
 ant -f prepare_build.xml change_properties
 
 echo ant scripts
-ant -f build_cent.xml all 
+ant all
 
 #TODO
 # add apache to autostart
