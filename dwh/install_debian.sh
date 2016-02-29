@@ -35,13 +35,12 @@ WEBROOT=$(cat /etc/apache2/sites-available/*default* | grep -m1 'DocumentRoot' |
 echo linking Documentroot $WEBROOT to /var/webroot
 ln -s $WEBROOT /var/webroot
 
+# link install root to this locations so autoinstaller knows where we are
 ln -s $install_root /opt/aktin
 
 install_root=/opt/aktin
-# ifconfig
 
 # create postgres databases for i2b2
-# cd $install_root
 dos2unix $install_root/autoinstall.sh
 
 # TODO dont write logfiles to /vagrant
@@ -49,10 +48,6 @@ LOG_DIR=$install_root/logs
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir $LOG_DIR
 fi
-
-# check java version and set it to jdk8 if not already (in debian with update-alternatives --config java)
-#java -version
-
 
 chmod -R o+x $install_root
 

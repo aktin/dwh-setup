@@ -1,13 +1,14 @@
 #!/bin/bash
-MY_PATH=/opt/aktin
+
+SCRIPT=$(readlink -f "$0")
+MY_PATH=$(dirname "$SCRIPT")/
 
 DATA_HOME=$MY_PATH/i2b2_install
 DATA_DEST=$MY_PATH/temp_install
 LOG_DIR=$MY_PATH/logs
 PACKAGES=$MY_PATH/packages
 
-BASE_APPDIR=/opt
-WILDFLY_HOME=$BASE_APPDIR/wildfly-9.0.2.Final
+WILDFLY_HOME=/opt/wildfly-9.0.2.Final
 JBOSS7_DIR=/opt/jboss-as-7.1.1.Final 
 
 # do not run this script if wildfly already present

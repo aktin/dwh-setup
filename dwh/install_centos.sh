@@ -25,7 +25,9 @@ ln -s $conf /etc/apache2/conf-enabled/
 echo LoadModule proxy_module libexec/apache2/mod_proxy.so >> /etc/httpd/conf/httpd.conf
 echo LoadModule proxy_http_module libexec/apache2/mod_proxy_http.so >> /etc/httpd/conf/httpd.conf
 
-apachectl restart
+#apachectl restart
+systemctl enable httpd
+systemctl start httpd
 
 ln -s /var/www/html /var/webroot
 
@@ -60,7 +62,6 @@ yum -y install libxml2 libxml2-devel
 yum -y install R
 Rscript -e 'install.packages("XML", repos="https://cran.rstudio.com/")'
 Rscript -e 'install.packages("lattice", repos="https://cran.rstudio.com/")'
-
 
 chmod -R o+x $install_root
 
