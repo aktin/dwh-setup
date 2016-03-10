@@ -8,7 +8,7 @@ install_root=$(dirname "$SCRIPT")/
 # Enable backports
 echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 apt-get update
-apt-get install -y openjdk-8-jre-headless sudo wget curl dos2unix unzip sed bc ant postgresql git
+apt-get install -y openjdk-8-jre-headless sudo wget curl dos2unix unzip sed bc ant postgresql
 
 # install R libraries for reporting
 apt-get install -y r-cran-xml r-cran-lattice

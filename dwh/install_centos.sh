@@ -6,7 +6,7 @@ install_root=$(dirname "$SCRIPT")/
 yum clean all
 yum -y update
 yum -y install java-1.8.0-openjdk-headless
-yum -y install sudo wget curl dos2unix unzip sed bc ant git php php-curl 
+yum -y install sudo wget curl dos2unix unzip sed bc ant php php-curl 
 
 # make centos preparations
 ln -s /etc/httpd /etc/apache2
