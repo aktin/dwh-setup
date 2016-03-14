@@ -1,30 +1,20 @@
 #!/bin/sh
 
-echo "hello dear world" > /var/log/install.log
-echo $(pwd) >> /var/log/install.log
+echo "aktin post install:" > /var/log/install.log
 mount /media/cdrom
-echo $(ls /media/cdrom) >> /var/log/install.log
 
 echo copy file >> /var/log/install.log
 cp /media/cdrom/aktin-installer.tar.gz /usr/local/ >> /var/log/install.log
 
-echo $(ls /usr/local/) >> /var/log/install.log
 cd /usr/local/ 
-echo $(ls) >> /var/log/install.log
-tar zvxf aktin-installer.tar.gz >> /var/log/install.log
+tar zxf aktin-installer.tar.gz >> /var/log/install.log
 # cp -r /media/cdrom/aktin-dwh-snapshot /usr/local/aktin-dwh-snapshot >> /var/log/install.log
-echo $(ls) >> /var/log/install.log
-
 cd aktin-dwh-snapshot >> /var/log/install.log
 
-echo $(ls) >> /var/log/install.log
 echo get packages >> /var/log/install.log
 cp /media/cdrom/packages.tar.gz /usr/local/aktin-dwh-snapshot/ >> /var/log/install.log
 # cp -r /media/cdrom/packages /usr/local/aktin-dwh-snapshot/packages >> /var/log/install.log
-tar zvxf packages.tar.gz >> /var/log/install.log
-
-ls /var/run/postgresql/ >> /var/log/install.log
-ls /etc/init.d/ >> /var/log/install.log
+tar zxf packages.tar.gz >> /var/log/install.log
 
 service postgresql start >> /var/log/install.log
 ./install_debian.sh >> /var/log/install_aktin.log
