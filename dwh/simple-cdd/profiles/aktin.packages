@@ -1,0 +1,14 @@
+openjdk-8-jre-headless
+sudo
+wget
+curl
+dos2unix
+unzip
+sed
+bc
+ant
+postgresql
+r-cran-xml
+r-cran-lattice
+libapache2-mod-php5
+php5-curl
