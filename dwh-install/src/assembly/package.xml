@@ -1,0 +1,37 @@
+<assembly>
+	<id>full</id>
+	<!-- Specifies that our binary distribution is a zip package -->
+	<formats>
+		<format>zip</format>
+	</formats>
+  
+	<includeBaseDirectory>false</includeBaseDirectory>
+	
+	<!-- Add dependencies for the J2EE server to the /deploy directory -->
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/deploy</outputDirectory>
+			<useProjectArtifact>false</useProjectArtifact>
+			<unpack>false</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+
+    <fileSets>
+        <!--
+            Adds startup scripts to the root directory of zip package. The startup
+            scripts are copied from the src/main/scripts directory.
+        -->
+        <fileSet>
+            <directory>${project.build.scriptSourceDirectory}</directory>
+            <outputDirectory></outputDirectory>
+            <!-- enable resource filtering to replace ${property.names} -->
+            <filtered>false</filtered>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory></outputDirectory>
+            <filtered>false</filtered>
+        </fileSet>
+    </fileSets>
+</assembly>
