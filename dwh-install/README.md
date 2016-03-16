@@ -10,30 +10,24 @@ für die Installation benötigt werden.
 Von den offiziellen Webseiten von i2b2 https://www.i2b2.org/software/
 müssen die folgenden Pakete heruntergeladen werden, da sie aus 
 Lizenzgründen nicht automatisch heruntergeladen werden können:
-* i2b2core-src-1705.zip
-* i2b2createdb-1705.zip
-* i2b2webclient-1705.zip
+* i2b2core-src-1706.zip
+* i2b2createdb-1706.zip
+* i2b2webclient-1706.zip
 
 Zusätzlich werden Pakete die folgenden Pakete bei Bedarf
 automatisch heruntergeladen:
 
 * Axis2 1.6.2
-* Apache Ant 1.8.2
-* JBoss AS 7.1.1 Final
+* JBoss  Wildfly 9.0.2 Final
 
 
 TODO
 ----
-Remove the following files from jboss-configuration.zip:
-- standalone*.xml 
-- logging.properties
-- application-*.properties
+* mv scripts to /src/scripts
+* build src dest mv to /usr/local/aktin/install eg
+* logs to /var/log/aktin
+* packages to /usr/local/aktin/packages - copy packages from src/resources
+* dont include vagrant file, readme, postgres, logging
 
-Deployment to Wildfly via CLI:
-```
-/opt/wildfly-9.0.2.Final/bin/jboss-cli.sh --controller=localhost:9990 --connect
---command="deploy ... --force"
-```
-
-Test wildfly 10.0.0
+* pre manipulation of files - folder path!
 

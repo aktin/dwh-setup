@@ -1,9 +1,9 @@
-dwh/packages/
-dwh/.vagrant
-dwh/i2b2_install/i2b2_src/
-dwh/logs/
-dwh/temp_install/
-dwh/temp/
+dwh-install/packages/
+dwh-install/.vagrant
+dwh-install/i2b2_install/i2b2_src/
+dwh-install/logs/
+dwh-install/temp_install/
+dwh-install/temp/
 
 *.box
 *.zip
