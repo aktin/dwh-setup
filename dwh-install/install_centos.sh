@@ -61,7 +61,7 @@ dos2unix $install_root/cent_auto.sh
 
 LOG_DIR=$install_root/logs
 if [ ! -d "$LOG_DIR" ]; then 
-    mkdir $LOG_DIR
+    mkdir -p $LOG_DIR
     chmod -R 777 $LOG_DIR
 fi
 
