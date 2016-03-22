@@ -48,35 +48,5 @@
 		</plugins>
 	</build>
 
-
-<!-- 	<profiles>
-		<profile>
-			<id>debian-build</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>build.destiny.type</name>
-					<value>debian</value>
-				</property>
-			</activation>
-			<properties>
-				<application-home>/path/to/application</application-home>
-			</properties>
-		</profile>
-	</profiles>
-	<profiles>
-		<profile>
-			<id>centos-build</id>
-			<activation>
-				<property>
-					<name>build.destiny.type</name>
-					<value>centos</value>
-				</property>
-			</activation>
-			<properties>
-				<application-home>/path/to/application</application-home>
-			</properties>
-		</profile>
-	</profiles> -->
 	
 </project>
