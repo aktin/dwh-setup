@@ -3,6 +3,7 @@
 	<!-- Specifies that our binary distribution is a zip package -->
 	<formats>
 		<format>zip</format>
+        <!--tgz-->
 	</formats>
   
 	<includeBaseDirectory>false</includeBaseDirectory>
