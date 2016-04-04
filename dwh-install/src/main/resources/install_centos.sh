@@ -96,24 +96,24 @@ if [ ! -d "$DATA_DEST" ]; then
 fi
 cp -r -f $DATA_HOME/* $DATA_DEST
 cd $DATA_DEST
-#ant -f prepare_build.xml change_properties
-
 
 buildfile=build.properties
-echo "# system generated properties for ant build"
+# add some system and build dependent parameters for the ant build
+echo "# system generated properties for ant build" >> $buildfile
 echo "ant.installdata.dir=${DATA_DEST}" >> $buildfile
 echo "i2b2.src.dir=${DATA_DEST}/i2b2_src" >> $buildfile
 echo "packages.dir=${PACKAGES}" >> $buildfile
 echo "install-log.dir=${LOG_DIR}/ant-install" >> $buildfile
-
+# add wildfly data
 echo "app.base.dir=/opt" >> $buildfile
 echo "jboss.home=${WILDFLY_HOME}" >> $buildfile
-
+# system dependent postgres sql call
 echo "postgres.users.create=create_POSTGRESQL_users_cent" >> $buildfile
-
-# echo manipulate ant build file for centOS
-# cp build.xml build.xml.backup
-# cat build.xml.backup | sed 's|create_POSTGRESQL_users|create_POSTGRESQL_users_cent|' > build.xml
+# change project name TODO needs refining
+echo "db.project=demo" >> $buildfile
+echo "db.project.name=Demo" >> $buildfile
+echo "db.project.uname=i2b2_DEMO" >> $buildfile
+echo "db.hive.id=i2b2demo" >> $buildfile
 
 echo ant scripts
 ant all
