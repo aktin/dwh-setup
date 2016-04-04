@@ -16,7 +16,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 		<available file="${packages.dir}/${i2b2.webclient.name}" type="file" property="package.i2b2.webclient.exists"/>
 		<available file="${packages.dir}/${jboss.zip.name}" type="file" property="package.jboss.zip.exists"/>
 		<available file="${packages.dir}/${db.driver.jar}" type="file" property="package.db.driver.exists"/>
-		<available file="${packages.dir}/${dwh.j2ee.ear}" type="file" property="package.dwh.j2ee.ear.exists"/>
 	</target>
 
 	<target name="mkdir_packages" depends="check_packages" unless="${package.dir.exists}">
@@ -51,12 +50,8 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 		<echo message="dowload db.driver"/>
 		<get src="${db.driver.url}" dest="${packages.dir}/${db.driver.jar}"/>
 	</target>
-	<target name="download_dwh_j2ee_ear" depends="mkdir_packages, check_packages" unless="${package.dwh.j2ee.ear.exists}">
-		<echo message="dowload dwh.j2ee.ear"/>
-		<get src="${dwh.j2ee.ear.url}" dest="${packages.dir}/${dwh.j2ee.ear}"/>
-	</target>
 
-	<target name="download_all" depends="mkdir_packages, download_axis2, download_axis2_patch, download_i2b2_db, download_i2b2_core, download_i2b2_webclient, download_jboss, download_db_driver, download_dwh_j2ee_ear">
+	<target name="download_all" depends="mkdir_packages, download_axis2, download_axis2_patch, download_i2b2_db, download_i2b2_core, download_i2b2_webclient, download_jboss, download_db_driver">
 		<echo message="dowloaded all needed packages"/>
 	</target>
 	
