@@ -96,11 +96,24 @@ if [ ! -d "$DATA_DEST" ]; then
 fi
 cp -r -f $DATA_HOME/* $DATA_DEST
 cd $DATA_DEST
-ant -f prepare_build.xml change_properties
+#ant -f prepare_build.xml change_properties
 
-echo manipulate ant build file for centOS
-cp build.xml build.xml.backup
-cat build.xml.backup | sed 's|create_POSTGRESQL_users|create_POSTGRESQL_users_cent|' > build.xml
+
+buildfile=build.properties
+echo "# system generated properties for ant build"
+echo "ant.installdata.dir=${DATA_DEST}" >> $buildfile
+echo "i2b2.src.dir=${DATA_DEST}/i2b2_src" >> $buildfile
+echo "packages.dir=${PACKAGES}" >> $buildfile
+echo "install-log.dir=${LOG_DIR}/ant-install" >> $buildfile
+
+echo "app.base.dir=/opt" >> $buildfile
+echo "jboss.home=${WILDFLY_HOME}" >> $buildfile
+
+echo "postgres.users.create=create_POSTGRESQL_users_cent" >> $buildfile
+
+# echo manipulate ant build file for centOS
+# cp build.xml build.xml.backup
+# cat build.xml.backup | sed 's|create_POSTGRESQL_users|create_POSTGRESQL_users_cent|' > build.xml
 
 echo ant scripts
 ant all

@@ -47,10 +47,7 @@ ln -s $WEBROOT /var/webroot
 # link install root to this locations so autoinstaller knows where we are
 ln -s $install_root /opt/aktin
 
-install_root=/opt/aktin
-
-# create postgres databases for i2b2
-dos2unix $install_root/autoinstall.sh
+# install_root=/opt/aktin
 
 # create directory for logs if not existent
 # TODO dont write logfiles to /vagrant
@@ -60,7 +57,7 @@ if [ ! -d "$LOG_DIR" ]; then
     chmod -R 777 $LOG_DIR
 fi
 
-chmod -R o+x $install_root
+# chmod -R o+x $install_root
 
 
 #autoinstall script
@@ -82,7 +79,20 @@ if [ ! -d "$DATA_DEST" ]; then
 fi
 cp -r -f $DATA_HOME/* $DATA_DEST
 cd $DATA_DEST
-ant -f prepare_build.xml change_properties
+
+buildfile=build.properties
+echo "# system generated properties for ant build"
+echo "ant.installdata.dir=${DATA_DEST}" >> $buildfile
+echo "i2b2.src.dir=${DATA_DEST}/i2b2_src" >> $buildfile
+echo "packages.dir=${PACKAGES}" >> $buildfile
+echo "install-log.dir=${LOG_DIR}/ant-install" >> $buildfile
+
+echo "app.base.dir=/opt" >> $buildfile
+echo "jboss.home=${WILDFLY_HOME}" >> $buildfile
+
+echo "postgres.users.create=create_POSTGRESQL_users" >> $buildfile
+
+# ant -f prepare_build.xml change_properties
 
 echo ant scripts
 ant all 

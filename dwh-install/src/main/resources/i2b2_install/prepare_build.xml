@@ -43,7 +43,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <!-- </replace> -->
         <replaceregexp file="build.properties" match="(ant.installdata.dir=)[/_0-9a-zA-Z]+" replace="\1${project.installroot}" flags="g" byline="true"/>
         <replaceregexp file="build.properties" match="(i2b2.src.dir=)[/_0-9a-zA-Z]+" replace="\1${project.installroot}/i2b2_src" flags="g" byline="true"/>
-        <replaceregexp file="build.properties" match="(install-log.dir=install-log.dir=)[/_0-9a-zA-Z]+" replace="\1${install-log.dir}" flags="g" byline="true"/>
+        <replaceregexp file="build.properties" match="(install-log.dir=)[/_0-9a-zA-Z]+" replace="\1${install-log.dir}" flags="g" byline="true"/>
         <replaceregexp file="build.properties" match="(packages.dir=)[/_0-9a-zA-Z]+" replace="\1${packages.dir}" flags="g" byline="true"/>
 
         <replaceregexp file="build.properties" match="(db.project=)[a-zA-Z]+" replace="\1${project.name}" flags="g" byline="true"/>

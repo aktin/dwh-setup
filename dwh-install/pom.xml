@@ -9,11 +9,6 @@
 	<artifactId>dwh-install</artifactId>
 	<version>0.1-SNAPSHOT</version>
 
-	<properties>
-		<mvn.prepare.logdir>$install_root/logs</mvn.prepare.logdir>
-		<mvn.prepare.packagedir>$install_root/packages</mvn.prepare.packagedir>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.aktin</groupId>
@@ -35,9 +30,6 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<filters>
-								<filter>src/assembly/filter.properties</filter>
-							</filters>
 							<descriptors>
 								<descriptor>src/assembly/package.xml</descriptor>
 							</descriptors>
@@ -47,6 +39,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	
 </project>

@@ -53,7 +53,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <replace dir="${ant.installdata.dir}/" value="" failOnNoReplacements="true">
             <exclude name="build.properties"/>
             <exclude name="**/*.orig"/>
-            <exclude name="i2b2_src/*"/>
             <include name="**/db.properties"/>
             <include name="**/scripts/*.sql"/>
             <include name="**/*-ds.xml"/>
@@ -62,34 +61,34 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <include name="**/workplaceapp/*"/>
             <include name="**/imapp/*"/>
 
-            <replacefilter token="${db.IPADDR}" value="${db.ip.addr}"/>
-            <replacefilter token="${db.DBTYPE}" value="${db.type}"/>
-            <replacefilter token="${db.DBTYPENAME}" value="${db.type.name}"/>
-            <replacefilter token="${db.DBPROJECT}" value="${db.project}"/>
-            <replacefilter token="${db.DBPROJECTNAME}" value="${db.project.name}"/>
-            <replacefilter token="${db.DBPROJECTUNAME}" value="${db.project.uname}"/>
-            <replacefilter token="${db.DBNAME}" value="${db.name}"/>
-            <replacefilter token="${db.SERVERURL}" value="${db.server}"/>
-            <replacefilter token="${db.DBDRIVER}" value="${db.driver}"/>
-            <replacefilter token="${db.DBDRIVERJAR}" value="${db.driver.jar}"/>
-            <replacefilter token="${db.DBURL}" value="${db.url}"/>
-            <replacefilter token="${db.DBUSER}" value="${db.username}"/>
-            <replacefilter token="${db.DBPWD}" value="${db.password}"/>
+            <replacefilter token="@IPADDR@" value="${db.ip.addr}"/>
+            <replacefilter token="@DBTYPE@" value="${db.type}"/>
+            <replacefilter token="@DBTYPENAME@" value="${db.type.name}"/>
+            <replacefilter token="@I2B2PROJECT@" value="${db.project}"/>
+            <replacefilter token="@I2B2PROJECTNAME@" value="${db.project.name}"/>
+            <replacefilter token="@I2B2PROJECTUNAME@" value="${db.project.uname}"/>
+            <replacefilter token="@DBNAME@" value="${db.name}"/>
+            <replacefilter token="@SERVERURL@" value="${db.server}"/>
+            <replacefilter token="@DBDRIVER@" value="${db.driver}"/>
+            <replacefilter token="@DBDRIVERJAR@" value="${db.driver.jar}"/>
+            <replacefilter token="@DBURL@" value="${db.url}"/>
+            <replacefilter token="@DBUSER@" value="${db.username}"/>
+            <replacefilter token="@DBPWD@" value="${db.password}"/>
 
-            <replacefilter token="${db.HIVEID}" value="${db.hive.id}"/>
+            <replacefilter token="@I2B2HIVEID@" value="${db.hive.id}"/>
 
-            <replacefilter token="${db.HIVEUSER}" value="${db.hive.user}"/>
-            <replacefilter token="${db.HIVEPWD}" value="${db.hive.pwd}"/>
-            <replacefilter token="${db.PMUSER}" value="${db.pm.user}"/>
-            <replacefilter token="${db.PMPWD}" value="${db.pm.pwd}"/>
-            <replacefilter token="${db.IMUSER}" value="${db.im.user}"/>
-            <replacefilter token="${db.IMPWD}" value="${db.im.pwd}"/>
-            <replacefilter token="${db.WORKUSER}" value="${db.work.user}"/>
-            <replacefilter token="${db.WORKPWD}" value="${db.work.pwd}"/>
-            <replacefilter token="${db.METAUSER}" value="${db.meta.user}"/>
-            <replacefilter token="${db.METAPWD}" value="${db.meta.pwd}"/>
-            <replacefilter token="${db.DEMOUSER}" value="${db.crc.user}"/>
-            <replacefilter token="${db.DEMOPWD}" value="${db.crc.pwd}"/>
+            <replacefilter token="@I2B2HIVEUSER@" value="${db.hive.user}"/>
+            <replacefilter token="@I2B2HIVEPWD@" value="${db.hive.pwd}"/>
+            <replacefilter token="@I2B2PMUSER@" value="${db.pm.user}"/>
+            <replacefilter token="@I2B2PMPWD@" value="${db.pm.pwd}"/>
+            <replacefilter token="@I2B2IMUSER@" value="${db.im.user}"/>
+            <replacefilter token="@I2B2IMPWD@" value="${db.im.pwd}"/>
+            <replacefilter token="@I2B2WORKUSER@" value="${db.work.user}"/>
+            <replacefilter token="@I2B2WORKPWD@" value="${db.work.pwd}"/>
+            <replacefilter token="@I2B2METAUSER@" value="${db.meta.user}"/>
+            <replacefilter token="@I2B2METAPWD@" value="${db.meta.pwd}"/>
+            <replacefilter token="@I2B2DEMOUSER@" value="${db.crc.user}"/>
+            <replacefilter token="@I2B2DEMOPWD@" value="${db.crc.pwd}"/>
         </replace>
     </target>  
     <target name="deploy_jboss" depends="init, check_log_folder, unzip_jboss, unzip_i2b2, unpack_i2b2_deploy_config">
@@ -189,7 +188,11 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         </replace>
     </target>
     <target name="deploy_dwh_j2ee_ear" depends="get_packages">
-        <copy file="${packages.dir}/${dwh.j2ee.ear}" todir="${jboss.home}/standalone/deployments" />
+        <copy todir="${jboss.home}/standalone/deployments"> 
+            <fileset dir="${packages.dir}/">
+                <include name="${dwh.j2ee.ear}"/>
+            </fileset>
+        </copy>
     </target>
     <target name="unzip_jboss" depends="get_packages, jboss_exists" unless="${jboss.dir.exist}">
         <echo message="unzip jboss"/>
@@ -220,7 +223,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
     </target>
     <target name="user_create" depends="init">
         <echo message="database users"/>
-        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="create_POSTGRESQL_users" output="${install-log.dir}/user_create.log" inheritAll="false" useNativeBasedir="true"/>
+        <ant antfile="${ant.installdata.dir}/${dbuser.dir}/init_build.xml" target="${postgres.users.create}" output="${install-log.dir}/user_create.log" inheritAll="false" useNativeBasedir="true"/>
     </target>
     <!-- =================================================================== -->
     <target name="i2b2_db_delete" depends="init" description="drop user Database">

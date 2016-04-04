@@ -1,17 +1,17 @@
 <assembly>
 	<id>full</id>
-	<!-- Specifies that our binary distribution is a zip package -->
+	<!-- Specifies that our binary distribution is a tar.gz package -->
 	<formats>
-		<format>zip</format>
-        <!--tgz-->
+		<format>tgz</format>
+        <!--zip-->
 	</formats>
   
 	<includeBaseDirectory>false</includeBaseDirectory>
 	
-	<!-- Add dependencies for the J2EE server to the /deploy directory -->
+	<!-- Add dependencies for the J2EE server to the /packages directory -->
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/deploy</outputDirectory>
+			<outputDirectory>/packages</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<unpack>false</unpack>
 			<scope>runtime</scope>
@@ -33,6 +33,8 @@
             <directory>src/main/resources</directory>
             <outputDirectory></outputDirectory>
             <filtered>false</filtered>
+            <!--src/main/resources/i2b2_install/build.properties-->
         </fileSet>
     </fileSets>
+
 </assembly>
