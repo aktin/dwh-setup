@@ -2,7 +2,7 @@
 	<id>full</id>
 	<!-- Specifies that our binary distribution is a tar.gz package -->
 	<formats>
-		<format>tgz</format>
+		<format>tar.gz</format>
         <!--zip-->
 	</formats>
   

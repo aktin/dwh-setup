@@ -1,0 +1,30 @@
+<assembly>
+	<id>full</id>
+	<!-- Specifies that our binary distribution is a tar.gz package -->
+	<formats>
+		<format>tar.gz</format>
+        <!--zip-->
+	</formats>
+  
+	<includeBaseDirectory>false</includeBaseDirectory>
+	
+	<!-- Add dependencies for the J2EE server to the /packages directory -->
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/packages</outputDirectory>
+			<useProjectArtifact>false</useProjectArtifact>
+			<unpack>false</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>packages</directory>
+            <outputDirectory>/packages</outputDirectory>
+            <!-- enable resource filtering to replace ${property.names} -->
+            <filtered>false</filtered>
+        </fileSet>
+    </fileSets>
+
+</assembly>
