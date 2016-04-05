@@ -73,5 +73,30 @@
         		</plugins>
         	</build>
         </profile>
+        <profile>
+        	<id>aktin-package-testing</id>
+        	<build>
+        		<plugins>
+        			<plugin>
+        				<artifactId>maven-assembly-plugin</artifactId>
+        				<executions>
+        					<execution>
+        						<id>aktin-package-testing</id>
+        						<phase>package</phase>
+        						<goals>
+        							<goal>single</goal>
+        						</goals>
+        						<configuration>
+        							<descriptors>
+        								<descriptor>src/assembly/package_testing.xml</descriptor>
+        							</descriptors>
+  									<finalName>aktin-testing</finalName>
+        						</configuration>
+        					</execution>
+        				</executions>
+        			</plugin>
+        		</plugins>
+        	</build>
+        </profile>
     </profiles>
 </project>

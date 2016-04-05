@@ -35,6 +35,11 @@
             <filtered>false</filtered>
             <!--src/main/resources/i2b2_install/build.properties-->
         </fileSet>
+<!--         <fileSet>
+            <directory>packages</directory>
+            <outputDirectory>/packages</outputDirectory>
+            <filtered>false</filtered>
+        </fileSet> -->
     </fileSets>
 
 </assembly>
