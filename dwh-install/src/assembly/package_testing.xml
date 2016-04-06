@@ -1,5 +1,5 @@
 <assembly>
-	<id>full</id>
+	<id>testing</id>
 	<!-- Specifies that our binary distribution is a tar.gz package -->
 	<formats>
 		<format>dir</format>
@@ -25,22 +25,22 @@
         -->
         <fileSet>
             <directory>${project.build.scriptSourceDirectory}</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
         <fileSet>
             <directory>src/main/resources</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
         <fileSet>
             <directory>src/main/testing</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
         <fileSet>
             <directory>packages</directory>
-            <outputDirectory>/packages</outputDirectory>
+            <outputDirectory>/aktin-dwh-snapshot/packages</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
     </fileSets>

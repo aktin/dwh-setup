@@ -65,7 +65,7 @@
         							<descriptors>
         								<descriptor>src/assembly/package_only.xml</descriptor>
         							</descriptors>
-  									<finalName>package</finalName>
+  									<!-- <finalName>packages</finalName> -->
         						</configuration>
         					</execution>
         				</executions>
@@ -90,7 +90,6 @@
         							<descriptors>
         								<descriptor>src/assembly/package_testing.xml</descriptor>
         							</descriptors>
-  									<finalName>aktin-testing</finalName>
         						</configuration>
         					</execution>
         				</executions>

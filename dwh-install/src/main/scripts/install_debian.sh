@@ -45,7 +45,7 @@ echo linking Documentroot $WEBROOT to /var/webroot
 ln -s $WEBROOT /var/webroot
 
 # link install root to this locations so autoinstaller knows where we are
-ln -s $install_root /opt/aktin
+# ln -s $install_root /opt/aktin
 
 # install_root=/opt/aktin
 

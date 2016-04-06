@@ -1,5 +1,5 @@
 <assembly>
-	<id>full</id>
+	<id>installer</id>
 	<!-- Specifies that our binary distribution is a tar.gz package -->
 	<formats>
 		<format>tar.gz</format>
@@ -11,7 +11,7 @@
 	<!-- Add dependencies for the J2EE server to the /packages directory -->
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/packages</outputDirectory>
+			<outputDirectory>/aktin-dwh-snapshot/packages</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<unpack>false</unpack>
 			<scope>runtime</scope>
@@ -25,13 +25,13 @@
         -->
         <fileSet>
             <directory>${project.build.scriptSourceDirectory}</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
             <!-- enable resource filtering to replace ${property.names} -->
             <filtered>false</filtered>
         </fileSet>
         <fileSet>
             <directory>src/main/resources</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
             <filtered>false</filtered>
             <!--src/main/resources/i2b2_install/build.properties-->
         </fileSet>

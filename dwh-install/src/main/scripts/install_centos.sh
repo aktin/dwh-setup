@@ -40,9 +40,9 @@ systemctl start httpd
 
 ln -s /var/www/html /var/webroot
 
-ln -s $install_root /opt/aktin
+#ln -s $install_root /opt/aktin
 
-install_root=/opt/aktin
+#install_root=/opt/aktin
 
 #postgres
 yum -y install postgresql-server postgresql-contrib
