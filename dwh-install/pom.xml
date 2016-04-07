@@ -92,9 +92,6 @@
         							<goal>single</goal>
         						</goals>
         						<configuration>
-                                    <filters>
-                                        <filter>src/assembly/build.properties</filter>
-                                    </filters>
         							<descriptors>
         								<descriptor>src/assembly/package_only.xml</descriptor>
         							</descriptors>
