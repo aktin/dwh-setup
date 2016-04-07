@@ -22,10 +22,37 @@
 
 	<profiles>
         <profile>
+            <id>aktin</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>full-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <filters>
+                                        <filter>src/assembly/build.properties</filter>
+                                    </filters>
+                                    <descriptors>
+                                        <descriptor>src/assembly/package_full.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
         	<id>aktin-installer</id>
-        	<activation>
-        		<activeByDefault>true</activeByDefault>
-        	</activation>
         	<build>
         		<plugins>
         			<plugin>
@@ -38,6 +65,9 @@
         							<goal>single</goal>
         						</goals>
         						<configuration>
+                                    <filters>
+                                        <filter>src/assembly/build.properties</filter>
+                                    </filters>
         							<descriptors>
         								<descriptor>src/assembly/package.xml</descriptor>
         							</descriptors>
@@ -62,6 +92,9 @@
         							<goal>single</goal>
         						</goals>
         						<configuration>
+                                    <filters>
+                                        <filter>src/assembly/build.properties</filter>
+                                    </filters>
         							<descriptors>
         								<descriptor>src/assembly/package_only.xml</descriptor>
         							</descriptors>
@@ -74,23 +107,26 @@
         	</build>
         </profile>
         <profile>
-        	<id>aktin-package-testing</id>
+        	<id>aktin-testing</id>
         	<build>
         		<plugins>
         			<plugin>
         				<artifactId>maven-assembly-plugin</artifactId>
         				<executions>
         					<execution>
-        						<id>aktin-package-testing</id>
+        						<id>aktin-testing</id>
         						<phase>package</phase>
         						<goals>
         							<goal>single</goal>
         						</goals>
         						<configuration>
-        							<descriptors>
-        								<descriptor>src/assembly/package_testing.xml</descriptor>
-        							</descriptors>
-        						</configuration>
+                                    <filters>
+                                        <filter>src/assembly/testing.properties</filter>
+                                    </filters>
+                                    <descriptors>
+                                        <descriptor>src/assembly/package_testing.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
         					</execution>
         				</executions>
         			</plugin>

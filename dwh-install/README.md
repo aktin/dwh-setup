@@ -1,6 +1,24 @@
 Virtuelle Maschine fuer Data Warehouse
 ======================================
 
+Erstellung der Packete
+----------------------
+In dwh-install ein Maven clean install durchführen:
+```
+mvn clean install
+```
+Dabei wird ein Datei mit dem Namen `dwh-install-0.1-SNAPSHOT-full.tar.gz` erstellt. Mittels `tar -zxvf` entpackt, erhält man den vollständigen `aktin-dwh-snapshot`, wobei alle benötigten Pakete bereits in `aktin-dwh-snapshot/packages/` enthalten sind. 
+Mit dem Befehl 
+```
+mvn install -P profile-name,second-profile-name
+```
+kann man einzelne oder mehrere Installierprofile aufrufen. Mit z.B. `mvn install -P aktin-installer,aktin-package-only` werden zwei Pakete erstellt. 
+Mit `mvn install -P aktin-testing` wird ein Ordner erstellt, womit man direkt ein Vagrant Testinstanz laden kann. 
+
+Simple-CDD
+----------
+Zum erstellen des Prepared-ISO ...
+
 Ordner packages/
 ----------------
 

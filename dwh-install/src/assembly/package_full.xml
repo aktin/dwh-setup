@@ -1,8 +1,8 @@
 <assembly>
-	<id>testing</id>
+	<id>full</id>
 	<!-- Specifies that our binary distribution is a tar.gz package -->
 	<formats>
-		<format>dir</format>
+		<format>tar.gz</format>
         <!--zip-->
 	</formats>
   
@@ -11,7 +11,7 @@
 	<!-- Add dependencies for the J2EE server to the /packages directory -->
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/packages</outputDirectory>
+			<outputDirectory>/aktin-dwh-snapshot/packages</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<unpack>false</unpack>
 			<scope>runtime</scope>
@@ -25,28 +25,19 @@
         -->
         <fileSet>
             <directory>${project.build.scriptSourceDirectory}</directory>
-            <includes>
-                <include>*debian.sh</include>
-            </includes>
-            <excludes>
-                <exclude>*centos.sh</exclude>
-            </excludes>
-            <outputDirectory></outputDirectory>
-            <filtered>true</filtered>
+            <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
+            <!-- enable resource filtering to replace ${property.names} -->
+            <filtered>false</filtered>
         </fileSet>
         <fileSet>
             <directory>src/main/resources</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
             <filtered>false</filtered>
-        </fileSet>
-        <fileSet>
-            <directory>src/testing</directory>
-            <outputDirectory></outputDirectory>
-            <filtered>false</filtered>
+            <!--src/main/resources/i2b2_install/build.properties-->
         </fileSet>
         <fileSet>
             <directory>packages</directory>
-            <outputDirectory>/packages</outputDirectory>
+            <outputDirectory>/aktin-dwh-snapshot/packages</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
     </fileSets>

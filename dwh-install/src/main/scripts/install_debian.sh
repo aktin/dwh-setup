@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# install_root=~/i2b2install
-# install_root=/vagrant
 SCRIPT=$(readlink -f "$0")
 install_root=$(dirname "$SCRIPT")/
+${install_root1}
+${install_root2}
 
 MY_PATH=$install_root
 
