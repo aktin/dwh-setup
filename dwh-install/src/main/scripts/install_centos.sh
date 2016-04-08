@@ -15,7 +15,7 @@ JBOSS7_DIR=/opt/jboss-as-7.1.1.Final
 yum clean all
 yum -y update
 yum -y install java-1.8.0-openjdk-headless
-yum -y install sudo wget curl dos2unix unzip sed bc ant php php-curl 
+yum -y install sudo wget curl dos2unix unzip sed bc ant php php-curl openssh-server
 
 # make centos preparations
 ln -s /etc/httpd /etc/apache2

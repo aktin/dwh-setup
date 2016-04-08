@@ -23,7 +23,7 @@ apt-get install -y openjdk-8-jre-headless sudo wget curl dos2unix unzip sed bc a
 apt-get install -y r-cran-xml r-cran-lattice
 
 # web server
-apt-get install -y libapache2-mod-php5 php5-curl 
+apt-get install -y libapache2-mod-php5 php5-curl openssh-server
 ## TODO libapache2-mod-proxy (or -proxy-http) missing?
 # reverse proxy configuration
 conf=/etc/apache2/conf-available/aktin-j2ee-reverse-proxy.conf
