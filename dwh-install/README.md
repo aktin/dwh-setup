@@ -48,4 +48,39 @@ TODO
 * dont include vagrant file, readme, postgres, logging
 
 * pre manipulation of files - folder path!
+* create AKTIN database and user and add jboss datasource (see below). Tables are verified/created/updated by the respective modules
+* create query result folders (default name for config)
+
+Wildfly Administration
+----------------------
+
+If wildfly is running, connect from the command line 
+with `/opt/wildfly-9.0.2.Final/bin/jboss-cli.sh --connect`
+
+Set jndi variable
+```
+/subsystem=naming/binding=java\:global\/a:add(binding-type=simple, type=int, value=100)
+```
+
+Show JNDI name tree: `/subsystem=naming:jndi-view`
+
+Write JNDI binding: Writes value to standalone.xml and reads the new value upon restart.
+```
+/subsystem=naming/binding=java\:global\/a:write-attribute(name=value,value=123)
+```
+
+Add datasource
+```
+connect 127.0.0.1
+ 
+batch
+ 
+module add --name=com.mysql --resources=/home/jboss/Downloads/mysql-connector-java-5.1.24-bin.jar --dependencies=javax.api,javax.transaction.api
+  
+/subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql)
+ 
+data-source add --jndi-name=java:/jboss/MySQLDS --name=MySQLPool --connection-url=jdbc:mysql://localhost:3306/as7development --driver-name=mysql --user-name=jboss --password=jboss
+ 
+run-batch
+```
 
