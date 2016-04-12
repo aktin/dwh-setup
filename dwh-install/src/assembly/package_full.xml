@@ -1,5 +1,4 @@
 <assembly>
-	<id>full</id>
 	<!-- Specifies that our binary distribution is a tar.gz package -->
 	<formats>
 		<format>tar.gz</format>
