@@ -40,7 +40,7 @@
             <filtered>false</filtered>
         </fileSet>
         <fileSet>
-            <directory>src/testing</directory>
+            <directory>src/test</directory>
             <outputDirectory></outputDirectory>
             <filtered>false</filtered>
         </fileSet>
