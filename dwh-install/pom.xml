@@ -104,19 +104,19 @@
         	</build>
         </profile>
         <profile>
-        	<id>aktin-testing</id>
-        	<build>
-        		<plugins>
-        			<plugin>
-        				<artifactId>maven-assembly-plugin</artifactId>
-        				<executions>
-        					<execution>
-        						<id>aktin-testing</id>
-        						<phase>package</phase>
-        						<goals>
-        							<goal>single</goal>
-        						</goals>
-        						<configuration>
+            <id>aktin-testing</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>aktin-testing</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
                                     <filters>
                                         <filter>src/assembly/testing.properties</filter>
                                     </filters>
@@ -124,11 +124,11 @@
                                         <descriptor>src/assembly/package_testing.xml</descriptor>
                                     </descriptors>
                                 </configuration>
-        					</execution>
-        				</executions>
-        			</plugin>
-        		</plugins>
-        	</build>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
