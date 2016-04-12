@@ -6,17 +6,38 @@
 	
 
 	<groupId>org.aktin</groupId>
-	<artifactId>dwh-install</artifactId>
+	<artifactId>debian-cdd</artifactId>
 	<version>0.1-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.aktin</groupId>
 			<artifactId>dwh-install</artifactId>
-			<version>0.1-SNAPSHOT-full</version>
+			<version>0.1-SNAPSHOT</version>
 			<type>tar.gz</type>
 		</dependency>
 	</dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>debian-assambly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/package.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 	
 </project>

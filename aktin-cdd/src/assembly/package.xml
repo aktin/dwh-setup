@@ -1,0 +1,52 @@
+<assembly>
+	<id>testing</id>
+	<!-- Specifies that our binary distribution is a tar.gz package -->
+	<formats>
+		<format>dir</format>
+        <!--zip-->
+	</formats>
+  
+	<includeBaseDirectory>false</includeBaseDirectory>
+	
+	<!-- Add dependencies for the J2EE server to the /packages directory -->
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/packages</outputDirectory>
+			<useProjectArtifact>false</useProjectArtifact>
+			<unpack>false</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+
+    <fileSets>
+        <!--
+            Adds startup scripts to the root directory of zip package. The startup
+            scripts are copied from the src/main/scripts directory.
+        -->
+        <fileSet>
+            <directory>${project.build.scriptSourceDirectory}</directory>
+            <outputDirectory></outputDirectory>
+            <filtered>false</filtered>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources/scdd-profiles</directory>
+            <includes>
+                <include>aktin.*</include>
+                <include>default.preseed</include>
+            </includes>
+            <outputDirectory>/profiles</outputDirectory>
+            <filtered>false</filtered>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources/scdd-tools/build</directory>
+            <outputDirectory></outputDirectory>
+            <filtered>false</filtered>
+        </fileSet>
+        <fileSet>
+            <directory>packages</directory>
+            <outputDirectory>/packages</outputDirectory>
+            <filtered>false</filtered>
+        </fileSet>
+    </fileSets>
+
+</assembly>
