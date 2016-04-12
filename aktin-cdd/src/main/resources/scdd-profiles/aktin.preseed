@@ -26,7 +26,7 @@ simple-cdd simple-cdd/profiles multiselect aktin
 # installation of a set of packages in some other way.
 
 # don't install any tasks
-tasksel   tasksel/first multiselect 
+tasksel   tasksel/first multiselect SSH server
 #tasksel   tasksel/first multiselect Desktop environment
 #tasksel  tasksel/first multiselect Web server, Mail server, DNS server
 
