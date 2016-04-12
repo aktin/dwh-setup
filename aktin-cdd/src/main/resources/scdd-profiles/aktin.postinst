@@ -8,14 +8,13 @@ cp /media/cdrom/aktin-installer.tar.gz /usr/local/ >> /var/log/install.log
 
 cd /usr/local/ 
 tar zvxf aktin-installer.tar.gz >> /var/log/install.log
-# cp -r /media/cdrom/aktin-dwh-snapshot /usr/local/aktin-dwh-snapshot >> /var/log/install.log
 cd aktin-dwh-snapshot >> /var/log/install.log
 #change folder right settings
 chmod -R 777 .
-echo get packages >> /var/log/install.log
-cp /media/cdrom/packages.tar.gz /usr/local/aktin-dwh-snapshot/ >> /var/log/install.log
-# cp -r /media/cdrom/packages /usr/local/aktin-dwh-snapshot/packages >> /var/log/install.log
-tar zvxf packages.tar.gz >> /var/log/install.log
+
+#echo get packages >> /var/log/install.log
+#cp /media/cdrom/packages.tar.gz /usr/local/aktin-dwh-snapshot/ >> /var/log/install.log
+#tar zvxf packages.tar.gz >> /var/log/install.log
 
 service postgresql start >> /var/log/install.log
 ./install_debian.sh >> /var/log/install_aktin.log

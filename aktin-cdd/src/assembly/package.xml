@@ -39,7 +39,7 @@
         </fileSet>
         <fileSet>
             <directory>src/main/resources/scdd-tools/build</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/tools</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
         <fileSet>
