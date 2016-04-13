@@ -19,12 +19,11 @@ echo $install_root
 
 
 # modify simple cdd profiles
-mv /usr/share/simple-cdd/profiles/default.preseed /usr/share/simple-cdd/profiles/default.preseed.old
-cp $MY_PATH/profiles/default.preseed /usr/share/simple-cdd/profiles/default.preseed 
-
-
 mv /usr/share/simple-cdd/tools/build/debian-cd /usr/share/simple-cdd/tools/build/debian-cd.old
 cp $MY_PATH/tools/debian-cd /usr/share/simple-cdd/tools/build/debian-cd
+
+mv /usr/share/simple-cdd/profiles/default.preseed /usr/share/simple-cdd/profiles/default.preseed.old
+cp $MY_PATH/profiles/default.preseed /usr/share/simple-cdd/profiles/default.preseed 
 
 # go to no root mode
 dos2unix $MY_PATH/non_root_init_cdd_folder.sh

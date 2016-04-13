@@ -77,13 +77,13 @@ console-data    console-data/keymap/policy      select  Don't touch keymap
 
 # netcfg will choose an interface that has link if possible. This makes it
 # skip displaying a list if there is more than one interface.
-d-i netcfg/choose_interface select auto
+# d-i netcfg/choose_interface select auto
 
 # Note that any hostname and domain names assigned from dhcp take
 # precidence over values set here. However, setting the values still
 # prevents the questions from being shown even if values come from dhcp.
-d-i netcfg/get_hostname string unassigned
-d-i netcfg/get_domain string unassigned
+# d-i netcfg/get_hostname string unassigned
+# d-i netcfg/get_domain string unassigned
 # to set the domain to empty:
 #d-i netcfg/get_domain string 
 

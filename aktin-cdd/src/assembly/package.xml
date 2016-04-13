@@ -1,5 +1,4 @@
 <assembly>
-	<id>testing</id>
 	<!-- Specifies that our binary distribution is a tar.gz package -->
 	<formats>
 		<format>dir</format>
