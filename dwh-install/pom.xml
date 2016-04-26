@@ -9,6 +9,12 @@
 	<artifactId>dwh-install</artifactId>
 	<version>0.1-SNAPSHOT</version>
 
+	<parent>
+		<groupId>org.aktin.installer</groupId>
+		<artifactId>installer</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.aktin</groupId>
