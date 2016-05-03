@@ -57,8 +57,6 @@ systemctl start postgresql
 sudo cp /etc/sysconfig/selinux $install_root/selinux.orig
 sudo cat $install_root/selinux.orig | sudo sed 's|SELINUX=enforcing|SELINUX=disabled|' > /etc/sysconfig/selinux
 
-dos2unix $install_root/cent_auto.sh
-
 LOG_DIR=$install_root/logs
 if [ ! -d "$LOG_DIR" ]; then 
     mkdir -p $LOG_DIR

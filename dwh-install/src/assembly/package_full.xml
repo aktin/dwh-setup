@@ -1,4 +1,5 @@
 <assembly>
+	<id>full</id>
 	<!-- Specifies that our binary distribution is a tar.gz package -->
 	<formats>
 		<format>tar.gz</format>
@@ -26,6 +27,7 @@
             <directory>${project.build.scriptSourceDirectory}</directory>
             <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
             <!-- enable resource filtering to replace ${property.names} -->
+            <lineEnding>unix</lineEnding>
             <filtered>true</filtered>
         </fileSet>
         <fileSet>

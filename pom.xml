@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+	
+	<groupId>org.aktin.installer</groupId>
+	<artifactId>installer</artifactId>
+	<version>0.1-SNAPSHOT</version>
+  
+	<name>AKTIN : Installation</name>
+	<description>AKTIN Software</description>
+
+	<parent>
+		<groupId>org.aktin</groupId>
+		<artifactId>aktin</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+	
+	<scm>
+		<developerConnection>scm:git:git@gitlab.uni-oldenburg.de:AKTIN/vagrant-vm.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<modules>
+		<module>dwh-install</module>
+	</modules>
+
+</project>
