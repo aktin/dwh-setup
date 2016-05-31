@@ -17,7 +17,7 @@ JBOSS7_DIR=/opt/jboss-as-7.1.1.Final
 # Enable backports
 echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 apt-get update
-apt-get install -y openjdk-8-jre-headless sudo wget curl dos2unix unzip sed bc ant postgresql
+apt-get install -y openjdk-8-jre-headless sudo wget curl dos2unix unzip sed bc ant postgresql apache2
 
 # install R libraries for reporting
 apt-get install -y r-cran-xml r-cran-lattice
