@@ -8,13 +8,6 @@ WILDFLY_HOME=/opt/wildfly-9.0.2.Final
 LOCAL_SETTING=$install_root/local_smtp_settings.conf
 . $LOCAL_SETTING
 
-# check whether console parameter was given. use -y to avoid prompt
-prompt=true
-# if [ $# -eq 0 ] || [ $1 != "y" ];	then
-# 	prompt=false
-# else
-# 	prompt=true
-# fi
 smtpchange=false
 
 while [[ $# -gt 1 ]]
