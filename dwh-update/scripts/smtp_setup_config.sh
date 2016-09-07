@@ -105,7 +105,7 @@ sessionname="AktinMailSession"
 jndiname="java:jboss/mail/AktinMailSession"
 smtpbind="aktin-smtp-binding"
 echo " " > $CLI_SERVICE
-if [$smtpchange]; then
+if [ $smtpchange ]; then
 	echo "/subsystem=mail/mail-session=$sessionname/server=smtp:remove" >> $CLI_SERVICE
 	echo "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:remove" >> $CLI_SERVICE
 	echo "/subsystem=mail/mail-session=$sessionname:remove" >> $CLI_SERVICE
