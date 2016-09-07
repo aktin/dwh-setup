@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# Initial parameters
-SCRIPT=$(readlink -f "$0")
-install_root=$(dirname "$SCRIPT")
-WILDFLY_HOME=/opt/wildfly-9.0.2.Final
-
 # get settings
 LOCAL_SETTING=$install_root/local_smtp_settings.conf
 . $LOCAL_SETTING
@@ -14,19 +9,39 @@ if [ $prompt ]; then
 	case $yn in
 	    [Nn]* ) ;; # do nothing
 		* ) 
-			read -p "Bitte geben Sie den SMTP Host ein: (jetziger Wert: $smtphost) []" input
-			if [ ! -z "$input" ]; then
-				smtphost=$input
-			fi
-			read -p "Bitte geben Sie den SMTP Port ein: (jetziger Wert: $smtpport)" input
-			if [ ! -z "$input" ]; then
-				smtpport=$input
-			fi
-			read -p "Bitte geben Sie den SMTP user ein: (jetziger Wert: $smtpuser)" input
-			if [ ! -z "$input" ]; then
-				smtpuser=$input
-			fi
-			read -p -s "Bitte geben Sie den SMTP password ein: " smtppass
+			# read in configurations
+			while true ; do 
+				read -p "Bitte geben Sie den SMTP Host ein: (jetziger Wert: $smtphost) []" input
+				if [ ! -z "$input" ]; then
+					smtphost=$input
+				fi
+				read -p "Bitte geben Sie den SMTP Port ein: (jetziger Wert: $smtpport)" input
+				if [ ! -z "$input" ]; then
+					smtpport=$input
+				fi
+				read -p "Bitte geben Sie den SMTP user ein: (jetziger Wert: $smtpuser)" input
+				if [ ! -z "$input" ]; then
+					smtpuser=$input
+				fi
+				read -p -s "Bitte geben Sie den SMTP password ein: " smtppass
+				# check input data
+				echo "============================================"
+				echo "Bitte überprüfen Sie die eingegebene Daten: "
+				echo "SMTP Host: $smtphost"
+				echo "SMTP Port: $smtpport"
+				echo "SMTP user: $smtpuser"
+				echo "SMTP password: $smtppass"
+				read -p "Sind die oben gelisteten Daten richtig? [Ja/Nein]" yn
+				case $yn in
+					[YJyj]* ) # move out of loop
+						break
+					;;
+					* ) # falsche Eingaben
+						echo "============================================"
+						echo "Bitte geben Sie SMTP Daten ein: "
+					;; 	
+				esac
+			done
 
 			read -p "Möchten Sie die Einstellungen in die Datei $LOCAL_SETTING speichern? Die jetzige Datei wird dabei überschrieben. [Ja/Nein]" yn
 			case $yn in
