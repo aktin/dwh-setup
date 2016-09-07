@@ -1,8 +1,41 @@
 #!/usr/bin/env bash
+# Initial parameters
+SCRIPT=$(readlink -f "$0")
+install_root=$(dirname "$SCRIPT")
+WILDFLY_HOME=/opt/wildfly-9.0.2.Final
 
 # get settings
 LOCAL_SETTING=$install_root/local_smtp_settings.conf
 . $LOCAL_SETTING
+
+# check whether console parameter was given. use -y to avoid prompt
+prompt=true
+# if [ $# -eq 0 ] || [ $1 != "y" ];	then
+# 	prompt=false
+# else
+# 	prompt=true
+# fi
+smtpchange=false
+
+while [[ $# -gt 1 ]]
+do
+key="$1"
+case $key in
+    -y)
+    prompt=false
+    shift # past argument
+    ;;
+    -c|--change)
+    smtpchange=true
+    shift # past argument
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+shift # past argument or value
+done
+
 # prompt for input if not "y" as parameter
 if [ $prompt ]; then
 	read -p "Möchten Sie die Einstellungen für den SMTP Server jetzt anpassen? Wählen Sie nein, wenn die Einstellungen in der Datei $LOCAL_SETTING bereits angepasst sind. [Ja/Nein]" yn
@@ -62,10 +95,25 @@ if [ $prompt ]; then
 fi
 
 # replace strings in the cli file
-CLI_SERVICE=$install_root/scripts/step_4_wildfly_create_mail_service.cli
-if [ ! -f "$CLI_SERVICE.orig" ]; then 
-	cp $CLI_SERVICE $CLI_SERVICE.orig
+CLI_SERVICE=/var/tmp/aktin_tmp_setup_mail_service.cli
+# if [ ! -f "$CLI_SERVICE.orig" ]; then 
+# 	cp $CLI_SERVICE $CLI_SERVICE.orig
+# fi
+# sed -i "s/@smtphost@/\"$smtphost\"/g; s/@smtpport@/$smtpport/g; s/@smtpuser@/\"$smtpuser\"/g; s/@smtppass@/\"$smtppass\"/g; s/@usessl@/$usessl/g" $CLI_SERVICE
+
+sessionname="AktinMailSession"
+jndiname="java:jboss/mail/AktinMailSession"
+smtpbind="aktin-smtp-binding"
+echo " " > $CLI_SERVICE
+if [$smtpchange]; then
+	echo "/subsystem=mail/mail-session=$sessionname/server=smtp:remove" >> $CLI_SERVICE
+	echo "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:remove" >> $CLI_SERVICE
+	echo "/subsystem=mail/mail-session=$sessionname:remove" >> $CLI_SERVICE
 fi
-sed -i "s/@smtphost@/\"$smtphost\"/g; s/@smtpport@/$smtpport/g; s/@smtpuser@/\"$smtpuser\"/g; s/@smtppass@/\"$smtppass\"/g; s/@usessl@/$usessl/g" $CLI_SERVICE
+echo "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:add(host=$smtphost, port=$smtpport)" >> $CLI_SERVICE
+echo "/subsystem=mail/mail-session=$sessionname:add(jndi-name=$jndiname)" >> $CLI_SERVICE
+echo "/subsystem=mail/mail-session=$sessionname/server=smtp:add(outbound-socket-binding-ref=$smtpbind, username=$smtpuser, password=$smtppass, ssl=$usessl)" >> $CLI_SERVICE
+echo "reload" >> $CLI_SERVICE
+
 # run jboss cli script
 $WILDFLY_HOME/bin/jboss-cli.sh -c --file=$CLI_SERVICE
