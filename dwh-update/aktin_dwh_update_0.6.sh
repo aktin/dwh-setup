@@ -12,6 +12,8 @@ WILDFLY_HOME=/opt/wildfly-9.0.2.Final
 echo "Undeploying 0.5 DWH EAR file"
 if [ -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.5-SNAPSHOT.ear" ] && [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.5-SNAPSHOT.ear.undeployed" ]; then 
 	$WILDFLY_HOME/bin/jboss-cli.sh -c --command="undeploy --name=dwh-j2ee-0.5-SNAPSHOT.ear"
+else 
+	echo "Undeployment übersprungen, da keine alte Version gefunden oder bereits undeployed"
 fi
 echo ""
 echo "++++++++++++++++++++++"
@@ -25,6 +27,8 @@ echo ""
 echo "Deploying 0.6 DWH EAR file"
 if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.6-SNAPSHOT.ear" ]; then 
 	cp $install_root/packages/dwh-j2ee-0.6-SNAPSHOT.ear $WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.6-SNAPSHOT.ear
+else 
+	echo "Deployment übersprungen, da die Datei bereits in $WILDFLY_HOME/standalone/deployments/ vorhanden ist."
 fi
 echo ""
 echo "++++++++++++++++++++++"

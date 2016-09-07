@@ -97,7 +97,7 @@ if [ $prompt ]; then
 fi
 
 # replace strings in the cli file
-CLI_SERVICE=/var/tmp/aktin_tmp_setup_mail_service.cli
+# CLI_SERVICE=/var/tmp/aktin_tmp_setup_mail_service.cli
 # if [ ! -f "$CLI_SERVICE.orig" ]; then 
 # 	cp $CLI_SERVICE $CLI_SERVICE.orig
 # fi
@@ -106,18 +106,28 @@ CLI_SERVICE=/var/tmp/aktin_tmp_setup_mail_service.cli
 sessionname="AktinMailSession"
 jndiname="java:jboss/mail/AktinMailSession"
 smtpbind="aktin-smtp-binding"
-echo " " > $CLI_SERVICE
+
+# echo " " > $CLI_SERVICE
 if [ $smtpchange ]; then
-	echo "/subsystem=mail/mail-session=$sessionname/server=smtp:remove" >> $CLI_SERVICE
-	echo "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:remove" >> $CLI_SERVICE
-	echo "/subsystem=mail/mail-session=$sessionname:remove" >> $CLI_SERVICE
+	$WILDFLY_HOME/bin/jboss-cli.sh -c "/subsystem=mail/mail-session=$sessionname/server=smtp:remove"
+	$WILDFLY_HOME/bin/jboss-cli.sh -c "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:remove"
+	$WILDFLY_HOME/bin/jboss-cli.sh -c "/subsystem=mail/mail-session=$sessionname:remove"
+	# echo "/subsystem=mail/mail-session=$sessionname/server=smtp:remove" >> $CLI_SERVICE
+	# echo "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:remove" >> $CLI_SERVICE
+	# echo "/subsystem=mail/mail-session=$sessionname:remove" >> $CLI_SERVICE
 fi
-echo "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:add(host=$smtphost, port=$smtpport)" >> $CLI_SERVICE
-echo "/subsystem=mail/mail-session=$sessionname:add(jndi-name=$jndiname)" >> $CLI_SERVICE
-echo "/subsystem=mail/mail-session=$sessionname/server=smtp:add(outbound-socket-binding-ref=$smtpbind, username=$smtpuser, password=$smtppass, ssl=$usessl)" >> $CLI_SERVICE
-echo "reload" >> $CLI_SERVICE
+$WILDFLY_HOME/bin/jboss-cli.sh -c "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:add(host=$smtphost, port=$smtpport)"
+$WILDFLY_HOME/bin/jboss-cli.sh -c "/subsystem=mail/mail-session=$sessionname:add(jndi-name=$jndiname)"
+$WILDFLY_HOME/bin/jboss-cli.sh -c "/subsystem=mail/mail-session=$sessionname/server=smtp:add(outbound-socket-binding-ref=$smtpbind, username=$smtpuser, password=$smtppass, ssl=$usessl)"
+
+$WILDFLY_HOME/bin/jboss-cli.sh -c "reload"
+
+# echo "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:add(host=$smtphost, port=$smtpport)" >> $CLI_SERVICE
+# echo "/subsystem=mail/mail-session=$sessionname:add(jndi-name=$jndiname)" >> $CLI_SERVICE
+# echo "/subsystem=mail/mail-session=$sessionname/server=smtp:add(outbound-socket-binding-ref=$smtpbind, username=$smtpuser, password=$smtppass, ssl=$usessl)" >> $CLI_SERVICE
+# echo "reload" >> $CLI_SERVICE
 
 # run jboss cli script
-$WILDFLY_HOME/bin/jboss-cli.sh -c --file=$CLI_SERVICE
-# clean up
-rm $CLI_SERVICE
+# $WILDFLY_HOME/bin/jboss-cli.sh -c --file=$CLI_SERVICE
+# # clean up
+# rm $CLI_SERVICE
