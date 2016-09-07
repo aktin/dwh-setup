@@ -21,10 +21,11 @@ if [! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.6-SNAPSHOT.ear" ]; the
 fi
 
 # STEP 3 - create new mail service
-./smtp_setup_config.sh
+. ./smtp_setup_config.sh
 
 # STEP 4 - Execute Database Scripts
 # **** Needs to be run from a folder where the psql-user has read-access ****
 # su - postgres bash -c "$install_root/postgres_db_script.sh"
 
-su - postgres bash -c "psql -d i2b2 -f $install_root/postgres_cleanse_crc_db_script.sql"
+# su - postgres bash -c "psql -d i2b2 -f $install_root/postgres_cleanse_crc_db_script.sql"
+./postgres_cleanse.sh

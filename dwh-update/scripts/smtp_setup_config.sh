@@ -117,3 +117,5 @@ echo "reload" >> $CLI_SERVICE
 
 # run jboss cli script
 $WILDFLY_HOME/bin/jboss-cli.sh -c --file=$CLI_SERVICE
+# clean up
+rm $CLI_SERVICE
