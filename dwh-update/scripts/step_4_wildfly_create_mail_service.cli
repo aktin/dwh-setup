@@ -1,0 +1,14 @@
+set smtphost=@smtphost@
+set smtpport=@smtpport@
+set smtpuser=@smtpuser@
+set smtppass=@smtppass@
+set usessl=@usessl@
+set sessionname=AktinMailSession
+set jndiname=java:jboss/mail/AktinMailSession
+set smtpbind=aktin-smtp-binding
+
+/subsystem=mail/mail-session=$sessionname:add(jndi-name=$jndiname)
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:add(host=$smtphost, port=$smtpport)
+/subsystem=mail/mail-session=$sessionname/server=smtp:add(outbound-socket-binding-ref=$smtpbind, username=$smtpuser, password=$smtppass, ssl=$usessl)
+
+reload
