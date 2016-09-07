@@ -35,6 +35,7 @@ case $key in
 esac
 shift # past argument or value
 done
+smtpchange=true
 
 # prompt for input if not "y" as parameter
 if [ $prompt ]; then
@@ -44,7 +45,7 @@ if [ $prompt ]; then
 		* ) 
 			# read in configurations
 			while true ; do 
-				read -p "Bitte geben Sie den SMTP Host ein: (jetziger Wert: $smtphost) []" input
+				read -p "Bitte geben Sie den SMTP Host ein: (jetziger Wert: $smtphost)" input
 				if [ ! -z "$input" ]; then
 					smtphost=$input
 				fi
@@ -56,7 +57,8 @@ if [ $prompt ]; then
 				if [ ! -z "$input" ]; then
 					smtpuser=$input
 				fi
-				read -p -s "Bitte geben Sie den SMTP password ein: " smtppass
+				# -s -p
+				read -p "Bitte geben Sie das SMTP password ein:" smtppass
 				# check input data
 				echo "============================================"
 				echo "Bitte überprüfen Sie die eingegebene Daten: "
