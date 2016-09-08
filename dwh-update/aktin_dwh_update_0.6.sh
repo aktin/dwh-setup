@@ -43,3 +43,8 @@ fi
 # # STEP 3 - create new mail service
 # echo "SMTP Configuration"
 # . ./scripts/smtp_setup_config.sh
+
+echo ""
+echo "++++++++++++++++++++++"
+echo "Update auf 0.6 erfolgreich. Vielen Dank"
+echo ""
