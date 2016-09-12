@@ -1,0 +1,28 @@
+<assembly>
+	<!-- Specifies that our binary distribution is a tar.gz package -->
+	<formats>
+        <format>tar.gz</format>
+        <!--zip, dir-->
+	</formats>
+  
+	<includeBaseDirectory>false</includeBaseDirectory>
+	
+	<!-- Add dependencies for the J2EE server to the /packages directory -->
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/dwh-update-0.6/packages</outputDirectory>
+			<useProjectArtifact>false</useProjectArtifact>
+			<unpack>false</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>src/main/scripts</directory>
+            <outputDirectory>/dwh-update-0.6</outputDirectory>
+            <filtered>false</filtered>
+        </fileSet>
+    </fileSets>
+
+</assembly>
