@@ -22,6 +22,11 @@
 			<version>0.6-SNAPSHOT</version>
 			<type>ear</type>
 		</dependency>
+		<dependency>
+			<groupId>org.aktin</groupId>
+			<artifactId>cda-ontology</artifactId>
+			<version>0.6-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	
