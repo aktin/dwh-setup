@@ -20,13 +20,13 @@ if [ -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.5-SNAPSHOT.ear" ] && [ 
 	echo ""
 
 	# STEP 1.1 - Execute Database Scripts
-	echo "STEP 1.1 reset Postgres CRC database"
+	echo "STEP 1.1 Reset i2b2 CRC database"
 	. ./postgres_cleanse.sh >> $LOGFILE
 	echo ""
 
 	# STEP 1.2 - Ontologien
-	echo "STEP 1.2 update Ontologien"
-	. ./pestgres_update_ontology.sh >> $LOGFILE
+	echo "STEP 1.2 update i2b2 Ontology Cell Data"
+	. ./postgres_update_ontology.sh >> $LOGFILE
 	echo ""
 
 else 
