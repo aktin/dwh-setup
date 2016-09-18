@@ -9,19 +9,30 @@
 	<artifactId>dwh-update</artifactId>
 	<version>0.5-0.6</version>
 
+	<properties>
+		<!-- version number to use in scripts -->
+		<wildfly.version>9.0.2.Final</wildfly.version>
+		<!-- old ear version which will be replaced by the script -->
+		<ear.old.version>0.5-SNAPSHOT</ear.old.version>
+	</properties>
+
     <dependencies>
+	<!-- dependencies will be referenced from the script files -->
+	<!-- first dependency must be the EAR file -->
         <dependency>
             <groupId>org.aktin</groupId>
             <artifactId>dwh-j2ee</artifactId>
             <version>0.6-SNAPSHOT</version>
             <type>ear</type>
         </dependency>
+        <!-- second dependency must be the ontology -->
         <dependency>
             <groupId>org.aktin</groupId>
             <artifactId>cda-ontology</artifactId>
             <version>0.6-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
 
     <build>
         <plugins>

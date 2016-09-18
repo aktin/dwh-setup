@@ -21,7 +21,7 @@
         <fileSet>
             <directory>src/main/scripts</directory>
             <outputDirectory>/dwh-update-0.6</outputDirectory>
-            <filtered>false</filtered>
+            <filtered>true</filtered>
         </fileSet>
     </fileSets>
 

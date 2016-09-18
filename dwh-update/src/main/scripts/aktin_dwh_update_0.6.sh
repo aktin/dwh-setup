@@ -3,17 +3,17 @@
 # Initial parameters
 SCRIPT=$(readlink -f "$0")
 install_root=$(dirname "$SCRIPT")
-WILDFLY_HOME=/opt/wildfly-9.0.2.Final
+WILDFLY_HOME=/opt/wildfly-${wildfly.version}
 
-OLD_EAR=dwh-j2ee-0.5-SNAPSHOT.ear
-NEW_EAR=dwh-j2ee-0.6-SNAPSHOT.ear
+OLD_EAR=dwh-j2ee-${ear.old.version}.ear
+NEW_EAR=dwh-j2ee-${project.dependencies[0].version}.ear
 
 LOGFILE=$install_root/update.log
 touch $LOGFILE
 
 # STEP 1 - Undeploy old Server-EAR via CLI
 # if older version exists, then undeploy it
-echo "Undeploying 0.5 DWH EAR file"
+echo "Undeploying old DWH EAR file"
 if [ -f "$WILDFLY_HOME/standalone/deployments/$OLD_EAR" ] && [ ! -f "$WILDFLY_HOME/standalone/deployments/$OLD_EAR.undeployed" ]; then 
 	echo "STEP 1"  | tee -a $LOGFILE
 	$WILDFLY_HOME/bin/jboss-cli.sh -c --command="undeploy --name=$OLD_EAR" | tee -a $LOGFILE
@@ -40,7 +40,7 @@ echo ""
 echo "++++++++++++++++++++++"
 echo ""
 # STEP 2 - Deploy new Server-EAR
-echo "Deploying 0.6 DWH EAR file"
+echo "Deploying new DWH EAR file"
 if [ ! -f "$WILDFLY_HOME/standalone/deployments/$NEW_EAR" ]; then 
 	cp $install_root/packages/$NEW_EAR $WILDFLY_HOME/standalone/deployments/
 	echo "STEP 2 file copied " | tee -a $LOGFILE
@@ -70,5 +70,5 @@ echo "STEP 4 replaced" | tee -a $LOGFILE
 
 echo ""
 echo "++++++++++++++++++++++"
-echo "Update auf 0.6 erfolgreich. Vielen Dank!"
+echo "Update erfolgreich. Vielen Dank!"
 echo ""
