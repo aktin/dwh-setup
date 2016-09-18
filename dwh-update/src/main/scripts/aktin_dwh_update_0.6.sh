@@ -6,7 +6,7 @@ install_root=$(dirname "$SCRIPT")
 WILDFLY_HOME=/opt/wildfly-${wildfly.version}
 
 OLD_EAR=dwh-j2ee-${ear.old.version}.ear
-NEW_EAR=dwh-j2ee-${project.dependencies[0].version}.ear
+NEW_EAR=dwh-j2ee-${ear.version}.ear
 
 LOGFILE=$install_root/update.log
 touch $LOGFILE
