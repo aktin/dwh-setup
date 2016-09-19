@@ -10,7 +10,7 @@
 	<!-- Add dependencies for the J2EE server to the /packages directory -->
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/dwh-update-0.6/packages</outputDirectory>
+			<outputDirectory>/dwh-update/packages</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<unpack>false</unpack>
 			<scope>runtime</scope>
@@ -20,7 +20,7 @@
     <fileSets>
         <fileSet>
             <directory>src/main/scripts</directory>
-            <outputDirectory>/dwh-update-0.6</outputDirectory>
+            <outputDirectory>/dwh-update</outputDirectory>
             <filtered>true</filtered>
         </fileSet>
     </fileSets>
