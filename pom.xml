@@ -4,7 +4,7 @@
 	
 	<groupId>org.aktin.installer</groupId>
 	<artifactId>installer</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2beta</version>
   
 	<name>AKTIN : Installation</name>
 	<description>AKTIN Software</description>
@@ -12,12 +12,12 @@
 	<parent>
 		<groupId>org.aktin</groupId>
 		<artifactId>aktin</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.1beta</version>
 	</parent>
 	
 	<scm>
 		<developerConnection>scm:git:git@gitlab.uni-oldenburg.de:AKTIN/vagrant-vm.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>installer-0.2beta</tag>
 	</scm>
 
 	<modules>
