@@ -4,7 +4,7 @@
 	
 	<groupId>org.aktin.installer</groupId>
 	<artifactId>installer</artifactId>
-	<version>0.2rc</version>
+	<version>0.2-SNAPSHOT</version>
   
 	<name>AKTIN : Installation</name>
 	<description>AKTIN Software</description>
@@ -12,12 +12,12 @@
 	<parent>
 		<groupId>org.aktin</groupId>
 		<artifactId>aktin</artifactId>
-		<version>0.1beta</version>
+		<version>0.1-SNAPSHOT</version>
 	</parent>
 	
 	<scm>
 		<developerConnection>scm:git:git@gitlab.uni-oldenburg.de:AKTIN/vagrant-vm.git</developerConnection>
-		<tag>installer-0.2rc</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<modules>
@@ -30,14 +30,14 @@
 			<dependency>
 			    <groupId>org.aktin</groupId>
 			    <artifactId>dwh-j2ee</artifactId>
-			    <version>0.6beta</version>
+			    <version>0.6-SNAPSHOT</version>
 			    <type>ear</type>
 			</dependency>
 			<!-- second dependency must be the ontology -->
 			<dependency>
 			    <groupId>org.aktin</groupId>
 			    <artifactId>cda-ontology</artifactId>
-			    <version>0.6beta</version>
+			    <version>0.6-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
