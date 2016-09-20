@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<name>AKTIN : DWH Updater</name>
-	
+
 	<packaging>pom</packaging>
 	
 
@@ -36,15 +36,13 @@
 		<ontology.version>${project.dependencies[1].version}</ontology.version>
 	</properties>
 
-
-
     <build>
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>debian-assambly</id>
+                        <id>debian-update-assambly</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>

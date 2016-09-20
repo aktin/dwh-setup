@@ -22,6 +22,8 @@
             <directory>src/main/scripts</directory>
             <outputDirectory>/dwh-update</outputDirectory>
             <filtered>true</filtered>
+            <fileMode>755</fileMode>
+            <!-- <lineEnding>unix</lineEnding> -->
         </fileSet>
     </fileSets>
 
