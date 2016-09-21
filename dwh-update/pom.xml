@@ -6,12 +6,12 @@
 
 	<groupId>org.aktin</groupId>
 	<artifactId>dwh-update</artifactId>
-	<version>0.2rc2</version>
+	<version>0.2-SNAPSHOT</version>
 
 	<parent>
 		<groupId>org.aktin.installer</groupId>
 		<artifactId>installer</artifactId>
-		<version>0.2rc2</version>
+		<version>0.2-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
