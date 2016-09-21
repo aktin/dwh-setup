@@ -2,9 +2,9 @@
 
 CDATMPDIR=/var/tmp/cda-ontology
 
-echo "update ontologies to ${ontology.version}" 2>&1 | tee -a update_sql.log
+echo "update ontologies to ${org.aktin:cda-ontology:jar.version}" 2>&1 | tee -a update_sql.log
 # unzip the sql jar 
-unzip packages/cda-ontology-${ontology.version}.jar -d $CDATMPDIR
+unzip packages/cda-ontology-${org.aktin:cda-ontology:jar.version}.jar -d $CDATMPDIR
 chmod 777 -R $CDATMPDIR
 touch update_sql.log
 
