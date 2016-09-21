@@ -1,8 +1,9 @@
 <assembly>
+	<id>package</id>
 	<!-- Specifies that our binary distribution is a tar.gz package -->
 	<formats>
-        <format>tar.gz</format>
-        <!--zip, dir-->
+		<format>tar.gz</format>
+		<!--zip, dir-->
 	</formats>
   
 	<includeBaseDirectory>false</includeBaseDirectory>
@@ -23,7 +24,7 @@
             <outputDirectory>/dwh-update</outputDirectory>
             <filtered>true</filtered>
             <fileMode>755</fileMode>
-            <!-- <lineEnding>unix</lineEnding> -->
+            <lineEnding>unix</lineEnding>
         </fileSet>
     </fileSets>
 
