@@ -3,7 +3,6 @@
 	<name>AKTIN : DWH Updater</name>
 
 	<packaging>pom</packaging>
-	
 
 	<groupId>org.aktin</groupId>
 	<artifactId>dwh-update</artifactId>
@@ -15,52 +14,58 @@
 		<version>0.2-SNAPSHOT</version>
 	</parent>
 
-    <dependencies>
-	<!-- dependency versions will be referenced by the properties 
-	     specified in the properties section -->
-	<!-- first dependency must be the EAR file -->
-        <dependency>
-            <groupId>org.aktin</groupId>
-            <artifactId>dwh-j2ee</artifactId>
-            <type>ear</type>
-        </dependency>
-        <!-- second dependency must be the ontology -->
-        <dependency>
-            <groupId>org.aktin</groupId>
-            <artifactId>cda-ontology</artifactId>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.aktin</groupId>
+			<artifactId>dwh-j2ee</artifactId>
+			<type>ear</type>
+		</dependency>
+		<dependency>
+			<groupId>org.aktin</groupId>
+			<artifactId>cda-ontology</artifactId>
+		</dependency>
+	</dependencies>
 
 	<properties>
 		<!-- version number to use in scripts -->
 		<wildfly.version>9.0.2.Final</wildfly.version>
-		<!-- old ear version which will be replaced by the script -->
+		<!-- old ear version which will be replaced by the update script -->
 		<ear.old.version>0.5-SNAPSHOT</ear.old.version>
-		<ear.version>${project.dependencies[0].version}</ear.version>
-		<ontology.version>${project.dependencies[1].version}</ontology.version>
 	</properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>debian-update-assambly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-				<appendAssemblyId>false</appendAssemblyId>
-                            <descriptors>
-                                <descriptor>src/assembly/package.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>de.sekmi.histream.maven</groupId>
+				<artifactId>histream-maven-plugin</artifactId>
+				<version>0.9.3</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>dependency-properties</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>debian-update-assambly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/assembly/package.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
