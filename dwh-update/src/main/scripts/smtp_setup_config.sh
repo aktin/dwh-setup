@@ -3,7 +3,7 @@
 # Initial parameters
 SCRIPT=$(readlink -f "$0")
 install_root=$(dirname "$SCRIPT")
-WILDFLY_HOME=/opt/wildfly-9.0.2.Final
+WILDFLY_HOME=/opt/wildfly-${wildfly.version}
 
 # get settings
 LOCAL_SETTING=$install_root/local_smtp_settings.conf

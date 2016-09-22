@@ -1,10 +1,10 @@
+target/
 dwh-install/packages/
 dwh-install/.vagrant
 dwh-install/i2b2_install/i2b2_src/
 dwh-install/logs/
 dwh-install/temp_install/
 dwh-install/temp/
-
 *.box
 *.zip
 *.tar.gz
