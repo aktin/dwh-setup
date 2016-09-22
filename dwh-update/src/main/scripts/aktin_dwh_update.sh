@@ -42,7 +42,7 @@ echo ""
 # STEP 2 - Deploy new Server-EAR
 echo "Deploying new DWH EAR file" 2>&1 | tee -a $LOGFILE
 if [ ! -f "$WILDFLY_HOME/standalone/deployments/$NEW_EAR" ]; then 
-	cp $install_root/packages/$NEW_EAR $WILDFLY_HOME/standalone/deployments/
+	cp $install_root/packages/$NEW_EAR $WILDFLY_HOME/standalone/deployments/ 2>&1 | tee -a $LOGFILE
 	echo "STEP 2 file copied " 2>&1 | tee -a $LOGFILE
 else 
 	echo "STEP 2 not copied" 2>&1 | tee -a $LOGFILE
