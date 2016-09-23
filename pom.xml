@@ -14,6 +14,16 @@
 		<artifactId>aktin</artifactId>
 		<version>0.2-SNAPSHOT</version>
 	</parent>
+
+	<properties>
+		<!-- specifies the package and source version to which the site refers to -->
+		<dwhImportVersion>0.6</dwhImportVersion>
+		<dwhServerVersion>0.2</dwhServerVersion>
+		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
+		<!-- encoding stuff -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 	
 	<scm>
 		<developerConnection>scm:git:git@gitlab.uni-oldenburg.de:AKTIN/vagrant-vm.git</developerConnection>

@@ -1,0 +1,22 @@
+﻿<project>
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-fluido-skin</artifactId>
+		<version>1.5</version>
+	</skin>
+	<body>
+		<menu name="Installation">
+			<item href="install-requirements.html" name="Voraussetzungen" />
+			<item href="install-script.html" name="Installationsskript" />
+			<item href="install-firewall.html" name="Firewall" />
+		</menu>
+		<menu name="Update">
+			<item href="dwh-update-0.6.html" name="Update auf 0.6" />
+		</menu>
+		<menu ref="reports" inherit="top" />
+		<!--
+		<menu ref="modules" />
+		<menu ref="parent" />
+		-->
+	</body>
+</project>
