@@ -45,13 +45,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 		</sql>
 	</target>
 
-	<target name="load_aktin_meta_insert" depends="init">
-		<sql driver="${db.driver}" url="${db.url}" userid="${db.username}" password="${db.password}" classpathref="classpath" onerror="continue" print="true">
-			<transaction src="./scripts/i2b2metadata.table_access.sql" />
-			<transaction src="./scripts/i2b2metadata.i2b2.sql" />
-		</sql>
-	</target>
-
 </project>
 
 
