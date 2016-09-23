@@ -21,18 +21,13 @@
 	</scm>
 
 	<modules>
+		<module>dwh-j2ee</module>
 		<module>dwh-install</module>
 		<module>dwh-update</module>
 	</modules>
 	<dependencyManagement>
 		<!-- dependency version+scope inherited by child projects -->
 		<dependencies>
-			<dependency>
-			    <groupId>org.aktin</groupId>
-			    <artifactId>dwh-j2ee</artifactId>
-			    <version>0.7-SNAPSHOT</version>
-			    <type>ear</type>
-			</dependency>
 			<!-- second dependency must be the ontology -->
 			<dependency>
 			    <groupId>org.aktin</groupId>

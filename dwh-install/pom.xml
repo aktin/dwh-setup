@@ -17,8 +17,9 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.aktin</groupId>
+			<groupId>org.aktin.dwh</groupId>
 			<artifactId>dwh-j2ee</artifactId>
+			<version>0.3-SNAPSHOT</version>
 			<type>ear</type>
 		</dependency>
 		<dependency>
