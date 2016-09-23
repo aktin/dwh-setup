@@ -1,29 +1,17 @@
-Sehr geehrte Damen und Herren, 
+﻿Sehr geehrte Damen und Herren, 
 liebe Kooperationspartner im AKTIN-Projekt,
-
 mit dieser E-Mail möchten wir Sie über den aktuellen Stand der Software-Entwicklung im AKTIN-Projekt informieren. Wir wenden uns hier sowohl an die Projektleiter/Notaufnahmeleiter (bzgl. der Erfüllung von Meilensteinen) als auch an die Serveradministratoren (bzgl. der Umsetzung des Server-Updates) und die CDA-Implementierer (bzgl. der Änderungen an der CDA-Spezifikation). 
-
 Es folgt eine kurze Zusammenfassung mit Verweisen auf unsere Online-Dokumentation, in der für die jeweils betroffenen Spezialisten detaillierte Informationen zu finden sind:
-
 Die Software-Entwicklung ist ein integraler Bestandteil des Projekts AKTIN – dies stellt uns alle vor die große Herausforderung unfertige Software zu entwickeln, zu installieren oder zu nutzen um die geplanten inhaltlichen Meilensteine in der Projektlaufzeit zu erreichen. Das AKTIN IT-Team bemüht sich, die Releases möglichst zu bündeln und den Update-Prozess möglichst einfach zu gestalten. Wir bitten um Verständnis, dass wir während der Entwicklungsphase nicht den Reifegrad eines fertigen Produkts erreichen können.
-
 Wir möchten in diesem Rundschreiben auf zwei wesentliche Änderungen/Releases hinweisen:
-
-1)	Es gibt eine neue CDA-Spezifikation v1.21, publiziert auf http://aktin.art-decor.org/. Wir raten dringend dazu, die CDA-Erzeugung auf das neue „V2-Template“ umzustellen, da einige Inhalte des Basismoduls in der bisherigen „V1“ nicht korrekt abgebildet waren (z. B. Diagnosezusätze). Umfangreiche Hinweise zu den Änderungen finden Sie auf unseren Webseiten unter http://www.aktin.org/software/latest/cda-release-v1.21.html
-2)	Es gibt eine neue Version des lokalen AKTIN-Servers. Die lokale Server-Version 0.5, die bereits in vielen Modellkliniken installiert ist, hat den Status „Testbetrieb“. Aufgrund von Software-Fehlern und inkompatiblen Änderungen am CDA, ist es zwingend erforderlich möglichst zeitnah auf das hier angekündigte Release 0.6 umzustellen. Dies ist eine notwendige Voraussetzung um den letzten Meilenstein (Teilnahme an verteilten Abfragen) zu erreichen. Eine detaillierte Anleitung zur Durchführung des Upgrades finden Sie auf unseren Webseiten unter http://www.aktin.org/software/latest/dwh-update-0.6.html
-
+1.	Es gibt eine neue CDA-Spezifikation v1.21, publiziert auf http://aktin.art-decor.org/. Die Änderungen betreffen unter anderem die IDs, daher ist eine Anpassung für den Produktivbetrieb eine notwendige Voraussetzung. Wir raten dringend dazu, die CDA-Erzeugung auf das neue „V2-Template“ umzustellen, da einige Inhalte des Basismoduls in der bisherigen „V1“ nicht korrekt abgebildet waren (z. B. Diagnosezusätze). Umfangreiche Hinweise zu den Änderungen finden Sie auf unseren Webseiten unter http://www.aktin.org/software/latest/cda-release-v1.21.html
+2.	 Es gibt eine neue Version des lokalen AKTIN-Servers. Die lokale Server-Version 0.5, die bereits in vielen Modellkliniken installiert ist, hat den Status „Testbetrieb“. Aufgrund von Software-Fehlern und inkompatiblen Änderungen am CDA, ist es zwingend erforderlich möglichst zeitnah auf das hier angekündigte Release 0.6 umzustellen. Dies ist eine notwendige Voraussetzung um den letzten Meilenstein (Teilnahme an verteilten Abfragen) zu erreichen. Eine detaillierte Anleitung zur Durchführung des Upgrades finden Sie auf unseren Webseiten unter http://www.aktin.org/software/latest/dwh-update-0.6.html
 Für die Kliniken, die schon einen installierten AKTIN-Server haben, bedeuten die oben skizzierten Änderungen folgenden Update-Pfad:
-
-1)	Installation des nächsten AKTIN-Releases – dieses Release kann die alte und die neue CDA-Version verarbeiten, so dass der Import ggf. zunächst weiter laufen kann.
-2)	Umstellung der CDA-Erzeugung auf die oben genannten/verlinkten Änderungen bzw. die aktuelle Version v1.21. Diese Änderungen können auch ohne die Umstellung des AKTIN-Servers vorbereitet werden, allerdings wird der  AKTIN-Server Version 0.5 diese Dokumente als ungültig ablehnen.
-3)	(Optional) Ausführen des Datenbank-Rücksetzungsscripts (vgl. Update-Anleitung) um die Daten auf einen von Ihnen gewählten Produktivstart-Termin, (z. B. Schichtbeginn an einem Montag) zurückzusetzen. 
-
+1.	Installation des nächsten AKTIN-Releases – dieses Release kann die alte und die neue CDA-Version verarbeiten, so dass der Import ggf. zunächst weiter laufen kann.
+2.	Umstellung der CDA-Erzeugung auf die oben genannten/verlinkten Änderungen bzw. die aktuelle Version v1.21. Diese Änderungen können auch ohne die Umstellung des AKTIN-Servers vorbereitet werden, allerdings wird der  AKTIN-Server Version 0.5 diese Dokumente als ungültig ablehnen.
+3.	(Optional) Ausführen des Datenbank-Rücksetzungsscripts (vgl. Update-Anleitung) um die Daten  zu löschen (ggf. zuauf  einenm von Ihnen gewählten Produktivstart-Termin, (z. B. Schichtbeginn an einem Montag) zurückzusetzen. Ab diesem Zeitpunkt können die Daten produktiv genutzt werden.
+Kliniken, die noch keinen installierten AKTIN-Server haben, können direkt die Version 0.6 nach der Anleitung http://www.aktin.org/software/latest/install-script.html installieren und die CDA-Erzeugung nach der Version v1.21 implementieren.
 Zukünftige Releases werden die Datenbank nicht mehr zurücksetzen und es sind in absehbarer Zeit keine weiteren Änderungen am CDA des Basismoduls geplant. Es wird noch weitere AKTIN-Releases geben, aber diese beinhalten Funktionserweiterungen, die i. A. keine weiteren Änderungen auf der Import-Seite nach sich ziehen. Einen Überblick über geplante Erweiterungen erhalten Sie unter http://www.aktin.org/software/latest/roadmap.html
-
 Sollten Sie Fragen zur Dokumentation haben, oder falls bei der Umstellung Fehler auftreten, wenden Sie sich gerne jederzeit an uns unter der E-Mail-Adresse it-support@aktin.org
-
 Mit freundlichen Grüßen
-
 Ihr AKTIN IT-Team
-
-
