@@ -143,6 +143,30 @@ Mit folgenden Befehlen wird die `psql` Konsole geschlossen und der User `postgre
 \q
 exit
 ```
+
+Einspielen der neuen Ontologie-Metadaten
+----------------------------------------
+Die neue Ontologie kann über das Paket [CDA-Ontology](@@@TODO GET LINK@@@) heruntergeladen werden:
+
+```
+wget ${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear
+```
+
+Man sollte das Paket in einer temporären Verzeichnis entpacken und die enthaltene `sql` Skripte über den `postgres` User ausführen. Anschließend kann die temporäre Verzeichnis wieder gelöscht werden.
+
+```
+CDATMPDIR=/var/tmp/cda-ontology
+unzip packages/cda-ontology-${project.dependencies[1].version}.jar -d $CDATMPDIR
+chmod 777 -R $CDATMPDIR
+
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/meta.sql" 2>&1 >> update_sql.log
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/data.sql" 2>&1 >> update_sql.log
+
+rm -r $CDATMPDIR
+```
+
+Neustart des Service
+--------------------
 Nun sollte der Wildfly Service neugestartet werden.
 
 ``` 
