@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-CDATMPDIR=/var/tmp/cda-ontology
+SCRIPT=$(readlink -f "$0")
+install_root=$(dirname "$SCRIPT")
 
+CDATMPDIR=/var/tmp/cda-ontology
+mkdir $CDATMPDIR
 echo "update ontologies to ${org.aktin:cda-ontology:jar.version}" 2>&1 | tee -a update_sql.log
 # unzip the sql jar 
-unzip packages/cda-ontology-${org.aktin:cda-ontology:jar.version}.jar -d $CDATMPDIR
+unzip $install_root/packages/cda-ontology-${org.aktin:cda-ontology:jar.version}.jar -d $CDATMPDIR
 chmod 777 -R $CDATMPDIR
 touch update_sql.log
 
