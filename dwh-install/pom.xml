@@ -7,12 +7,12 @@
 
 	<groupId>org.aktin</groupId>
 	<artifactId>dwh-install</artifactId>
-	<version>0.6.3rc1</version>
+	<version>0.6.3-SNAPSHOT</version>
 
 	<parent>
 		<groupId>org.aktin.installer</groupId>
 		<artifactId>installer</artifactId>
-		<version>0.6.3rc1</version>
+		<version>0.6.3-SNAPSHOT</version>
 	</parent>
 	
 	<dependencies>

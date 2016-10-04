@@ -4,7 +4,7 @@
 	
 	<groupId>org.aktin.installer</groupId>
 	<artifactId>installer</artifactId>
-	<version>0.6.3rc1</version>
+	<version>0.6.3-SNAPSHOT</version>
   
 	<name>AKTIN : Installation</name>
 	<description>AKTIN Software</description>
@@ -17,7 +17,7 @@
 	
 	<scm>
 		<developerConnection>scm:git:git@gitlab.uni-oldenburg.de:AKTIN/vagrant-vm.git</developerConnection>
-	  <tag>installer-0.6.3rc1</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<modules>
