@@ -1,0 +1,40 @@
+Skriptbasiertes Update für Debian
+======================================
+
+Für laufende DWH auf Debian Servern stellen wir eine Update-Skript bereit, zu finden unter 
+[Debian Update Paket](${releaseRepoUrl}/org/aktin/dwh-update/${dwhServerVersion}/dwh-update-${dwhServerVersion}.tar.gz).
+Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. 
+Dazu führt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), Folgendes aus:
+
+```
+sudo su
+```
+oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwort), Folgendes:
+
+```
+su
+```
+Step-by-Step Anleitung zur Ausführung als `root`:
+
+```
+wget ${releaseRepoUrl}/org/aktin/dwh-update/${dwhServerVersion}/dwh-update-${dwhServerVersion}.tar.gz
+tar xvzf dwh-update-${dwhServerVersion}.tar.gz
+cd dwh-update
+./aktin_dwh_update.sh
+```
+
+Zur Überprüfung, ob das Update erfolgreich war, können Sie folgende Liste durchgehen:
+
+* Bei der Auflistung des Verzeichnisses `/opt/wildfly-9.0.2.Final/standalone/deployments/` finden Sie nun unter Anderem die folgende Auflistung:
+
+```
+ls /opt/wildfly-9.0.2.Final/standalone/deployments/
+#dwh-j2ee-0.5-SNAPSHOT.ear
+#dwh-j2ee-0.5-SNAPSHOT.ear.undeployed
+#dwh-j2ee-${dwhImportVersion}.ear           
+#dwh-j2ee-${dwhImportVersion}.ear.deployed 
+```
+
+* In der i2b2-Weboberfläche sind die Login-Felder nicht mehr vorausgefüllt. Sie können sich weiterhin mit den gewohnten Daten einloggen, nur die Formular-Vorbelegung mit den Standard-Benutzerdaten wurden entfernt. Falls Sie noch keinen eigenen Benutzer angelegt haben bzw. noch die Standard-Passwörter verwenden, sollten sie diese ändern. Gehen Sie dazu mit Ihrem Browser auf Ihren Server zur Webseite `/admin/` (bzw. ersetzen Sie "webclient" mit "admin" wenn Sie die i2b2-Anmeldemaske sehen). Die Standard-Zugangsdaten lauten hier i2b2/demouser - sie sollten das Passwort unbedingt ändern. Die Verwaltung der Benutzer unter dem Menüpunkt "Manage users" sollte selbsterklärend sein.
+
+Ab diesem Zeitpunkt akzeptiert die AKTIN-Schnittstelle CDA Dokumente nach dem Release-Stand v1.21, nach V1 (Template-ID 1.2.276.0.76.10.1015) und V2 (Template-ID 1.2.276.0.76.10.1019)
