@@ -101,13 +101,15 @@ echo "db.hive.id=i2b2demo" >> $buildfile
 echo ant scripts
 ant all 
 
-### import ontology to postgres
+##### set up ontology to postgresc
+
 CDATMPDIR=/var/tmp/cda-ontology
+mkdir $CDATMPDIR
 
 touch update_sql.log
-echo "update ontologies to ${project.dependencies[1].version}" 2>&1 | tee -a update_sql.log
+echo "update ontologies to ${org.aktin:cda-ontology:jar.version}" 2>&1 | tee -a update_sql.log
 # unzip the sql jar 
-unzip $PACKAGES/cda-ontology-${project.dependencies[1].version}.jar -d $CDATMPDIR
+unzip $PACKAGES/cda-ontology-${org.aktin:cda-ontology:jar.version}.jar -d $CDATMPDIR
 chmod 777 -R $CDATMPDIR
 
 # call sql script files. no console output since spamming
