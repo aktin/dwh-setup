@@ -370,8 +370,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
                     imdata_create,
                     workdata_create,
                     metadata_create,
-                    crcdata_create, 
-                    aktin_insert" 
+                    crcdata_create" 
         description="call all create targets">
         <echo message="db all"/>
     </target>
