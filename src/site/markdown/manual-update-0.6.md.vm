@@ -1,11 +1,11 @@
-Manuelles Update f¸r Debian, CentOS oder andere Betriebssysteme
+ÔªøManuelles Update f√ºr Debian, CentOS oder andere Betriebssysteme
 ===============================================================
 
 Anmelden als ROOT
 -----------------
 
-F¸r die Ausf¸hrung ist wichtig, dass der User als `root` angemeldet ist. 
-Dazu f¸hrt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), Folgendes aus:
+F√ºr die Ausf√ºhrung ist wichtig, dass der User als `root` angemeldet ist. 
+Dazu f√ºhrt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), Folgendes aus:
 
 ```
 sudo su
@@ -16,22 +16,22 @@ oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwor
 su
 ```
 
-Lˆschen der alten Software
+L√∂schen der alten Software
 --------------------------
 
-Die alte Version muss aus dem Wildfly Service entfernt werden. Dies kann man z.B. mit den folgenden Befehlen erreichen, wobei `$WILDFLY_HOME` auf den Ordner verlinkt, wo beim ersten Installation Wildfly eingerichtet wurde, z.B. `WILDFLY_HOME=/opt/wildfly-9.0.2.Final`, dieser Befehl sollte als `root` ausgef¸hrt werden:
+Die alte Version muss aus dem Wildfly Service entfernt werden. Dies kann man z.B. mit den folgenden Befehlen erreichen, wobei `$WILDFLY_HOME` auf den Ordner verlinkt, wo beim ersten Installation Wildfly eingerichtet wurde, z.B. `WILDFLY_HOME=/opt/wildfly-9.0.2.Final`, dieser Befehl sollte als `root` ausgef√ºhrt werden:
 
 ```
 $WILDFLY_HOME/bin/jboss-cli.sh -c --command="undeploy --name=dwh-j2ee-0.5-SNAPSHOT.ear"
 ```
-Der Befehl war erfolgreich, wenn keine Fehlermeldung angezeigt wird und anschlieﬂend eine Datei `dwh-j2ee-0.5-SNAPSHOT.ear.undeployed` im gleichen Ordner erstellt wurde.
+Der Befehl war erfolgreich, wenn keine Fehlermeldung angezeigt wird und anschlie√üend eine Datei `dwh-j2ee-0.5-SNAPSHOT.ear.undeployed` im gleichen Ordner erstellt wurde.
 
 ```
 ls $WILDFLY_HOME/standalone/deployments/ | grep .ear.undeployed
 #dwh-j2ee-0.5-SNAPSHOT.ear.undeployed
 ```
 
-Nach dem Undeploy kˆnnen Sie die beiden Dateien `dwh-j2ee-0.5-SNAPSHOT.ear` und `dwh-j2ee-0.5-SNAPSHOT.ear.undeployed` (in dieser Reihefolge) aus dem Verzeichnis `$WILDFLY_HOME/standalone/deployments/` lˆschen. (Das Lˆschen kann nur user mit `root` Rechten ausf¸hren.) Das Lˆschen hat keine Auswirkung. 
+Nach dem Undeploy k√∂nnen Sie die beiden Dateien `dwh-j2ee-0.5-SNAPSHOT.ear` und `dwh-j2ee-0.5-SNAPSHOT.ear.undeployed` (in dieser Reihefolge) aus dem Verzeichnis `$WILDFLY_HOME/standalone/deployments/` l√∂schen. (Das L√∂schen kann nur user mit `root` Rechten ausf√ºhren.) Das L√∂schen hat keine Auswirkung. 
 
 ```
 rm $WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.5-SNAPSHOT.ear*
@@ -40,7 +40,7 @@ rm $WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.5-SNAPSHOT.ear*
 Einbinden der neuen Software
 ----------------------------
 
-Zuerst muss die neue EAR-Datei auf den Server geladen werden. Die benˆtigte EAR-Datei finden Sie unter [EAR Release ${dwhImportVersion}](${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear). 
+Zuerst muss die neue EAR-Datei auf den Server geladen werden. Die ben√∂tigte EAR-Datei finden Sie unter [EAR Release ${dwhImportVersion}](${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear). 
 
 ```
 wget ${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear
@@ -52,7 +52,7 @@ z.B. das aktuelle Verzeichnis: `install_root=.` Dabei sollte man sicher stellen,
 dass die betreffende Datei nicht bereits in dem Verzeichnis vorhanden ist. 
 (`ls $WILDFLY_HOME/standalone/deployments | grep dwh-j2ee-${dwhImportVersion}.ear` ergibt leeres Ergebnis)
 
-Folgenden Befehl sollte man per `sudo` oder als `root` ausf¸hren. 
+Folgenden Befehl sollte man per `sudo` oder als `root` ausf√ºhren. 
 
 ```
 cp $install_root/dwh-j2ee-${dwhImportVersion}.ear $WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhImportVersion}.ear   
@@ -76,13 +76,13 @@ ls $WILDFLY_HOME/standalone/deployments/ | grep dwh-j2ee-${dwhImportVersion}.ear
 
 Datenbank-Reset
 ---------------
-F¸r das Zur¸cksetzen der Postgres-Datenbank kann man ¸ber die PSQL Konsole nagivieren. Dazu meldet man sich mit dem User an, der die benˆtigten Rechte hat  (z. B. `postgres`) und startet dann die `psql` Konsole.
+F√ºr das Zur√ºcksetzen der Postgres-Datenbank kann man √ºber die PSQL Konsole nagivieren. Dazu meldet man sich mit dem User an, der die ben√∂tigten Rechte hat  (z. B. `postgres`) und startet dann die `psql` Konsole.
 
 ```
 su postgres
 psql
 ```
-In der `psql` kann man dann folgende Befehle zum Leeren der vier Tabellen ausf¸hren (Achtung, es kommt keine weitere Abfrage!):
+In der `psql` kann man dann folgende Befehle zum Leeren der vier Tabellen ausf√ºhren (Achtung, es kommt keine weitere Abfrage!):
 
 ```
 \connect i2b2
@@ -98,17 +98,17 @@ exit
 
 Einspielen der neuen Ontologie-Metadaten
 ----------------------------------------
-Die neue Ontologie kann ¸ber das Paket [CDA-Ontology](@@@TODO GET LINK@@@) heruntergeladen werden:
+Die neue Ontologie kann √ºber das Paket [CDA-Ontology](@@@TODO GET LINK@@@) heruntergeladen werden:
 
 ```
 wget ${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear
 ```
 
-Man sollte das Paket in einer tempor‰ren Verzeichnis entpacken und die enthaltene `sql` Skripte ¸ber den `postgres` User ausf¸hren. Anschlieﬂend kann die tempor‰re Verzeichnis wieder gelˆscht werden.
+Man sollte das Paket in einer tempor√§ren Verzeichnis entpacken und die enthaltene `sql` Skripte √ºber den `postgres` User ausf√ºhren. Anschlie√üend kann die tempor√§re Verzeichnis wieder gel√∂scht werden.
 
 ```
 CDATMPDIR=/var/tmp/cda-ontology
-unzip packages/cda-ontology-${project.dependencies[1].version}.jar -d $CDATMPDIR
+unzip packages/cda-ontology-${dwhImportVersion}.jar -d $CDATMPDIR
 chmod 777 -R $CDATMPDIR
 
 su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/meta.sql" 2>&1 >> update_sql.log
@@ -127,16 +127,16 @@ service wildfly restart
 
 Damit ist das DWH bereit, neue Daten zu empfangen.
 
-(Optional, empfohlen) Keine vorausgef¸llten Benutzerdaten in i2b2
+(Optional, empfohlen) Keine vorausgef√ºllten Benutzerdaten in i2b2
 -----------------------------------------------------------------
 
-Bei dem i2b2-Login-Formular sind standardm‰ﬂig Benutzerdaten des `demo`-Benutzters
+Bei dem i2b2-Login-Formular sind standardm√§√üig Benutzerdaten des `demo`-Benutzters
 voreingetragen. Um diesen Eintrag zu entfernen, gehen Sie vor wie folgt:
 
 Hierbei ist `i2b2_WEBDIR` die i2b2 Webclient Verzeichnis, z.B. `i2b2_WEBDIR=/var/www/html/webclient`. 
 Je nach Distribution und Installation kann dies auch `/var/www/webclient` oder ein anderes Verzeichnis sein.
 
-ƒndern Sie nun die Datei `$i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js` mit einem Editor Ihrer Wahl (ggf. vorher ein Backup erstellen).
+√Ñndern Sie nun die Datei `$i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js` mit einem Editor Ihrer Wahl (ggf. vorher ein Backup erstellen).
 
 ### ```
 ### cp $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig
@@ -145,5 +145,5 @@ Je nach Distribution und Installation kann dies auch `/var/www/webclient` oder e
 ### sed -i "s/id=\"loginpass\" value=\"demouser\"/id=\"loginpass\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
 ### ```
 
-In Zeile 123 bei loginusr das Feld `value="demo"` ‰ndern in `value=""`.
-Auﬂerdem in Zeile 125 bei loginpass das Feld `value="demouser"` ‰ndern in `value=""`.
+In Zeile 123 bei loginusr das Feld `value="demo"` √§ndern in `value=""`.
+Au√üerdem in Zeile 125 bei loginpass das Feld `value="demouser"` √§ndern in `value=""`.

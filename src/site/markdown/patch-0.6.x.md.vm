@@ -1,13 +1,13 @@
-Patch Update von Release 0.6 auf Release 0.6.2
+ï»¿Patch Update von Release 0.6 auf Release 0.6.2
 ==============================================
 
-Diese Schritte müssen nur ausgeführt werden, wenn Sie bereits auf das Release 0.6 aktualisiert haben und jetzt ein Patch-Release installieren möchten.
+Diese Schritte mÃ¼ssen nur ausgefÃ¼hrt werden, wenn Sie bereits auf das Release 0.6 aktualisiert haben und jetzt ein Patch-Release installieren mÃ¶chten.
 
 Anmelden als ROOT
 -----------------
 
-Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. 
-Dazu führt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), Folgendes aus:
+FÃ¼r die AusfÃ¼hrung ist wichtig, dass der User als `root` angemeldet ist. 
+Dazu fÃ¼hrt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), Folgendes aus:
 
 ```
 sudo su
@@ -18,22 +18,22 @@ oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwor
 su
 ```
 
-Löschen der alten Software
+LÃ¶schen der alten Software
 --------------------------
 
-Die alte Version muss aus dem Wildfly Service entfernt werden. Dies kann man z.B. mit den folgenden Befehlen erreichen, wobei `$WILDFLY_HOME` auf den Ordner verlinkt, wo beim ersten Installation Wildfly eingerichtet wurde, z.B. `WILDFLY_HOME=/opt/wildfly-9.0.2.Final`, dieser Befehl sollte als `root` ausgeführt werden:
+Die alte Version muss aus dem Wildfly Service entfernt werden. Dies kann man z.B. mit den folgenden Befehlen erreichen, wobei `$WILDFLY_HOME` auf den Ordner verlinkt, wo beim ersten Installation Wildfly eingerichtet wurde, z.B. `WILDFLY_HOME=/opt/wildfly-9.0.2.Final`, dieser Befehl sollte als `root` ausgefÃ¼hrt werden:
 
 ```
 $WILDFLY_HOME/bin/jboss-cli.sh -c --command="undeploy --name=dwh-j2ee-0.6-SNAPSHOT.ear"
 ```
-Der Befehl war erfolgreich, wenn keine Fehlermeldung angezeigt wird und anschließend eine Datei `dwh-j2ee-0.6-SNAPSHOT.ear.undeployed` im gleichen Ordner erstellt wurde.
+Der Befehl war erfolgreich, wenn keine Fehlermeldung angezeigt wird und anschlieÃŸend eine Datei `dwh-j2ee-0.6-SNAPSHOT.ear.undeployed` im gleichen Ordner erstellt wurde.
 
 ```
 ls $WILDFLY_HOME/standalone/deployments/ | grep .ear.undeployed
 #dwh-j2ee-0.6-SNAPSHOT.ear.undeployed
 ```
 
-Nach dem Undeploy können Sie die beiden Dateien `dwh-j2ee-0.6-SNAPSHOT.ear` und `dwh-j2ee-0.6-SNAPSHOT.ear.undeployed` (in dieser Reihefolge) aus dem Verzeichnis `$WILDFLY_HOME/standalone/deployments/` löschen. (Das Löschen kann nur user mit `root` Rechten ausführen.) Das Löschen hat keine Auswirkung. 
+Nach dem Undeploy kÃ¶nnen Sie die beiden Dateien `dwh-j2ee-0.6-SNAPSHOT.ear` und `dwh-j2ee-0.6-SNAPSHOT.ear.undeployed` (in dieser Reihefolge) aus dem Verzeichnis `$WILDFLY_HOME/standalone/deployments/` lÃ¶schen. (Das LÃ¶schen kann nur user mit `root` Rechten ausfÃ¼hren.) Das LÃ¶schen hat keine Auswirkung. 
 
 ```
 rm $WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.6-SNAPSHOT.ear*
@@ -42,7 +42,7 @@ rm $WILDFLY_HOME/standalone/deployments/dwh-j2ee-0.6-SNAPSHOT.ear*
 Einbinden der neuen Software
 ----------------------------
 
-Zuerst muss die neue EAR-Datei auf den Server geladen werden. Die benötigte EAR-Datei finden Sie unter [EAR Release ${dwhImportVersion}](${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear). 
+Zuerst muss die neue EAR-Datei auf den Server geladen werden. Die benÃ¶tigte EAR-Datei finden Sie unter [EAR Release ${dwhImportVersion}](${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear). 
 
 ```
 wget ${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear
@@ -54,7 +54,7 @@ z.B. das aktuelle Verzeichnis: `install_root=.` Dabei sollte man sicher stellen,
 dass die betreffende Datei nicht bereits in dem Verzeichnis vorhanden ist. 
 (`ls $WILDFLY_HOME/standalone/deployments | grep dwh-j2ee-${dwhImportVersion}.ear` ergibt leeres Ergebnis)
 
-Folgenden Befehl sollte man per `sudo` oder als `root` ausführen. 
+Folgenden Befehl sollte man per `sudo` oder als `root` ausfÃ¼hren. 
 
 ```
 cp $install_root/dwh-j2ee-${dwhImportVersion}.ear $WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhImportVersion}.ear   
