@@ -63,6 +63,7 @@
                                     <filters>
                                         <filter>src/assembly/build.properties</filter>
                                     </filters>
+                                    <appendAssemblyId>false</appendAssemblyId>
                                     <descriptors>
                                         <descriptor>src/assembly/package_full.xml</descriptor>
                                     </descriptors>

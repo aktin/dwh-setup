@@ -11,7 +11,7 @@
 	<!-- Add dependencies for the J2EE server to the /packages directory -->
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/dwh-update/packages</outputDirectory>
+			<outputDirectory>dwh-update/packages</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<unpack>false</unpack>
 			<scope>runtime</scope>
@@ -21,7 +21,7 @@
     <fileSets>
         <fileSet>
             <directory>src/main/scripts</directory>
-            <outputDirectory>/dwh-update</outputDirectory>
+            <outputDirectory>dwh-update</outputDirectory>
             <filtered>true</filtered>
             <fileMode>755</fileMode>
             <lineEnding>unix</lineEnding>
