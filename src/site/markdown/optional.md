@@ -1,4 +1,4 @@
-Optionale Konfiguration
+﻿Optionale Konfiguration
 ======================================
 
 Diese optionalen Konfigurationsschritte können jederzeit, ggf. auch mehrmals auf einem Server mit dem Releasestand 0.6 oder höher ausgeführt werden.
