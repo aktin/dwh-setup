@@ -28,6 +28,7 @@
             <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
             <!-- enable resource filtering to replace ${property.names} -->
             <lineEnding>unix</lineEnding>
+            <fileMode>755</fileMode>
             <filtered>true</filtered>
         </fileSet>
         <fileSet>

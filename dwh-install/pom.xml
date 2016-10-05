@@ -39,6 +39,19 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>de.sekmi.histream.maven</groupId>
+                        <artifactId>histream-maven-plugin</artifactId>
+                        <version>0.9.3</version>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>dependency-properties</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <executions>
                             <execution>
@@ -66,6 +79,19 @@
         	<build>
         		<plugins>
         			<plugin>
+                        <groupId>de.sekmi.histream.maven</groupId>
+                        <artifactId>histream-maven-plugin</artifactId>
+                        <version>0.9.3</version>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>dependency-properties</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
         				<artifactId>maven-assembly-plugin</artifactId>
         				<executions>
         					<execution>
