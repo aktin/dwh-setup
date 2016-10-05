@@ -34,6 +34,7 @@
 		<module>dwh-j2ee</module>
 		<module>dwh-install</module>
 		<module>dwh-update</module>
+		<module>aktin-cdd</module>
 	</modules>
 	<dependencyManagement>
 		<!-- dependency version+scope inherited by child projects -->

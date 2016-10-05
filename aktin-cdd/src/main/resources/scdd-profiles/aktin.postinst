@@ -7,7 +7,7 @@ echo copy file >> /var/log/install.log
 cp /media/cdrom/aktin-installer.tar.gz /usr/local/ >> /var/log/install.log
 
 cd /usr/local/ 
-tar zxf aktin-installer.tar.gz >> /var/log/install.log
+tar xzf aktin-installer.tar.gz >> /var/log/install.log
 cd aktin-dwh-install >> /var/log/install.log
 #change folder right settings
 chmod -R 777 .
@@ -16,7 +16,7 @@ echo get packages >> /var/log/install.log
 
 if [-f /media/cdrom/packages.tar.gz]; then
 	cp /media/cdrom/packages.tar.gz /usr/local/aktin-dwh-install/ >> /var/log/install.log
-	tar zxf packages.tar.gz >> /var/log/install.log
+	tar xzf packages.tar.gz >> /var/log/install.log
 fi
 
 service postgresql start >> /var/log/install.log
