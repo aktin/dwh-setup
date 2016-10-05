@@ -98,10 +98,10 @@ exit
 
 Einspielen der neuen Ontologie-Metadaten
 ----------------------------------------
-Die neue Ontologie kann über das Paket [CDA-Ontology](@@@TODO GET LINK@@@) heruntergeladen werden:
+Die neue Ontologie kann über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${dwhImportVersion}/cda-ontology-${dwhImportVersion}.jar)heruntergeladen werden:
 
 ```
-wget ${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear
+wget ${releaseRepoUrl}/org/aktin/cda-ontology/${dwhImportVersion}/cda-ontology-${dwhImportVersion}.jar
 ```
 
 Man sollte das Paket in einer temporären Verzeichnis entpacken und die enthaltene `sql` Skripte über den `postgres` User ausführen. Anschließend kann die temporäre Verzeichnis wieder gelöscht werden.
