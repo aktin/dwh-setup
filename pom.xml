@@ -31,7 +31,6 @@
 	</scm>
 
 	<modules>
-		<module>dwh-j2ee</module>
 		<module>dwh-install</module>
 		<module>dwh-update</module>
 		<!--
