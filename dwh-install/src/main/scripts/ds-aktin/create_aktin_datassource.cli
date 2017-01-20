@@ -24,3 +24,5 @@ reload
 # data-source remove --name=AktinDS
 # TODO need JTA disabled: 
 # data-source add --name=$name --jndi-name=$jndiname --driver-name=$driver XXX--jta=falseXXX --connection-url=$jdbcUrl --user-name=$username --password=$password
+# For debugging:
+# data-source add --name=$name --jndi-name=$jndiname --driver-name=$driver --jta=false --tracking=true --connection-url=$jdbcUrl --user-name=$username --password=$password
