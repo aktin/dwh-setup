@@ -38,6 +38,10 @@ echo LoadModule proxy_http_module libexec/apache2/mod_proxy_http.so >> /etc/http
 systemctl enable httpd
 systemctl start httpd
 
+# open port 80
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --reload
+
 ln -s /var/www/html /var/webroot
 
 #ln -s $install_root /opt/aktin
@@ -142,3 +146,26 @@ rm -r $CDATMPDIR
 # apachectl restart
 # /opt/wildfly-9.0.2.Final/bin/standalone.sh -Djboss.http.port=9090 > /opt/aktin/logs/wildfly.log &
 
+ln -s $WILDFLY_HOME /opt/wildfly
+
+echo > /etc/default/wildfly
+echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly
+echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly
+
+cp /opt/wildfly/bin/init.d/wildfly-init-redhat.sh /etc/init.d/wildfly
+
+# chkconfig --add wildfly
+# chkconfig wildfly on
+
+mkdir -p /var/log/wildfly
+
+adduser --system --group --disabled-login wildfly
+chown -R wildfly:wildfly $WILDFLY_HOME
+chown -R wildfly:wildfly /opt/wildfly
+chown -R wildfly:wildfly /var/log/wildfly
+
+systemctl daemon-reload
+
+
+systemctl enable wildfly
+systemctl start wildfly

@@ -49,7 +49,7 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
             <globmapper from="*.orig" to="*"/>
         </copy>
     </target> 
-    <target name="change_properties" depends="rename_files_from_orig, copy_files, aktin_copy_sql">
+    <target name="change_properties" depends="rename_files_from_orig, copy_files">
         <replace dir="${ant.installdata.dir}/" value="" failOnNoReplacements="true">
             <exclude name="build.properties"/>
             <exclude name="**/*.orig"/>
