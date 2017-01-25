@@ -17,8 +17,8 @@ set jndiname=java:jboss/datasources/AktinDS
 # /subsystem=datasources/jdbc-driver=$driver:add(driver-name=$driver,driver-module-name=$module)
 
 data-source add --name=$name --jndi-name=$jndiname --driver-name=$driver --jta=false --connection-url=$jdbcUrl --user-name=$username --password=$password
-
-reload
+/subsystem=datasources:read-resource
+#reload
 
 # to delete
 # data-source remove --name=AktinDS
