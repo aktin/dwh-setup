@@ -9,3 +9,6 @@ dwh-install/temp/
 *.zip
 *.tar.gz
 *.jar
+*.iso
+*.pub
+*.pkcs8
