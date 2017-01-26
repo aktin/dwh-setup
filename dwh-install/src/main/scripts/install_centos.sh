@@ -166,6 +166,8 @@ chown -R wildfly:wildfly /var/log/wildfly
 
 systemctl daemon-reload
 
+# make 0.7 changes with aktin_dwh_07_config.sh
+$install_root/aktin_dwh_07_config.sh
 
 systemctl enable wildfly
 systemctl start wildfly

@@ -140,6 +140,9 @@ echo reload daemon cache
 # reload daemon cache
 systemctl daemon-reload
 
+# make 0.7 changes with aktin_dwh_07_config.sh
+$install_root/aktin_dwh_07_config.sh
+
 echo start jboss service
 service wildfly start
 # can also run /etc/init.d/wildfly start
