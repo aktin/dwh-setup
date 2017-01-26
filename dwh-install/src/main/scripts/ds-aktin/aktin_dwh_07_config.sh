@@ -61,3 +61,8 @@ echo "STEP 3 SMTP Configuration"
 echo "STEP 3 end: SMTP configured "
 
 echo -e "\n++++++++++++++++++++++\n\n"
+
+
+## ONTOLOGY UPDATE???
+
+

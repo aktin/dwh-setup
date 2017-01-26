@@ -104,3 +104,9 @@ service wildfly start
 echo "STEP 6 end: wildfly restarted. Services may need a few minutes to get online." 2>&1 | tee -a $LOGFILE
 
 echo -e "\n++++++++++++++++++++++\nUpdate erfolgreich. Vielen Dank!\n" 
+
+
+
+## ONTOLOGY UPDATE???
+
+

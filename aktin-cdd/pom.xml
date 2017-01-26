@@ -5,21 +5,21 @@
 	<packaging>pom</packaging>
 	
 
-	<groupId>org.aktin</groupId>
+    <groupId>org.aktin.dwh</groupId>
 	<artifactId>aktin-cdd</artifactId>
-	<version>0.2.3-SNAPSHOT</version>
+	<version>0.3-SNAPSHOT</version>
 
     <parent>
-        <groupId>org.aktin.installer</groupId>
-        <artifactId>installer</artifactId>
-        <version>0.2.3-SNAPSHOT</version>
+        <groupId>org.aktin.dwh</groupId>
+        <artifactId>server</artifactId>
+        <version>0.3-SNAPSHOT</version>
     </parent>
     
 	<dependencies>
 		<dependency>
-			<groupId>org.aktin</groupId>
-			<artifactId>dwh-install</artifactId>
-			<version>0.2.3-SNAPSHOT</version>
+            <groupId>org.aktin.dwh</groupId>
+            <artifactId>dwh-install</artifactId>
+			<version>0.3-SNAPSHOT</version>
 			<type>tar.gz</type>
 		</dependency>
 	</dependencies>

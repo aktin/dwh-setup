@@ -61,6 +61,7 @@
                                     <goal>single</goal>
                                 </goals>
                                 <configuration>
+                                    <appendAssemblyId>false</appendAssemblyId>
                                     <filters>
                                         <filter>src/assembly/build.properties</filter>
                                     </filters>
