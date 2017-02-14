@@ -71,6 +71,8 @@ fi
 
 echo -e "\n++++++++++++++++++++++\n\n" 2>&1 | tee -a $LOGFILE
 
+# TODO STEP XXX mkdir -p /var/lib/aktin, chown wildfly aktin
+
 # STEP 4 - create new mail service
 echo "STEP 4 SMTP Configuration"
 . $install_root/smtp_setup_config.sh
