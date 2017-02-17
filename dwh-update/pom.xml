@@ -21,10 +21,10 @@
 			<version>0.7-SNAPSHOT</version>
 			<type>ear</type>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.aktin</groupId>
 			<artifactId>cda-ontology</artifactId>
-		</dependency> -->
+		</dependency> 
 	</dependencies>
 
 	<properties>

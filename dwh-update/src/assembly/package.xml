@@ -20,7 +20,7 @@
 
     <fileSets>
         <fileSet>
-            <directory>src/main/scripts/0.7</directory>
+            <directory>src/main/scripts/generic</directory>
             <outputDirectory>dwh-update</outputDirectory>
             <filtered>true</filtered>
             <fileMode>755</fileMode>
