@@ -196,11 +196,17 @@ echo +++++ STEP 6 +++++  Deploy new dwh-j2ee EAR | tee -a $LOGFILE
 echo
 if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_EAR.ear" ]; then 
 	cp -v $install_root/packages/dwh-j2ee-*.ear $WILDFLY_HOME/standalone/deployments/ 2>&1 | tee -a $LOGFILE
-    echo Waiting for deployment...  | tee -a $LOGFILE
+    echo Waiting for deployment (max. 60 sec)...  | tee -a $LOGFILE
+    COUNTER=0
 	while [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.ear.deployed ] && [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.ear.failed ]    
     do
         sleep 1
+        ((COUNTER++))
+        if [ $COUNTER = "60" ]; then
+                break
+        fi
     done
+
 	if [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.ear.deployed ]; then 
         echo +++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-$NEW_VERSION.ear.deployed  | tee -a $LOGFILE
     else 
