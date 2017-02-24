@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NEW_VERSION=0.7
+NEW_VERSION=0.7-SNAPSHOT
 
 # Initial parameters
 SCRIPT=$(readlink -f "$0")
@@ -36,12 +36,12 @@ fi
 # XXX check more paths? (compatible linux distribution?)
 # XXX check if "service" command is available
 
-#OLD_VERSION=$(ls -t $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed | head -1 | sed -n -e 's/$WILDFLY_HOME/standalone/deployments/dwh-j2ee-//'p | sed -n -e 's/.ear.deployed$//'p)
-#if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed 1> /dev/null 2>&1; then 
-#    echo Currently deployed version is $OLD_VERSION | tee -a $LOGFILE
-#else
-#    echo +++WARNING+++ No EAR is currently deployed | tee -a $LOGFILE
-#fi
+if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed 1> /dev/null 2>&1; then 
+    OLD_VERSION=$(ls -t $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed | head -1 | sed -n -e 's#'$WILDFLY_HOME'/standalone/deployments/dwh-j2ee-##'p | sed -n -e 's#.ear.deployed$##'p)
+    echo Currently deployed version is $OLD_VERSION | tee -a $LOGFILE
+else
+    echo +++WARNING+++ No EAR is currently deployed | tee -a $LOGFILE
+fi
 
 echo
 echo +++++ STEP 1 +++++ Undeploy all old dwh-j2ee EARs | tee -a $LOGFILE
@@ -57,6 +57,12 @@ for i in $(cd $WILDFLY_HOME/standalone/deployments/ && ls -t dwh-j2ee-*.deployed
 echo
 echo "+++++ STEP 2 +++++ Execute scripts (SQL, Copy files etc.)" | tee -a $LOGFILE
 echo
+
+echo
+echo +++++ STEP 2.08a +++++  Remove SMTP configuration | tee -a $LOGFILE
+echo Will fail if no previous SMTP-configuration is present, this is not an error
+echo
+$JBOSSCLI --file=create_aktin_mailserver_remove.cli 2>&1 | tee -a $LOGFILE
 
 echo
 echo +++++ STEP 2.01 +++++ Fact Database Reset | tee -a $LOGFILE
@@ -75,11 +81,11 @@ touch update_sql.log
 echo update ontology to ${org.aktin:cda-ontology:jar.version} 2>&1 | tee -a update_sql.log
 # unzip the sql jar 
 unzip $install_root/packages/cda-ontology-${org.aktin:cda-ontology:jar.version}.jar -d $CDATMPDIR
-cp remove_test_ont.sql $CDATMPDIR/sql/remove_test_ont.sql
+cp remove_ont.sql $CDATMPDIR/sql/remove_ont.sql
 chmod 777 -R $CDATMPDIR
 # call sql script files. no console output
-echo remove test ontology 2>&1 | tee -a update_sql.log
-su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_test_ont.sql" 2>&1 >> update_sql.log
+echo remove old ontology 2>&1 | tee -a update_sql.log
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_ont.sql" 2>&1 >> update_sql.log
 echo update metadata 2>&1 | tee -a update_sql.log
 su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/meta.sql" 2>&1 >> update_sql.log
 echo update crcdata 2>&1 | tee -a update_sql.log
@@ -160,12 +166,9 @@ else
 fi
 
 echo
-echo +++++ STEP 2.08 +++++  SMTP configuration | tee -a $LOGFILE
+echo +++++ STEP 2.08b +++++  Add SMTP configuration | tee -a $LOGFILE
 echo
-# xxx check if necessary
-# xxx Raphael
-# . $install_root/smtp_setup_config.sh
-# xxx check result?
+$JBOSSCLI --file=create_aktin_mailserver_add.cli 2>&1 | tee -a $LOGFILE
 
 echo
 echo +++++ STEP 3 +++++  Stop Wildfly Service | tee -a $LOGFILE
@@ -194,11 +197,11 @@ echo wildfly restarted | tee -a $LOGFILE
 echo
 echo +++++ STEP 6 +++++  Deploy new dwh-j2ee EAR | tee -a $LOGFILE
 echo
-if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_EAR.ear" ]; then 
-	cp -v $install_root/packages/dwh-j2ee-*.ear $WILDFLY_HOME/standalone/deployments/ 2>&1 | tee -a $LOGFILE
-    echo Waiting for deployment (max. 60 sec)...  | tee -a $LOGFILE
+if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear" ]; then 
+	cp -v $install_root/packages/dwh-j2ee-$NEW_VERSION.ear $WILDFLY_HOME/standalone/deployments/ 2>&1 | tee -a $LOGFILE
+    echo "Waiting for deployment (max. 60 sec)..."
     COUNTER=0
-	while [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.ear.deployed ] && [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.ear.failed ]    
+	while [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear.deployed ] && [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear.failed ]    
     do
         sleep 1
         ((COUNTER++))
@@ -207,7 +210,7 @@ if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_EAR.ear" ]; then
         fi
     done
 
-	if [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.ear.deployed ]; then 
+	if [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear.deployed ]; then 
         echo +++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-$NEW_VERSION.ear.deployed  | tee -a $LOGFILE
     else 
         echo EAR successfully deployed | tee -a $LOGFILE
