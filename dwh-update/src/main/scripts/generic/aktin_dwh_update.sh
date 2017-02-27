@@ -4,13 +4,14 @@ NEW_VERSION=0.7-SNAPSHOT
 
 # Initial parameters
 SCRIPT=$(readlink -f "$0")
-install_root=$(dirname "$SCRIPT")
-WILDFLY_HOME=/opt/wildfly-${wildfly.version}
-JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
-i2b2_WEBDIR=/var/webroot/webclient
+install_root=$(dirname "$SCRIPT") # current directory
+WILDFLY_HOME=/opt/wildfly-${wildfly.version} # wildfly directory
+JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c" # jboss cli command
+i2b2_WEBDIR=/var/webroot/webclient # webclient directory
 
-LOGFILE=$install_root/update.log
+LOGFILE=$install_root/update.log # logfile for update log
 touch $LOGFILE
+
 echo ++++++++++++++++++++++
 echo
 echo AKTIN J2ee update to $NEW_VERSION | tee -a $LOGFILE
@@ -21,12 +22,14 @@ echo ++++++++++++++++++++++
 echo
 echo +++++ STEP 0 +++++ Check Paths and Log Status Information | tee -a $LOGFILE
 echo
+# check wilfly home
 if [ ! -d "$WILDFLY_HOME" ]; then 
     echo +++ERROR+++ WILDFLY Home directory not in default location, check paths! Exiting update procedure... | tee -a $LOGFILE
     exit 126 #Command invoked cannot execute
 else
     echo WILDFLY Home directory checked | tee -a $LOGFILE
 fi
+# check i2b2 web folder
 if [ ! -d "$i2b2_WEBDIR" ]; then 
     echo +++ERROR+++ i2b2 Web directory not in default location, check paths! Exiting update procedure... | tee -a $LOGFILE
     exit 126 #Command invoked cannot execute
@@ -35,7 +38,7 @@ else
 fi
 # XXX check more paths? (compatible linux distribution?)
 # XXX check if "service" command is available
-
+# check older dwh-j2ee ear files
 if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed 1> /dev/null 2>&1; then 
     OLD_VERSION=$(ls -t $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed | head -1 | sed -n -e 's#'$WILDFLY_HOME'/standalone/deployments/dwh-j2ee-##'p | sed -n -e 's#.ear.deployed$##'p)
     echo Currently deployed version is $OLD_VERSION | tee -a $LOGFILE
@@ -46,6 +49,7 @@ fi
 echo
 echo +++++ STEP 1 +++++ Undeploy all old dwh-j2ee EARs | tee -a $LOGFILE
 echo
+# if existing, undeploy older dwh-j2ee ear files
 for i in $(cd $WILDFLY_HOME/standalone/deployments/ && ls -t dwh-j2ee-*.deployed); 
     do
             ear=$(echo $i | sed 's/.deployed$//')
@@ -53,46 +57,41 @@ for i in $(cd $WILDFLY_HOME/standalone/deployments/ && ls -t dwh-j2ee-*.deployed
             $JBOSSCLI "undeploy --name=$ear" 2>&1 | tee -a $LOGFILE
             echo
     done
+# clean up older ears
+# rm $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*
 
 echo
 echo "+++++ STEP 2 +++++ Execute scripts (SQL, Copy files etc.)" | tee -a $LOGFILE
 echo
 
-echo
-echo +++++ STEP 2.08a +++++  Remove SMTP configuration | tee -a $LOGFILE
-echo Will fail if no previous SMTP-configuration is present, this is not an error
-echo
-$JBOSSCLI --file=create_aktin_mailserver_remove.cli 2>&1 | tee -a $LOGFILE
 
 echo
-echo +++++ STEP 2.01 +++++ Fact Database Reset | tee -a $LOGFILE
+echo +++++ STEP 2.01 +++++ Fact Database Reset| tee -a $LOGFILE
 echo
-# XXX not supported yet
+# XXX not supported yet - NOP
 # check id length and delete facts with "short" ids
 
 echo
 echo +++++ STEP 2.02 +++++ Update local DWH ontology | tee -a $LOGFILE
 echo
-SCRIPT=$(readlink -f "$0")
-install_root=$(dirname "$SCRIPT")
+# folder where the postgres user can call sql files
 CDATMPDIR=/var/tmp/cda-ontology
 mkdir $CDATMPDIR
-touch update_sql.log
-echo update ontology to ${org.aktin:cda-ontology:jar.version} 2>&1 | tee -a update_sql.log
-# unzip the sql jar 
+echo - update ontology to ${org.aktin:cda-ontology:jar.version} 2>&1 | tee -a LOGFILE
+# unzip the sql jar to the folder
 unzip $install_root/packages/cda-ontology-${org.aktin:cda-ontology:jar.version}.jar -d $CDATMPDIR
-cp remove_ont.sql $CDATMPDIR/sql/remove_ont.sql
-chmod 777 -R $CDATMPDIR
+cp remove_ont.sql $CDATMPDIR/sql/remove_ont.sql # copy the remove ont file 
+chmod 777 -R $CDATMPDIR # change the permissions of the folder
 # call sql script files. no console output
-echo remove old ontology 2>&1 | tee -a update_sql.log
-su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_ont.sql" 2>&1 >> update_sql.log
-echo update metadata 2>&1 | tee -a update_sql.log
-su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/meta.sql" 2>&1 >> update_sql.log
-echo update crcdata 2>&1 | tee -a update_sql.log
-su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/data.sql" 2>&1 >> update_sql.log
+echo remove old ontology 2>&1 | tee -a LOGFILE
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_ont.sql" 2>&1 >> LOGFILE
+echo update metadata 2>&1 | tee -a LOGFILE
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/meta.sql" 2>&1 >> LOGFILE
+echo update crcdata 2>&1 | tee -a LOGFILE
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/data.sql" 2>&1 >> LOGFILE
 # remove temp directory
 rm -r $CDATMPDIR
-echo Ontology Update done. Result logged in update_sql.log
+echo Ontology Update done. Result logged in LOGFILE
 
 echo
 echo +++++ STEP 2.03 +++++ Remove login form defaults | tee -a $LOGFILE
@@ -164,6 +163,13 @@ if [ ! -d "/var/lib/aktin" ]; then
 else
     echo /var/lib/aktin present, no action necessary
 fi
+
+
+echo
+echo +++++ STEP 2.08a +++++  Remove SMTP configuration | tee -a $LOGFILE
+echo Will fail if no previous SMTP-configuration is present, this is not an error
+echo
+$JBOSSCLI --file=create_aktin_mailserver_remove.cli 2>&1 | tee -a $LOGFILE
 
 echo
 echo +++++ STEP 2.08b +++++  Add SMTP configuration | tee -a $LOGFILE
