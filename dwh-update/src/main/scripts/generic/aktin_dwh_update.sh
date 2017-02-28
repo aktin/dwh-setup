@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# generic aktin dwh update to 0.7 
+# 28 Feb 2017
+# Oldenburg
+
 NEW_VERSION=0.7-SNAPSHOT
 
 # Initial parameters
