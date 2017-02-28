@@ -77,36 +77,63 @@ echo
 # folder where the postgres user can call sql files
 CDATMPDIR=/var/tmp/cda-ontology
 mkdir $CDATMPDIR
-echo - update ontology to ${org.aktin:cda-ontology:jar.version} 2>&1 | tee -a LOGFILE
+echo "- update ontology to ${org.aktin:cda-ontology:jar.version}" 2>&1 | tee -a LOGFILE
 # unzip the sql jar to the folder
 unzip $install_root/packages/cda-ontology-${org.aktin:cda-ontology:jar.version}.jar -d $CDATMPDIR
 cp remove_ont.sql $CDATMPDIR/sql/remove_ont.sql # copy the remove ont file 
 chmod 777 -R $CDATMPDIR # change the permissions of the folder
 # call sql script files. no console output
-echo remove old ontology 2>&1 | tee -a LOGFILE
+echo "-- remove old ontology" 2>&1 | tee -a LOGFILE
 su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_ont.sql" 2>&1 >> LOGFILE
-echo update metadata 2>&1 | tee -a LOGFILE
+echo "-- update metadata" 2>&1 | tee -a LOGFILE
 su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/meta.sql" 2>&1 >> LOGFILE
-echo update crcdata 2>&1 | tee -a LOGFILE
+echo "-- update crcdata" 2>&1 | tee -a LOGFILE
 su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/data.sql" 2>&1 >> LOGFILE
 # remove temp directory
 rm -r $CDATMPDIR
-echo Ontology Update done. Result logged in LOGFILE
+echo "- Ontology Update done. Result logged in LOGFILE"
 
 echo
 echo +++++ STEP 2.03 +++++ Remove login form defaults | tee -a $LOGFILE
 echo
-# xxx check if necessary
-#if [ ! -f $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig ]; then 
-#	cp $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig
-#	echo "Webclient PM file backed up" 2>&1 | tee -a $LOGFILE
-#fi
-#sed -i "s/name=\"uname\" id=\"loginusr\" value=\"demo\"/name=\"uname\" id=\"loginusr\" value=\"\"/g; s/name=\"pword\" id=\"loginpass\" value=\"demouser\"/name=\"pword\" id=\"loginpass\" value=\"\"/g" #$i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
-# xxx check result?
+# check wether the login username needs to be removed. 
+if [ $(grep -c "name=\"uname\" id=\"loginusr\" value=\"demo\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
+then
+    echo "- login user name already removed from form. continuing." | tee -a LOGFILE
+else 
+    if [ ! -f $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig ]; then 
+       cp $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig
+       echo "- Webclient PM file backed up" 2>&1 | tee -a $LOGFILE
+    fi
+    sed -i "s/name=\"uname\" id=\"loginusr\" value=\"demo\"/name=\"uname\" id=\"loginusr\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
+    if [ $(grep -c "name=\"uname\" id=\"loginusr\" value=\"demo\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
+        echo "+++WARNING+++ login user was not removed from the login form" | tee -a LOGFILE
+    else 
+        echo -e "- login user name removed from form, $(grep -c "name=\"uname\" id=\"loginusr\" value=\"demo\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) occurences of username in file: \n $(grep -oE "<input .* name=\"uname\" id=\"loginusr\".* />" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js)" | tee -a LOGFILE
+    fi
+fi
+# same for the password
+if [ $(grep -c "name=\"pword\" id=\"loginpass\" value=\"demouser\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
+then
+    echo "- login password already removed from form. continuing." | tee -a LOGFILE
+else 
+    if [ ! -f $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig ]; then 
+       cp $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig
+       echo "- Webclient PM file backed up" 2>&1 | tee -a $LOGFILE
+    fi
+    sed -i "s/name=\"pword\" id=\"loginpass\" value=\"demouser\"/name=\"pword\" id=\"loginpass\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
+
+    if [ $(grep -c "name=\"pword\" id=\"loginpass\" value=\"demouser\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
+        echo "+++WARNING+++ login password was not removed from the login form" | tee -a LOGFILE
+    else 
+        echo -e "- login password removed from form, $(grep -c "name=\"pword\" id=\"loginpass\" value=\"demouser\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) occurences of password in file: \n $(grep -oE "<input .* name=\"pword\" id=\"loginpass\".* />" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js)" | tee -a LOGFILE
+    fi
+fi
 
 echo
 echo +++++ STEP 2.04 +++++ Create AKTIN Database in postgres | tee -a $LOGFILE
 echo
+# XXX check if the database or user exist. if not, then create. if yes. only update. Right now, creating while existing will return error, but continue with the code.
 cp "$install_root/postgres_db_script.sh" /var/tmp/
 chmod a+rx /var/tmp/postgres_db_script.sh
 su - postgres bash -c "/var/tmp/postgres_db_script.sh" 2>&1 | tee -a $LOGFILE
@@ -121,12 +148,12 @@ echo "- $existAktinDS occurences of AKTINDS in Standalone.xml found" | tee -a $L
 if [ "$existAktinDS" -gt 0 ]
 then
 	$JBOSSCLI "data-source remove --name=AktinDS,/subsystem=datasources:read-resource" 2>&1 | tee -a $LOGFILE
-	echo "removed older aktin datasource " | tee -a $LOGFILE
+	echo "- removed older aktin datasource " | tee -a $LOGFILE
 fi
-# XXX does this work without wildfly reload???
-
+# jboss will be reloaded at the end of this update script. changes will be made, but will only take effect after reload
 $JBOSSCLI --file=create_aktin_datasource.cli 2>&1 | tee -a $LOGFILE
-# xxx check result? echo "created aktin datasource" | tee -a $LOGFILE
+# xxx check result? 
+echo "- created aktin datasource" | tee -a $LOGFILE
 # $WILDFLY_HOME/bin/jboss-cli.sh  --connect controller=127.0.0.1 --commands="reload" 2>&1 | tee -a $LOGFILE
 # echo "reload" 2>&1 | tee -a $LOGFILE
 
@@ -164,17 +191,11 @@ else
     echo /var/lib/aktin present, no action necessary
 fi
 
-
 echo
-echo +++++ STEP 2.08a +++++  Remove SMTP configuration | tee -a $LOGFILE
+echo +++++ STEP 2.08 +++++  Remove older and add new SMTP configuration | tee -a $LOGFILE
 echo Will fail if no previous SMTP-configuration is present, this is not an error
 echo
-$JBOSSCLI --file=create_aktin_mailserver_remove.cli 2>&1 | tee -a $LOGFILE
-
-echo
-echo +++++ STEP 2.08b +++++  Add SMTP configuration | tee -a $LOGFILE
-echo
-$JBOSSCLI --file=create_aktin_mailserver_add.cli 2>&1 | tee -a $LOGFILE
+. $install_root/aktin_smtp_create.sh 2>&1 | tee -a $LOGFILE
 
 echo
 echo +++++ STEP 3 +++++  Stop Wildfly Service | tee -a $LOGFILE
@@ -185,7 +206,7 @@ service wildfly stop 2>&1 | tee -a $LOGFILE
 echo wildfly stopped | tee -a $LOGFILE
 
 echo
-echo +++++ STEP 4 +++++  Remove all dwh.ear, dwh.ear.failed, dwh.ear.undeployed | tee -a $LOGFILE
+echo +++++ STEP 4 +++++  Remove all dwh.ear[*] including .failed, .deployed, .undeployed | tee -a $LOGFILE
 echo
 rm -v $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* 2>&1 | tee -a $LOGFILE
 if ls dwh-j2ee-* 1> /dev/null 2>&1; then 
@@ -224,6 +245,7 @@ if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear" ]; th
 else 
 	echo +++WARNING+++ file already present, this should never happen | tee -a $LOGFILE
 fi
+
 echo
 date | tee -a $LOGFILE
 echo
