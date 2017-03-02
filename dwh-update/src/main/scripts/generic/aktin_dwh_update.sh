@@ -24,7 +24,7 @@ echo
 echo ++++++++++++++++++++++
 
 echo
-echo +++++ STEP 0 +++++ Check Paths and Log Status Information | tee -a $LOGFILE
+echo +++++ STEP 0 +++++ Check Paths and output Status Information | tee -a $LOGFILE
 echo
 # check wilfly home
 if [ ! -d "$WILDFLY_HOME" ]; then 
@@ -49,6 +49,16 @@ if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed 1> /dev/null 2>&1
 else
     echo +++WARNING+++ No EAR is currently deployed | tee -a $LOGFILE
 fi
+
+
+echo
+echo +++++ STEP 0.01 +++++ Check aktin.properties  | tee -a $LOGFILE
+echo
+. $install_root/check_aktin_properties.sh
+
+# TODO sync preferences (this or separate step): for each property in new aktin.properties check if exists in old one, if not append!
+# TODO make list of properties which NEED to be changed and make sure that they are changed. 
+
 
 echo
 echo +++++ STEP 1 +++++ Undeploy all old dwh-j2ee EARs | tee -a $LOGFILE
@@ -78,24 +88,25 @@ echo
 echo
 echo +++++ STEP 2.02 +++++ Update local DWH ontology | tee -a $LOGFILE
 echo
+SQLLOG=$install_root/update_sql.log
 # folder where the postgres user can call sql files
 CDATMPDIR=/var/tmp/cda-ontology
 mkdir $CDATMPDIR
-echo "- update ontology to ${org.aktin:cda-ontology:jar.version}" 2>&1 | tee -a LOGFILE
+echo "- update ontology to ${org.aktin:cda-ontology:jar.version}" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
 # unzip the sql jar to the folder
 unzip $install_root/packages/cda-ontology-${org.aktin:cda-ontology:jar.version}.jar -d $CDATMPDIR
 cp remove_ont.sql $CDATMPDIR/sql/remove_ont.sql # copy the remove ont file 
 chmod 777 -R $CDATMPDIR # change the permissions of the folder
 # call sql script files. no console output
-echo "-- remove old ontology" 2>&1 | tee -a LOGFILE
-su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_ont.sql" 2>&1 >> LOGFILE
-echo "-- update metadata" 2>&1 | tee -a LOGFILE
-su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/meta.sql" 2>&1 >> LOGFILE
-echo "-- update crcdata" 2>&1 | tee -a LOGFILE
-su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/data.sql" 2>&1 >> LOGFILE
+echo "-- remove old ontology" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_ont.sql" 2>&1 >> $SQLLOG
+echo "-- update metadata" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/meta.sql" 2>&1 >> $SQLLOG
+echo "-- update crcdata" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/data.sql" 2>&1 >> $SQLLOG
 # remove temp directory
 rm -r $CDATMPDIR
-echo "- Ontology Update done. Result logged in LOGFILE"
+echo "- Ontology Update done. Result logged in $SQLLOG"
 
 echo
 echo +++++ STEP 2.03 +++++ Remove login form defaults | tee -a $LOGFILE
@@ -111,6 +122,7 @@ else
     fi
     sed -i "s/name=\"uname\" id=\"loginusr\" value=\"demo\"/name=\"uname\" id=\"loginusr\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
     if [ $(grep -c "name=\"uname\" id=\"loginusr\" value=\"demo\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
+    then 
         echo "+++WARNING+++ login user was not removed from the login form" | tee -a LOGFILE
     else 
         echo -e "- login user name removed from form, $(grep -c "name=\"uname\" id=\"loginusr\" value=\"demo\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) occurences of username in file: \n $(grep -oE "<input .* name=\"uname\" id=\"loginusr\".* />" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js)" | tee -a LOGFILE
@@ -128,6 +140,7 @@ else
     sed -i "s/name=\"pword\" id=\"loginpass\" value=\"demouser\"/name=\"pword\" id=\"loginpass\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
 
     if [ $(grep -c "name=\"pword\" id=\"loginpass\" value=\"demouser\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
+    then 
         echo "+++WARNING+++ login password was not removed from the login form" | tee -a LOGFILE
     else 
         echo -e "- login password removed from form, $(grep -c "name=\"pword\" id=\"loginpass\" value=\"demouser\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) occurences of password in file: \n $(grep -oE "<input .* name=\"pword\" id=\"loginpass\".* />" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js)" | tee -a LOGFILE
@@ -162,26 +175,7 @@ echo "- created aktin datasource" | tee -a $LOGFILE
 # echo "reload" 2>&1 | tee -a $LOGFILE
 
 echo
-echo +++++ STEP 2.06 +++++  Copy aktin.properties  | tee -a $LOGFILE
-echo
-# copy aktin.properties into the wildfly configuration folder
-if [ ! -f "$WILDFLY_HOME/standalone/configuration/aktin.properties" ]; then 
-	cp -v $install_root/aktin.properties $WILDFLY_HOME/standalone/configuration/aktin.properties 2>&1 | tee -a $LOGFILE
-	if [ ! -f "$WILDFLY_HOME/standalone/configuration/aktin.properties" ]; then 
-        echo +++WARNING+++ properties file not copied | tee -a $LOGFILE
-	else
-        echo properties file successfully copied | tee -a $LOGFILE
-    fi
-else 
-	#Kopieren abgebrochen, da die Datei aktin.properties bereits in $WILDFLY_HOME/standalone/configuration/ vorhanden ist.
-	echo aktin.properties already present,  not copied | tee -a $LOGFILE
-fi
-
-# TODO sync preferences (this or separate step): for each property in new aktin.properties check if exists in old one, if not append!
-# TODO make list of properties which NEED to be changed and make sure that they are changed. 
-
-echo
-echo +++++ STEP 2.07 +++++  Create /var/lib/aktin  | tee -a $LOGFILE
+echo +++++ STEP 2.06 +++++  Create /var/lib/aktin  | tee -a $LOGFILE
 echo
 if [ ! -d "/var/lib/aktin" ]; then 
     mkdir -p /var/lib/aktin 2>&1 | tee -a $LOGFILE
@@ -196,7 +190,7 @@ else
 fi
 
 echo
-echo +++++ STEP 2.08 +++++  Remove older and add new SMTP configuration | tee -a $LOGFILE
+echo +++++ STEP 2.07 +++++  Remove older and add new SMTP configuration | tee -a $LOGFILE
 echo Will fail if no previous SMTP-configuration is present, this is not an error
 echo
 . $install_root/aktin_smtp_create.sh 2>&1 | tee -a $LOGFILE

@@ -6,7 +6,7 @@ install_root=$(dirname "$SCRIPT")
 WILDFLY_HOME=/opt/wildfly-${wildfly.version}
 JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
-# get settings
+# get smtp settings
 LOCAL_SETTING=$install_root/aktin_smtp.config
 . $LOCAL_SETTING
 
@@ -26,6 +26,17 @@ if [ $( grep -c "mail-session name=\"$sessionname\"" $WILDFLY_HOME/standalone/co
 	$JBOSSCLI "/subsystem=mail/mail-session=$sessionname:remove"
 fi	
 
+$JBOSSCLI --command="/:reload"
+
+$install_root/wait_wildfly.sh
+local wait_wildfly=$?
+
+if [ $wait_wildfly -lt 0 ] then
+	echo "- jboss state unstable. exiting running script"
+	exit -1
+fi
+
+echo + jboss restarted. older smtp settings are deleted if existent.
 # set settings
 $JBOSSCLI "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:add(host=$smtphost, port=$smtpport)"
 $JBOSSCLI "/subsystem=mail/mail-session=$sessionname:add(jndi-name=$jndiname)"
