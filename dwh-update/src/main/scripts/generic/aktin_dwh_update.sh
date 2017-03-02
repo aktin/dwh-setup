@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# generic aktin dwh update to 0.7 
+# generic aktin dwh update to 0.7
 # 28 Feb 2017
 # Oldenburg
 
@@ -27,14 +27,14 @@ echo
 echo +++++ STEP 0 +++++ Überprüfung der Paths und Ausgabe der Status Informationen | tee -a $LOGFILE
 echo
 # check wilfly home
-if [ ! -d "$WILDFLY_HOME" ]; then 
+if [ ! -d "$WILDFLY_HOME" ]; then
     echo +++ERROR+++ WILDFLY Home directory nicht gefunden! Update wird unterbrochen ... Code 126 | tee -a $LOGFILE
     exit 126 #Command invoked cannot execute
 else
     echo WILDFLY Home directory checked | tee -a $LOGFILE
 fi
 # check i2b2 web folder
-if [ ! -d "$i2b2_WEBDIR" ]; then 
+if [ ! -d "$i2b2_WEBDIR" ]; then
     echo +++ERROR+++ i2b2 Web directory nicht gefunden! Update wird unterbrochen ... Code 126 | tee -a $LOGFILE
     exit 126 #Command invoked cannot execute
 else
@@ -43,7 +43,7 @@ fi
 # XXX check more paths? (compatible linux distribution?)
 # XXX check if "service" command is available
 # check older dwh-j2ee ear files
-if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed 1> /dev/null 2>&1; then 
+if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed 1> /dev/null 2>&1; then
     OLD_VERSION=$(ls -t $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed | head -1 | sed -n -e 's#'$WILDFLY_HOME'/standalone/deployments/dwh-j2ee-##'p | sed -n -e 's#.ear.deployed$##'p)
     echo Currently deployed version is $OLD_VERSION | tee -a $LOGFILE
 else
@@ -54,10 +54,14 @@ fi
 echo
 echo +++++ STEP 0.01 +++++ Überprüfung aktin.properties  | tee -a $LOGFILE
 echo
-. $INSTALL_ROOT/lib/check_aktin_properties.sh 2>&1 | tee -a $LOGFILE
+$INSTALL_ROOT/lib/check_aktin_properties.sh 2>&1 | tee -a $LOGFILE
+checkexit=${PIPESTATUS[0]}
+if [ $checkexit -gt 0 ]; then
+    exit $checkexit
+fi
 
 # TODO sync preferences (this or separate step): for each property in new aktin.properties check if exists in old one, if not append!
-# TODO make list of properties which NEED to be changed and make sure that they are changed. 
+# TODO make list of properties which NEED to be changed and make sure that they are changed.
 
 
 echo
@@ -87,10 +91,10 @@ SQLLOG=$INSTALL_ROOT/update_sql.log
 # folder where the postgres user can call sql files
 CDATMPDIR=/var/tmp/cda-ontology
 mkdir $CDATMPDIR
-echo "- update ontology to ${org.aktin:cda-ontology:jar.version}" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+echo "-- update ontology to ${org.aktin:cda-ontology:jar.version}" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
 # unzip the sql jar to the folder
 unzip $INSTALL_ROOT/packages/cda-ontology-${org.aktin:cda-ontology:jar.version}.jar -d $CDATMPDIR
-cp remove_ont.sql $CDATMPDIR/sql/remove_ont.sql # copy the remove ont file 
+cp -v $INSTALL_ROOT/lib/remove_ont.sql $CDATMPDIR/sql/remove_ont.sql 2>&1 | tee -a $LOGFILE  # copy the remove ont file 
 chmod 777 -R $CDATMPDIR # change the permissions of the folder
 # call sql script files. no console output
 echo "-- remove old ontology" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
@@ -189,8 +193,7 @@ else
 fi
 
 echo
-echo +++++ STEP 2.07 +++++  Remove older and add new SMTP configuration | tee -a $LOGFILE
-echo Will fail if no previous SMTP-configuration is present, this is not an error
+echo +++++ STEP 2.07 +++++  Add new SMTP configuration | tee -a $LOGFILE
 echo
 $INSTALL_ROOT/lib/email_create.sh 2>&1 | tee -a $LOGFILE
 
@@ -203,7 +206,7 @@ service wildfly stop 2>&1 | tee -a $LOGFILE
 echo wildfly stopped | tee -a $LOGFILE
 
 echo
-echo +++++ STEP 4 +++++  Remove all dwh.ear[*] including .failed, .deployed, .undeployed | tee -a $LOGFILE
+echo "+++++ STEP 4 +++++  Remove all dwh.ear[*] (including .failed, .deployed, .undeployed)" | tee -a $LOGFILE
 echo
 rm -v $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* 2>&1 | tee -a $LOGFILE
 if ls dwh-j2ee-* 1> /dev/null 2>&1; then 

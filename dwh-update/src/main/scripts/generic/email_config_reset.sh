@@ -2,16 +2,16 @@
 
 # Initial parameters
 SCRIPT=$(readlink -f "$0")
-install_root=$(dirname "$SCRIPT")
+INSTALL_ROOT=$(dirname "$SCRIPT")
 WILDFLY_HOME=/opt/wildfly-${wildfly.version}
 JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
 # undeploy dwh to prevent crash
-echo DWH EAR wird undeployed
-$install_root/lib/undeploy_dwh_ear.sh
+echo DWH EAR wird undeployed als Vorbereitung
+$INSTALL_ROOT/lib/undeploy_dwh_ear.sh
 
 # get smtp settings
-LOCAL_SETTING=$install_root/email.config
+LOCAL_SETTING=$INSTALL_ROOT/email.config
 . $LOCAL_SETTING
 
 # not changeable parameters
@@ -31,7 +31,7 @@ if [ $( grep -c "mail-session name=\"$sessionname\"" $WILDFLY_HOME/standalone/co
 fi	
 
 # $JBOSSCLI --command="/:reload"
-# $install_root/wait_wildfly.sh
+# $INSTALL_ROOT/wait_wildfly.sh
 # local wait_wildfly=$?
 
 # if [ $wait_wildfly -lt 0 ] then

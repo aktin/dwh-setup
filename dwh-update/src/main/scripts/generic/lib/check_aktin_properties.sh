@@ -2,22 +2,25 @@
 
 # Initial parameters
 SCRIPT=$(readlink -f "$0")
-install_root=$(dirname "$SCRIPT")
+INSTALL_ROOT=$(dirname "$(dirname "$SCRIPT")")
 WILDFLY_HOME=/opt/wildfly-${wildfly.version}
+
+
 
 # copy aktin.properties into the wildfly configuration folder
 if [ ! -f "$WILDFLY_HOME/standalone/configuration/aktin.properties" ]; then 
 	# Hinweis zu properties Aenderungen.
-	echo +++WARNING+++ Bitte die Einstellungen in der Datei $install_root/aktin.properties ändern mittels: 
-	echo     nano $install_root/aktin.properties 
+	echo +++WARNING+++ Bitte die Einstellungen in der Datei $INSTALL_ROOT/aktin.properties ändern mittels: 
+	echo "    nano $INSTALL_ROOT/aktin.properties"
 	echo und anschließend nach dem Wildfly Konfigurationsordner kopieren mittels:
-	echo "    cp -v $install_root/aktin.properties $WILDFLY_HOME/standalone/configuration/aktin.properties"
+	echo "    cp -v $INSTALL_ROOT/aktin.properties $WILDFLY_HOME/standalone/configuration/aktin.properties"
 	echo 
 	echo Dieser Skript wird nun beendet. 
 	echo Nach obiger Änderungen starten Sie dieses Skript bitte neu.
 	echo "+++INFO+++ Spätere Änderungen bitte direkt in $WILDFLY_HOME/standalone/configuration/aktin.properties vornehmen"
 	echo "   und dann dieses Skript dann erneut ausführen"
-
+	echo "-------------------------"
+	echo 
 	exit 124 # controlled interrupt if properties still not copied
 else 
 	# kein Kopieren, da die Datei aktin.properties bereits in $WILDFLY_HOME/standalone/configuration/ vorhanden ist.
