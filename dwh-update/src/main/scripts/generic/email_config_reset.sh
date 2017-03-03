@@ -29,9 +29,9 @@ fi
 echo Wildfly neustart:
 $JBOSSCLI --command="/:reload"
 $INSTALL_ROOT/lib/wait_wildfly.sh
-local wait_wildfly=$?
+wait_wildfly=$?
 
-if [ $wait_wildfly -lt 0 ] then
+if [ $wait_wildfly -lt 0 ]; then
 	echo "- wildfly state unstable. exiting running script. Check"
 	echo "    ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee*"
 	exit -1
