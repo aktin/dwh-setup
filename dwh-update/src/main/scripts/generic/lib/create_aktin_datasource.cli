@@ -3,7 +3,7 @@ set username=aktin
 set password=aktin
 set driver=postgresql-9.2-1002.jdbc4.jar
 set module=com.postgresql
-set resource=/home/jboss/Downloads/postgresql-9.2-1002.jdbc4.jar
+set resource=postgresql-9.2-1002.jdbc4.jar
 set name=AktinDS
 set jndiname=java:jboss/datasources/AktinDS
 
