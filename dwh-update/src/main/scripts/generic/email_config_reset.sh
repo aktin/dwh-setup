@@ -10,10 +10,6 @@ JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 echo DWH EAR wird undeployed als Vorbereitung
 $INSTALL_ROOT/lib/undeploy_dwh_ear.sh
 
-# get smtp settings
-LOCAL_SETTING=$INSTALL_ROOT/email.config
-. $LOCAL_SETTING
-
 # not changeable parameters
 sessionname=AktinMailSession
 jndiname=java:jboss/mail/AktinMailSession
@@ -30,11 +26,14 @@ if [ $( grep -c "mail-session name=\"$sessionname\"" $WILDFLY_HOME/standalone/co
 	$JBOSSCLI "/subsystem=mail/mail-session=$sessionname:remove"
 fi	
 
-# $JBOSSCLI --command="/:reload"
-# $INSTALL_ROOT/wait_wildfly.sh
-# local wait_wildfly=$?
+echo Wildfly neustart:
+$JBOSSCLI --command="/:reload"
+$INSTALL_ROOT/lib/wait_wildfly.sh
+local wait_wildfly=$?
 
-# if [ $wait_wildfly -lt 0 ] then
-# 	echo "- jboss state unstable. exiting running script"
-# 	exit -1
-# fi
+if [ $wait_wildfly -lt 0 ] then
+	echo "- wildfly state unstable. exiting running script. Check"
+	echo "    ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee*"
+	exit -1
+fi
+echo "Wildfly neugestartet."
