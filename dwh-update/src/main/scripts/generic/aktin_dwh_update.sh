@@ -43,13 +43,17 @@ fi
 # XXX check more paths? (compatible linux distribution?)
 # XXX check if "service" command is available
 # check older dwh-j2ee ear files
-if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed 1> /dev/null 2>&1; then
-    OLD_VERSION=$(ls -t $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed | head -1 | sed -n -e 's#'$WILDFLY_HOME'/standalone/deployments/dwh-j2ee-##'p | sed -n -e 's#.ear.deployed$##'p)
-    echo Currently deployed version is $OLD_VERSION | tee -a $LOGFILE
-else
+numdeployed=$(ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* | grep -c deployed)
+if [ $numdeployed -gt 0 ] ; then
+    if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed 1> /dev/null 2>&1; then
+        OLD_VERSION=$(ls -t $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed | head -1 | sed -n -e 's#'$WILDFLY_HOME'/standalone/deployments/dwh-j2ee-##'p | sed -n -e 's#.ear.deployed$##'p)
+        echo Currently deployed version is $OLD_VERSION | tee -a $LOGFILE
+    else
+        echo +++WARNING+++ No EAR is currently deployed | tee -a $LOGFILE
+    fi
+else 
     echo +++WARNING+++ No EAR is currently deployed | tee -a $LOGFILE
 fi
-
 
 echo
 echo +++++ STEP 0.01 +++++ Überprüfung aktin.properties  | tee -a $LOGFILE
