@@ -8,7 +8,7 @@ Automatisiertes Update auf 0.7
 - cd dwh-update
 - aktin.properties bearbeiten mit den Standorteigenen Daten, besonders wichtig: local.email anpassen. Danach nach wildfly config Ordner kopieren
     + nano aktin.properties
-    + cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configurations/
+    + cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/
 - email.config bearbeiten. Einstellungen für ausgehende Emails eintragen. Wird zum Verschicken von Reports und Ähnliches genutzt.    
     + Im Folgenden ein Beispiel für Googlemail Einrichtung (nutzt SSL)
         * smtphost=smtp.googlemail.com
@@ -47,7 +47,7 @@ Email erneut Einrichten
 
 Änderungen in aktin.properties
 ------------------------------
-- In der Datei /opt/wildfly-9.0.2.Final/standalone/configurations/aktin.properties die erwünschten Änderungen vornehmen
+- In der Datei /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties die erwünschten Änderungen vornehmen
 - Den wildfly Service neustarten 
     + service wildfly stop
     + service wildfly start
