@@ -7,12 +7,12 @@ Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist.
 Dazu führt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), Folgendes aus:
 
 ```
-sudo su
+sudo su -
 ```
 oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwort), Folgendes:
 
 ```
-su
+su -
 ```
 Step-by-Step Anleitung zur Ausführung als `root`:
 
