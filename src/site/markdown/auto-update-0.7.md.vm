@@ -16,6 +16,7 @@ su -
 ```
 
 Als erstes muss das packet heruntergeladen werden und entpackt: 
+
 ```
 wget ${releaseRepoUrl}/org/aktin/dwh-update/${dwhServerVersion}/dwh-update-${dwhServerVersion}.tar.gz
 tar xvzf dwh-update-${dwhServerVersion}.tar.gz
@@ -23,6 +24,7 @@ cd dwh-update
 ```
 
 Der Inhalt (`ls`) sollte dann etwa wie folgt aussehen:
+
 ```
 dwh-update
 - aktin.properties
@@ -30,33 +32,41 @@ dwh-update
 - email.config
 - email_config_reset.sh
 - README.md
-- lib
+- lib/
 - - ...
 ```
 
 In diesem Update werden eingie wichtige Einstellungen durchgeführt. Dazu müssen Sie die Datei `aktin.properties` anpassen und in die Konfigurationsordner des Wildfly-Servers kopieren, in Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`. Welche Angaben genau geändert werden müssen und wie diese verwendet werden, können Sie dem Abschnitt "Lokale Konfigurationen in der Datei `aktin.properties`" entnehmen.
+
 ```
 nano aktin.properties
 cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/
 ```
 In der Datei `email.config` tragen Sie bitte die Emailkonfigurationen für die Ausgangsmailadresse ein. Diese Mail wird für Benachrichtigungen und Berichte hausintern verwendet. Diese sollte eine eigene Emailadresse sein. Eine funktionstüchtige Mailadresse ist Voraussetzung für diesen Update. Bitte bearbeiten Sie diese Datei. Eine Beschreibung der Inhalt von `email.config` sowie eine Möglichkeit für spätere Änderungen entnehmen Sie bitte dem Abschnitt "Emailkonfiguration und Änderungen"
+
 ```
 nano email.config
 ```
 
 Nun kann der Updateskript ausgeführt werden:
+
 ```
 ./aktin_dwh_update.sh
 ```
+
 Dieser besteht aus 6 große Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
 Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig vom Serverequipment und Last kann dies mehrere Minuten dauern. Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
+
 ```
 +++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-0.7.ear.deployed
 ```
+
 Dies muss nicht einen Fehler bedeuten. Bitte überprüfen Sie nach einiger Minuten den Deploymentordner `/opt/wildfly-9.0.2.Final/standalone/deployments`, z.B. mit dem Befehl
+
 ```
 ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-0.7*.deployed
 ```
+
 Sollte eine Auflistung erscheinen, war der Update erfolgreich.
 
 Unter dem Link `IhrAKtinServerLink/aktin/admin/test/` kann man die oben durchgeführten Anpassungen nun testen. 
@@ -78,6 +88,7 @@ Sollte weitere Probleme entstehen, bitte kontaktieren Sie uns unter it-support(a
 Lokale Konfigurationen in der Datei `aktin.properties`
 ------------------------------------------------------
 Beispieldatei für `aktin.properties`
+
 ```
 # Currently not used, may be changed (Name of the installation)
 local.cn=AKTIN DWH
@@ -130,6 +141,7 @@ nano /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
 Emailkonfiguration und Änderungen
 ---------------------------------
 Beispielsdatei für Emailkonfiguration `email.config`
+
 ```
 #
 #     change mail server configuration here
@@ -159,6 +171,7 @@ mailfrom=aktin-test@web.de
 usessl=false
 usetls=true
 ```
+
 In dieser Datei werden die Einstellungen für eine Ausgangsmail konfiguriert. Hierbei muss man besonders auf die Einstellungen des Mailservers achten und `usessl` und `usetls` richtig setzen, dementsprechend auch den `smtpport`.
 
 Sollte die Maileinstellungen nach dem Update nochmals geändert werden, müssen die folgenden Schritte durchgeführt werden.
