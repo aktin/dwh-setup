@@ -236,7 +236,7 @@ if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear" ]; th
     do
         sleep 1
         ((COUNTER++))
-        if [ $COUNTER = "60" ]; then
+        if [ $COUNTER = "120" ]; then
                 break
         fi
     done
