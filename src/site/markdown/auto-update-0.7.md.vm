@@ -1,21 +1,21 @@
 Skriptbasiertes Update auf DWH-J2EE-0.7 für Debian
 ==================================================
 
-Für laufende DWH Instanzen auf Debian Servern stellen wir eine Update-Skript bereit, zu finden unter 
+Für laufende DWH Instanzen auf Debian Servern stellen wir ein Update-Skript bereit, zu finden unter 
 [Debian Update Paket](${releaseRepoUrl}/org/aktin/dwh-update/${dwhServerVersion}/dwh-update-${dwhServerVersion}.tar.gz)
 Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. 
-Dazu führt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), Folgendes aus:
+Dazu führt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), folgendes aus:
 
 ```
 sudo su -
 ```
-oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwort), Folgendes:
+oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwort), folgendes:
 
 ```
 su -
 ```
 
-Als erstes muss das packet heruntergeladen werden und entpackt: 
+Als erstes muss das Paket heruntergeladen werden und entpackt: 
 
 ```
 wget ${releaseRepoUrl}/org/aktin/dwh-update/${dwhServerVersion}/dwh-update-${dwhServerVersion}.tar.gz
@@ -36,58 +36,58 @@ dwh-update
 - - ...
 ```
 
-In diesem Update werden eingie wichtige Einstellungen durchgeführt. Dazu müssen Sie die Datei `aktin.properties` anpassen und in die Konfigurationsordner des Wildfly-Servers kopieren, in Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`. Welche Angaben genau geändert werden müssen und wie diese verwendet werden, können Sie dem Abschnitt "Lokale Konfigurationen in der Datei `aktin.properties`" entnehmen.
+In diesem Update werden einige wichtige Einstellungen durchgeführt. Dazu müssen Sie die Datei `aktin.properties` anpassen und in den Konfigurationsordner des Wildfly-Servers kopieren, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`. Welche Angaben genau geändert werden müssen und wie diese verwendet werden, können Sie dem Abschnitt "Lokale Konfigurationen in der Datei `aktin.properties`" entnehmen.
 
 ```
 nano aktin.properties
 cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/
 ```
-In der Datei `email.config` tragen Sie bitte die Emailkonfigurationen für die Ausgangsmailadresse ein. Diese Mail wird für Benachrichtigungen und Berichte hausintern verwendet. Diese sollte eine eigene Emailadresse sein. Eine funktionstüchtige Mailadresse ist Voraussetzung für diesen Update. Bitte bearbeiten Sie diese Datei. Eine Beschreibung der Inhalt von `email.config` sowie eine Möglichkeit für spätere Änderungen entnehmen Sie bitte dem Abschnitt "Emailkonfiguration und Änderungen"
+In der Datei `email.config` tragen Sie bitte die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. Eine Beschreibung des Inhalts von `email.config` sowie eine Möglichkeit für spätere Änderungen entnehmen Sie bitte dem Abschnitt "E-Mail-Konfiguration und Änderungen"
 
 ```
 nano email.config
 ```
 
-Nun kann der Updateskript ausgeführt werden:
+Nun kann das Updateskript ausgeführt werden:
 
 ```
 ./aktin_dwh_update.sh
 ```
 
-Dieser besteht aus 6 große Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
-Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig vom Serverequipment und Last kann dies mehrere Minuten dauern. Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
+Dieses besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
+Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
 
 ```
 +++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-0.7.ear.deployed
 ```
 
-Dies muss nicht einen Fehler bedeuten. Bitte überprüfen Sie nach einiger Minuten den Deploymentordner `/opt/wildfly-9.0.2.Final/standalone/deployments`, z.B. mit dem Befehl
+Dies muss kein Fehler sein. Das Script wartet nur zwei Minuten und gibt dann die Warnung aus. Bitte überprüfen Sie nach einigen Minuten den Deployment-Ordner `/opt/wildfly-9.0.2.Final/standalone/deployments`, z.B. mit dem Befehl
 
 ```
 ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-0.7*.deployed
 ```
 
-Sollte eine Auflistung erscheinen, war der Update erfolgreich.
+Sollte eine Datei angezeigt werden, war das Update erfolgreich.
 
 Unter dem Link `IhrAKtinServerLink/aktin/admin/test/` kann man die oben durchgeführten Anpassungen nun testen. 
 
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
-Der erste Button testet die Erreichbarkeit zum zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Daten wie die Serverversion und Aktivität.
-Der zweite Button testet die oben eingerichtete Emailadresse. Diese sendet nun eine Mail an die in `aktin.properties` angegebene Adresse.
+Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
+Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
 Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
 
 [Test server configuration]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
-Sollte der Emailtest fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen wie folgt anzeigen, könnte dies ein Hinweis auf fehlerhafte Emaileinstellung sein. In dem Fall muss man die Emailkonfiguration Ändern wie in Abschnitt "Emailkonfiguration und Änderungen" und die Softwarepakete erneut laden.
+Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Maile-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
 
 [Test server configuration]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"
 
-Sollte weitere Probleme entstehen, bitte kontaktieren Sie uns unter it-support(at)aktin.org
+Sollten weitere Probleme entstehen, kontaktieren Sie uns bitte unter it-support(at)aktin.org
 
 
 
 Lokale Konfigurationen in der Datei `aktin.properties`
 ------------------------------------------------------
-Beispieldatei für `aktin.properties`
+Template-Datei für `aktin.properties`
 
 ```
 # Currently not used, may be changed (Name of the installation)
@@ -119,7 +119,7 @@ broker.data.path=/var/lib/aktin/broker
 broker.archive.path=/var/lib/aktin/broker-archive
 broker.uris=https://broker.aktin.org/broker/
 broker.intervals=PT15M
-# Used in AKTIN to connect to the broker, you can get your API key from it-support@aktin.org
+# Used in AKTIN to connect to the broker, please get your API key from it-support@aktin.org
 broker.keys=XXXyourapikeyXXX
 db.datasource=java:jboss/datasources/AktinDS
 email.session=java:jboss/mail/AktinMailSession
@@ -129,18 +129,18 @@ wildfly.management.user=admin
 wildfly.management.password=admin2
 ```
 
-Besonders wichtig ist `local.email`, wo die Emailadresse eingetragen werden muss, wohin z.B. die Monatsberichte hingeschickt werden sollen. 
+Besonders wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die z.B. die Monatsberichte geschickt werden sollen. 
 
-Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner, in Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden:
+Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden:
 
 ```
 nano /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
 ```
 
 
-Emailkonfiguration und Änderungen
+E-Mail-Konfiguration und Änderungen
 ---------------------------------
-Beispielsdatei für Emailkonfiguration `email.config`
+Template-Datei für E-Mail-Konfiguration `email.config`
 
 ```
 #
@@ -172,10 +172,9 @@ usessl=false
 usetls=true
 ```
 
-In dieser Datei werden die Einstellungen für eine Ausgangsmail konfiguriert. Hierbei muss man besonders auf die Einstellungen des Mailservers achten und `usessl` und `usetls` richtig setzen, dementsprechend auch den `smtpport`.
+In dieser Datei werden die Einstellungen für den Versand von E-Mails konfiguriert. Hierbei muss man besonders auf die Einstellungen des Mailservers achten und `usessl` und `usetls` richtig setzen, dementsprechend auch den `smtpport`.
 
-Sollte die Maileinstellungen nach dem Update nochmals geändert werden, müssen die folgenden Schritte durchgeführt werden.
+Sollte die Einstellungen nach dem Update nochmals geändert werden, müssen die folgenden Schritte durchgeführt werden:
 
-Als erstes muss der Skript `./email_config_reset.sh` aus dem Updateordner mit `root` Rechten ausgeführt werden. 
-Nach Bearbeiten der `email.config` führt man den Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
-
+Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root` Rechten ausgeführt werden. 
+Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
