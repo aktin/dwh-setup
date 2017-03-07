@@ -159,7 +159,9 @@ cp /opt/wildfly/bin/init.d/wildfly-init-redhat.sh /etc/init.d/wildfly
 
 mkdir -p /var/log/wildfly
 
-adduser --system --group --disabled-login wildfly
+useradd --system wildfly
+
+
 chown -R wildfly:wildfly $WILDFLY_HOME
 chown -R wildfly:wildfly /opt/wildfly
 chown -R wildfly:wildfly /var/log/wildfly
