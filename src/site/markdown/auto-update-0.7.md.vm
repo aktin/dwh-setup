@@ -131,10 +131,12 @@ wildfly.management.password=admin2
 
 Besonders wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die z.B. die Monatsberichte geschickt werden sollen. 
 
-Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden:
+Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden, und im Anschluss den Wildfly Service neugestartet werden:
 
 ```
 nano /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
+service wildfly stop
+service wildfly start
 ```
 
 

@@ -19,7 +19,7 @@ smtpbind=aktin-smtp-binding
 count=$(($( grep -c "smtp-server outbound-socket-binding-ref=\"$smtpbind\"" $WILDFLY_HOME/standalone/configuration/standalone.xml )+$( grep -c "outbound-socket-binding name=\"$smtpbind\"" $WILDFLY_HOME/standalone/configuration/standalone.xml )+$( grep -c "mail-session name=\"$sessionname\"" $WILDFLY_HOME/standalone/configuration/standalone.xml )))
 if [ $count -gt 0 ]; then 
 	echo Email bereits eingestellt. Dieser Schritt wird übersprungen.
-	echo Für Änderungen bitte email_config_reset.sh aufrufen und diesen Update erneut durchführen
+	echo Für Änderungen bitte $INSTALL_ROOT/email_config_reset.sh aufrufen und diesen Update erneut durchführen
 else
 	# create new settings
 	$JBOSSCLI "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:add(host=$smtphost, port=$smtpport)"
