@@ -18,13 +18,13 @@ su -
 
 Alle folgende Befehle sollten als `root` User ausgeführt werden.
 
-Setzen der Umgebungsvariablen zur Vereinfachung des Updates und eventuell Laden des Updatepakets.
+Setzen der Umgebungsvariablen zur Vereinfachung des Updates und eventuell Laden des Updatepakets
 -------------------------------------------------------------------------
 
 Diese Varialben werden nur für dieses Updatesession gesetzt.
 
 Die Variable `WILDFLY_HOME` wird auf den Homedirectory von dem Wildfly Service gesetzt, in Normalfall unter `/opt/wildfly-9.0.2.Final/`.
-Die Variable `i2b2_WEBDIR` linkt auf den Ordner des i2b2-Webclients. Diese befindet sich in dem Apache-Webordner, jenach Betriebssystem `/var/www/` oder `/var/www/html/`. In dem ursprünglichen Installationsschritt wurde zur Vereinfachung die Verlinkung `/var/webroot/` erstellt. 
+Die Variable `i2b2_WEBDIR` linkt auf den Ordner des i2b2-Webclients. Diese befindet sich im Apache-Webordner, je nach Distribution `/var/www/` oder `/var/www/html/`. In dem ursprünglichen Installationsschritt wurde zur Vereinfachung die Verlinkung `/var/webroot/` erstellt. 
 
 ```
 WILDFLY_HOME=/opt/wildfly-9.0.2.Final
@@ -42,7 +42,7 @@ tar xvzf dwh-update-${dwhServerVersion}.tar.gz
 Löschen der alten Software
 --------------------------
 
-Die alte Version von der DWH-J2EE Software muss aus dem Wildfly Service entfernt werden. Mit ersten Befehl des folgenden Blockes kann man alle in dem Service gelisteten Softwarepakete anzeigen lassen. Mit dem zweiten spezifisch die aktuell aktiven Pakete. 
+Die alte Version von der DWH-J2EE Software muss aus dem Wildfly Service entfernt werden. Mit dem ersten Befehl des folgenden Blockes kann man alle in dem Service gelisteten Softwarepakete anzeigen lassen. Mit dem zweiten spezifisch die aktuell aktiven Pakete. 
 
 ```
 ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*
@@ -62,7 +62,7 @@ $WILDFLY_HOME/bin/jboss-cli.sh -c --command="undeploy --name=dwh-j2ee*.ear"
 Laden bzw Erstellen der Konfigurationsdatei `aktin.properties`
 --------------------------------------------------------------
 
-In diesem Update werden Konfigurationsdateien benötigt. Diese kann dem Updatepaket entnommen (`dwh-update/aktin.properties`) oder per Hand erstellt werden.
+In diesem Update wird eine Konfigurationsdatei erstellt. Ein Template dafür kann dem Updatepaket entnommen (`dwh-update/aktin.properties`) oder per Hand erstellt werden.
 
 Beispieldatei `aktin.properties`
 
@@ -106,10 +106,15 @@ wildfly.management.user=admin
 wildfly.management.password=admin2
 ```
 
-In dieser Datei werden Angaben zur lokalen DWH und Standort spezifische Änderungen gemacht. Falls die Datei manuell angelegt wird, sollte darauf geachtet werden, dass die Encoding UTF-8 und Unix-Zeilenendungen verwendet werden.
+In dieser Datei werden Angaben zum lokalen DWH und Standort-spezifische Änderungen gemacht. Falls die Datei manuell angelegt wird, sollte darauf geachtet werden, dass als Encoding UTF-8 und Unix-Zeilenendungen verwendet werden.
 
 Diese Datei muss dann in den Konfigurationsordner des Wildfly gelegt werden, in den meisten Fällen zu finden unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`. 
-Sollte zu einem späteren Zeitpunkt Änderungen an der Datei erfolgen, muss dies auch in dem Ordner übernommen werden und den Wildfly-Service neugestartet werden (Diese Befehle müssen beim Update nicht an dieser ausgeführt werden):
+
+
+Änderungen an der Konfigurationsdatei `aktin.properties` (nicht relevant für Ersteinrichtung)
+---------------------------------------------------------------------------------------------
+
+Sollten zu einem späteren Zeitpunkt Änderungen an der Datei erfolgen, muss dies auch in dem Ordner übernommen werden und der Wildfly-Service muss neugestartet werden (Diese Befehle müssen beim Update nicht an dieser ausgeführt werden):
 
 ```
 # debian
@@ -129,13 +134,13 @@ systemctl start wildfly
 E-Mail-Konfiguration
 --------------------
 
-Mit diesem Update wird einen E-Mail-Dienst eingerichtet, der z.B. die monatlich erzeugten Berichtsdokumente an der in `aktin.properties` angegebenen E-Mail-Adresse sendet.
+Mit diesem Update wird einen E-Mail-Dienst eingerichtet, der z.B. die monatlich erzeugten Berichtsdokumente an die in `aktin.properties` angegebenen E-Mail-Adresse sendet.
 
-Zum Zeitpunkt des Updates ist in dem Wildfly-Service noch keine E-Mail-Service eingerichtet. Für spätere Änderungen an dem Service muss zuerst das Skript `dwh-update/email_config_reset.sh` aus dem Updatepaket ausgeführt, um die vorhandenen Einstellungen zu entfernen, und der Wildfly-Service neugestartet werden. 
+Zum Zeitpunkt des Updates ist in dem Wildfly-Service noch kein E-Mail-Service eingerichtet. Für spätere Änderungen an dem Service muss zuerst das Skript `dwh-update/email_config_reset.sh` aus dem Updatepaket ausgeführt, um die vorhandenen Einstellungen zu entfernen, und der Wildfly-Service neugestartet werden. 
 
-Zum Einrichten des E-Mail-Services steht auch ein Skript aus dem Updatepaket bereit. Dazu muss die Datei `dwh-update/email.config` angepasst und den Skript `dwh-update/lib/email_create.sh` ausgeführt werden. 
+Zum Einrichten des E-Mail-Services steht auch ein Skript aus dem Updatepaket bereit. Dazu muss die Datei `dwh-update/email.config` angepasst und das Skript `dwh-update/lib/email_create.sh` ausgeführt werden. 
 
-Alternative kann auch direkt die folgenden Befehle aufgerufen werden, wobei die Variablen `XXXsmtphostXXX`, `XXXsmtpportXXX`, `XXXsmtpuserXXX`, `XXXsmtppassXXX`, `XXXusetlsXXX`, `XXXusesslXXX` sowie `XXXmailfromXXX` durch die lokalen Daten ersetzt werden müssen.
+Alternativ können auch direkt die folgenden Befehle aufgerufen werden, wobei die Variablen `XXXsmtphostXXX`, `XXXsmtpportXXX`, `XXXsmtpuserXXX`, `XXXsmtppassXXX`, `XXXusetlsXXX`, `XXXusesslXXX` sowie `XXXmailfromXXX` durch die lokalen Daten ersetzt werden müssen.
 
 ```
 $WILDFLY_HOME/bin/jboss-cli.sh -c "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=aktin-smtp-binding:add(host=XXXsmtphostXXX, port=XXXsmtpportXXX)"
@@ -147,13 +152,14 @@ $WILDFLY_HOME/bin/jboss-cli.sh -c "/subsystem=mail/mail-session=AktinMailSession
 
 Einspielen der neuen Ontologie-Metadaten
 ----------------------------------------
+
 Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${dwhImportVersion}.jar` entnommen oder über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${dwhImportVersion}/cda-ontology-${dwhImportVersion}.jar)heruntergeladen werden:
 
 ```
 wget ${releaseRepoUrl}/org/aktin/cda-ontology/${dwhImportVersion}/cda-ontology-${dwhImportVersion}.jar
 ```
 
-Man sollte das Paket in einer temporären Verzeichnis entpacken und die enthaltene `sql` Skripte über den `postgres` User ausführen. Anschließend kann die temporäre Verzeichnis wieder gelöscht werden.
+Man sollte das Paket in ein temporäres Verzeichnis entpacken und die enthaltene `sql` Skripte über den `postgres` User ausführen. Anschließend kann das temporäre Verzeichnis wieder gelöscht werden.
 
 ```
 CDATMPDIR=/var/tmp/cda-ontology
@@ -171,28 +177,30 @@ rm -r $CDATMPDIR
 Entfernen der Defaulteinträge im Webformular
 --------------------------------------------
 
-Aus Sicherheitsgründen und zur verbesserten Nutzung werden die Defaultlogindaten in dem Webformular des i2b2 entfernt. Diese 
+Aus Sicherheitsgründen und zur verbesserten Nutzung werden die Defaultlogindaten aus dem Webformular des i2b2 entfernt. Die Logindaten werden dabei nicht geändert, es werden lediglich die Vorbelegungen aus der Login-Maske gelöscht.
 
-Mittels der folgenden beiden Befehlen werden die Einträgen gelöscht. Wir empfehlen das Entfernen der Einträgen sehr stark. Zu dem sollte, sofern noch nicht geschehen, den Standardpasswort des i2b2 geändert werden. Sollte dazu Fragen auftauchen, kontaktieren Sie uns gerne.
+Mittels der folgenden beiden Befehlen werden die Einträge gelöscht:
 
 ```
 sed -i "s/name=\"uname\" id=\"loginusr\" value=\"demo\"/name=\"uname\" id=\"loginusr\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
 sed -i "s/name=\"pword\" id=\"loginpass\" value=\"demouser\"/name=\"pword\" id=\"loginpass\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
 ```
 
+Zudem sollten, sofern noch nicht geschehen, die Passwörter der Benutzer "i2b2" und "demo" für den Zugang zum i2b2-Web Client geändert werden. Die Standardpasswörter für beide Nutzer lauten "demouser". Sollte dazu Fragen auftauchen, kontaktieren Sie uns gerne.
 
-Anlegen der AKTIN-Datenbanken und der AKTIN-Datasource ind Wildfly
-------------------------------------------------------------------
 
-Zur lokalen Verwaltung wird eine zusätzliche AKTIN-Datenbank angelegt, in der z.B. den Datum des letzten Monatsberichts oder die Angaben der Abfragen gespeichert werden.
+Anlegen der AKTIN-Datenbanken und der AKTIN-Datasource in Wildfly
+-----------------------------------------------------------------
+
+Zur lokalen Verwaltung wird eine zusätzliche AKTIN-Datenbank angelegt, in der z.B. das Datum des letzten Monatsberichts oder die Angaben der Abfragen gespeichert werden.
 
 Dazu muss der User auf `postgres` gewechselt werden:
 
 ```
-sudo su - postgres
+su - postgres
 ```
 
-Die folgenden Befehlen müssen zum Anlegen des Datenbanknutzers und der Datenbank ausgeführt werden:
+Die folgenden Befehle müssen zum Anlegen des Datenbanknutzers und der Datenbank ausgeführt werden:
 
 ```
 createdb aktin
@@ -220,12 +228,13 @@ Zur Überprüfung kann dann folgender Befehl ausgeführt werden:
 $WILDFLY_HOME/bin/jboss-cli.sh -c --command="/subsystem=datasources:read-resource"
 ```
 
-Die Änderungen tretten erst nach einem Neustart des Services in Kraft (in der Konsole wird `reload-required` angezeigt. Da im Updateverlauf noch der Neustart erfolgt, wird in diesem Schritt dies übersprungen).
+Die Änderungen treten erst nach einem Neustart des Services in Kraft (in der Konsole wird `reload-required` angezeigt. Da im Updateverlauf noch der Neustart erfolgt, wird der Neustart in diesem Schritt übersprungen).
+
 
 Anlegen benötiger Ordnerstruktur
 --------------------------------
 
-Die später erzeugten Berichte werden in dem Ordner `/var/lib/aktin/` abgelegt. Zur Vorbereitung und Fehlervermeidung wird dieser Ordner im Vorfeld angelegt und die Benutzerrechte angepasst:
+Die später erzeugten Berichte werden in dem Ordner `/var/lib/aktin/` abgelegt. Dazu wird der Ordner angelegt und die Benutzerrechte gesetzt:
 
 ```
 mkdir -p /var/lib/aktin
@@ -258,7 +267,6 @@ Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden 
 cp dwh-update/packages/dwh-j2ee-${dwhImportVersion}.ear $WILDFLY_HOME/standalone/deployments/
 ```
 
-Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Nach erfolgereicher Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhImportVersion}.ear.deployed` erstellt. Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhImportVersion}.ear.failed` gefunden, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log`.
+Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhImportVersion}.ear.deployed` erstellt. Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhImportVersion}.ear.failed` auftauchen, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log` oder `/opt/wilfly*/standalone/logs/...`
 
-Damit ist das DWH auf das neuste Version geupdatet und kann wieder Daten empfangen.
-
+Damit ist das DWH auf die neuste Version geupdatet und kann wieder Daten empfangen.
