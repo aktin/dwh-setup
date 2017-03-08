@@ -6,7 +6,7 @@
 	</skin>
 	<body>
         <menu name="AKTIN Installation Übersicht">
-            <item href="dwh-install.html" name="AKTIN Server Installation" />
+            <item href="index.html" name="AKTIN Server Installation" />
 		</menu>
 		<menu name="AKTIN (Neu-)Installation">
 			<item href="install-requirements.html" name="Voraussetzungen" />

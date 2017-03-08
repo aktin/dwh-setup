@@ -1,4 +1,4 @@
-Manualles Update auf DWH-J2EE-${dwhImportVersion} für Debian, CentOS
+Manualles Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian, CentOS
 ====================================================
 
 Anmelden als ROOT
@@ -153,17 +153,17 @@ $WILDFLY_HOME/bin/jboss-cli.sh -c "/subsystem=mail/mail-session=AktinMailSession
 Einspielen der neuen Ontologie-Metadaten
 ----------------------------------------
 
-Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${dwhImportVersion}.jar` entnommen oder über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${dwhImportVersion}/cda-ontology-${dwhImportVersion}.jar)heruntergeladen werden:
+Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${dwhJ2EEVersion}.jar` entnommen oder über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${dwhJ2EEVersion}/cda-ontology-${dwhJ2EEVersion}.jar)heruntergeladen werden:
 
 ```
-wget ${releaseRepoUrl}/org/aktin/cda-ontology/${dwhImportVersion}/cda-ontology-${dwhImportVersion}.jar
+wget ${releaseRepoUrl}/org/aktin/cda-ontology/${dwhJ2EEVersion}/cda-ontology-${dwhJ2EEVersion}.jar
 ```
 
 Man sollte das Paket in ein temporäres Verzeichnis entpacken und die enthaltene `sql` Skripte über den `postgres` User ausführen. Anschließend kann das temporäre Verzeichnis wieder gelöscht werden.
 
 ```
 CDATMPDIR=/var/tmp/cda-ontology
-unzip dwh-update/packages/cda-ontology-${dwhImportVersion}.jar -d $CDATMPDIR
+unzip dwh-update/packages/cda-ontology-${dwhJ2EEVersion}.jar -d $CDATMPDIR
 chmod 777 -R $CDATMPDIR
 
 su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_ont.sql"
@@ -261,12 +261,12 @@ service wildfly start # debian
 Deployment des neuen Softwarepaketes
 ------------------------------------
 
-Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhImportVersion}.ear`) oder herunter geladen werden unter [EAR Release ${dwhImportVersion}](${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhImportVersion}/dwh-j2ee-${dwhImportVersion}.ear). Es muss in das Wildfly-Deploymentordner kopiert werden. 
+Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder herunter geladen werden unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear). Es muss in das Wildfly-Deploymentordner kopiert werden. 
 
 ```
-cp dwh-update/packages/dwh-j2ee-${dwhImportVersion}.ear $WILDFLY_HOME/standalone/deployments/
+cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear $WILDFLY_HOME/standalone/deployments/
 ```
 
-Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhImportVersion}.ear.deployed` erstellt. Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhImportVersion}.ear.failed` auftauchen, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log` oder `/opt/wilfly*/standalone/logs/...`
+Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log` oder `/opt/wilfly*/standalone/logs/...`
 
 Damit ist das DWH auf die neuste Version geupdatet und kann wieder Daten empfangen.

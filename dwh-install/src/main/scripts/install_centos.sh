@@ -92,40 +92,13 @@ sudo cat $INSTALL_ROOT/selinux.orig | sudo sed 's|SELINUX=enforcing|SELINUX=disa
 
 
 echo
-echo +++++ STEP 1 +++++ Prüfung aktin.properties und email.config | tee -a $LOGFILE
-echo
-count=0
-if [ ! -f $INSTALL_ROOT/lib/aktin.properties ] ; then
-	echo Bitte die Datei $INSTALL_ROOT/aktin.properties mit Ihren Daten füllen und nach $INSTALL_ROOT/lib/ kopieren : | tee -a $LOGFILE 
-	echo nano $INSTALL_ROOT/aktin.properties | tee -a $LOGFILE
-	echo cp $INSTALL_ROOT/aktin.properties $INSTALL_ROOT/lib/ | tee -a $LOGFILE
-	echo  | tee -a $LOGFILE
-	count=1
-fi
-if [ ! -f $INSTALL_ROOT/lib/email.config ] ; then
-	echo Bitte die Datei $INSTALL_ROOT/email.config mit Ihren Daten füllen und nach $INSTALL_ROOT/lib/ kopieren :  | tee -a $LOGFILE
-	echo nano $INSTALL_ROOT/email.config | tee -a $LOGFILE
-	echo cp $INSTALL_ROOT/email.config $INSTALL_ROOT/lib/ | tee -a $LOGFILE
-	echo  | tee -a $LOGFILE
-	count=1
-fi
-if [ $count -gt 0 ]; then
-	RCol='\e[0m'
-	Red='\e[0;31m'
-	echo -e "${Red} Das Skript wird jetzt beendet. Bitte rufen Sie es erneut auf, wenn Sie die notwendigen Änderungen durchgeführt haben${RCol}" | tee -a $LOGFILE
-	echo  | tee -a $LOGFILE
-	exit 1
-fi
-
-
-echo
-echo +++++ STEP 2 +++++ Links und Rechte | tee -a $LOGFILE
+echo +++++ STEP 1 +++++ Links und Rechte | tee -a $LOGFILE
 echo
 
 chmod -R o+x $INSTALL_ROOT
 
 echo
-echo +++++ STEP 2.01 +++++ Log Ordner | tee -a $LOGFILE
+echo +++++ STEP 1.01 +++++ Log Ordner | tee -a $LOGFILE
 echo
 # create directory for logs if not existent
 # TODO dont write logfiles to /vagrant
@@ -138,7 +111,7 @@ fi
 # chmod -R o+x $INSTALL_ROOT
 
 echo
-echo +++++ STEP 2.02 +++++ Wildfly Anpassung | tee -a $LOGFILE
+echo +++++ STEP 1.02 +++++ Wildfly Anpassung | tee -a $LOGFILE
 echo
 # create symlink for fixed configuration paths in i2b2
 ln -s $WILDFLY_HOME $JBOSS7_DIR | tee -a $LOGFILE
@@ -153,7 +126,7 @@ fi
 
 # up till now, the script can be rerun. but not if it dies while ant is running.
 echo
-echo +++++ STEP 3 +++++ Installation via ANT | tee -a $LOGFILE
+echo +++++ STEP 2 +++++ Installation via ANT | tee -a $LOGFILE
 echo
 if [ ! -d "$DATA_DEST" ]; then 
     mkdir $DATA_DEST
@@ -189,7 +162,7 @@ else
 fi
 
 echo
-echo +++++ STEP 4 +++++ Set Up Wildfly in autostart and start it | tee -a $LOGFILE
+echo +++++ STEP 3 +++++ Set Up Wildfly in autostart and start it | tee -a $LOGFILE
 echo
 
 

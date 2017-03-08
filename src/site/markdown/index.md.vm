@@ -1,17 +1,47 @@
 Installation und Update des AKTIN-Applikationsserver
 ===============================================
 
+Diese Informationen richten sich an die Server-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Datawarehouse läuft.
+
+Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte.
+
+Neuinstallation
+---------------
+Wenn Sie noch keine Installation haben, oder den Server komplett neu aufsetzen wollen, dann folgen Sie bitte der Anleitung unter dem Punkt AKTIN (NEU-)INSTALLATION. Bitte beachten Sie die [Voraussetzungen](install-requirements.html), dort werden die verschiedenen Varianten der Neu-Installation beschrieben.
+
+Sie erhalten mit einer Neuinstallation automatisch den neuesten den Release-Stand 0.7, d.h. anschließend ist kein Update/Patch mehr notwendig.
+
+
+Skriptbasiertes Update für Debian (und CentOS)
+---------------------------------
+Falls Sie einen Debian-Server nutzen, der anhand der Anleitung eingerichtet wurde, sollten die Update-Scripte bei Ihnen funktionieren.
+
+__Update auf 0.7__
+
+Für einen Update auf 0.7 folgen Sie der Anleitung zum [skriptbasierten Update](update-auto.html)
+
+
+Manuelles Update für Debian, CentOS oder andere Betriebssysteme
+----------------------------------------------------------------
+Bei individuell konfigurierten Servern oder anderen Linux-Distributionen führen Sie die einzelnen Schritte des Scripts bitte manuell durch und passen Sie ggf. die Pfade oder andere Besonderheiten entsprechend an.
+
+__Update auf 0.7__
+
+Bitte folgen Sie der Anleitung zum [manuellen Update](update-manual.html)
+
+
+
 Software-Pakete
 ---------------
 
-_Installationspaket mit DWH-J2EE-${dwhImportVersion}_
+_Installationspaket mit DWH-J2EE-${dwhJ2EEVersion}_
 
 ```
 ${releaseRepoUrl}/org/aktin/dwh-install/${dwhServerVersion}/dwh-install-${dwhServerVersion}.tar.gz
 ```
 
 
-_Softwareupdate-Paket auf DWH-J2EE-${dwhImportVersion}_
+_Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_
 
 ```
 ${releaseRepoUrl}/org/aktin/dwh-update/${dwhServerVersion}/dwh-update-${dwhServerVersion}.tar.gz

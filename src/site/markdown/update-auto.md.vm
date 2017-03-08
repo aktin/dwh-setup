@@ -1,4 +1,4 @@
-Skriptbasiertes Update auf DWH-J2EE-${dwhImportVersion} für Debian (und CentOS)
+Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian (und CentOS)
 ==================================================
 
 Für laufende DWH Instanzen auf Debian Servern stellen wir ein Update-Skript bereit, zu finden unter 
@@ -58,13 +58,13 @@ Dieses besteht aus 6 Schritten. In der Konsole werden während des Updates die S
 Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
 
 ```
-+++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-${dwhImportVersion}.ear.deployed
++++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-${dwhJ2EEVersion}.ear.deployed
 ```
 
 Dies muss kein Fehler sein. Das Script wartet nur zwei Minuten und gibt dann die Warnung aus. Bitte überprüfen Sie nach einigen Minuten den Deployment-Ordner `/opt/wildfly-9.0.2.Final/standalone/deployments`, z.B. mit dem Befehl
 
 ```
-ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-${dwhImportVersion}*.deployed
+ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}*.deployed
 ```
 
 Sollte eine Datei angezeigt werden, war das Update erfolgreich.

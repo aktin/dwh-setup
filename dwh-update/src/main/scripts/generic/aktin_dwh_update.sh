@@ -4,7 +4,7 @@
 # 28 Feb 2017
 # Oldenburg
 
-NEW_VERSION=0.7-SNAPSHOT
+NEW_VERSION=${dwhJ2EEVersion}
 
 # Initial parameters
 SCRIPT=$(readlink -f "$0")
