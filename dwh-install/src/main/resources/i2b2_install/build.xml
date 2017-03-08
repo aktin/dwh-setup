@@ -369,5 +369,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="delete db all"/>
     </target>
 
-    <target name="all" depends="get_packages, mkdir_log, deploy_jboss, db_all, deploy_dwh_j2ee_ear" />
+    <!-- deploy_dwh_j2ee_ear removed from build all -->
+    <target name="all" depends="get_packages, mkdir_log, deploy_jboss, db_all" />
 </project>

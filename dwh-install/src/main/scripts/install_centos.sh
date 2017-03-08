@@ -68,7 +68,7 @@ if [ ! -d "$LOG_DIR" ]; then
 fi
 
 # install R libraries for reporting, adding fedora repos
-rpm -Uvh http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+rpm -Uvh http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm
 # preparations for r-xml
 yum -y install libxml2 libxml2-devel
 yum -y install R
@@ -148,19 +148,25 @@ rm -r $CDATMPDIR
 
 ln -s $WILDFLY_HOME /opt/wildfly
 
-echo > /etc/default/wildfly
-echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly
-echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly
+if [ ! -f /etc/default/wildfly.conf ]
+then
+	touch /etc/default/wildfly.conf
+
+	#  cp /opt/wildfly/bin/init.d/wildfly.conf /etc/default/wildfly.conf
+
+	echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly.conf
+	echo JBOSS_USER=wildfly >> /etc/default/wildfly.conf
+	echo JBOSS_MODE=standalone >> /etc/default/wildfly.conf
+	echo JBOSS_CONFIG=standalone.xml >> /etc/default/wildfly.conf
+	echo JBOSS_CONSOLE_LOG=\"/var/log/wildfly/console.log\" >> /etc/default/wildfly.conf
+	echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly.conf
+fi
 
 cp /opt/wildfly/bin/init.d/wildfly-init-redhat.sh /etc/init.d/wildfly
-
-# chkconfig --add wildfly
-# chkconfig wildfly on
 
 mkdir -p /var/log/wildfly
 
 useradd --system wildfly
-
 
 chown -R wildfly:wildfly $WILDFLY_HOME
 chown -R wildfly:wildfly /opt/wildfly
