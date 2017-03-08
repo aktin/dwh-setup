@@ -26,6 +26,22 @@ echo ++++++++++++++++++++++
 echo
 echo +++++ STEP 0 +++++ Überprüfung der Paths und Ausgabe der Status Informationen | tee -a $LOGFILE
 echo
+# check os version (set system based commands)
+OS_VERSION=debian
+# debian is standard
+# if [ $(ls /etc/debian* | grep -c "debian") -gt 1 ] ; then 
+    WILDFLY_START=service wildfly start
+    WILDFLY_STOP=service wildlfy stop
+    WILDFLY_STATUS=service wildfly status
+# fi
+if [ $(ls /etc/centos* | grep -c "centos") -gt 1 ] ; then 
+    OS_VERSION=centos
+    WILDFLY_START=systemctl start wildfly
+    WILDFLY_STOP=systemctl stop wildlfy 
+    WILDFLY_STATUS=systemctl status wildfly 
+fi
+echo System als $OS_VERSION erkannt
+
 # check wilfly home
 if [ ! -d "$WILDFLY_HOME" ]; then
     echo +++ERROR+++ WILDFLY Home directory nicht gefunden! Update wird unterbrochen ... Code 126 | tee -a $LOGFILE
@@ -204,7 +220,7 @@ $INSTALL_ROOT/lib/email_create.sh 2>&1 | tee -a $LOGFILE
 echo
 echo +++++ STEP 3 +++++  Stop Wildfly Service | tee -a $LOGFILE
 echo
-service wildfly stop 2>&1 | tee -a $LOGFILE
+$WILDFLY_STOP 2>&1 | tee -a $LOGFILE
 # wait 5 seconds
 #sleep 5
 echo wildfly stopped | tee -a $LOGFILE
@@ -222,7 +238,7 @@ fi
 echo
 echo +++++ STEP 5 +++++  Start Wildfly Service | tee -a $LOGFILE
 echo
-service wildfly start
+$WILDFLY_START
 echo wildfly restarted | tee -a $LOGFILE
 
 echo
