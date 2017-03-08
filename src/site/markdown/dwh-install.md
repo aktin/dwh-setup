@@ -12,7 +12,7 @@ Wenn Sie noch keine Installation haben, oder den Server komplett neu aufsetzen w
 Sie erhalten mit einer Neuinstallation automatisch den neuesten den Release-Stand 0.7, d.h. anschließend ist kein Update/Patch mehr notwendig.
 
 
-Skriptbasiertes Update für Debian
+Skriptbasiertes Update für Debian (und CentOS)
 ---------------------------------
 Falls Sie einen Debian-Server nutzen, der anhand der Anleitung eingerichtet wurde, sollten die Update-Scripte bei Ihnen funktionieren.
 
