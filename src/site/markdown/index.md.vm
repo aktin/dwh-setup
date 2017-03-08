@@ -22,19 +22,19 @@ Beschreibungen und Hinweise
 
 _Installation_
 
-[Installationsbeschreibung]{dwh-install.html}
-[Voraussetzungen]{install-requirements.html}
-[Installationsskript]{dwh-script.html}
-[Firewall Hinweise]{dwh-firewall.html}
+[Installationsbeschreibung](dwh-install.html)
+[Voraussetzungen](install-requirements.html)
+[Installationsskript](dwh-script.html)
+[Firewall Hinweise](dwh-firewall.html)
 
 _Update_
 
-[Skpriptbasiertes Update]{update-auto.html}
-[Manuelles Update]{update-manual.html}
+[Skpriptbasiertes Update](update-auto.html)
+[Manuelles Update](update-manual.html)
 
 _Changelog_
 
-[Changelog]{changelog.html}
+[Changelog](changelog.html)
 
 
 Kontakt
