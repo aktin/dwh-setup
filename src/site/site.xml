@@ -5,18 +5,21 @@
 		<version>1.5</version>
 	</skin>
 	<body>
-		<menu name="Installation">
+        <menu name="AKTIN Installation Übersicht">
+            <item href="dwh-install.html" name="AKTIN Server Installation" />
+		</menu>
+		<menu name="AKTIN (Neu-)Installation">
 			<item href="install-requirements.html" name="Voraussetzungen" />
 			<item href="install-script.html" name="Installationsskript" />
 			<item href="install-firewall.html" name="Firewall" />
 		</menu>
-		<menu name="Update">
-			<item href="dwh-update-0.6.html" name="Update auf 0.6" />
+		<menu name="AKTIN Updates und Patches">
+		    <item href="update-auto.html" name="Skriptbasiertes Server Update 0.7" />
+		    <item href="update-manual.html" name="Manuelles Server Update 0.7" />
 		</menu>
-		<menu ref="reports" inherit="top" />
-		<!--
-		<menu ref="modules" />
-		<menu ref="parent" />
-		-->
+		<menu name="Changelog">
+		    <item href="changelog.html" name="Changelog" />
+		</menu>
+
 	</body>
 </project>

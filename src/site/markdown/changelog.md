@@ -1,6 +1,12 @@
 ﻿Changelog
 =========
 
+Version 0.7
+-----------
+* Aktualisierung auf CDA Version v1.26
+* Einrichtung der Berichtfunktion
+* Einrichtung der Emailfunktion
+
 Version 0.6.3
 -------------
 * Installer zur direkten Neuinstallation auf Version 0.6.3
