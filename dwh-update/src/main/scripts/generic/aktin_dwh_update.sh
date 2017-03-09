@@ -29,12 +29,13 @@ echo
 # check os version (set system based commands)
 OS_VERSION=debian
 # debian is standard
-# if [ $(ls /etc/debian* | grep -c "debian") -gt 1 ] ; then 
+# if [ $(ls /etc/d* | grep -c "debian") -gt 1 ] ; then 
     WILDFLY_START=service wildfly start
     WILDFLY_STOP=service wildlfy stop
     WILDFLY_STATUS=service wildfly status
 # fi
-if [ $(ls /etc/centos* | grep -c "centos") -gt 1 ] ; then 
+# $(ls /etc/c* | grep -c "centos") -gt 1
+if [ -f "/etc/centos-release" ] ; then 
     OS_VERSION=centos
     WILDFLY_START=systemctl start wildfly
     WILDFLY_STOP=systemctl stop wildlfy 
