@@ -129,7 +129,7 @@ wildfly.management.user=admin
 wildfly.management.password=admin2
 ```
 
-Besonders wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die z.B. die Monatsberichte geschickt werden sollen. 
+Besonders wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die z.B. die Monatsberichte geschickt werden sollen. Es ist auch möglich eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
 
 Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden, und im Anschluss den Wildfly Service neugestartet werden:
 
