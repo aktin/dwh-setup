@@ -188,7 +188,7 @@ sed -i "s/name=\"uname\" id=\"loginusr\" value=\"demo\"/name=\"uname\" id=\"logi
 sed -i "s/name=\"pword\" id=\"loginpass\" value=\"demouser\"/name=\"pword\" id=\"loginpass\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
 ```
 
-Zudem sollten, sofern noch nicht geschehen, die Passwörter der Benutzer "i2b2" und "demo" für den Zugang zum i2b2-Web Client geändert werden. Die Standardpasswörter für beide Nutzer lauten "demouser". Sollte dazu Fragen auftauchen, kontaktieren Sie uns gerne.
+Zudem sollten, sofern noch nicht geschehen, die Passwörter der Benutzer "i2b2" und "demo" für den Zugang zum i2b2-Web Client geändert werden. Die Standardpasswörter für beide Nutzer lauten "demouser". Das Ändern der Passwörter können Sie nach dem Update in der Adminoberfläche des i2b2 durchführen. Sollte dazu Fragen auftauchen, kontaktieren Sie uns gerne.
 
 
 Anlegen der AKTIN-Datenbanken und der AKTIN-Datasource in Wildfly
@@ -269,6 +269,26 @@ Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden 
 cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear $WILDFLY_HOME/standalone/deployments/
 ```
 
-Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log` oder `/opt/wilfly*/standalone/logs/...`
+Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. 
 
-Damit ist das DWH auf die neuste Version geupdatet und kann wieder Daten empfangen.
+Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. 
+
+```
+ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}*.deployed
+```
+
+Sollte eine Datei angezeigt werden, war das Update erfolgreich.Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log` oder `/opt/wilfly*/standalone/logs/...`
+
+Unter dem Link `IhrAKtinServerLink/aktin/admin/test/` kann man die oben durchgeführten Anpassungen nun testen. 
+
+[Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
+Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
+Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
+Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
+
+[Test server configuration]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
+Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Maile-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
+
+[Test server configuration]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"
+
+Sollten weitere Probleme entstehen, kontaktieren Sie uns bitte unter it-support(at)aktin.org
