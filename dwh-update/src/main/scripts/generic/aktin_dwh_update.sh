@@ -30,16 +30,10 @@ echo
 OS_VERSION=debian
 # debian is standard
 # if [ $(ls /etc/d* | grep -c "debian") -gt 1 ] ; then 
-    WILDFLY_START=service wildfly start
-    WILDFLY_STOP=service wildlfy stop
-    WILDFLY_STATUS=service wildfly status
 # fi
 # $(ls /etc/c* | grep -c "centos") -gt 1
 if [ -f "/etc/centos-release" ] ; then 
     OS_VERSION=centos
-    WILDFLY_START=systemctl start wildfly
-    WILDFLY_STOP=systemctl stop wildlfy 
-    WILDFLY_STATUS=systemctl status wildfly 
 fi
 echo System als $OS_VERSION erkannt
 
@@ -221,10 +215,17 @@ $INSTALL_ROOT/lib/email_create.sh 2>&1 | tee -a $LOGFILE
 echo
 echo +++++ STEP 3 +++++  Stop Wildfly Service | tee -a $LOGFILE
 echo
-$WILDFLY_STOP 2>&1 | tee -a $LOGFILE
+if [ "$OS_VERSION" == "centos" ] ; then
+    systemctl stop wildfly
+    echo wildfly stopped, code $?| tee -a $LOGFILE
+    date | tee -a $LOGFILE
+else 
+    service wildfly stop
+    echo wildfly stopped, code $?| tee -a $LOGFILE
+    date | tee -a $LOGFILE
+fi
 # wait 5 seconds
 #sleep 5
-echo wildfly stopped | tee -a $LOGFILE
 
 echo
 echo "+++++ STEP 4 +++++  Remove all dwh.ear[*] (including .failed, .deployed, .undeployed)" | tee -a $LOGFILE
@@ -239,8 +240,15 @@ fi
 echo
 echo +++++ STEP 5 +++++  Start Wildfly Service | tee -a $LOGFILE
 echo
-$WILDFLY_START
-echo wildfly restarted | tee -a $LOGFILE
+if [ "$OS_VERSION" == "centos" ] ; then
+    systemctl start wildfly
+    echo wildfly restarted, code $? | tee -a $LOGFILE
+    date | tee -a $LOGFILE
+else 
+    service wildfly start
+    echo wildfly restarted, code $? | tee -a $LOGFILE
+    date | tee -a $LOGFILE
+fi
 
 echo
 echo +++++ STEP 6 +++++  Deploy new dwh-j2ee EAR | tee -a $LOGFILE
@@ -259,9 +267,9 @@ if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear" ]; th
     done
 
 	if [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear.deployed ]; then 
-        echo +++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-$NEW_VERSION.ear.deployed  | tee -a $LOGFILE
+        echo +++WARNING+++ file not successfully deployed after $COUNTER, check for file: dwh-j2ee-$NEW_VERSION.ear.deployed  | tee -a $LOGFILE
     else 
-        echo EAR successfully deployed | tee -a $LOGFILE
+        echo EAR successfully deployed after $COUNTER| tee -a $LOGFILE
     fi
 else 
 	echo +++WARNING+++ file already present, this should never happen | tee -a $LOGFILE
