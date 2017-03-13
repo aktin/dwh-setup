@@ -112,5 +112,6 @@ Manuelle Installation
 Wenn Sie die AKTIN Installationsskripte nicht verwenden wollen,
 dann können Sie die Konfiguration nach unseren Anleitungen durchführen.
 
-- [Manuelle Konfiguration für Debian 8](install-manual-debian.html)
-- [Manuelle Konfiguration für CentOS 7](install-manual-centos.html)
+_AKTUELL unter Bearbeitung._
+- Manuelle Konfiguration für Debian 8
+- Manuelle Konfiguration für CentOS 7

@@ -1,8 +1,8 @@
-Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian (und CentOS)
+Skriptbasiertes Update auf DWH-J2EE-${project.version} für Debian (und CentOS)
 ==================================================
 
 Für laufende DWH Instanzen auf Debian Servern stellen wir ein Update-Skript bereit, zu finden unter 
-[Debian Update Paket](${releaseRepoUrl}/org/aktin/dwh-update/${dwhServerVersion}/dwh-update-${dwhServerVersion}.tar.gz)
+[Debian Update Paket](${releaseRepoUrl}/org/aktin/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
 Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. 
 Dazu führt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), folgendes aus:
 
@@ -18,8 +18,8 @@ su -
 Als erstes muss das Paket heruntergeladen werden und entpackt: 
 
 ```
-wget ${releaseRepoUrl}/org/aktin/dwh-update/${dwhServerVersion}/dwh-update-${dwhServerVersion}.tar.gz
-tar xvzf dwh-update-${dwhServerVersion}.tar.gz
+wget ${releaseRepoUrl}/org/aktin/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz
+tar xvzf dwh-update-${project.version}.tar.gz
 cd dwh-update
 ```
 
@@ -36,13 +36,21 @@ dwh-update
 - - ...
 ```
 
-In diesem Update werden einige wichtige Einstellungen durchgeführt. Dazu müssen Sie die Datei `aktin.properties` anpassen und in den Konfigurationsordner des Wildfly-Servers kopieren, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`. Welche Angaben genau geändert werden müssen und wie diese verwendet werden, können Sie dem Abschnitt "Lokale Konfigurationen in der Datei `aktin.properties`" entnehmen.
+In diesem Update werden einige wichtige Einstellungen durchgeführt. Dazu müssen Sie die Datei `aktin.properties` anpassen. Welche Angaben genau geändert werden müssen und wie diese verwendet werden, können Sie dem Abschnitt _"Lokale Konfigurationen in der Datei `aktin.properties`"_ entnehmen.
 
 ```
 nano aktin.properties
+```
+
+Besonders wichtig sollten Sie die Daten hinter `local.email` (Zeile 14) sowie `broker.keys` (Zeile 31) ändern. Diese bestimmen einmal, an welche E-Mailadresse die Berichte und Meldungen gesendet werden, und wie sich der lokale Server bei dem Broker-Server authentifiziert. Sie sollten einen alphanumerischen API-Key für `broker-keys` von uns per E-Mail zugesandt worden sein. Sollten Sie keins erhalten haben, bitte melden Sie sich bei it-support(at)aktin.org. 
+
+Nach Bearbeiten der Datei muss diese in den Konfigurationsordner des Wildfly-Servers kopiert werden, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`.
+
+```
 cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/
 ```
-In der Datei `email.config` tragen Sie bitte die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. Eine Beschreibung des Inhalts von `email.config` sowie eine Möglichkeit für spätere Änderungen entnehmen Sie bitte dem Abschnitt "E-Mail-Konfiguration und Änderungen"
+
+In der Datei `email.config` tragen Sie bitte die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. Eine Beschreibung des Inhalts von `email.config` sowie eine Möglichkeit für spätere Änderungen entnehmen Sie bitte dem Abschnitt _"E-Mail-Konfiguration und Änderungen"_
 
 ```
 nano email.config
@@ -58,18 +66,18 @@ Dieses besteht aus 6 Schritten. In der Konsole werden während des Updates die S
 Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
 
 ```
-+++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-${dwhJ2EEVersion}.ear.deployed
++++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-${project.version}.ear.deployed
 ```
 
 Dies muss kein Fehler sein. Das Script wartet nur zwei Minuten und gibt dann die Warnung aus. Bitte überprüfen Sie nach einigen Minuten den Deployment-Ordner `/opt/wildfly-9.0.2.Final/standalone/deployments`, z.B. mit dem Befehl
 
 ```
-ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}*.deployed
+ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-${project.version}*.deployed
 ```
 
 Sollte eine Datei angezeigt werden, war das Update erfolgreich.
 
-Unter dem Link `IhrAKtinServerLink/aktin/admin/test/` kann man die oben durchgeführten Anpassungen nun testen. 
+Unter dem Link _`http://IPADRESSE/aktin/admin/test/`_ kann man die oben durchgeführten Anpassungen nun testen. 
 
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
 Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.

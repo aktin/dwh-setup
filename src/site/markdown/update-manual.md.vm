@@ -1,4 +1,4 @@
-Manualles Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian, CentOS
+Manualles Update auf DWH-J2EE-${project.version} für Debian, CentOS
 ====================================================
 
 Anmelden als ROOT
@@ -108,6 +108,8 @@ wildfly.management.password=admin2
 
 Besonders wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die z.B. die Monatsberichte geschickt werden sollen. Es ist auch möglich eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
 
+Per E-Mail sollten Ihnen eine alphanumerischen API-Key von uns zugesandt worden sein. Dies ist unter `broker.keys` einzutragen. Sollten Sie keinen Key erhalten haben, bitte melden Sie sich bei it-support(at)aktin.org. 
+
 In dieser Datei werden Angaben zum lokalen DWH und Standort-spezifische Änderungen gemacht. Falls die Datei manuell angelegt wird, sollte darauf geachtet werden, dass als Encoding UTF-8 und Unix-Zeilenendungen verwendet werden.
 
 Diese Datei muss dann in den Konfigurationsordner des Wildfly gelegt werden, in den meisten Fällen zu finden unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`. 
@@ -155,17 +157,17 @@ $WILDFLY_HOME/bin/jboss-cli.sh -c "/subsystem=mail/mail-session=AktinMailSession
 Einspielen der neuen Ontologie-Metadaten
 ----------------------------------------
 
-Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${dwhJ2EEVersion}.jar` entnommen oder über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${dwhJ2EEVersion}/cda-ontology-${dwhJ2EEVersion}.jar)heruntergeladen werden:
+Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${project.version}.jar` entnommen oder über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${project.version}/cda-ontology-${project.version}.jar)heruntergeladen werden:
 
 ```
-wget ${releaseRepoUrl}/org/aktin/cda-ontology/${dwhJ2EEVersion}/cda-ontology-${dwhJ2EEVersion}.jar
+wget ${releaseRepoUrl}/org/aktin/cda-ontology/${project.version}/cda-ontology-${project.version}.jar
 ```
 
 Man sollte das Paket in ein temporäres Verzeichnis entpacken und die enthaltene `sql` Skripte über den `postgres` User ausführen. Anschließend kann das temporäre Verzeichnis wieder gelöscht werden.
 
 ```
 CDATMPDIR=/var/tmp/cda-ontology
-unzip dwh-update/packages/cda-ontology-${dwhJ2EEVersion}.jar -d $CDATMPDIR
+unzip dwh-update/packages/cda-ontology-${project.version}.jar -d $CDATMPDIR
 chmod 777 -R $CDATMPDIR
 
 su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_ont.sql"
@@ -263,23 +265,23 @@ service wildfly start # debian
 Deployment des neuen Softwarepaketes
 ------------------------------------
 
-Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder herunter geladen werden unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear). Es muss in das Wildfly-Deploymentordner kopiert werden. 
+Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${project.version}.ear`) oder herunter geladen werden unter [EAR Release ${project.version}](${releaseRepoUrl}/org/aktin/dwh-j2ee/${project.version}/dwh-j2ee-${project.version}.ear). Es muss in das Wildfly-Deploymentordner kopiert werden. 
 
 ```
-cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear $WILDFLY_HOME/standalone/deployments/
+cp dwh-update/packages/dwh-j2ee-${project.version}.ear $WILDFLY_HOME/standalone/deployments/
 ```
 
 Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. 
 
-Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. 
+Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${project.version}.ear.deployed` erstellt. 
 
 ```
-ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}*.deployed
+ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-${project.version}*.deployed
 ```
 
-Sollte eine Datei angezeigt werden, war das Update erfolgreich.Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log` oder `/opt/wilfly*/standalone/logs/...`
+Sollte eine Datei angezeigt werden, war das Update erfolgreich.Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${project.version}.ear.failed` auftauchen, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log` oder `/opt/wilfly*/standalone/logs/...`
 
-Unter dem Link `IhrAKtinServerLink/aktin/admin/test/` kann man die oben durchgeführten Anpassungen nun testen. 
+Unter dem Link _`http://IPADRESSE/aktin/admin/test/`_ kann man die oben durchgeführten Anpassungen nun testen. 
 
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
 Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
