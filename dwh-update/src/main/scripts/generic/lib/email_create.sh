@@ -7,6 +7,8 @@ WILDFLY_HOME=/opt/wildfly-${wildfly.version}
 JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
 # get smtp settings
+auth=true
+
 LOCAL_SETTING=$INSTALL_ROOT/email.config
 . $LOCAL_SETTING
 
@@ -24,7 +26,11 @@ else
 	# create new settings
 	$JBOSSCLI "/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=$smtpbind:add(host=$smtphost, port=$smtpport)"
 	$JBOSSCLI "/subsystem=mail/mail-session=$sessionname:add(jndi-name=$jndiname)"
-	$JBOSSCLI "/subsystem=mail/mail-session=$sessionname/server=smtp:add(outbound-socket-binding-ref=$smtpbind, username=$smtpuser, password=$smtppass, tls=$usetls, ssl=$usessl)"
+	if $auth ; then 
+		$JBOSSCLI "/subsystem=mail/mail-session=$sessionname/server=smtp:add(outbound-socket-binding-ref=$smtpbind, username=$smtpuser, password=$smtppass, tls=$usetls, ssl=$usessl)"
+	else 
+		$JBOSSCLI "/subsystem=mail/mail-session=$sessionname/server=smtp:add(outbound-socket-binding-ref=$smtpbind)"
+	fi
 	$JBOSSCLI "/subsystem=mail/mail-session=$sessionname/:write-attribute(name=from, value=$mailfrom)"
 fi
 
