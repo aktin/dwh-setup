@@ -47,7 +47,30 @@
 			    <artifactId>cda-ontology</artifactId>
 			    <version>0.7</version>
 			</dependency>
+			<dependency>
+				<groupId>org.aktin.dwh</groupId>
+				<artifactId>dwh-j2ee</artifactId>
+				<version>0.7</version>
+				<type>ear</type>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>de.sekmi.histream.maven</groupId>
+				<artifactId>histream-maven-plugin</artifactId>
+				<version>0.9.3</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>dependency-properties</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
