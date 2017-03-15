@@ -4,12 +4,12 @@
 Version 0.7
 -----------
 * Aktualisierung auf CDA Version v1.26 (2017-03-02)
-* Einrichtung der Berichtfunktion
-* Einrichtung der E-Mailfunktion
-* Einrichtung einer periodischen Statusmeldung an den zentralen AKTIN-Broker
+* Einrichtung der Report-Funktion (Erzeugung eines standardisierten Monatsberichts)
+* Einrichtung der E-Mail-Funktion (insbesondere für den Versand des Monatsberichts)
+* Einrichtung einer periodischen Statusmeldung an den zentralen AKTIN-Broker (Zeitpunkt der letzten Statusmeldung, Software-Versionsstände, Anzahl importierter Datensätze, letzte Fehlermeldungen)
 * Korrektur eines Fehlers beim Import mehrerer IDs in encompassingEncounter
 * Korrektur des Imports von CEDIS-UNK bzw. CEDIS-999
-* Korrekturen beim Import und der Darstellung im DWH von Multiresistenten Keimen mit NullFlavor OTH _CAVE: "Verdacht auf andere multiresistente Keime" kann nicht angegeben werden (Schematron Fehler)"_
+* Korrekturen beim Import und der Darstellung im DWH von Multiresistenten Keimen mit NullFlavor OTH _CAVE: "Verdacht auf andere multiresistente Keime" kann in diesem Release noch nicht angegeben werden (Schematron Fehler)_
 
 Version 0.6.3
 -------------
