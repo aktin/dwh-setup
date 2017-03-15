@@ -72,6 +72,10 @@ echo
 $INSTALL_ROOT/lib/check_aktin_properties.sh 2>&1 | tee -a $LOGFILE
 checkexit=${PIPESTATUS[0]}
 if [ $checkexit -gt 0 ]; then
+    echo +++WARNING+++ Bitte Überprüfen Sie auch die Angaben in $INSTALL_ROOT/email.config | tee -a $LOGFILE
+    echo "    nano $INSTALL_ROOT/email.config" | tee -a $LOGFILE
+    echo und führen Sie diesen Script erneut aus. | tee -a $LOGFILE
+    echo "    $SCRIPT" | tee -a $LOGFILE
     exit $checkexit
 fi
 
