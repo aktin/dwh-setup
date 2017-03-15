@@ -4,7 +4,7 @@
 WILDFLY_HOME=/opt/wildfly-${wildfly.version}
 JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
-numdeployed=$(ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* | grep -c deployed)
+numdeployed=$(find $WILDFLY_HOME/standalone/deployments/ -name "dwh-j2ee-*" | grep -c deployed)
 
 if [ $numdeployed -gt 0 ] ; then
 

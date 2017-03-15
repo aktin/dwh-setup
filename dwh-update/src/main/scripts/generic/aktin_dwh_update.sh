@@ -54,9 +54,9 @@ fi
 # XXX check more paths? (compatible linux distribution?)
 # XXX check if "service" command is available
 # check older dwh-j2ee ear files
-numdeployed=$(ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* | grep -c deployed)
+numdeployed=$(find $WILDFLY_HOME/standalone/deployments/ -name "dwh-j2ee-*" | grep -c deployed)
 if [ $numdeployed -gt 0 ] ; then
-    if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed 1> /dev/null 2>&1; then
+    if find $WILDFLY_HOME/standalone/deployments/ -name "dwh-j2ee-*.deployed" 1> /dev/null 2>&1; then
         OLD_VERSION=$(ls -t $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed | head -1 | sed -n -e 's#'$WILDFLY_HOME'/standalone/deployments/dwh-j2ee-##'p | sed -n -e 's#.ear.deployed$##'p)
         echo Currently deployed version is $OLD_VERSION | tee -a $LOGFILE
     else
@@ -231,7 +231,7 @@ echo
 echo "+++++ STEP 4 +++++  Remove all dwh.ear[*] (including .failed, .deployed, .undeployed)" | tee -a $LOGFILE
 echo
 rm -v $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* 2>&1 | tee -a $LOGFILE
-if ls dwh-j2ee-* 1> /dev/null 2>&1; then 
+if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* 1> /dev/null 2>&1; then 
     echo +++WARNING+++ EAR files not completely removed | tee -a $LOGFILE
 else
     echo EAR files removed | tee -a $LOGFILE

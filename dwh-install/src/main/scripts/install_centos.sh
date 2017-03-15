@@ -7,8 +7,10 @@ DATA_HOME=$INSTALL_ROOT/i2b2_install
 DATA_DEST=$INSTALL_ROOT/temp_install
 PACKAGES=$INSTALL_ROOT/packages
 
-WILDFLY_HOME=/opt/wildfly-9.0.2.Final
+WILDFLY_HOME=/opt/wildfly-${wildfly.version}
 JBOSS7_DIR=/opt/jboss-as-7.1.1.Final 
+
+LOGFILE=$INSTALL_ROOT/install.log # logfile for install log
 
 echo
 echo +++++ STEP 0 +++++ Installation der notwendigen Pakete | tee -a $LOGFILE
@@ -19,7 +21,7 @@ yum -y install java-1.8.0-openjdk-headless
 yum -y install sudo wget curl dos2unix unzip sed bc ant php php-curl openssh-server
 
 echo
-echo +++++ STEP 0.01 +++++ CentOs HTTPD Verlinkungen | tee -a $LOGFILE
+echo +++++ STEP 0.i +++++ CentOs HTTPD Konfiguration | tee -a $LOGFILE
 echo
 # make centos preparations
 ln -s /etc/httpd /etc/apache2
@@ -57,7 +59,7 @@ ln -s /var/www/html /var/webroot
 #INSTALL_ROOT=/opt/aktin
 
 echo
-echo +++++ STEP 0.02 +++++ Postgres Konfigurationen | tee -a $LOGFILE
+echo +++++ STEP 0.ii +++++ Postgres Konfiguration | tee -a $LOGFILE
 echo
 #postgres
 yum -y install postgresql-server postgresql-contrib
@@ -71,7 +73,7 @@ systemctl start postgresql 2>&1 | tee -a $LOGFILE
 
 
 echo
-echo +++++ STEP 0.03 +++++ R Konfigurationen | tee -a $LOGFILE
+echo +++++ STEP 0.iii +++++ R Konfiguration | tee -a $LOGFILE
 echo
 # install R libraries for reporting, adding fedora repos
 echo Über Fedora Repo R beziehen : | tee -a $LOGFILE
@@ -84,7 +86,7 @@ Rscript -e 'install.packages("lattice", repos="https://cran.rstudio.com/")' 2>&1
 
 
 echo
-echo +++++ STEP 0.04 +++++ Deactivierung von SELinux (restart required) | tee -a $LOGFILE
+echo +++++ STEP 0.iv +++++ Deactivierung von SELinux (restart required) | tee -a $LOGFILE
 echo
 sudo cp /etc/sysconfig/selinux $INSTALL_ROOT/selinux.orig
 sudo cat $INSTALL_ROOT/selinux.orig | sudo sed 's|SELINUX=enforcing|SELINUX=disabled|' > /etc/sysconfig/selinux
@@ -92,13 +94,13 @@ sudo cat $INSTALL_ROOT/selinux.orig | sudo sed 's|SELINUX=enforcing|SELINUX=disa
 
 
 echo
-echo +++++ STEP 1 +++++ Links und Rechte | tee -a $LOGFILE
+echo +++++ STEP I +++++ Links und Rechte | tee -a $LOGFILE
 echo
 
 chmod -R o+x $INSTALL_ROOT
 
 echo
-echo +++++ STEP 1.01 +++++ Log Ordner | tee -a $LOGFILE
+echo +++++ STEP I.i +++++ Log Ordner | tee -a $LOGFILE
 echo
 # create directory for logs if not existent
 # TODO dont write logfiles to /vagrant
@@ -111,7 +113,7 @@ fi
 # chmod -R o+x $INSTALL_ROOT
 
 echo
-echo +++++ STEP 1.02 +++++ Wildfly Anpassung | tee -a $LOGFILE
+echo +++++ STEP I.ii +++++ Wildfly Anpassung | tee -a $LOGFILE
 echo
 # create symlink for fixed configuration paths in i2b2
 ln -s $WILDFLY_HOME $JBOSS7_DIR | tee -a $LOGFILE
@@ -126,11 +128,13 @@ fi
 
 # up till now, the script can be rerun. but not if it dies while ant is running.
 echo
-echo +++++ STEP 2 +++++ Installation via ANT | tee -a $LOGFILE
+echo +++++ STEP II +++++ Installation Wildfly und Einrichtung der Datenbanken via ANT | tee -a $LOGFILE
 echo
 if [ ! -d "$DATA_DEST" ]; then 
     mkdir $DATA_DEST
+    chmod -R 777 $DATA_DEST
 fi
+
 if [ -d $WILDFLY_HOME ] && [ -d $WILDFLY_HOME/standalone/deployments/i2b2.war ] ; then
 	# i2b2 is already installed (or at least some part of it. abort! )
 else 
@@ -162,7 +166,7 @@ else
 fi
 
 echo
-echo +++++ STEP 3 +++++ Set Up Wildfly in autostart and start it | tee -a $LOGFILE
+echo +++++ STEP III +++++ Wildfly Einrichtung und Inkludierung in Autostart | tee -a $LOGFILE
 echo
 
 
@@ -201,5 +205,11 @@ chown -R wildfly:wildfly /var/log/wildfly 2>&1 | tee -a $LOGFILE
 systemctl enable wildfly
 systemctl start wildfly
 
+echo
+echo +++++ STEP IV +++++ Deployment der EAR und Ausführen des aktuellsten Updateskriptes | tee -a $LOGFILE
+echo
+tar xvzCf $INSTALL_ROOT $PACKAGES/dwh-update-${project.version}.tar.gz | tee -a $LOGFILE
+echo Sollte im folgenden der Skript unterbrochen werden, bitte nur den Updateskript in $INSTALL_ROOT/dwh-update ausführen. | tee -a $LOGFILE
 
-# call update script (step 1 mitnehmen)
+$INSTALL_ROOT/dwh-update/aktin_dwh_update.sh
+
