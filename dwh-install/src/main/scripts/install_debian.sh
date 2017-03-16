@@ -12,8 +12,8 @@ DATA_HOME=$MY_PATH/i2b2_install
 DATA_DEST=$MY_PATH/temp_install
 PACKAGES=$MY_PATH/packages
 
-WILDFLY_HOME=/opt/wildfly-${wildfly.version}
-JBOSS7_DIR=/opt/jboss-as-7.1.1.Final 
+WILDFLY_HOME=/opt/wildfly-9.0.2.Final
+JBOSS7_DIR=/opt/jboss-as-7.1.1.Final
 
 LOGFILE=$INSTALL_ROOT/install.log # logfile for install log
 
@@ -21,13 +21,13 @@ echo
 echo +++++ STEP 0 +++++ Installation der notwendigen Pakete | tee -a $LOGFILE
 echo
 # Enable backports
-if [ $(grep -e "^deb http://http.debian.net/debian jessie-backports main" /etc/apt/sources.list) -le 0 ] ; then
-	echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
+if [ $(grep -c -e "^deb http://ftp.de.debian.org/debian jessie-backports main" /etc/apt/sources.list) -le 0 ] ; then
+	echo 'deb http://ftp.de.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
 fi
 
 apt-get update
 apt-get install -y ca-certificates-java
-apt-get install -y openjdk-8-jre-headless 
+apt-get install -y openjdk-8-jre-headless
 apt-get install -y sudo wget curl dos2unix unzip sed bc ant postgresql apache2
 
 # install R libraries for reporting
@@ -42,7 +42,7 @@ echo
 ## TODO libapache2-mod-proxy (or -proxy-http) missing?
 # reverse proxy configuration
 echo Reverse Proxy Konfigurierung | tee -a $LOGFILE
-if [ ! -f /etc/apache2/conf-available/aktin-j2ee-reverse-proxy.conf ] ; then 
+if [ ! -f /etc/apache2/conf-available/aktin-j2ee-reverse-proxy.conf ] ; then
 	echo aktin reverse proxy wird angelegt:  | tee -a $LOGFILE
 	conf=/etc/apache2/conf-available/aktin-j2ee-reverse-proxy.conf
 	echo ProxyPreserveHost On > $conf
@@ -71,6 +71,7 @@ ln -s $WEBROOT /var/webroot
 echo
 echo +++++ STEP I +++++ Links und Rechte | tee -a $LOGFILE
 echo
+echo Links und Rechte | tee -a $LOGFILE
 
 echo
 echo +++++ STEP I.i +++++ Log Ordner | tee -a $LOGFILE
@@ -78,10 +79,11 @@ echo
 # create directory for logs if not existent
 # TODO dont write logfiles to /vagrant
 LOG_DIR=$INSTALL_ROOT/logs
-if [ ! -d "$LOG_DIR" ]; then 
+if [ ! -d "$LOG_DIR" ]; then
     mkdir -p $LOG_DIR
     chmod -R 777 $LOG_DIR
 fi
+echo Logordner angelegt und Rechte angepasst. | tee -a $LOGFILE
 
 # chmod -R o+x $INSTALL_ROOT
 
@@ -90,6 +92,7 @@ echo +++++ STEP I.ii +++++ Wildfly Anpassung | tee -a $LOGFILE
 echo
 # create symlink for fixed configuration paths in i2b2
 ln -s $WILDFLY_HOME $JBOSS7_DIR | tee -a $LOGFILE
+echo $WILDFLY_HOME nach $JBOSS7_DIR verlinkt | tee -a $LOGFILE
 
 
 
@@ -99,17 +102,21 @@ ln -s $WILDFLY_HOME $JBOSS7_DIR | tee -a $LOGFILE
 echo
 echo +++++ STEP II +++++ Installation via ANT | tee -a $LOGFILE
 echo
-if [ ! -d "$DATA_DEST" ]; then 
+if [ ! -d "$DATA_DEST" ]; then
     mkdir $DATA_DEST
     chmod -R 777 $DATA_DEST
 fi
+echo $DATA_DEST angelegt und Rechte angepasst | tee -a $LOGFILE
+
 if [ -d $WILDFLY_HOME ] && [ -d $WILDFLY_HOME/standalone/deployments/i2b2.war ] ; then
+	echo Wildfly installiert und i2b2 bereits in Wildfly vorhanden. | tee -a $LOGFILE
 	# i2b2 is already installed (or at least some part of it. abort! )
-else 
+else
 	cp -r -f $DATA_HOME/* $DATA_DEST
 	cd $DATA_DEST
 
 	buildfile=build.properties
+	echo Anpassung von $buildfile | tee -a $LOGFILE
 	# add some system and build dependent parameters for the ant build
 	echo "# system generated properties for ant build" >> $buildfile
 	echo "ant.installdata.dir=${DATA_DEST}" >> $buildfile
@@ -127,24 +134,19 @@ else
 	echo "db.project.uname=i2b2_DEMO" >> $buildfile
 	echo "db.hive.id=i2b2demo" >> $buildfile
 
-	echo ant scripts | tee -a $LOGFILE
+	echo Installation Wildfly und i2b2 per ANT | tee -a $LOGFILE
 	ant all  2>&1 | tee -a $LOGFILE
 
 	cd $INSTALL_ROOT
 fi
 
 echo
-echo +++++ STEP III +++++ Wildfly Einrichtung und Inkludierung in Autostart | tee -a $LOGFILE
+echo +++++ STEP III +++++ Wildfly Einrichtung und zu Autostart hinzufügen | tee -a $LOGFILE
 echo
 ##### Set up wildfly
-
-
-if [ -f /etc/default/wildfly ]
+if [ ! -f /etc/default/wildfly ]
 then
-	>&2 echo "Aborting $0, wildfly is already configured"	
-	# exit 1
-else 
-	# Create user
+	# Create wildlfy user
 	adduser --system --group --disabled-login wildfly 2>&1 | tee -a $LOGFILE
 	chown -R wildfly:wildfly $WILDFLY_HOME 2>&1 | tee -a $LOGFILE
 
@@ -161,6 +163,8 @@ else
 	# reload daemon cache
 	systemctl daemon-reload
 fi
+	# >&2 echo "Aborting $0, wildfly is already configured"	
+	# exit 1
 
 echo start jboss service | tee -a $LOGFILE
 service wildfly start 2>&1 | tee -a $LOGFILE

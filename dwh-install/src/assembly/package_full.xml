@@ -11,7 +11,7 @@
 	<!-- Add dependencies for the J2EE server to the /packages directory -->
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/aktin-dwh-snapshot/packages</outputDirectory>
+			<outputDirectory>/aktin-dwh-installer/packages</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<unpack>false</unpack>
 			<scope>runtime</scope>
@@ -25,7 +25,7 @@
         -->
         <fileSet>
             <directory>${project.build.scriptSourceDirectory}</directory>
-            <outputDirectory>aktin-dwh-snapshot</outputDirectory>
+            <outputDirectory>aktin-dwh-installer</outputDirectory>
             <!-- enable resource filtering to replace ${property.names} -->
             <lineEnding>unix</lineEnding>
             <fileMode>755</fileMode>
@@ -33,13 +33,13 @@
         </fileSet>
         <fileSet>
             <directory>src/main/resources</directory>
-            <outputDirectory>aktin-dwh-snapshot</outputDirectory>
+            <outputDirectory>aktin-dwh-installer</outputDirectory>
             <filtered>false</filtered>
             <!--src/main/resources/i2b2_install/build.properties-->
         </fileSet>
         <fileSet>
             <directory>packages</directory>
-            <outputDirectory>aktin-dwh-snapshot/packages</outputDirectory>
+            <outputDirectory>aktin-dwh-installer/packages</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
     </fileSets>

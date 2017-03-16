@@ -11,7 +11,7 @@
 	<!-- Add dependencies for the J2EE server to the /packages directory -->
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/aktin-dwh-snapshot/packages</outputDirectory>
+			<outputDirectory>/aktin-dwh-installer/packages</outputDirectory>
 			<useProjectArtifact>false</useProjectArtifact>
 			<unpack>false</unpack>
 			<scope>runtime</scope>
@@ -21,12 +21,12 @@
     <fileSets>
         <fileSet>
             <directory>${project.build.scriptSourceDirectory}</directory>
-            <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
+            <outputDirectory>/aktin-dwh-installer</outputDirectory>
             <filtered>true</filtered>
         </fileSet>
         <fileSet>
             <directory>src/main/resources</directory>
-            <outputDirectory>/aktin-dwh-snapshot</outputDirectory>
+            <outputDirectory>/aktin-dwh-installer</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
     </fileSets>
