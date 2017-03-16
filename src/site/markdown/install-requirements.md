@@ -102,16 +102,13 @@ Nachfolgend Paketnamen der gängigen Distributionen
 
 | Paket | Debian 8 | CentOS 7 |
 |---|---|---|
-| Postgres | postgresql | ?? |
-| Java 8 JRE | openjdk-8-jre-headless* | ??? |
-| PHP5 curl | php5-curl | ??? |
+| Postgres | postgresql | postgresql-server, postgresql-contrib |
+| Java 8 JRE | openjdk-8-jre-headless* | java-1.8.0-openjdk-headless |
+| PHP5 curl | php5-curl | php-curl |
+| R | r-cran-xml r-cran-lattice | R |
 
 
 Manuelle Installation
 ---------------------
-Wenn Sie die AKTIN Installationsskripte nicht verwenden wollen,
-dann können Sie die Konfiguration nach unseren Anleitungen durchführen.
 
-_AKTUELL unter Bearbeitung._
-- Manuelle Konfiguration für Debian 8
-- Manuelle Konfiguration für CentOS 7
+Für manuelle Installation anderer Linux-Distributionen empfehlen wir eine Anpassung der gelieferten Skripte. Sollten Sie Fragen dazu haben, wenden Sie sich gerne an uns unter it-support(at)aktin.de

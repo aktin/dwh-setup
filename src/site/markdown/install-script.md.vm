@@ -33,22 +33,24 @@ Wenn das Paket heruntergeladen ist, kann es entpackt werden mit
 den Ordner `akin-dwh-install` entpackt.
 
 Die Installation benötigt Zugriff auf das Internet - speziell die jeweiligen 
-Repositories und die Server der Universität Oldenburg, um die benötigten Pakete 
-herunterzuladen.
+Repositories und die Server der Universität Oldenburg, um die benötigten Pakete herunterzuladen.
 
-Unter Debian 8, starten Sie nun das Skript `akin-dwh-install/install_debian.sh`.
+Unter Debian 8, starten Sie nun das Skript `./akin-dwh-install/install_debian.sh`.
 Die Installation kann bis zu 20 Minuten dauern. 
-Um die Konsolenausgaben umzuleiten, können Sie alternativ auch `akin-dwh-install/install_debian.sh > install-aktin-dwh.log` ausführen. Die Logausgaben finden Sie dann in der Datei `install-aktin-dwh.log`.
+Um die Konsolenausgaben umzuleiten, können Sie alternativ auch `./akin-dwh-install/install_debian.sh > install-aktin-dwh.log` ausführen. Die Logausgaben finden Sie dann in der Datei `install-aktin-dwh.log`.
 
 Für CentOS 7, starten Sie das Skript `akin-dwh-install/install_centos.sh`. 
 SELinux wird in dem Prozess deaktiviert. Sollten Sie SELinux verwenden wollen 
 müssen Sie es entsprechend manuell konfigurieren - oder die Skriptinhalte 
 selektiv manuell ausführen.
 
+Nach der Installation der notwendigen Pakete und der Einrichtung der Dienste sowie des i2b2 ruft der Installationsskript den neusten Updateskript auf, um die Einrichtung der neusten Software des Aktin-Projektes sowie die weiteren Anpassungen durchzuführen. In diesem Schritt kann der Skript unterbrochen werden, sollte Angaben Ihrerseits nötig sein. Auf die Angaben werden Sie in der Konsole hingewiesen. 
 
-Bevor die Funktionalität des Servers im Anschluss an das Installationsskript 
-getestet werden benötigt der Server evtl. noch wenige Minuten um alle 
-beteiligten Dienste zu starten und einzurichten.
+Informationen zum Update finden Sie unter [skriptbasierten Update](update-auto.html) oder [manuellen Update](update-manual.html).
+
+Bevor die Funktionalität des Servers getestet werden, benötigt der Server evtl. noch wenige Minuten, um alle beteiligten Dienste zu starten und einzurichten.
+
+Sollten Sie Fragen zur Installation haben oder Probleme begegnen, kontaktieren Sie uns gerne unter it-support(at)aktin.org
 
 Test des Data Warehouse
 -----------------------
@@ -68,3 +70,18 @@ getestet werden:
 ```
 java-client-fhir.bat http://IHRSERVER/aktin/cda/fhir/Binary examples\basismodul-beispiel-storyboard01.xml
 ```
+
+Test der Verbindung und E-Mail-Konfiguration
+--------------------------------------------
+
+Unter dem Link _`http://IPADRESSE/aktin/admin/test/`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
+
+[Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
+Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
+Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
+Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
+
+[Test server configuration]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
+Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Maile-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
+
+[Test server configuration]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"

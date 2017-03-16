@@ -14,11 +14,13 @@ Sie erhalten mit einer Neuinstallation automatisch den neuesten Release-Stand ($
 
 Automatisches Update für Debian (und CentOS)
 --------------------------------------------
-Falls Sie einen Debian-Server nutzen, der anhand der Anleitung eingerichtet wurde, sollten die Update-Scripte bei Ihnen funktionieren.
+Falls Sie einen Debian oder CentOS-Server nutzen, der anhand der Anleitung eingerichtet wurde, sollten die Update-Scripte bei Ihnen funktionieren. 
 
 __Update auf ${project.version}__
 
-Für einen Update auf ${project.version} folgen Sie der Anleitung zum [skriptbasierten Update](update-auto.html)
+Für einen Update auf ${project.version} folgen Sie der Anleitung zum [skriptbasierten Update](update-auto.html).
+
+Für RedHat-Server kann man, nach manueller Anpassung, auch das Skript genutzt werden.
 
 
 Manuelles Update für Debian, CentOS oder andere Betriebssysteme
