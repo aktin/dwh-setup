@@ -5,20 +5,20 @@ SCRIPT=$(readlink -f "$0")
 INSTALL_ROOT=$(dirname "$(dirname "$SCRIPT")")
 WILDFLY_HOME=/opt/wildfly-${wildfly.version}
 
-
+RCol='\e[0m'; Red='\e[0;31m'; BRed='\e[1;31m'; Yel='\e[0;33m'; BYel='\e[1;33m'; Gre='\e[0;32m'; BGre='\e[1;32m'; Blu='\e[0;34m'; BBlu='\e[1;34m'; 
 
 # copy aktin.properties into the wildfly configuration folder
 if [ ! -f "$WILDFLY_HOME/standalone/configuration/aktin.properties" ]; then 
 	# Hinweis zu properties Aenderungen.
-	echo +++WARNING+++ Bitte die Einstellungen in der Datei $INSTALL_ROOT/aktin.properties ändern mittels: 
-	echo "    nano $INSTALL_ROOT/aktin.properties"
+	echo -e "${BYel}+++WARNING+++ ${RCol}Bitte die Einstellungen in der Datei $INSTALL_ROOT/aktin.properties ändern mittels: "
+	echo -e "${Gre}    nano $INSTALL_ROOT/aktin.properties${RCol}"
 	echo und anschließend nach dem Wildfly Konfigurationsordner kopieren mittels:
-	echo "    cp -v $INSTALL_ROOT/aktin.properties $WILDFLY_HOME/standalone/configuration/aktin.properties"
+	echo -e "${Gre}    cp -v $INSTALL_ROOT/aktin.properties $WILDFLY_HOME/standalone/configuration/aktin.properties${RCol}"
 	echo 
 	echo Dieser Skript wird nun beendet. 
 	echo Nach obiger Änderungen starten Sie dieses Skript bitte neu.
-	echo "+++INFO+++ Spätere Änderungen bitte direkt in $WILDFLY_HOME/standalone/configuration/aktin.properties vornehmen"
-	echo "   und dann dieses Skript dann erneut ausführen"
+	echo "${BYel}+++INFO+++${RCol} Spätere Änderungen bitte direkt in $WILDFLY_HOME/standalone/configuration/aktin.properties vornehmen"
+	echo "   und dann das Updateskript dann erneut ausführen"
 	echo "-------------------------"
 	echo 
 	exit 124 # controlled interrupt if properties still not copied

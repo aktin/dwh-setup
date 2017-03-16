@@ -16,6 +16,8 @@ i2b2_WEBDIR=/var/webroot/webclient # webclient directory
 LOGFILE=$INSTALL_ROOT/update.log # logfile for update log
 touch $LOGFILE
 
+RCol='\e[0m'; Red='\e[0;31m'; BRed='\e[1;31m'; Yel='\e[0;33m'; BYel='\e[1;33m'; Gre='\e[0;32m'; BGre='\e[1;32m'; Blu='\e[0;34m'; BBlu='\e[1;34m'; 
+
 echo ++++++++++++++++++++++
 echo
 echo AKTIN J2ee update auf $NEW_VERSION | tee -a $LOGFILE
@@ -60,10 +62,10 @@ if [ $numdeployed -gt 0 ] ; then
         OLD_VERSION=$(ls -t $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed | head -1 | sed -n -e 's#'$WILDFLY_HOME'/standalone/deployments/dwh-j2ee-##'p | sed -n -e 's#.ear.deployed$##'p)
         echo Currently deployed version is $OLD_VERSION | tee -a $LOGFILE
     else
-        echo +++WARNING+++ No EAR is currently deployed | tee -a $LOGFILE
+        echo -e "${BYel}+++WARNING+++${RCol} No EAR is currently deployed" | tee -a $LOGFILE
     fi
 else 
-    echo +++WARNING+++ No EAR is currently deployed | tee -a $LOGFILE
+    echo -e "${BYel}+++WARNING+++${RCol} No EAR is currently deployed" | tee -a $LOGFILE
 fi
 
 echo
@@ -72,10 +74,10 @@ echo
 $INSTALL_ROOT/lib/check_aktin_properties.sh 2>&1 | tee -a $LOGFILE
 checkexit=${PIPESTATUS[0]}
 if [ $checkexit -gt 0 ]; then
-    echo +++WARNING+++ Bitte Überprüfen Sie auch die Angaben in $INSTALL_ROOT/email.config | tee -a $LOGFILE
-    echo "    nano $INSTALL_ROOT/email.config" | tee -a $LOGFILE
+    echo -e "${BYel}+++WARNING+++${RCol} Bitte Überprüfen Sie auch die Angaben in $INSTALL_ROOT/email.config" | tee -a $LOGFILE
+    echo -e "${Gre}    nano $INSTALL_ROOT/email.config${RCol}" | tee -a $LOGFILE
     echo und führen Sie diesen Script erneut aus. | tee -a $LOGFILE
-    echo "    $SCRIPT" | tee -a $LOGFILE
+    echo -e "${Gre}    $SCRIPT${RCol}" | tee -a $LOGFILE
     exit $checkexit
 fi
 

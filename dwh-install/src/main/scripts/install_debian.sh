@@ -26,8 +26,9 @@ if [ $(grep -c -e "^deb http://ftp.de.debian.org/debian jessie-backports main" /
 fi
 
 apt-get update
-apt-get install -y ca-certificates-java
-apt-get install -y openjdk-8-jre-headless
+# apt-get install -y ca-certificates-java
+# apt-get install -y openjdk-8-jre-headless
+apt install -t jessie-backports -y openjdk-8-jre-headless ca-certificates-java
 apt-get install -y sudo wget curl dos2unix unzip sed bc ant postgresql apache2
 
 # install R libraries for reporting
@@ -178,6 +179,8 @@ echo
 echo +++++ STEP IV +++++ Deployment der EAR und Ausführen des aktuellsten Updateskriptes | tee -a $LOGFILE
 echo
 tar xvzCf $INSTALL_ROOT $PACKAGES/dwh-update-${project.version}.tar.gz | tee -a $LOGFILE
-echo Sollte im folgenden der Skript unterbrochen werden, bitte nur den Updateskript in $INSTALL_ROOT/dwh-update ausführen. | tee -a $LOGFILE
+
+RCol='\e[0m'; Red='\e[0;31m'; BRed='\e[1;31m'; Yel='\e[0;33m'; BYel='\e[1;33m'; Gre='\e[0;32m'; BGre='\e[1;32m'; Blu='\e[0;34m'; BBlu='\e[1;34m'; 
+echo -e "${BRed}+++INFO+++${Gre}Sollte im folgenden der Skript unterbrochen werden, bitte nur den Updateskript in $INSTALL_ROOT/dwh-update ausführen.${RCol}" | tee -a $LOGFILE
 
 $INSTALL_ROOT/dwh-update/aktin_dwh_update.sh
