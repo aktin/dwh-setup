@@ -77,6 +77,9 @@ ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}*.d
 
 Sollte eine Datei angezeigt werden, war das Update erfolgreich.
 
+Test der Verbindung und E-Mail-Konfiguration
+--------------------------------------------
+
 Unter dem Link _`http://IPADRESSE/aktin/admin/test/`_ kann man die oben durchgeführten Anpassungen nun testen. 
 
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
