@@ -39,6 +39,32 @@ tar xvzf dwh-update-${dwhServerVersion}.tar.gz
 ```
 
 
+Java Version Check und Fix
+--------------------------
+
+Vor dem Update sollte die Java-Version des Servers Überprüft werden:
+
+```
+java -version
+# openjdk version "1.8.0_121"
+# OpenJDK Runtime Environment (build 1.8.0_121-8u121-b13-1~bpo8+1-b13)
+# OpenJDK 64-Bit Server VM (build 25.121-b13, mixed mode)
+```
+
+Sollte in der Anzeige stattdessen Java Version 7 angezeigt werden, sollte diese auf Java Version 8 geupdatet werden. 
+
+Unter Debian muss dies über den Jessie-Backport geschehen. Dafür führen Sie bitte folgendes Code aus:
+
+```
+if [ $(grep -c -e "^deb http://ftp.de.debian.org/debian jessie-backports main" /etc/apt/sources.list) -le 0 ] ; then
+    echo 'deb http://ftp.de.debian.org/debian jessie-backports main' >> /etc/apt/sources.list;
+fi
+apt-get update ; apt install -t jessie-backports -y openjdk-8-jre-headless ca-certificates-java
+update-alternatives --set java $(update-alternatives --list java | grep "java-8")
+```
+
+Unter CentOs muss `yum -y install java-1.8.0-openjdk-headless` ausgeführt werden. Unter RedHat müssen Sie eventuell Ihren Serveradministrator um Repository Update bitten.
+
 Löschen der alten Software
 --------------------------
 

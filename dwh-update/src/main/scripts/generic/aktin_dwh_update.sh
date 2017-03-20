@@ -68,11 +68,10 @@ else
     echo -e "${BYel}+++WARNING+++${RCol} No EAR is currently deployed" | tee -a $LOGFILE
 fi
 
-
 echo
 echo +++++ STEP 0.01 +++++ JDK08 Fix  | tee -a $LOGFILE
 echo
-if [ $(ls -l /etc/alternatives/java | grep -c "java-8") -le 0] ; then
+if [ "$OS_VERSION" == "debian" ] && [ $(ls -l /etc/alternatives/java | grep -c "java-8") -le 0] ; then
     # java is not jdk 8
     # Enable backports
     if [ $(grep -c -e "^deb http://ftp.de.debian.org/debian jessie-backports main" /etc/apt/sources.list) -le 0 ] ; then
