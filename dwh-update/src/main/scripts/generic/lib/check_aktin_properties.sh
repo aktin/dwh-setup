@@ -17,7 +17,7 @@ if [ ! -f "$WILDFLY_HOME/standalone/configuration/aktin.properties" ]; then
 	echo 
 	echo Dieser Skript wird nun beendet. 
 	echo Nach obiger Änderungen starten Sie dieses Skript bitte neu.
-	echo "${BYel}+++INFO+++${RCol} Spätere Änderungen bitte direkt in $WILDFLY_HOME/standalone/configuration/aktin.properties vornehmen"
+	echo -e "${BYel}+++INFO+++${RCol} Spätere Änderungen bitte direkt in $WILDFLY_HOME/standalone/configuration/aktin.properties vornehmen"
 	echo "   und dann das Updateskript dann erneut ausführen"
 	echo "-------------------------"
 	echo 

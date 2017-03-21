@@ -71,20 +71,19 @@ fi
 echo
 echo +++++ STEP 0.01 +++++ JDK08 Fix  | tee -a $LOGFILE
 echo
-if [ "$OS_VERSION" == "debian" ] && [ $(ls -l /etc/alternatives/java | grep -c "java-8") -le 0] ; then
+if [ "$OS_VERSION" == "debian" ] && [ $(java -version 2>&1 | grep -c "build 1.8") -le 0] ; then
     # java is not jdk 8
     # Enable backports
-    if [ $(grep -c -e "^deb http://ftp.de.debian.org/debian jessie-backports main" /etc/apt/sources.list) -le 0 ] ; then
-        echo 'deb http://ftp.de.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
-    fi
+    # http.debian.net/debian jessie-backports main
+    # if [ $(grep -c -e "^deb http://http.debian.net/debian jessie-backports main" /etc/apt/sources.list) -le 0 ] ; then
+    #     echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
+    # fi
 
-    apt-get update
-    apt install -t jessie-backports -y openjdk-8-jre-headless ca-certificates-java
-
-    # update-alternatives --config java
+    # apt-get update
+    # apt install -t jessie-backports -y openjdk-8-jre-headless ca-certificates-java
 
     #link java to jre 8
-    update-alternatives --set java $(update-alternatives --list java | grep "java-8")
+    # update-alternatives --set java $(update-alternatives --list java | grep "java-8")
 fi
 
 
