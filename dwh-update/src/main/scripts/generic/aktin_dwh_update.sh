@@ -72,6 +72,8 @@ echo
 echo +++++ STEP 0.01 +++++ JDK08 Fix  | tee -a $LOGFILE
 echo
 if [ "$OS_VERSION" == "debian" ] && [ $(java -version 2>&1 | grep -c "build 1.8") -le 0] ; then
+
+    echo -e "${BYel}+++WARNING+++${RCol} Java Version ist nicht 1.8. Dies kann zu Probleme führen."
     # java is not jdk 8
     # Enable backports
     # http.debian.net/debian jessie-backports main

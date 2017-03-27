@@ -21,8 +21,11 @@ echo
 echo +++++ STEP 0 +++++ Installation der notwendigen Pakete | tee -a $LOGFILE
 echo
 # Enable backports
+#  http://ftp.de.debian.org/debian jessie-backports main
+# http.debian.net/debian jessie-backports main
 if [ $(grep -c -e "^deb http://ftp.de.debian.org/debian jessie-backports main" /etc/apt/sources.list) -le 0 ] ; then
 	echo 'deb http://ftp.de.debian.org/debian jessie-backports main' >> /etc/apt/sources.list
+	echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 fi
 
 apt-get update
@@ -116,6 +119,11 @@ else
 	cp -r -f $DATA_HOME/* $DATA_DEST
 	cd $DATA_DEST
 
+	if [ ! -d "$PACKAGES" ]; then
+	    mkdir -p $PACKAGES
+	fi
+	chmod -R 777 $PACKAGES
+
 	buildfile=build.properties
 	echo Anpassung von $buildfile | tee -a $LOGFILE
 	# add some system and build dependent parameters for the ant build
@@ -171,9 +179,11 @@ echo start jboss service | tee -a $LOGFILE
 service wildfly start 2>&1 | tee -a $LOGFILE
 # can also run /etc/init.d/wildfly start
 
-echo link wildfly to autostart | tee -a $LOGFILE
-# better use update-rc.d instead of creating manual links
-ln -s /etc/init.d/wildfly /etc/rc3.d/S10wildfly | tee -a $LOGFILE
+if [ ! -f /etc/rc3.d/S10wildfly ] ; then 
+	echo link wildfly to autostart | tee -a $LOGFILE
+	# better use update-rc.d instead of creating manual links
+	ln -s /etc/init.d/wildfly /etc/rc3.d/S10wildfly | tee -a $LOGFILE
+fi
 
 echo
 echo +++++ STEP IV +++++ Deployment der EAR und Ausführen des aktuellsten Updateskriptes | tee -a $LOGFILE
