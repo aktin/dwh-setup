@@ -4,7 +4,7 @@
 	
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.8-SNAPSHOT</version>
   
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
@@ -12,13 +12,13 @@
 	<parent>
 		<groupId>org.aktin</groupId>
 		<artifactId>aktin</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.3</version>
 	</parent>
 
 	<properties>
 		<!-- specifies the package and source version to which the site refers to -->
-		<dwhJ2EEVersion>0.7</dwhJ2EEVersion>
-		<dwhServerVersion>0.3</dwhServerVersion>
+		<dwhJ2EEVersion>0.7.1</dwhJ2EEVersion>
+		<dwhOntologyVersion>0.7</dwhOntologyVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
 		<!-- encoding stuff -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,7 +50,7 @@
 			<dependency>
 				<groupId>org.aktin.dwh</groupId>
 				<artifactId>dwh-j2ee</artifactId>
-				<version>0.7</version>
+				<version>0.7.1</version>
 				<type>ear</type>
 			</dependency>
 		</dependencies>
