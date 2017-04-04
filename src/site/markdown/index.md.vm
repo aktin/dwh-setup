@@ -48,10 +48,9 @@ Beschreibungen und Hinweise
 
 _Installation_
 
-[Installationsbeschreibung](dwh-install.html)
 [Voraussetzungen](install-requirements.html)
-[Installationsskript](dwh-script.html)
-[Firewall Hinweise](dwh-firewall.html)
+[Installationsskript](install-script.html)
+[Firewall Hinweise](install-firewall.html)
 
 _Update_
 
