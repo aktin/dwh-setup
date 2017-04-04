@@ -34,8 +34,8 @@ i2b2_WEBDIR=/var/webroot/webclient
 Zur Vereinfachung kann das bereitgestellte Updatepaket heruntergeladen und entpackt werden. 
 
 ```
-wget ${releaseRepoUrl}/org/aktin/dwh-update/${dwhServerVersion}/dwh-update-${dwhServerVersion}.tar.gz
-tar xvzf dwh-update-${dwhServerVersion}.tar.gz
+wget ${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz
+tar xvzf dwh-update-${project.version}.tar.gz
 ```
 
 
@@ -183,17 +183,17 @@ $WILDFLY_HOME/bin/jboss-cli.sh -c "/subsystem=mail/mail-session=AktinMailSession
 Einspielen der neuen Ontologie-Metadaten
 ----------------------------------------
 
-Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${dwhJ2EEVersion}.jar` entnommen oder über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${dwhJ2EEVersion}/cda-ontology-${dwhJ2EEVersion}.jar)heruntergeladen werden:
+Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${dwhOntologyVersion}.jar` entnommen oder über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${dwhOntologyVersion}/cda-ontology-${dwhOntologyVersion}.jar)heruntergeladen werden:
 
 ```
-wget ${releaseRepoUrl}/org/aktin/cda-ontology/${dwhJ2EEVersion}/cda-ontology-${dwhJ2EEVersion}.jar
+wget ${releaseRepoUrl}/org/aktin/cda-ontology/${dwhOntologyVersion}/cda-ontology-${dwhOntologyVersion}.jar
 ```
 
 Man sollte das Paket in ein temporäres Verzeichnis entpacken und die enthaltene `sql` Skripte über den `postgres` User ausführen. Anschließend kann das temporäre Verzeichnis wieder gelöscht werden.
 
 ```
 CDATMPDIR=/var/tmp/cda-ontology
-unzip dwh-update/packages/cda-ontology-${dwhJ2EEVersion}.jar -d $CDATMPDIR
+unzip dwh-update/packages/cda-ontology-${dwhOntologyVersion}.jar -d $CDATMPDIR
 chmod 777 -R $CDATMPDIR
 
 su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/remove_ont.sql"

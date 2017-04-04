@@ -18,7 +18,7 @@
 	<properties>
 		<!-- specifies the package and source version to which the site refers to -->
 		<dwhJ2EEVersion>0.7.1</dwhJ2EEVersion>
-		<dwhServerVersion>0.3</dwhServerVersion>
+		<dwhOntologyVersion>0.7</dwhOntologyVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
 		<!-- encoding stuff -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
