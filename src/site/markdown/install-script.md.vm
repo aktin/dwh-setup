@@ -30,16 +30,16 @@ z.B. mit
 
 Wenn das Paket heruntergeladen ist, kann es entpackt werden mit 
 `tar xvzf dwh-install-${project.version}.tar.gz`. Die Dateien werden dann automatisch in 
-den Ordner `akin-dwh-install` entpackt.
+den Ordner `aktin-dwh-install` entpackt.
 
 Die Installation benötigt Zugriff auf das Internet - speziell die jeweiligen 
 Repositories und die Server der Universität Oldenburg, um die benötigten Pakete herunterzuladen.
 
-Unter Debian 8, starten Sie nun das Skript `./akin-dwh-install/install_debian.sh`.
+Unter Debian 8, starten Sie nun das Skript `./aktin-dwh-install/install_debian.sh`.
 Die Installation kann bis zu 20 Minuten dauern. 
-Um die Konsolenausgaben umzuleiten, können Sie alternativ auch `./akin-dwh-install/install_debian.sh > install-aktin-dwh.log` ausführen. Die Logausgaben finden Sie dann in der Datei `install-aktin-dwh.log`.
+Um die Konsolenausgaben umzuleiten, können Sie alternativ auch `./aktin-dwh-install/install_debian.sh > install-aktin-dwh.log` ausführen. Die Logausgaben finden Sie dann in der Datei `install-aktin-dwh.log`.
 
-Für CentOS 7, starten Sie das Skript `akin-dwh-install/install_centos.sh`. 
+Für CentOS 7, starten Sie das Skript `aktin-dwh-install/install_centos.sh`. 
 SELinux wird in dem Prozess deaktiviert. Sollten Sie SELinux verwenden wollen 
 müssen Sie es entsprechend manuell konfigurieren - oder die Skriptinhalte 
 selektiv manuell ausführen.
