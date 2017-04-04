@@ -302,7 +302,7 @@ Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern
 Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. 
 
 ```
-ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}*.deployed
+ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-*.deployed
 ```
 
 Sollte eine Datei angezeigt werden, war das Update erfolgreich.Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log` oder `/opt/wilfly*/standalone/logs/...`
