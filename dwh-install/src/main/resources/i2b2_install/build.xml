@@ -192,13 +192,6 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
 
         </replace>
     </target>
-    <target name="deploy_dwh_j2ee_ear" depends="get_packages">
-        <copy todir="${jboss.home}/standalone/deployments"> 
-            <fileset dir="${packages.dir}/">
-                <include name="${dwh.j2ee.ear}"/>
-            </fileset>
-        </copy>
-    </target>
     <target name="unzip_jboss" depends="get_packages, jboss_exists" unless="${jboss.dir.exist}">
         <echo message="unzip jboss"/>
         <unzip src="${packages.dir}/${jboss.zip.name}" dest="${app.base.dir}" />
@@ -369,6 +362,5 @@ $Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
         <echo message="delete db all"/>
     </target>
 
-    <!-- deploy_dwh_j2ee_ear removed from build all -->
     <target name="all" depends="get_packages, mkdir_log, deploy_jboss, db_all" />
 </project>
