@@ -291,7 +291,7 @@ service wildfly start # debian
 Deployment des neuen Softwarepaketes
 ------------------------------------
 
-Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder herunter geladen werden unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear). Es muss in das Wildfly-Deploymentordner kopiert werden. 
+Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder herunter geladen werden unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear). Es muss in das Wildfly-Deploymentordner kopiert werden. 
 
 ```
 cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear $WILDFLY_HOME/standalone/deployments/
