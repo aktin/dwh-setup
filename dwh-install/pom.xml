@@ -18,12 +18,6 @@
 	<dependencies>
         <dependency>
             <groupId>org.aktin.dwh</groupId>
-            <artifactId>dwh-j2ee</artifactId>
-            <version>0.7</version>
-            <type>ear</type>
-        </dependency>
-        <dependency>
-            <groupId>org.aktin.dwh</groupId>
             <artifactId>dwh-update</artifactId>
             <version>0.3-SNAPSHOT</version>
             <type>tar.gz</type>
