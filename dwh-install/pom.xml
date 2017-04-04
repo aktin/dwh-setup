@@ -7,21 +7,21 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>dwh-install</artifactId>
-	<version>0.8Ã-SNAPSHOT</version>
+	<version>0.8-SNAPSHOT</version>
 
 	<parent>
 		<groupId>org.aktin.dwh</groupId>
 		<artifactId>server</artifactId>
-		<version>0.8Ã-SNAPSHOT</version>
+		<version>0.8-SNAPSHOT</version>
 	</parent>
 	
 	<dependencies>
-        <dependency>
-            <groupId>org.aktin.dwh</groupId>
-            <artifactId>dwh-update</artifactId>
-            <version>0.8Ã-SNAPSHOT</version>
-            <type>tar.gz</type>
-        </dependency>
+		<dependency>
+		    <groupId>org.aktin.dwh</groupId>
+		    <artifactId>dwh-update</artifactId>
+		    <version>0.8-SNAPSHOT</version>
+		    <type>tar.gz</type>
+		</dependency>
 		<dependency>
 			<groupId>org.aktin</groupId>
 			<artifactId>cda-ontology</artifactId>
