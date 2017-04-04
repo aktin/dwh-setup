@@ -38,20 +38,19 @@ Software-Pakete
 
 _Installationspaket mit DWH-J2EE-${dwhJ2EEVersion}_
 
-[${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz)
+[${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz)
 
 _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_
 
-[${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
+[${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
 Beschreibungen und Hinweise
 ---------------------------
 
 _Installation_
 
-[Installationsbeschreibung](dwh-install.html)
 [Voraussetzungen](install-requirements.html)
-[Installationsskript](dwh-script.html)
-[Firewall Hinweise](dwh-firewall.html)
+[Installationsskript](install-script.html)
+[Firewall Hinweise](install-firewall.html)
 
 _Update_
 

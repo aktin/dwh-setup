@@ -19,12 +19,12 @@ Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server.
 Wechseln Sie zunächst zum Benutzer `root` (z.B. via `su -`). Anschließend
 können Sie unser Paket unter folgendem Link herunterladen:
 
-${releaseRepoUrl}/org/aktin/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
+${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
 
 z.B. mit 
 
 ```
-# wget ${releaseRepoUrl}/org/aktin/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
+# wget ${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
 ```
 (evtl. mit Option `--no-check-certificate` bei Zertifikatfehlern).
 
@@ -64,7 +64,7 @@ entsprechende IP-Adresse / Servername angepasst werden:
 Test der Importschnittstelle
 ----------------------------
 Die Importschnittstelle des Servers kann mit den Client-Programmen
-aus dem Software-Paket (ZIP) des [Demo-Server](../0.7/dwh-import/demo-server.html)
+aus dem Software-Paket (ZIP) des [Demo-Server](../../0.7/dwh-import/demo-server.html)
 getestet werden:
 
 ```
@@ -74,7 +74,7 @@ java-client-fhir.bat http://IHRSERVER/aktin/cda/fhir/Binary examples\basismodul-
 Test der Verbindung und E-Mail-Konfiguration
 --------------------------------------------
 
-Unter dem Link _`http://IPADRESSE/aktin/admin/test/`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
+Unter dem Link _`http://IHRSERVER/aktin/admin/test/`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
 
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
 Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
