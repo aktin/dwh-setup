@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>org.aktin.dwh</groupId>
 			<artifactId>dwh-j2ee</artifactId>
-			<version>0.7.1</version>
+			<version>0.7.2</version>
 			<type>ear</type>
 		</dependency>
 		<dependency>
@@ -30,8 +30,6 @@
 	<properties>
 		<!-- version number to use in scripts -->
 		<wildfly.version>9.0.2.Final</wildfly.version>
-		<!-- old ear version which will be replaced by the update script -->
-		<ear.old.version>0.5-SNAPSHOT</ear.old.version>
 	</properties>
 
 	<build>

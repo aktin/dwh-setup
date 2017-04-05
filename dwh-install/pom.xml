@@ -17,10 +17,17 @@
 	
 	<dependencies>
 		<dependency>
-		    <groupId>org.aktin.dwh</groupId>
-		    <artifactId>dwh-update</artifactId>
-		    <version>0.8-SNAPSHOT</version>
-		    <type>tar.gz</type>
+			<groupId>org.aktin.dwh</groupId>
+			<artifactId>dwh-update</artifactId>
+			<version>0.8-SNAPSHOT</version>
+			<type>tar.gz</type>
+			<exclusions>
+				<!-- already bundled/included with the update -->
+				<exclusion>
+					<groupId>org.aktin.dwh</groupId>
+					<artifactId>dwh-j2ee</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.aktin</groupId>
