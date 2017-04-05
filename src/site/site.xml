@@ -5,6 +5,9 @@
 		<version>1.5</version>
 	</skin>
 	<body>
+        <menu name="Import, CDA und Schnittstelle">
+            <item href="../../0.7/dwh-import/index.html" name="Importbeschreibung" />
+		</menu>
         <menu name="AKTIN Installation Übersicht">
             <item href="index.html" name="AKTIN Server Installation" />
 		</menu>

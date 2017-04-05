@@ -5,6 +5,8 @@ Diese Informationen richten sich an die Server-Administratoren, die für die Ein
 
 Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte.
 
+Nach dem erfolgreichen Update oder Installation können Sie auf der Seite _`http://IPADRESSE/aktin/admin/`_ auf die Admin GUI zugreifen. Dort haben Sie einen Überblick über verschiedene Einstellungen sowie Zugriff auf die Berichte. Einloggen können Sie sich auf dieser Seite mit dem i2b2-Nutzer bzw Admin.
+
 Neuinstallation
 ---------------
 Wenn Sie noch keine Installation haben, oder den Server komplett neu aufsetzen wollen, dann folgen Sie bitte der Anleitung unter dem Punkt AKTIN (NEU-)INSTALLATION. Bitte beachten Sie die [Voraussetzungen](install-requirements.html), dort werden die verschiedenen Varianten der Neu-Installation beschrieben.
@@ -43,6 +45,7 @@ _Installationspaket mit DWH-J2EE-${dwhJ2EEVersion}_
 _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_
 
 [${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
+
 Beschreibungen und Hinweise
 ---------------------------
 
@@ -60,6 +63,10 @@ _Update_
 _Changelog_
 
 [Changelog](changelog.html)
+
+_Import, CDA und Schnittstelle_
+
+[Import, CDA und Schnittstelle](../../${dwhImportVersion}/dwh-import/index.html)
 
 
 Kontakt

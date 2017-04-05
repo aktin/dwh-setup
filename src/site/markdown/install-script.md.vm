@@ -50,6 +50,8 @@ Informationen zum Update finden Sie unter [skriptbasierten Update](update-auto.h
 
 Bevor die Funktionalität des Servers getestet werden, benötigt der Server evtl. noch wenige Minuten, um alle beteiligten Dienste zu starten und einzurichten.
 
+Nach der erfolgreichen Installation können Sie auf der Seite _`http://IPADRESSE/aktin/admin/`_ auf die Admin GUI zugreifen. Dort haben Sie einen Überblick über verschiedene Einstellungen sowie Zugriff auf die Berichte. Einloggen können Sie sich auf dieser Seite mit dem i2b2-Nutzer bzw Admin.
+
 Sollten Sie Fragen zur Installation haben oder Probleme begegnen, kontaktieren Sie uns gerne unter it-support(at)aktin.org
 
 Test des Data Warehouse
