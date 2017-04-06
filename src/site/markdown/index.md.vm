@@ -5,7 +5,7 @@ Diese Informationen richten sich an die Server-Administratoren, die für die Ein
 
 Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte.
 
-Nach dem erfolgreichen Update oder Installation können Sie auf der Seite _`http://IPADRESSE/aktin/admin/`_ auf die Admin GUI zugreifen. Dort haben Sie einen Überblick über verschiedene Einstellungen sowie Zugriff auf die Berichte. Einloggen können Sie sich auf dieser Seite mit dem i2b2-Nutzer bzw Admin.
+Nach dem erfolgreichen Update oder Installation können Sie auf der Seite _`http://IHRSERVER/aktin/admin/test/`_ die Funktionalität testen.
 
 Neuinstallation
 ---------------

@@ -5,23 +5,23 @@
 		<version>1.5</version>
 	</skin>
 	<body>
-        <menu name="Import, CDA und Schnittstelle">
-            <item href="../../0.7/dwh-import/index.html" name="Importbeschreibung" />
+		<menu name="Importschnittstelle CDA">
+			<item href="../../0.7/dwh-import/index.html" name="Importbeschreibung" />
 		</menu>
-        <menu name="AKTIN Installation Übersicht">
-            <item href="index.html" name="AKTIN Server Installation" />
+		<menu name="AKTIN Installation Übersicht">
+			<item href="index.html" name="AKTIN Server Installation" />
 		</menu>
-		<menu name="AKTIN (Neu-)Installation">
+		<menu name="Installation">
 			<item href="install-requirements.html" name="Voraussetzungen" />
 			<item href="install-script.html" name="Installationsskript" />
 			<item href="install-firewall.html" name="Firewall" />
 		</menu>
-		<menu name="AKTIN Updates und Patches">
-		    <item href="update-auto.html" name="Skriptbasiertes Server Update 0.7" />
-		    <item href="update-manual.html" name="Manuelles Server Update 0.7" />
+		<menu name="Updates und Patches">
+			<item href="update-auto.html" name="Automatisches Update" />
+			<item href="update-manual.html" name="Manuelles Update" />
 		</menu>
 		<menu name="Changelog">
-		    <item href="changelog.html" name="Changelog" />
+			<item href="changelog.html" name="Changelog" />
 		</menu>
 
 	</body>
