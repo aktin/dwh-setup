@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>org.aktin</groupId>
 		<artifactId>aktin</artifactId>
-		<version>0.3</version>
+		<version>0.4-SNAPSHOT</version>
 	</parent>
 
 	<properties>
@@ -62,7 +62,7 @@
 			<plugin>
 				<groupId>de.sekmi.histream.maven</groupId>
 				<artifactId>histream-maven-plugin</artifactId>
-				<version>0.9.3</version>
+				<version>0.13</version>
 				<executions>
 					<execution>
 						<phase>initialize</phase>
