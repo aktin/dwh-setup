@@ -188,7 +188,7 @@ fi
 echo
 echo +++++ STEP IV +++++ Deployment der EAR und Ausführen des aktuellsten Updateskriptes | tee -a $LOGFILE
 echo
-tar xvzCf $INSTALL_ROOT $PACKAGES/dwh-update-${project.version}.tar.gz | tee -a $LOGFILE
+tar xvzf $INSTALL_ROOT $PACKAGES/dwh-update-${project.version}.tar.gz | tee -a $LOGFILE
 
 RCol='\e[0m'; Red='\e[0;31m'; BRed='\e[1;31m'; Yel='\e[0;33m'; BYel='\e[1;33m'; Gre='\e[0;32m'; BGre='\e[1;32m'; Blu='\e[0;34m'; BBlu='\e[1;34m'; 
 echo -e "${BRed}+++INFO+++${Gre}Sollte im folgenden der Skript unterbrochen werden, bitte nur den Updateskript in $INSTALL_ROOT/dwh-update ausführen.${RCol}" | tee -a $LOGFILE
