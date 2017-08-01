@@ -37,6 +37,10 @@ OS_VERSION=debian
 if [ -f "/etc/centos-release" ] ; then 
     OS_VERSION=centos
 fi
+if [ -f "/etc/redhat-release" ] ; then 
+    # at the moment same as centos
+    OS_VERSION=centos
+fi
 echo System als $OS_VERSION erkannt
 
 # check wilfly home
@@ -91,6 +95,20 @@ fi
 
 
 echo
+echo +++++ STEP 0.02.0a +++++ Vorbereitung auf Patch  | tee -a $LOGFILE
+echo
+if [ "$OS_VERSION" == "debian" ] ; then
+
+    apt-get update
+    apt install -y patch
+fi
+if [ "$OS_VERSION" == "centos" ] ; then
+    yum -y install patch
+fi
+
+
+
+echo
 echo +++++ STEP 0.02 +++++ Überprüfung aktin.properties  | tee -a $LOGFILE
 echo
 $INSTALL_ROOT/lib/check_aktin_properties.sh 2>&1 | tee -a $LOGFILE
@@ -101,10 +119,23 @@ if [ $checkexit -gt 0 ]; then
     echo und führen Sie diesen Script erneut aus. | tee -a $LOGFILE
     echo -e "${Gre}    $SCRIPT${RCol}" | tee -a $LOGFILE
     exit $checkexit
-fi
 
-# TODO sync preferences (this or separate step): for each property in new aktin.properties check if exists in old one, if not append!
-# TODO make list of properties which NEED to be changed and make sure that they are changed.
+else 
+    # create patch file - only i2b2.project and new keys are changed
+    diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed '/[0-9]\+c[0-9]\+/{$!{ N;N;N;s/\(i2b2.project=AKTIN\)/\1/; t yes; : no; {s/.*//; d;}; : yes; }}' > properties.patch  | tee -a $LOGFILE
+
+    if [ ! -f aktin.properties.backup]; then
+        # backup old file to this folder
+        cp $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties.backup | tee -a $LOGFILE
+    fi
+
+    # apply patch
+    patch $WILDFLY_HOME/standalone/configuration/aktin.properties -i properties.patch -o aktin.properties.patched  | tee -a $LOGFILE
+
+    # move new patched file to wildfly
+    mv aktin.properties.patched $WILDFLY_HOME/standalone/configuration/aktin.properties  | tee -a $LOGFILE
+
+fi
 
 
 echo
