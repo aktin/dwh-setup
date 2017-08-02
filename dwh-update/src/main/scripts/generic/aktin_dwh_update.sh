@@ -181,6 +181,14 @@ su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/data.sql" 2>&1 >> $SQLLOG
 rm -r $CDATMPDIR
 echo "- Ontology Update done. Result logged in $SQLLOG"
 
+
+echo
+echo +++++ STEP 2.02.01 +++++ Patienten Datum Fix | tee -a $LOGFILE
+echo
+cp -v $INSTALL_ROOT/lib/fix_visit_patient_date_accuracy.sql $CDATMPDIR/sql/fix_visit_patient_date_accuracy.sql 2>&1 | tee -a $LOGFILE  # copy the remove ont file 
+echo "-- fix visit patient date accuracy" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/fix_visit_patient_date_accuracy.sql" 2>&1 >> $SQLLOG
+
 echo
 echo +++++ STEP 2.03 +++++ Entfernen der Defaulteinträge in Loginformular | tee -a $LOGFILE
 echo
