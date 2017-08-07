@@ -122,7 +122,7 @@ if [ $checkexit -gt 0 ]; then
 
 else 
     # create patch file - only i2b2.project and new keys are changed
-    diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed '/[0-9]\+c[0-9]\+/{$!{ N;N;N;s/\(i2b2.project=AKTIN\)/\1/; t yes; : no; {s/.*//; d;}; : yes; }}' > properties.patch  | tee -a $LOGFILE
+    diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed '/[0-9]\+d[0-9]\+/{N; /.*/d}; /[0-9]\+c[0-9]\+/{$!{ N;N;N;s/\(i2b2.project=AKTIN\)/\1/; t yes; : no; {s/.*//; d;}; : yes; }}' > properties.patch  | tee -a $LOGFILE
 
     if [ ! -f aktin.properties.backup]; then
         # backup old file to this folder
@@ -134,6 +134,7 @@ else
 
     # move new patched file to wildfly
     mv aktin.properties.patched $WILDFLY_HOME/standalone/configuration/aktin.properties  | tee -a $LOGFILE
+    chown wildfly:wildfly $WILDFLY_HOME/standalone/configuration/aktin.properties  | tee -a $LOGFILE
 
 fi
 
