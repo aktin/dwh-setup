@@ -1,6 +1,15 @@
 ﻿Changelog
 =========
 
+Version 0.8
+-----------
+* Aktualisierung des Monatsberichts auf V01.2:
+* Altersberechnung korrigiert
+* Verbesserungen bei der Berechnung von Datum/Wochentag
+* Ergänzung der Ausgabe der Gesamtzahl (n) in 2.3/2.4
+* Fehler in der Anteilsberechnung und bei der Ausgabe leerer Tabellen behoben
+* Redaktionelle Überarbeitungen
+
 Version 0.7
 -----------
 * Aktualisierung auf CDA Version v1.26 (2017-03-02)
