@@ -36,33 +36,21 @@ dwh-update
 - - ...
 ```
 
-In diesem Update werden einige wichtige Einstellungen durchgeführt. Dazu müssen Sie die Datei `aktin.properties` anpassen. Welche Angaben genau geändert werden müssen und wie diese verwendet werden, können Sie dem Abschnitt _"Lokale Konfigurationen in der Datei `aktin.properties`"_ entnehmen.
-
-```
-nano aktin.properties
-```
-
-Besonders wichtig sollten Sie die Daten hinter `local.email` (Zeile 14) sowie `broker.keys` (Zeile 31) ändern. Diese bestimmen einmal, an welche E-Mailadresse die Berichte und Meldungen gesendet werden, und wie sich der lokale Server bei dem Broker-Server authentifiziert. Sie sollten einen alphanumerischen API-Key für `broker-keys` von uns per E-Mail zugesandt worden sein. Sollten Sie keins erhalten haben, bitte melden Sie sich bei it-support(at)aktin.org. 
-
-Nach Bearbeiten der Datei muss diese in den Konfigurationsordner des Wildfly-Servers kopiert werden, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`.
-
-```
-cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/
-```
-
-In der Datei `email.config` tragen Sie bitte die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. Eine Beschreibung des Inhalts von `email.config` sowie eine Möglichkeit für spätere Änderungen entnehmen Sie bitte dem Abschnitt _"E-Mail-Konfiguration und Änderungen"_
-
-```
-nano email.config
-```
-
-Nun kann das Updateskript ausgeführt werden:
+Das Updateskript kann wie folgt ausgeführt werden:
 
 ```
 ./aktin_dwh_update.sh
 ```
 
-Dieses besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
+Seit dem Update 0.7 werden einige wichtige Einstellungen in der Datei `aktin.properties` abgespeichert. 
+Sollten Sie diese Datei noch nicht angepasst und in den entsprechenden Ordner kopiert haben, 
+werden Sie in der Konsole darauf hingewiesen und der Skript wird unterbrochen. In dem Fall folgen 
+Sie bitte die Anweisungen unter _"Lokale Konfigurationen in der Datei `aktin.properties`"_. 
+
+Ebenfalls seit dem Update 0.7 wird eine lokale E-Mailadresse verwendet, um Berichte und Meldungen an die Nutzer zu versenden.
+Sollte noch keine E-Mail eingestellt sein oder Sie Probleme mit dem Versenden der E-Mails haben, folgen Sie bitte die Anweisungen unter _"E-Mail-Konfiguration und Änderungen"_.
+
+Der Update besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
 Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
 
 ```
@@ -81,7 +69,7 @@ Sollte eine Datei angezeigt werden, war das Update erfolgreich.
 Test der Verbindung und E-Mail-Konfiguration
 --------------------------------------------
 
-Unter dem Link _`http://IPADRESSE/aktin/admin/test/`_ kann man die oben durchgeführten Anpassungen nun testen. 
+Unter dem Link _`http://IPADRESSE/aktin/admin/plain/test.html`_ kann man die oben durchgeführten Anpassungen nun testen. 
 
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
 Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
@@ -99,6 +87,34 @@ Sollten weitere Probleme entstehen, kontaktieren Sie uns bitte unter it-support(
 
 Lokale Konfigurationen in der Datei `aktin.properties`
 ------------------------------------------------------
+Die Datei `aktin.properties` muss für jeden Standort individuell angepasst werden. 
+
+```
+nano aktin.properties
+```
+Wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die die Berichte und Meldungen geschickt werden sollen. 
+Es ist auch möglich eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht 
+gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
+
+Auch sollten Sie unter `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde. Sollten Sie noch keinen Key bekommen haben, 
+melden Sie sich bitte bei it-support(at)aktin.org. 
+
+Welche Wirkung die Angaben haben, finden Sie in diesem Abschnitt weiter unten in der Template-Datei.
+
+Nach Bearbeiten der Datei muss diese in den Konfigurationsordner des Wildfly-Servers kopiert werden, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`.
+
+```
+cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/
+```
+
+Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden, und im Anschluss den Wildfly Service neugestartet werden:
+
+```
+nano /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
+service wildfly stop
+service wildfly start
+```
+
 Template-Datei für `aktin.properties`
 
 ```
@@ -114,15 +130,21 @@ local.l=Beispielhausen
 local.s=Niedersachen
 # Country / Staat
 local.c=Deutschland
-# default E-Mail-Address for notifications, reports (non technical)
+# default E-Mail-Address for notifications, reports (non technical); multiple Adresses possible (comma separated in one line)
 local.email=zna-contact@klinikum-beipielhausen.de
 local.tz=Europe/Berlin
+# Language tag according to IETF BCP 47. If not defined, the system language will be used.
+local.language=de-DE
+# Korrektur der Server URL (der Emails)
+# local.server.url=http://IhrServerUrlOderIp/
+# location of the R standalone executable
 rscript.binary=/usr/bin/Rscript
 # needed for read/write access to the i2b2 database
-i2b2.project=AKTIN
+i2b2.project=Demo
 i2b2.datasource.crc=java:/QueryToolDemoDS
 # needed for i2b2 authentication and user management
-i2b2.service.pm=http://localhost:8080/i2b2/services/PMService/
+i2b2.service.pm=http://localhost:9090/i2b2/services/PMService/
+i2b2.service.domain=i2b2demo
 # TODO create dir /var/lib/aktin and chown to wildfly
 report.data.path=/var/lib/aktin/reports
 report.temp.path=/var/tmp/report-temp
@@ -131,7 +153,7 @@ broker.data.path=/var/lib/aktin/broker
 broker.archive.path=/var/lib/aktin/broker-archive
 broker.uris=https://broker.aktin.org/broker/
 broker.intervals=PT15M
-# Used in AKTIN to connect to the broker, please get your API key from it-support@aktin.org
+# Used in AKTIN to connect to the broker, you can get your API key from it-support@aktin.org
 broker.keys=XXXyourapikeyXXX
 db.datasource=java:jboss/datasources/AktinDS
 email.session=java:jboss/mail/AktinMailSession
@@ -141,19 +163,26 @@ wildfly.management.user=admin
 wildfly.management.password=admin2
 ```
 
-Besonders wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die z.B. die Monatsberichte geschickt werden sollen. Es ist auch möglich eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
-
-Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden, und im Anschluss den Wildfly Service neugestartet werden:
-
-```
-nano /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
-service wildfly stop
-service wildfly start
-```
-
 
 E-Mail-Konfiguration und Änderungen
 ---------------------------------
+Bitte tragen Sie in der Datei `email.config` die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
+
+Wenn Sie Änderungen an der bereits eingestellten E-Mail vornehmen möchten, rufen führen Sie bitte folgende Schritte durch. Bitte beachten Sie, dass die aktuellen Einstellungen nicht in `email.config` zu finden sind. Diese entnehmen Sie bitte Ihre eigenen Daten oder den vorherigen Installationsskripte.
+
+Bitte öffnen Sie `email.config`, auf dem Server oder an Ihrer Arbeitsrechner und laden die Datei dann hoch.
+
+```
+nano email.config
+```
+
+In dieser Datei werden die Einstellungen für den Versand von E-Mails konfiguriert. Hierbei muss man besonders auf die Einstellungen des Mailservers achten und `usessl` und `usetls` richtig setzen, dementsprechend auch den `smtpport`.
+
+Sollten Sie bereits E-Mail eingerichtet haben und möchten diese nun ändern, müssen die folgenden Schritte zusätzlich durchgefführt werden:
+
+Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root` Rechten ausgeführt werden. 
+Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
+
 Template-Datei für E-Mail-Konfiguration `email.config`
 
 ```
@@ -186,9 +215,3 @@ usessl=false
 usetls=true
 ```
 
-In dieser Datei werden die Einstellungen für den Versand von E-Mails konfiguriert. Hierbei muss man besonders auf die Einstellungen des Mailservers achten und `usessl` und `usetls` richtig setzen, dementsprechend auch den `smtpport`.
-
-Sollte die Einstellungen nach dem Update nochmals geändert werden, müssen die folgenden Schritte durchgeführt werden:
-
-Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root` Rechten ausgeführt werden. 
-Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
