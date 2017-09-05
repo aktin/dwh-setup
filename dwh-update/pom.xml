@@ -6,7 +6,7 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>dwh-update</artifactId>
-	<version>0.8-SNAPSHOT</version>
+	<version>8rc3</version>
 
 	<parent>
 		<groupId>org.aktin.dwh</groupId>
