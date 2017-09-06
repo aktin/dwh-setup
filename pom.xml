@@ -32,8 +32,8 @@
 	</scm>
 
 	<modules>
-		<module>dwh-install</module>
 		<module>dwh-update</module>
+		<module>dwh-install</module>
 		<!--
 		TODO fix ccd integration
 		<module>aktin-cdd</module>
