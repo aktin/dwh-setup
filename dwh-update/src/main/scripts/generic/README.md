@@ -1,10 +1,10 @@
 Automatisiertes Update auf 0.7
 ==============================
 - Also Admin einloggen ("sudo su -" oder "su -")
-- Download von dwh-update-0.3.tar.gz
+- Download von dwh-update-0.8.tar.gz
     + wget ... 
-- Entpacken tar xfvz dwh-update-0.3.tar.gz
-    + Entpacken tar xfvz dwh-update-0.3.tar.gz
+- Entpacken tar xfvz dwh-update-0.8.tar.gz
+    + Entpacken tar xfvz dwh-update-0.8.tar.gz
 - cd dwh-update
 - aktin.properties bearbeiten mit den Standorteigenen Daten, besonders wichtig: local.email anpassen. 
     + nano aktin.properties

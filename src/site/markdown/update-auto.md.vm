@@ -44,20 +44,25 @@ Das Updateskript kann wie folgt ausgeführt werden:
 
 Seit dem Update 0.7 werden einige wichtige Einstellungen in der Datei `aktin.properties` abgespeichert. 
 Sollten Sie diese Datei noch nicht angepasst und in den entsprechenden Ordner kopiert haben, 
-werden Sie in der Konsole darauf hingewiesen und der Skript wird unterbrochen. In dem Fall folgen 
+werden Sie in der Konsole darauf hingewiesen und das Skript wird unterbrochen. In diesem Fall folgen 
 Sie bitte die Anweisungen unter _"Lokale Konfigurationen in der Datei `aktin.properties`"_. 
 
 Ebenfalls seit dem Update 0.7 wird eine lokale E-Mailadresse verwendet, um Berichte und Meldungen an die Nutzer zu versenden.
-Sollte noch keine E-Mail eingestellt sein oder Sie Probleme mit dem Versenden der E-Mails haben, folgen Sie bitte die Anweisungen unter _"E-Mail-Konfiguration und Änderungen"_.
+Sollten Sie den E-Mail-Versand nocht nicht konfiguriert haben oder Probleme mit dem Versenden der E-Mails bestehen,
+folgen Sie bitte die Anweisungen unter _"E-Mail-Konfiguration und Änderungen"_.
 
-Der Update besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
-Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
+Das Update besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen 
+sowie eventuelle Fehlermeldungen ausgegeben. Am Ende des Skriptes wird der Wildfly Server neugestartet und 
+das neue Softwarepaket aktiviert. Abhängig von der Serverleistung kann dies mehrere Minuten dauern.
+Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
 
 ```
 +++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-${dwhJ2EEVersion}.ear.deployed
 ```
 
-Dies muss kein Fehler sein. Das Script wartet nur zwei Minuten und gibt dann die Warnung aus. Bitte überprüfen Sie nach einigen Minuten den Deployment-Ordner `/opt/wildfly-9.0.2.Final/standalone/deployments`, z.B. mit dem Befehl
+Dies muss kein Fehler sein. Das Script wartet nur zwei Minuten und gibt dann die Warnung aus. 
+Bitte überprüfen Sie nach einigen Minuten den Deployment-Ordner `/opt/wildfly-9.0.2.Final/standalone/deployments`,
+z.B. mit dem Befehl
 
 ```
 ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-*.deployed
@@ -72,12 +77,16 @@ Test der Verbindung und E-Mail-Konfiguration
 Unter dem Link _`http://IPADRESSE/aktin/admin/plain/test.html`_ kann man die oben durchgeführten Anpassungen nun testen. 
 
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
-Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
+Der erste Button testet die Erreichbarkeit des zentralen AKTIN-Broker. Der lokale Server übersendet dem zentralen Broker
+nur Statusinformationen wie die Serverversion und Aktivität.
 Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
 Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
 
 [Test server configuration]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
-Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Maile-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
+Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild,
+sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Mail-Einstellung sein. 
+In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" 
+und die Softwarepakete erneut laden.
 
 [Test server configuration]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"
 
@@ -96,18 +105,21 @@ Wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die die Be
 Es ist auch möglich eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht 
 gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
 
-Auch sollten Sie unter `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde. Sollten Sie noch keinen Key bekommen haben, 
-melden Sie sich bitte bei it-support(at)aktin.org. 
+Auch sollten Sie unter `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde.
+Sollten Sie noch keinen Key bekommen haben, melden Sie sich bitte bei it-support(at)aktin.org. 
 
 Welche Wirkung die Angaben haben, finden Sie in diesem Abschnitt weiter unten in der Template-Datei.
 
-Nach Bearbeiten der Datei muss diese in den Konfigurationsordner des Wildfly-Servers kopiert werden, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`.
+Nach Bearbeiten der Datei muss diese in den Konfigurationsordner des Wildfly-Servers kopiert werden,
+im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`.
 
 ```
 cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/
 ```
 
-Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden, und im Anschluss den Wildfly Service neugestartet werden:
+Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen,
+Dieser ist im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden.
+Im Anschluss muss der Wildfly-Service neugestartet werden:
 
 ```
 nano /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
