@@ -30,7 +30,7 @@ echo +++++ STEP 0 +++++ Überprüfung der Paths und Ausgabe der Status Informati
 echo
 # check os version (set system based commands)
 OS_VERSION=debian
-# debian is standard
+# debian is standard TODO check wether is pure debian
 # if [ $(ls /etc/d* | grep -c "debian") -gt 1 ] ; then 
 # fi
 # $(ls /etc/c* | grep -c "centos") -gt 1
