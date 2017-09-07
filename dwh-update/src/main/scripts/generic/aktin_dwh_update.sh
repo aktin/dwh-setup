@@ -121,16 +121,24 @@ if [ $checkexit -gt 0 ]; then
     exit $checkexit
 
 else 
-    # create patch file - only i2b2.project and new keys are changed
-    diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed '/[0-9]\+d[0-9]\+/{N; /.*/d}; /[0-9]\+c[0-9]\+/{$!{ N;N;N;s/\(i2b2.project=removed\)/\1/; t yes; : no; {s/.*//; d;}; : yes; }}' > properties.patch  | tee -a $LOGFILE
-
-    if [ ! -f aktin.properties.backup]; then
+    if [ ! -f aktin.properties.backup ]; then
         # backup old file to this folder
         cp $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties.backup | tee -a $LOGFILE
     fi
 
+    if [ -f properties.patch ]; then
+        # backup old file to this folder
+        rm properties.patch | tee -a $LOGFILE
+    fi
+
+    # create patch file - only i2b2.project and new keys are changed
+    diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed '/[0-9]\+d[0-9]\+/{N; /.*/d}; /[0-9]\+c[0-9]\+/{$!{ N;N;N;s/.*//; d; }}' > properties.patch 2>&1 | tee -a $LOGFILE
+
+
+    # '/[0-9]\+d[0-9]\+/{N; /.*/d}; /[0-9]\+c[0-9]\+/{$!{ N;N;N;s/\(i2b2.project=removed\)/\1/; t yes; : no; {s/.*//; d;}; : yes; }}'
+
     # apply patch
-    patch $WILDFLY_HOME/standalone/configuration/aktin.properties -i properties.patch -o aktin.properties.patched  | tee -a $LOGFILE
+    patch $WILDFLY_HOME/standalone/configuration/aktin.properties -i properties.patch -o aktin.properties.patched 2>&1 | tee -a $LOGFILE
 
     # move new patched file to wildfly
     mv aktin.properties.patched $WILDFLY_HOME/standalone/configuration/aktin.properties  | tee -a $LOGFILE
@@ -196,7 +204,7 @@ echo
 # check wether the login username needs to be removed. 
 if [ $(grep -c "name=\"uname\" id=\"loginusr\" value=\"demo\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
 then
-    echo "- Username bereits entfernt. NOP" | tee -a LOGFILE
+    echo "- Username bereits entfernt. NOP" | tee -a $LOGFILE
 else 
     if [ ! -f $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig ]; then 
        cp $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig
@@ -207,7 +215,7 @@ else
     then 
         echo "+++WARNING+++ Username konnte nicht erfolgreich entfernt werden" | tee -a LOGFILE
     else 
-        echo -e "- Username wurde entfernt" | tee -a LOGFILE
+        echo -e "- Username wurde entfernt" | tee -a $LOGFILE
         # $(grep -c "name=\"uname\" id=\"loginusr\" value=\"demo\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) occurences 
         # $(grep -oE "<input .* name=\"uname\" id=\"loginusr\".* />" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js)
     fi
@@ -215,7 +223,7 @@ fi
 # same for the password
 if [ $(grep -c "name=\"pword\" id=\"loginpass\" value=\"demouser\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
 then
-    echo "- Password bereits entfernt. NOP" | tee -a LOGFILE
+    echo "- Password bereits entfernt. NOP" | tee -a $LOGFILE
 else 
     if [ ! -f $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig ]; then 
        cp $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig
@@ -227,7 +235,7 @@ else
     then 
         echo "+++WARNING+++ Passwort konnte nicht entfernt werden." | tee -a LOGFILE
     else 
-        echo -e "- Passwort entfernt" | tee -a LOGFILE
+        echo -e "- Passwort entfernt" | tee -a $LOGFILE
         # $(grep -c "name=\"pword\" id=\"loginpass\" value=\"demouser\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) occurences 
         # $(grep -oE "<input .* name=\"pword\" id=\"loginpass\".* />" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js)
     fi

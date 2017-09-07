@@ -4,11 +4,10 @@
 Externer Zugriff
 ----------------
 
-Der AKTIN Server muss periodisch auf zwei Server
+Der AKTIN Server muss periodisch auf folgende Server
 der Universität Oldenburg via HTTPS (Port 443) zugreifen
 
-* `broker.aktin.uni-oldenburg.de`
-* `pool.aktin.uni-oldenburg.de`
+* `broker.aktin.org` mit dem IP: 134.106.87.42
 
 Interne Regeln
 --------------
