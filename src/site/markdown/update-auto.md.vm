@@ -44,7 +44,7 @@ Das Updateskript kann wie folgt ausgeführt werden:
 <a name="confback"></a>
 Seit dem Update 0.7 werden einige wichtige Einstellungen in der Datei `aktin.properties` abgespeichert. 
 Sollten Sie diese Datei noch nicht angepasst und in den entsprechenden Ordner kopiert haben, 
-werden Sie in der Konsole darauf hingewiesen und der Skript wird unterbrochen. In dem Fall folgen 
+werden Sie in der Konsole darauf hingewiesen und das Skript wird unterbrochen. In dem Fall folgen 
 Sie bitte die Anweisungen unter [_"Lokale Konfigurationen in der Datei `aktin.properties`"_](#localconf). 
 
 <a name="emailback"></a>
@@ -73,7 +73,7 @@ Test der Verbindung und E-Mail-Konfiguration
 Unter dem Link _`http://IPADRESSE/aktin/admin/plain/test.html`_ kann man die oben durchgeführten Anpassungen nun testen. 
 
 ![Test server configuration][testbildschirm]
-Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
+Der erste Button testet die Erreichbarkeit des zentralen AKTIN-Broker. Der lokale Server übersendet dem zentralen Brokernur Statusinformationen wie die Serverversion und Aktivität.
 Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
 Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
 
