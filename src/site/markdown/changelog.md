@@ -1,14 +1,19 @@
 ﻿Changelog
 =========
 
-Version 0.8
+Version 0.8.1
 -----------
+* Weboberfläche zur Verwaltung von Monatsberichten/Datenanfragen
+* Funktionalität zur Freigabe und Durchführung von zentralen Datenabfragen
 * Aktualisierung des Monatsberichts auf V01.2:
-* Altersberechnung korrigiert
-* Verbesserungen bei der Berechnung von Datum/Wochentag
-* Ergänzung der Ausgabe der Gesamtzahl (n) in 2.3/2.4
-* Fehler in der Anteilsberechnung und bei der Ausgabe leerer Tabellen behoben
-* Redaktionelle Überarbeitungen
+    * Manuelle Berichtserstellung über beliebigen Zeitraum
+    * Dateiname für Monatsbericht in Emailbenachrichtigung
+    * Altersberechnung korrigiert
+    * Verbesserungen bei der Berechnung von Datum/Wochentag
+    * Ergänzung der Ausgabe der Gesamtzahl (n) in 2.3/2.4
+    * Fehler in der Anteilsberechnung und bei der Ausgabe leerer Tabellen behoben
+    * Redaktionelle Überarbeitungen
+* Speichermöglichkeit ankommender CDA-Dokumente mit Konfiguration `import.cda.debug.dir=/var/ihr/verzeichnis`
 
 Version 0.7
 -----------
