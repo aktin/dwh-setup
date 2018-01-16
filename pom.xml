@@ -4,7 +4,7 @@
 	
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
-	<version>0.8.2-SNAPSHOT</version>
+	<version>0.9-SNAPSHOT</version>
   
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
@@ -12,14 +12,14 @@
 	<parent>
 		<groupId>org.aktin</groupId>
 		<artifactId>aktin</artifactId>
-		<version>0.6</version>
+		<version>0.7</version>
 	</parent>
 
 	<properties>
 		<!-- specifies the package and source version to which the site refers to -->
-		<dwhJ2EEVersion>0.8</dwhJ2EEVersion>
-		<dwhOntologyVersion>0.8</dwhOntologyVersion>
-		<dwhImportVersion>0.8</dwhImportVersion>
+		<dwhJ2EEVersion>0.9rc1</dwhJ2EEVersion>
+		<dwhOntologyVersion>0.9rc1</dwhOntologyVersion>
+		<dwhImportVersion>0.9rc1</dwhImportVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
 		<!-- encoding stuff -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,12 +46,12 @@
 			<dependency>
 			    <groupId>org.aktin</groupId>
 			    <artifactId>cda-ontology</artifactId>
-			    <version>0.8</version>
+			    <version>0.9rc1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.aktin.dwh</groupId>
 				<artifactId>dwh-j2ee</artifactId>
-				<version>0.8</version>
+				<version>0.9rc1</version>
 				<type>ear</type>
 			</dependency>
 		</dependencies>
