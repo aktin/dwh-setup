@@ -132,18 +132,25 @@ else
     fi
 
     # create patch file - only i2b2.project and new keys are changed
-    diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed '/[0-9]\+d[0-9]\+/{N; /.*/d}; /[0-9]\+c[0-9]\+/{$!{ N;N;N;/.*/d }}' > properties.patch 2>&1 | tee -a $LOGFILE
+    diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed '/^[0-9]\+d[0-9]\+/{N; /.*/d}; /^[0-9]\+c[0-9]\+/{$!{ N;N;N;/.*/d }}' > properties.patch 2>&1 | tee -a $LOGFILE
 
     # echo "" >> properties.patch
     # '/[0-9]\+d[0-9]\+/{N; /.*/d}; /[0-9]\+c[0-9]\+/{$!{ N;N;N;s/\(i2b2.project=removed\)/\1/; t yes; : no; {s/.*//; d;}; : yes; }}'
 
-    # apply patch
-    patch $WILDFLY_HOME/standalone/configuration/aktin.properties -i properties.patch -o aktin.properties.patched 2>&1 | tee -a $LOGFILE
+    # test patch 
+    patchErrorCount=$(patch $WILDFLY_HOME/standalone/configuration/aktin.properties --dry-run -i properties.patch 2>&1 | grep -c "Only garbage was found in the patch input")
 
-    # move new patched file to wildfly
-    mv aktin.properties.patched $WILDFLY_HOME/standalone/configuration/aktin.properties  | tee -a $LOGFILE
-    chown wildfly:wildfly $WILDFLY_HOME/standalone/configuration/aktin.properties  | tee -a $LOGFILE
+    if [ ! $patchErrorCount -gt 0 ]; then 
 
+        # apply patch
+        patch $WILDFLY_HOME/standalone/configuration/aktin.properties -i properties.patch -o aktin.properties.patched 2>&1 | tee -a $LOGFILE
+
+        # move new patched file to wildfly
+        mv aktin.properties.patched $WILDFLY_HOME/standalone/configuration/aktin.properties  | tee -a $LOGFILE
+        chown wildfly:wildfly $WILDFLY_HOME/standalone/configuration/aktin.properties  | tee -a $LOGFILE
+    else 
+        echo -e "${BYel}+++WARNING+++${RCol} Patch konnte nicht erfolgreich angewandt werden, bitte überprüfen Sie die neue Properties-Datei und fügen Sie eventuell neue Einstellungen in $WILDFLY_HOME/standalone/configuration/aktin.properties hinzu!" | tee -a $LOGFILE
+    fi
 fi
 
 
