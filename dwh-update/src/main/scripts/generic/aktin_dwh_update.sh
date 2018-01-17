@@ -132,10 +132,9 @@ else
     fi
 
     # create patch file - only i2b2.project and new keys are changed
-    diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed '/^[0-9]\+d[0-9]\+/{N; /.*/d}; /^[0-9]\+c[0-9]\+/{$!{ N;N;N;/.*/d }}' > properties.patch 2>&1 | tee -a $LOGFILE
-
-    # echo "" >> properties.patch
-    # '/[0-9]\+d[0-9]\+/{N; /.*/d}; /[0-9]\+c[0-9]\+/{$!{ N;N;N;s/\(i2b2.project=removed\)/\1/; t yes; : no; {s/.*//; d;}; : yes; }}'
+    # sed '/^[0-9]\+d[0-9]\+/{N; /.*/d}; /^[0-9]\+c[0-9]\+/{$!{ N;N;N;/.*/d }}'
+    # sed -n '/^[,0-9]\+d[,0-9]\+/{$!{:x;z;N;/^\s*[<]/bx;D;}}; /^[,0-9]\+c[,0-9]\+/{$!{:x;z;N;/^\s*[<>-]/bx;D;}};'
+    diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed -n '/^[,0-9]\+d[,0-9]\+/{$!{:x;z;N;/^\s*[<]/bx;D;}}; /^[,0-9]\+c[,0-9]\+/{$!{:x;z;N;/^\s*[<>-]/bx;D;}}; P;' > properties.patch 2>&1 | tee -a $LOGFILE
 
     # test patch 
     patchErrorCount=$(patch $WILDFLY_HOME/standalone/configuration/aktin.properties --dry-run -i properties.patch 2>&1 | grep -c "Only garbage was found in the patch input")
