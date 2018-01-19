@@ -1,6 +1,24 @@
 ﻿Changelog
 =========
 
+Version 0.9
+-----------
+* Weboberfläche
+    * Verbesserte Darstellung von Anfragen
+    * Automatische Aktualisierung bei Anfrageausführung und Berichtserzeugung
+    * Einzelfallansicht eingeführt
+* Aktualisierung des Monatsbericht auf V01.3
+    * Keine Reportfehler bei ungültigen ICD10-Codes
+    * Korrigierte Auswertungen nach Wochentagen (2.1/2.2)
+    * Zeitdifferenzen nun korrekt berechnet
+    * Datenauswahl nun exakt auf Aufnahme im Zeitraum begrenzt
+* CDA-Import: Kompatibilität zu FHIR-Standard sichergestellt
+    * OperationOutcome bei Erfolg nicht mehr leer sondern mit Info
+* Korrekturen in der Abfragesyntax
+    * Deklarierte temporäre Tabellen werden automatisch gelöscht
+    * Anonymisierung optional bei aggregierten Ergebnissen
+    * Tabellennamen und Dateinamen im Export nun unterschiedlich
+
 Version 0.8.1
 -----------
 * Weboberfläche zur Verwaltung von Monatsberichten/Datenanfragen
