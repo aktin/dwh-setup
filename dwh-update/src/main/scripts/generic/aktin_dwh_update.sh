@@ -358,7 +358,7 @@ if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear" ]; th
 	if [ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear.deployed ]; then 
         echo +++WARNING+++ file not successfully deployed after $COUNTER sec, check for file: dwh-j2ee-$NEW_VERSION.ear.deployed  | tee -a $LOGFILE
     else 
-        echo EAR successfully deployed after $COUNTER sec| tee -a $LOGFILE
+        echo +++SUCCESS+++ EAR successfully deployed after $COUNTER sec| tee -a $LOGFILE
     fi
 else 
 	echo +++WARNING+++ file already present, this should never happen | tee -a $LOGFILE

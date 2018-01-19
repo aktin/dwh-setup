@@ -52,7 +52,16 @@ Ebenfalls seit dem Update 0.7 wird eine lokale E-Mailadresse verwendet, um Beric
 Sollte noch keine E-Mail eingestellt sein oder Sie Probleme mit dem Versenden der E-Mails haben, folgen Sie bitte die Anweisungen unter [_"E-Mail-Konfiguration und Änderungen"_](#emailconf). 
 
 Der Update besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
-Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
+Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. 
+Bei erfolgreicher Installation kommt folgende Meldung:
+```
++++SUCCESS+++ EAR successfully deployed after xxx sec
+```
+
+Häufige Fehler
+--------------
+
+Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
 
 ```
 +++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-${dwhJ2EEVersion}.ear.deployed
