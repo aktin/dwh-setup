@@ -16,7 +16,8 @@
 	</parent>
 
 	<properties>
-		<!-- specifies the package and source version to which the site refers to -->
+		<!-- specifies the package and source version to which the scripts and site refers to -->
+		<!-- dont forget to change dependency further down and in dwh-update/pom.xml -->
 		<dwhJ2EEVersion>0.9</dwhJ2EEVersion>
 		<dwhOntologyVersion>0.9rc1</dwhOntologyVersion>
 		<dwhImportVersion>0.9rc1</dwhImportVersion>
