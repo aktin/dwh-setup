@@ -281,7 +281,17 @@ echo "- created aktin datasource" | tee -a $LOGFILE
 # echo "reload" 2>&1 | tee -a $LOGFILE
 
 echo
-echo +++++ STEP 2.06 +++++  Create /var/lib/aktin  | tee -a $LOGFILE
+echo +++++ STEP 2.06 +++++  Change Logging Properties in wildfly  | tee -a $LOGFILE
+echo
+if [ ! -f $WILDFLY_HOME/standalone/configuration/standalone.xml.$NEW_VERSION.orig ] ; then 
+    cp $WILDFLY_HOME/standalone/configuration/standalone.xml $WILDFLY_HOME/standalone/configuration/standalone.xml.$NEW_VERSION.orig
+fi
+if [ ! $( grep -c size-rotating-file-handler $WILDFLY_HOME/standalone/configuration/standalone.xml) -gt 0 ] ; then
+    $JBOSSCLI --file="$INSTALL_ROOT/lib/update_wildfly_logging.cli" 2>&1 | tee -a $LOGFILE
+fi
+
+echo
+echo +++++ STEP 2.07 +++++  Create /var/lib/aktin  | tee -a $LOGFILE
 echo
 if [ ! -d "/var/lib/aktin" ]; then 
     mkdir -p /var/lib/aktin 2>&1 | tee -a $LOGFILE
@@ -296,7 +306,7 @@ else
 fi
 
 echo
-echo +++++ STEP 2.07 +++++  Add new SMTP configuration | tee -a $LOGFILE
+echo +++++ STEP 2.08 +++++  Add new SMTP configuration | tee -a $LOGFILE
 echo
 $INSTALL_ROOT/lib/email_create.sh 2>&1 | tee -a $LOGFILE
 
