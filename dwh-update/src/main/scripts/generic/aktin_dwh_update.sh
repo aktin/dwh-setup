@@ -316,7 +316,7 @@ echo +++++ STEP 2.09 +++++  Wildfly JAVA VM Arbeitsspeicher Zuordnung | tee -a $
 echo
 if [ ! -f $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION ] 
 then
-cp $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION
+    cp $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION
 fi
 sed 's/Xmx1024m/Xmx2g/g' $WILDFLY_HOME/bin/standalone.conf > $WILDFLY_HOME/bin/standalone1.conf
 mv $WILDFLY_HOME/bin/standalone1.conf $WILDFLY_HOME/bin/standalone.conf
