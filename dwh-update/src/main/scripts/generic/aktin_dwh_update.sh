@@ -338,6 +338,12 @@ fi
 #sleep 5
 
 echo
+echo +++++ STEP 3.01 +++++  Alte Logdateien Komprimieren und Löschen | tee -a $LOGFILE
+echo
+tar cvfz $WILDFLY_HOME/standalone/log/serverlog_backup_${NEW_VERSION}_$(date +%Y%h%d%H%M).tgz $WILDFLY_HOME/standalone/log/server.log*
+rm $WILDFLY_HOME/standalone/log/server.log*
+
+echo
 echo "+++++ STEP 4 +++++  Remove all dwh.ear[*] (including .failed, .deployed, .undeployed)" | tee -a $LOGFILE
 echo
 rm -v $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* 2>&1 | tee -a $LOGFILE
