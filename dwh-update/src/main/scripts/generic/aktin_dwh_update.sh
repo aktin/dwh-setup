@@ -314,12 +314,15 @@ $INSTALL_ROOT/lib/email_create.sh 2>&1 | tee -a $LOGFILE
 echo
 echo +++++ STEP 2.09 +++++  Wildfly JAVA VM Arbeitsspeicher Zuordnung | tee -a $LOGFILE
 echo
-if [ ! -f $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION ] 
+if [ ! $( grep -c Xmx1024m $WILDFLY_HOME/bin/standalone.conf) -gt 0 ] ; 
 then
-    cp $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION
+    if [ ! -f $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION ] ;
+    then
+        cp $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION 2>&1 | tee -a $LOGFILE
+    fi
+    sed 's/Xmx1024m/Xmx2g/g' $WILDFLY_HOME/bin/standalone.conf > $WILDFLY_HOME/bin/standalone1.conf 2>&1 | tee -a $LOGFILE
+    mv $WILDFLY_HOME/bin/standalone1.conf $WILDFLY_HOME/bin/standalone.conf 2>&1 | tee -a $LOGFILE
 fi
-sed 's/Xmx1024m/Xmx2g/g' $WILDFLY_HOME/bin/standalone.conf > $WILDFLY_HOME/bin/standalone1.conf
-mv $WILDFLY_HOME/bin/standalone1.conf $WILDFLY_HOME/bin/standalone.conf
 
 
 echo
@@ -336,13 +339,6 @@ else
 fi
 # wait 5 seconds
 #sleep 5
-
-echo
-echo +++++ STEP 3.01 +++++  Alte Logdateien Komprimieren und Löschen | tee -a $LOGFILE
-echo
-tar cvfz $WILDFLY_HOME/standalone/log/serverlog_backup_${NEW_VERSION}_$(date +%Y%h%d%H%M).tgz $WILDFLY_HOME/standalone/log/server.log*
-rm $WILDFLY_HOME/standalone/log/server.log*
-
 echo
 echo "+++++ STEP 4 +++++  Remove all dwh.ear[*] (including .failed, .deployed, .undeployed)" | tee -a $LOGFILE
 echo
@@ -351,6 +347,17 @@ if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* 1> /dev/null 2>&1; then
     echo +++WARNING+++ EAR files not completely removed | tee -a $LOGFILE
 else
     echo EAR files removed | tee -a $LOGFILE
+fi
+
+echo
+echo +++++ STEP 4.01 +++++  Alte, periodische Logdateien Komprimieren und Löschen | tee -a $LOGFILE
+echo
+if [ $( ls /opt/wildfly-9.0.2.Final/standalone/log/server.log.201* 2>/dev/null | wc -l ) -gt 0 ] ; 
+then
+    current=$(date +%Y%h%d%H%M)
+    echo Alte Logdateien der Form server.log.YYYY-MM-DD werden entfernt und in die Datei serverlog_pre_${NEW_VERSION}_${current}.tgz verpackt. | tee -a $LOGFILE
+    tar cvfz $WILDFLY_HOME/standalone/log/serverlog_pre_${NEW_VERSION}_${current}.tgz $WILDFLY_HOME/standalone/log/server.log.201* 2>&1  $LOGFILE
+    rm -v $WILDFLY_HOME/standalone/log/server.log.201* 2>&1 $LOGFILE
 fi
 
 echo
