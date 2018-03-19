@@ -314,7 +314,7 @@ $INSTALL_ROOT/lib/email_create.sh 2>&1 | tee -a $LOGFILE
 echo
 echo +++++ STEP 2.09 +++++  Wildfly JAVA VM Arbeitsspeicher Zuordnung | tee -a $LOGFILE
 echo
-if [ ! $( grep -c Xmx1024m $WILDFLY_HOME/bin/standalone.conf) -gt 0 ] ; 
+if [ $( grep -c Xmx1024m $WILDFLY_HOME/bin/standalone.conf) -gt 0 ] ; 
 then
     if [ ! -f $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION ] ;
     then
