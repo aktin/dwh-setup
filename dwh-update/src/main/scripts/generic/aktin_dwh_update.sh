@@ -318,10 +318,14 @@ if [ $( grep -c Xmx1024m $WILDFLY_HOME/bin/standalone.conf) -gt 0 ] ;
 then
     if [ ! -f $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION ] ;
     then
-        cp $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION 2>&1 | tee -a $LOGFILE
+        echo Backup der Config Datei nach standalone.conf.orig.$NEW_VERSION
+        cp -v $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION 2>&1 | tee -a $LOGFILE
     fi
+    echo Anpassung der Java VM Arbeitsspeicherzuordnung
     sed 's/Xmx1024m/Xmx2g/g' $WILDFLY_HOME/bin/standalone.conf > $WILDFLY_HOME/bin/standalone1.conf 2>&1 | tee -a $LOGFILE
     mv $WILDFLY_HOME/bin/standalone1.conf $WILDFLY_HOME/bin/standalone.conf 2>&1 | tee -a $LOGFILE
+else 
+    echo Keine Anpassung durchgeführt.
 fi
 
 
