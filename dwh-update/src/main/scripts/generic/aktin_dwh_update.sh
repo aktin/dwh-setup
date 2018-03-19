@@ -281,7 +281,17 @@ echo "- created aktin datasource" | tee -a $LOGFILE
 # echo "reload" 2>&1 | tee -a $LOGFILE
 
 echo
-echo +++++ STEP 2.06 +++++  Create /var/lib/aktin  | tee -a $LOGFILE
+echo +++++ STEP 2.06 +++++  Change Logging Properties in wildfly  | tee -a $LOGFILE
+echo
+if [ ! -f $WILDFLY_HOME/standalone/configuration/standalone.xml.$NEW_VERSION.orig ] ; then 
+    cp $WILDFLY_HOME/standalone/configuration/standalone.xml $WILDFLY_HOME/standalone/configuration/standalone.xml.$NEW_VERSION.orig
+fi
+if [ ! $( grep -c size-rotating-file-handler $WILDFLY_HOME/standalone/configuration/standalone.xml) -gt 0 ] ; then
+    $JBOSSCLI --file="$INSTALL_ROOT/lib/update_wildfly_logging.cli" 2>&1 | tee -a $LOGFILE
+fi
+
+echo
+echo +++++ STEP 2.07 +++++  Create /var/lib/aktin  | tee -a $LOGFILE
 echo
 if [ ! -d "/var/lib/aktin" ]; then 
     mkdir -p /var/lib/aktin 2>&1 | tee -a $LOGFILE
@@ -296,9 +306,24 @@ else
 fi
 
 echo
-echo +++++ STEP 2.07 +++++  Add new SMTP configuration | tee -a $LOGFILE
+echo +++++ STEP 2.08 +++++  Add new SMTP configuration | tee -a $LOGFILE
 echo
 $INSTALL_ROOT/lib/email_create.sh 2>&1 | tee -a $LOGFILE
+
+
+echo
+echo +++++ STEP 2.09 +++++  Wildfly JAVA VM Arbeitsspeicher Zuordnung | tee -a $LOGFILE
+echo
+if [ ! $( grep -c Xmx1024m $WILDFLY_HOME/bin/standalone.conf) -gt 0 ] ; 
+then
+    if [ ! -f $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION ] ;
+    then
+        cp $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION 2>&1 | tee -a $LOGFILE
+    fi
+    sed 's/Xmx1024m/Xmx2g/g' $WILDFLY_HOME/bin/standalone.conf > $WILDFLY_HOME/bin/standalone1.conf 2>&1 | tee -a $LOGFILE
+    mv $WILDFLY_HOME/bin/standalone1.conf $WILDFLY_HOME/bin/standalone.conf 2>&1 | tee -a $LOGFILE
+fi
+
 
 echo
 echo +++++ STEP 3 +++++  Stop Wildfly Service | tee -a $LOGFILE
@@ -314,7 +339,6 @@ else
 fi
 # wait 5 seconds
 #sleep 5
-
 echo
 echo "+++++ STEP 4 +++++  Remove all dwh.ear[*] (including .failed, .deployed, .undeployed)" | tee -a $LOGFILE
 echo
@@ -323,6 +347,17 @@ if ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* 1> /dev/null 2>&1; then
     echo +++WARNING+++ EAR files not completely removed | tee -a $LOGFILE
 else
     echo EAR files removed | tee -a $LOGFILE
+fi
+
+echo
+echo +++++ STEP 4.01 +++++  Alte, periodische Logdateien Komprimieren und Löschen | tee -a $LOGFILE
+echo
+if [ $( ls /opt/wildfly-9.0.2.Final/standalone/log/server.log.201* 2>/dev/null | wc -l ) -gt 0 ] ; 
+then
+    current=$(date +%Y%h%d%H%M)
+    echo Alte Logdateien der Form server.log.YYYY-MM-DD werden entfernt und in die Datei serverlog_pre_${NEW_VERSION}_${current}.tgz verpackt. | tee -a $LOGFILE
+    tar cvfz $WILDFLY_HOME/standalone/log/serverlog_pre_${NEW_VERSION}_${current}.tgz $WILDFLY_HOME/standalone/log/server.log.201* 2>&1  $LOGFILE
+    rm -v $WILDFLY_HOME/standalone/log/server.log.201* 2>&1 $LOGFILE
 fi
 
 echo
