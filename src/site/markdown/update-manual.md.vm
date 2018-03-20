@@ -85,10 +85,10 @@ $WILDFLY_HOME/bin/jboss-cli.sh -c --command="undeploy --name=dwh-j2ee*.ear"
 ```
 
 
-Laden bzw Erstellen der Konfigurationsdatei `aktin.properties`
---------------------------------------------------------------
+Anpassen der Konfigurationsdatei `aktin.properties`
+---------------------------------------------------
 
-In diesem Update wird eine Konfigurationsdatei erstellt. Ein Template dafür kann dem Updatepaket entnommen (`dwh-update/aktin.properties`) oder per Hand erstellt werden.
+In einem früheren Update wurd eine Konfigurationsdatei erstellt. Sollten Änderungen an dieser Datei notwendig sein, fügen Sie bitte die neue Einstellungen durch. Die Änderungen können durch den `diff` Befehl erkannt werden. Sie können den Code-Abschnitt aus dem automatischen Updateskript unter dem Abschnitt STEP 0.02 entnehmen und verwenden. Dazu wird auf dem Server die Pakete `diff`, `sed` und `patch` benötigt. Dieser Code-Abschnitt geht davon aus, dass die aktive `aktin.properties`-Datei unter `$WILDFLY_HOME/standalone/configuration/` zu finden ist. Sollten Sie noch keine `$WILDFLY_HOME/standalone/configuration/aktin.properties` eingerichtet haben, richten Sie es bitte wie folgt ein. Ein Template dafür kann dem Updatepaket entnommen (`dwh-update/aktin.properties`) oder per Hand erstellt werden.
 
 Beispieldatei `aktin.properties`
 
@@ -105,15 +105,21 @@ local.l=Beispielhausen
 local.s=Niedersachen
 # Country / Staat
 local.c=Deutschland
-# default E-Mail-Address for notifications, reports (non technical)
+# default E-Mail-Address for notifications, reports (non technical); multiple Adresses possible (comma separated in one line)
 local.email=zna-contact@klinikum-beipielhausen.de
 local.tz=Europe/Berlin
+# Language tag according to IETF BCP 47. If not defined, the system language will be used.
+local.language=de-DE
+# Korrektur der Server URL (der Emails)
+# local.server.url=http://IhrServerUrlOderIp/
+# location of the R standalone executable
 rscript.binary=/usr/bin/Rscript
 # needed for read/write access to the i2b2 database
 i2b2.project=AKTIN
 i2b2.datasource.crc=java:/QueryToolDemoDS
 # needed for i2b2 authentication and user management
-i2b2.service.pm=http://localhost:8080/i2b2/services/PMService/
+i2b2.service.pm=http://localhost:9090/i2b2/services/PMService/
+i2b2.service.domain=i2b2demo
 # TODO create dir /var/lib/aktin and chown to wildfly
 report.data.path=/var/lib/aktin/reports
 report.temp.path=/var/tmp/report-temp
@@ -132,13 +138,19 @@ wildfly.management.user=admin
 wildfly.management.password=admin2
 ```
 
-Besonders wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die z.B. die Monatsberichte geschickt werden sollen. Es ist auch möglich eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
+Bitte passen Sie lokal bezogene Angaben an wie unter `local.o` den Namen Ihres Hauses.
+
+Besonders wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die z.B. die Monatsberichte geschickt werden sollen. Es ist auch möglich, eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
 
 Per E-Mail sollten Ihnen eine alphanumerischen API-Key von uns zugesandt worden sein. Dies ist unter `broker.keys` einzutragen. Sollten Sie keinen Key erhalten haben, bitte melden Sie sich bei it-support(at)aktin.org. 
 
 In dieser Datei werden Angaben zum lokalen DWH und Standort-spezifische Änderungen gemacht. Falls die Datei manuell angelegt wird, sollte darauf geachtet werden, dass als Encoding UTF-8 und Unix-Zeilenendungen verwendet werden.
 
-Diese Datei muss dann in den Konfigurationsordner des Wildfly gelegt werden, in den meisten Fällen zu finden unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`. 
+Diese Datei muss dann in den Konfigurationsordner des Wildfly gelegt werden, zu finden unter `$WILDFLY_HOME/standalone/configuration/`:
+
+```
+cp aktin.properties $WILDFLY_HOME/standalone/configuration/
+```
 
 
 Änderungen an der Konfigurationsdatei `aktin.properties` (nicht relevant für Ersteinrichtung)
@@ -164,9 +176,9 @@ systemctl start wildfly
 E-Mail-Konfiguration
 --------------------
 
-Mit diesem Update wird einen E-Mail-Dienst eingerichtet, der z.B. die monatlich erzeugten Berichtsdokumente an die in `aktin.properties` angegebenen E-Mail-Adresse sendet.
+Mit einem früheren Update wurde einen E-Mail-Dienst eingerichtet, der z.B. die monatlich erzeugten Berichtsdokumente an die in `aktin.properties` angegebenen E-Mail-Adresse sendet.
 
-Zum Zeitpunkt des Updates ist in dem Wildfly-Service noch kein E-Mail-Service eingerichtet. Für spätere Änderungen an dem Service muss zuerst das Skript `dwh-update/email_config_reset.sh` aus dem Updatepaket ausgeführt, um die vorhandenen Einstellungen zu entfernen, und der Wildfly-Service neugestartet werden. 
+Sollten Sie bereits den E-Mail-Dienst eingerichtet haben, jedoch die Daten ändern wollen, rufen Sie bitte zuerst das Skript `dwh-update/email_config_reset.sh` aus dem Updatepaket auf, um die vorhandenen Einstellungen zu entfernen. Nach einem Neustart der Wildfly-Service fahren Sie dann bitte wie eine Neueinrichtung fort.
 
 Zum Einrichten des E-Mail-Services steht auch ein Skript aus dem Updatepaket bereit. Dazu muss die Datei `dwh-update/email.config` angepasst und das Skript `dwh-update/lib/email_create.sh` ausgeführt werden. 
 
@@ -204,8 +216,29 @@ rm -r $CDATMPDIR
 ```
 
 
+Anpassung der Datumsangaben
+---------------------------
+
+Diese Einstellung muss nur einmal ausgeführt werden. Sollte sie bereits vorhanden sein, kann dieser Abschnitt übersprungen werden.
+
+Es kann eventuell notwendig sein, die Genauigkeit der Datumsangaben für Patienten und Besuche anzupassen. Dies geschieht durch die Datei `lib/fix_visit_patient_date_accuracy.sql` im Update-Paket.
+
+```
+CDATMPDIR=/var/tmp/cda-ontology
+mkdir $CDATMPDIR
+cp dwh-update/lib/fix_visit_patient_date_accuracy.sql $CDATMPDIR/sql/
+chmod 777 -R $CDATMPDIR
+
+su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/fix_visit_patient_date_accuracy.sql"
+
+rm -r $CDATMPDIR
+```
+
+
 Entfernen der Defaulteinträge im Webformular
 --------------------------------------------
+
+Diese Einstellung muss nur einmal ausgeführt werden. Sollte sie bereits vorhanden sein, kann dieser Abschnitt übersprungen werden.
 
 Aus Sicherheitsgründen und zur verbesserten Nutzung werden die Defaultlogindaten aus dem Webformular des i2b2 entfernt. Die Logindaten werden dabei nicht geändert, es werden lediglich die Vorbelegungen aus der Login-Maske gelöscht.
 
@@ -221,6 +254,8 @@ Zudem sollten, sofern noch nicht geschehen, die Passwörter der Benutzer "i2b2" 
 
 Anlegen der AKTIN-Datenbanken und der AKTIN-Datasource in Wildfly
 -----------------------------------------------------------------
+
+Diese Einstellung muss nur einmal ausgeführt werden. Sollte sie bereits vorhanden sein, bitte diesen Abschnitt überspringen.
 
 Zur lokalen Verwaltung wird eine zusätzliche AKTIN-Datenbank angelegt, in der z.B. das Datum des letzten Monatsberichts oder die Angaben der Abfragen gespeichert werden.
 
@@ -261,14 +296,60 @@ $WILDFLY_HOME/bin/jboss-cli.sh -c --command="/subsystem=datasources:read-resourc
 Die Änderungen treten erst nach einem Neustart des Services in Kraft (in der Konsole wird `reload-required` angezeigt. Da im Updateverlauf noch der Neustart erfolgt, wird der Neustart in diesem Schritt übersprungen).
 
 
+Änderung der Logging-Einstellungen
+----------------------------------
+
+Diese Einstellung muss nur einmal ausgeführt werden. Sollte sie bereits vorhanden sein, bitte diesen Abschnitt überspringen.
+
+Zur Vermeidung von Überfüllung des Servers durch Log-Dateien und Konsolausgaben, wird hier die Logging-Einstellung der Wildfly-Service umgestellt. 
+
+Zur Sicherheit sollte die betreffende Datei gesichert werden:
+
+```
+cp $WILDFLY_HOME/standalone/configuration/standalone.xml $WILDFLY_HOME/standalone/configuration/standalone.xml.$NEW_VERSION.orig
+```
+
+Zur Entfernung der alten Konsolen- und Daterotating-Logging:
+
+```
+/subsystem=logging/root-logger=ROOT:remove-handler(name="FILE")
+/subsystem=logging/root-logger=ROOT:remove-handler(name="CONSOLE")
+```
+
+Und Einstellung eines neuen Filerotating-Logging, mit maximal 64 Dateien je maximal 50MB:
+
+```
+/subsystem=logging/size-rotating-file-handler=srf:add(named-formatter="PATTERN", file={"relative-to"=>"jboss.server.log.dir", "path"=>"server.log"}, autoflush=true, max-backup-index=64, rotate-size=50m, rotate-on-boot=true)
+/subsystem=logging/root-logger=ROOT:add-handler(name="srf")
+```
+
 Anlegen benötiger Ordnerstruktur
 --------------------------------
+
+Diese Einstellung muss nur einmal ausgeführt werden. Sollte sie bereits vorhanden sein, kann dieser Abschnitt übersprungen werden.
 
 Die später erzeugten Berichte werden in dem Ordner `/var/lib/aktin/` abgelegt. Dazu wird der Ordner angelegt und die Benutzerrechte gesetzt:
 
 ```
 mkdir -p /var/lib/aktin
 chown wildfly /var/lib/aktin
+```
+
+Erhöhung der JAVA-VM Arbeitsspeicher für die Wildfly-Service
+------------------------------------------------------------
+
+Diese Einstellung muss nur einmal ausgeführt werden. Sollte sie bereits vorhanden sein, bitte diesen Abschnitt überspringen.
+
+Standardmäßig wird der Wildfly-Service nur 1GB bzw 1024MB Arbeitsspeicher zugeordnet. Dies kann bei Abfragen sehr schnell ausgereizt werden. Daher wird in diesem Schritt der Arbeitsspeicher auf 2GB erhöht.
+
+```
+if [ ! -f $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION ] ;
+then
+    cp -v $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION
+fi
+
+sed 's/Xmx1024m/Xmx2g/g' $WILDFLY_HOME/bin/standalone.conf > $WILDFLY_HOME/bin/standalone1.conf
+mv $WILDFLY_HOME/bin/standalone1.conf $WILDFLY_HOME/bin/standalone.conf
 ```
 
 
@@ -282,7 +363,22 @@ service wildfly stop # debian
 # systemctl stop wildfly # centos
 
 rm -v $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*
+```
 
+Sollten noch alte Log-Dateien aus dem Daterotating-Logging vorhanden sein, werden diese komprimiert und die Originaldateien gelöscht:
+
+```
+if [ $( ls /opt/wildfly-9.0.2.Final/standalone/log/server.log.201* 2>/dev/null | wc -l ) -gt 0 ] ; 
+then
+    current=$(date +%Y%h%d%H%M)
+    tar cvfz $WILDFLY_HOME/standalone/log/serverlog_pre_${NEW_VERSION}_${current}.tgz $WILDFLY_HOME/standalone/log/server.log.201* 
+    rm -v $WILDFLY_HOME/standalone/log/server.log.201*
+fi
+```
+
+Anschließend wird die Wildfly-Service wieder gestartet.
+
+```
 service wildfly start # debian
 # systemctl start wildfly # centos
 ```
