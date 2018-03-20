@@ -1,13 +1,18 @@
 ﻿Changelog
 =========
 
-Version 1.0
+Version 0.10
 -----------
 * CDA-Import
     * Bei der Transformation aus dem CDA in das DWH wurde ein Fehler für "Tetanusschutz unbekannt" behoben - dies wurde als "Tetanusschutz" importiert. Dadurch sind alle Daten, die mit einem früheren Release importiert wurden in diesem Punkt falsch
 * Aktualisierung des Monatsbericht auf V01.4
     * Vertauschung in der Berichts-Ausgabe zwischen Geschlecht männlich/weiblich korrigiert
     * Überarbeitung der Berechung in Kapitel 7 (Abweichungen zwischen Tabelle und Grafik)
+* Weboberfläche
+    * Versionsnummer wird nun in der Weboberfläche angezeigt
+* Update-Skript/Installation
+    * Arbeitsspeicher-Beschränkung für Java (Wildfly) erhöht
+    * Logfiles (Wildfly) nun beschränkt auf ca 1GB durch Logfile-Rotation
 
 Version 0.9
 -----------
