@@ -1,7 +1,7 @@
 ﻿Changelog
 =========
 
-Version 0.10
+Version 0.10.1
 -----------
 * CDA-Import
     * Bei der Transformation aus dem CDA in das DWH wurde ein Fehler für "Tetanusschutz unbekannt" behoben - dies wurde als "Tetanusschutz" importiert. Dadurch sind alle Daten, die mit einem früheren Release importiert wurden in diesem Punkt falsch
@@ -10,6 +10,7 @@ Version 0.10
     * Überarbeitung der Berechung in Kapitel 7 (Abweichungen zwischen Tabelle und Grafik)
 * Weboberfläche
     * Versionsnummer wird nun in der Weboberfläche angezeigt
+    * Behoben: Bei Aufruf über E-mail-Link wurden neue Abfragen manchmal nicht angezeigt.
 * Update-Skript/Installation
     * Arbeitsspeicher-Beschränkung für Java (Wildfly) erhöht
     * Logfiles (Wildfly) nun beschränkt auf ca 1GB durch Logfile-Rotation
