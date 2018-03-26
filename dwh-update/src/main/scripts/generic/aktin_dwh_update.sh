@@ -34,6 +34,7 @@ OS_VERSION=debian
 # if [ $(ls /etc/d* | grep -c "debian") -gt 1 ] ; then 
 # fi
 # $(ls /etc/c* | grep -c "centos") -gt 1
+# Decision if centos or redhat system
 if [ -f "/etc/centos-release" ] ; then 
     OS_VERSION=centos
 fi
@@ -62,6 +63,7 @@ fi
 # check older dwh-j2ee ear files
 numdeployed=$(find $WILDFLY_HOME/standalone/deployments/ -name "dwh-j2ee-*" | grep -c deployed)
 if [ $numdeployed -gt 0 ] ; then
+    # not necessary / old : don't touch it
     if find $WILDFLY_HOME/standalone/deployments/ -name "dwh-j2ee-*.deployed" 1> /dev/null 2>&1; then
         OLD_VERSION=$(ls -t $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed | head -1 | sed -n -e 's#'$WILDFLY_HOME'/standalone/deployments/dwh-j2ee-##'p | sed -n -e 's#.ear.deployed$##'p)
         echo Currently deployed version is $OLD_VERSION | tee -a $LOGFILE
@@ -111,6 +113,7 @@ fi
 echo
 echo +++++ STEP 0.02 +++++ Überprüfung aktin.properties  | tee -a $LOGFILE
 echo
+# check_aktin_properties checks if aktin.properties is already in wildfly config folder and if yes returns 0 else 124
 $INSTALL_ROOT/lib/check_aktin_properties.sh 2>&1 | tee -a $LOGFILE
 checkexit=${PIPESTATUS[0]}
 if [ $checkexit -gt 0 ]; then
@@ -121,24 +124,26 @@ if [ $checkexit -gt 0 ]; then
     exit $checkexit
 
 else 
-    if [ ! -f aktin.properties.backup ]; then
+    current=$(date +%Y%h%d%H%M)
+    # create backup if not existent
+    if [ ! -f aktin.properties.backup.$current ]; then
         # backup old file to this folder
-        cp $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties.backup | tee -a $LOGFILE
+        cp $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties.backup.$current | tee -a $LOGFILE
     fi
 
+    # if patchfiles exists at this point it is old, so remove it
     if [ -f properties.patch ]; then
-        # backup old file to this folder
         rm properties.patch | tee -a $LOGFILE
     fi
 
     # create patch file - only i2b2.project and new keys are changed
-    # sed '/^[0-9]\+d[0-9]\+/{N; /.*/d}; /^[0-9]\+c[0-9]\+/{$!{ N;N;N;/.*/d }}'
-    # sed -n '/^[,0-9]\+d[,0-9]\+/{$!{:x;z;N;/^\s*[<]/bx;D;}}; /^[,0-9]\+c[,0-9]\+/{$!{:x;z;N;/^\s*[<>-]/bx;D;}};'
+    # this means it will add all new additions to the existing patch file without touching the edited content
     diff $WILDFLY_HOME/standalone/configuration/aktin.properties aktin.properties | sed -n '/^[,0-9]\+d[,0-9]\+/{$!{:x;z;N;/^\s*[<]/bx;D;}}; /^[,0-9]\+c[,0-9]\+/{$!{:x;z;N;/^\s*[<>-]/bx;D;}}; P;' > properties.patch 2>&1 | tee -a $LOGFILE
 
     # test patch 
     patchErrorCount=$(patch $WILDFLY_HOME/standalone/configuration/aktin.properties --dry-run -i properties.patch 2>&1 | grep -c "Only garbage was found in the patch input")
 
+    # if the patch produces "garbage" it will not be applied
     if [ ! $patchErrorCount -gt 0 ]; then 
 
         # apply patch
@@ -167,15 +172,16 @@ echo "+++++ STEP 2 +++++ Execute scripts (SQL, Copy files etc.)" | tee -a $LOGFI
 echo
 
 
-echo
-echo +++++ STEP 2.01 +++++ Fact Database Reset| tee -a $LOGFILE
-echo
+#echo
+#echo +++++ STEP 2.01 +++++ Fact Database Reset| tee -a $LOGFILE
+#echo
 # XXX not supported yet - NOP
 # check id length and delete facts with "short" ids
 
 echo
 echo +++++ STEP 2.02 +++++ Update local DWH ontology | tee -a $LOGFILE
 echo
+# this step updates the meta database
 SQLLOG=$INSTALL_ROOT/update_sql.log
 # folder where the postgres user can call sql files
 CDATMPDIR=/var/tmp/cda-ontology
@@ -213,15 +219,17 @@ rm -r $CDATMPDIR
 echo
 echo +++++ STEP 2.03 +++++ Entfernen der Defaulteinträge in Loginformular | tee -a $LOGFILE
 echo
-# check wether the login username needs to be removed. 
+# check whether the login username needs to be removed. 
 if [ $(grep -c "name=\"uname\" id=\"loginusr\" value=\"demo\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
 then
     echo "- Username bereits entfernt. NOP" | tee -a $LOGFILE
 else 
+    # erstmal backup
     if [ ! -f $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig ]; then 
        cp $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js.orig
        echo "- Webclient PM file backed up" 2>&1 | tee -a $LOGFILE
     fi
+    # mit s/ suchen und dann / ersetzten
     sed -i "s/name=\"uname\" id=\"loginusr\" value=\"demo\"/name=\"uname\" id=\"loginusr\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
     if [ $(grep -c "name=\"uname\" id=\"loginusr\" value=\"demo\"" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js) -gt 0 ]
     then 
@@ -283,10 +291,12 @@ echo "- created aktin datasource" | tee -a $LOGFILE
 echo
 echo +++++ STEP 2.06 +++++  Change Logging Properties in wildfly  | tee -a $LOGFILE
 echo
-if [ ! -f $WILDFLY_HOME/standalone/configuration/standalone.xml.$NEW_VERSION.orig ] ; then 
-    cp $WILDFLY_HOME/standalone/configuration/standalone.xml $WILDFLY_HOME/standalone/configuration/standalone.xml.$NEW_VERSION.orig
-fi
+
+
 if [ ! $( grep -c size-rotating-file-handler $WILDFLY_HOME/standalone/configuration/standalone.xml) -gt 0 ] ; then
+    if [ ! -f $WILDFLY_HOME/standalone/configuration/standalone.xml.$NEW_VERSION.orig ] ; then 
+        cp $WILDFLY_HOME/standalone/configuration/standalone.xml $WILDFLY_HOME/standalone/configuration/standalone.xml.$NEW_VERSION.orig
+    fi
     $JBOSSCLI --file="$INSTALL_ROOT/lib/update_wildfly_logging.cli" 2>&1 | tee -a $LOGFILE
 fi
 
@@ -394,6 +404,7 @@ if [ ! -f "$WILDFLY_HOME/standalone/deployments/dwh-j2ee-$NEW_VERSION.ear" ]; th
         echo +++WARNING+++ file not successfully deployed after $COUNTER sec, check for file: dwh-j2ee-$NEW_VERSION.ear.deployed  | tee -a $LOGFILE
     else 
         echo -e "${Gre}+++SUCCESS+++ EAR successfully deployed after $COUNTER sec${RCol}" | tee -a $LOGFILE
+        echo -e "${Gre}+++UPDATE ERFOLGREICH+++ Version $NEW_VERSION ist nun installiert${RCol}" | tee -a $LOGFILE
     fi
 else 
 	echo +++WARNING+++ file already present, this should never happen | tee -a $LOGFILE

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# checks if aktin properties are existent within the wildfly home
+# if non existant, gives instructions how to copy them to the relevant folder and what to edit
 
 # Initial parameters
 SCRIPT=$(readlink -f "$0")

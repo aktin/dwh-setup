@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# legt aktin db, role und schema an, wenn noch nicht da
 
 if psql -lqt | cut -d \| -f 1 | grep -qw aktin; then
     echo database aktin does already exist

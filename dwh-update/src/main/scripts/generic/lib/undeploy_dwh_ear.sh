@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# undeploys all existing dwh ear files 
 
 # Initial parameters
 WILDFLY_HOME=/opt/wildfly-${wildfly.version}
