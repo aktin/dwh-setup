@@ -205,7 +205,7 @@ echo "- Ontology Update done. Result logged in $SQLLOG"
 echo
 echo +++++ STEP 2.02.01 +++++ Patienten Datum Fix | tee -a $LOGFILE
 echo
-cp -v $INSTALL_ROOT/lib/fix_visit_patient_date_accuracy.sql $CDATMPDIR/sql/fix_visit_patient_date_accuracy.sql 2>&1 | tee -a $LOGFILE  # copy the remove ont file 
+cp -v $INSTALL_ROOT/lib/fix_visit_patient_date_accuracy.sql $CDATMPDIR/sql/fix_visit_patient_date_accuracy.sql 2>&1 | tee -a $LOGFILE  # copy the sql file 
 echo "-- fix visit patient date accuracy" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
 su - postgres bash -c "psql -d i2b2 -f $CDATMPDIR/sql/fix_visit_patient_date_accuracy.sql" 2>&1 >> $SQLLOG
 
@@ -328,10 +328,14 @@ if [ $( grep -c Xmx1024m $WILDFLY_HOME/bin/standalone.conf) -gt 0 ] ;
 then
     if [ ! -f $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION ] ;
     then
-        cp $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION 2>&1 | tee -a $LOGFILE
+        echo Backup der Config Datei nach standalone.conf.orig.$NEW_VERSION
+        cp -v $WILDFLY_HOME/bin/standalone.conf $WILDFLY_HOME/bin/standalone.conf.orig.$NEW_VERSION 2>&1 | tee -a $LOGFILE
     fi
+    echo Anpassung der Java VM Arbeitsspeicherzuordnung
     sed 's/Xmx1024m/Xmx2g/g' $WILDFLY_HOME/bin/standalone.conf > $WILDFLY_HOME/bin/standalone1.conf 2>&1 | tee -a $LOGFILE
     mv $WILDFLY_HOME/bin/standalone1.conf $WILDFLY_HOME/bin/standalone.conf 2>&1 | tee -a $LOGFILE
+else 
+    echo Keine Anpassung durchgeführt.
 fi
 
 

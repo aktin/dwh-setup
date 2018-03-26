@@ -1,6 +1,12 @@
 Server
 ======
 
+Release erstellen
+----------
+J2EE version/dependency eintragen in pom.xml (zwei Stellen) 
+sowie dwh-update/pom.xml (eine Stelle)
+
+
 Installation
 ------------
 1. vagrant umstellen auf box debian/jessie64
