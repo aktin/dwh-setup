@@ -1,6 +1,13 @@
 ﻿Changelog
 =========
 
+Version 0.11
+-----------
+* Weboberfläche
+	* Integration von Serien-Anfragen und Freigabe-Regeln
+	* Anfragen-Einzelansicht: leserlicheres Format des Zeitraum der Daten und des Abfrage-Intervalls
+* neuer Anfrage-Status: Expired (Anfrage auf Broker bereits geschlossen oder gelöscht)
+
 Version 0.10.1
 -----------
 * CDA-Import
