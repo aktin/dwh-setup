@@ -5,7 +5,11 @@ Unser Installationsskript wurde getestet mit Debian 8 und CentOS 7.
 Wenn sie ein anderes System verwenden, müssen Sie die Skripte evtl. 
 anpassen oder die enthaltenen Schritte manuell durchführen.
 
-Beachten Sie bitte ob Java installiert ist. Es wird die Version 8 vom Openjdk installiert, sind bereits niedrigerer Versionen von Java installiert, kann dies zu Problemen bei der Installation und dem Betrieb führen.
+Bei einer Neuinstallation beachten sie bitte die Hinweise unter: [Installationsvorausetzungen](install-requirements.html).
+
+Beachten Sie bitte ob Java installiert ist, falls eine bestehende Betriebsversion verwednet wird. 
+Es wird die Version 8 vom Openjdk installiert, sind bereits niedrigere Versionen von Java installiert, 
+kann dies zu Problemen bei der Installation und dem Betrieb führen.
 
 Mit dem Befehl 
 
