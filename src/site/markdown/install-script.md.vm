@@ -2,12 +2,12 @@
 ===============================================
 
 Unser Installationsskript wurde getestet mit Debian 8 und CentOS 7.
-Wenn sie ein anderes System verwenden, müssen Sie die Skripte evtl. 
+Wenn Sie ein anderes System verwenden, müssen Sie die Skripte evtl. 
 anpassen oder die enthaltenen Schritte manuell durchführen.
 
-Bei einer Neuinstallation beachten sie bitte die Hinweise unter: [Installationsvorausetzungen](install-requirements.html).
+Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Installationsvoraussetzungen](install-requirements.html).
 
-Beachten Sie bitte ob Java installiert ist, falls eine bestehende Betriebsversion verwednet wird. 
+Beachten Sie bitte ob Java installiert ist, falls eine bestehende Betriebsversion verwendet wird. 
 Es wird die Version 8 vom Openjdk installiert, sind bereits niedrigere Versionen von Java installiert, 
 kann dies zu Problemen bei der Installation und dem Betrieb führen.
 
@@ -69,7 +69,7 @@ Um die Konsolenausgaben umzuleiten, können Sie alternativ auch
 ```
 ausführen. Die Logausgaben finden Sie dann in der Datei `install-aktin-dwh.log`.
 
-Während der Installation werden Sie zur Konfiguration der `aktin.properties` aufgefordert. In dieser muss als minimal Anpassung ein an Sie ausgebebender Api-Key hinterlegt werden, unter `broker.keys=XXXyourapikeyXXX`. Des Weiteren sollen sie ihre E-Mail-Konfiguration testen. Für beides finden sie Informationen unter: https://aktin.org/software/0.10.1/server/update-manual.html  
+Während der Installation werden Sie zur Konfiguration der `aktin.properties` aufgefordert. In dieser muss als minimale Anpassung ein an Sie ausgebebender Api-Key hinterlegt werden, unter `broker.keys=XXXyourapikeyXXX`. Des Weiteren sollten Sie ihre E-Mail-Konfiguration testen. Für beides finden Sie Informationen unter: https://aktin.org/software/0.10.1/server/update-manual.html  
 
 Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
 
@@ -77,7 +77,7 @@ Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt
 nano /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties
 ```
 
-Anschließend muss die Datei `aktin.properties` in das Konfigurationsverzeichnis des Anwendungsservers kopiert werden. Dies können sie mit folgendem Befehl vollziehen:
+Anschließend muss die Datei `aktin.properties` in das Konfigurationsverzeichnis des Anwendungsservers kopiert werden. Dies können Sie mit folgendem Befehl vollziehen:
 
 ```
 cp -v /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
@@ -98,7 +98,7 @@ Unter CentOS 7, starten Sie nun das Skript
 ./aktin-dwh-installer/install_centos.sh
 ```
 
-Nach der Installation der notwendigen Pakete und der Einrichtung der Dienste sowie des i2b2 ruft der Installationsskript den neusten Updateskript auf, um die Einrichtung der neusten Software des Aktin-Projektes sowie die weiteren Anpassungen durchzuführen. In diesem Schritt kann der Skript unterbrochen werden, sollte Angaben Ihrerseits nötig sein. Auf die Angaben werden Sie in der Konsole hingewiesen. 
+Nach der Installation der notwendigen Pakete und der Einrichtung der Dienste sowie des i2b2 ruft der Installationsskript den neusten Updateskript auf, um die Einrichtung der neusten Software des Aktin-Projektes sowie die weiteren Anpassungen durchzuführen. In diesem Schritt kann der Skript unterbrochen werden, sollten Angaben Ihrerseits nötig sein. Auf die Angaben werden Sie in der Konsole hingewiesen. 
 
 Informationen zum Update finden Sie unter [skriptbasierten Update](update-auto.html) oder [manuellen Update](update-manual.html).
 
