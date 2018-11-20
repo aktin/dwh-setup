@@ -5,7 +5,7 @@ Grundsätzlich sollte unsere Software mit allen Linux-Systemen
 verwendbar sein.
 
 Für Debian 8 (und eingeschränkt CentOS 7) stellen wir Skripte für 
-eine automatische Installation und Konfiguration zur Verfügung.
+eine automatische Installation und Konfiguration zur Verfügung. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Debian 8 funktioniert. Installationen mit Debian 9.x führen zu Problemen mit dem Installationskript.
 
 Nachfolgend ist die Installation der Pakete für ausgewählte Distributionen
 beschrieben:
@@ -14,7 +14,7 @@ Debian 8
 --------
 Wir empfehlen für eine Neuinstallation ein Debian8-Minimalsystem ohne 
 Benutzeroberfläche. Als Installationsmedium kann die [Network-Install-CD]
-(https://www.debian.org/CD/netinst/) verwendet werden.
+(https://cdimage.debian.org/cdimage/archive/8.11.0/) verwendet werden. Unter dem angegeben Link müssen sie die Zielplattform auswählen und anschließend "iso-cd", um zur Network-Install-Cd zu gelangen.
 
 Nachfolgend Hinweise zur Installation:
 
