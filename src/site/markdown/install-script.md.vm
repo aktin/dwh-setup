@@ -120,7 +120,7 @@ entsprechende IP-Adresse / Servername angepasst werden:
 Test der Importschnittstelle
 ----------------------------
 Die Importschnittstelle des Servers kann mit den Client-Programmen
-aus dem Software-Paket (ZIP) des [Demo-Server](../../0.7/dwh-import/demo-server.html)
+aus dem Software-Paket (ZIP) des [Demo-Server](demo-server.html)
 getestet werden:
 
 ```
