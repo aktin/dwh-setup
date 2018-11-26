@@ -71,7 +71,7 @@ ausführen. Die Logausgaben finden Sie dann in der Datei `install-aktin-dwh.log`
 
 Während der Installation werden Sie zur Konfiguration der `aktin.properties` aufgefordert. In dieser muss als minimale Anpassung ein an Sie ausgebebender Api-Key hinterlegt werden, unter `broker.keys=XXXyourapikeyXXX`. 
 
-Des Weiteren sollten Sie ihre E-Mail-Konfiguration anzupassen. Die Einstellungsdatei befindet sich unter `dwh-update/email.config`, in dieser Datei müssen alle wichtigen Parameter für die automatische Emailbenachrichtigung konfiguriert werden. Wird bei der Installation diese Datei nicht konfiguriert, so werden Standardwerte gesetzt, die nicht zu einer Benachrichtigung führen!
+Des Weiteren sollten Sie ihre E-Mail-Konfiguration anzupassen. Die Einstellungsdatei befindet sich unter `dwh-update/email.config`, in dieser Datei müssen alle wichtigen Parameter für die automatische Emailbenachrichtigung konfiguriert oder überprüft werden. Wird bei der Installation diese Datei nicht konfiguriert, so werden Standardwerte gesetzt, die nicht zu einer Benachrichtigung führen!
 
 Für die Konfiguration der Dateien finden Sie Informationen unter: https://aktin.org/software/0.10.1/server/update-manual.html  
 
