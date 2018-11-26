@@ -117,7 +117,7 @@ echo
 $INSTALL_ROOT/lib/check_aktin_properties.sh 2>&1 | tee -a $LOGFILE
 checkexit=${PIPESTATUS[0]}
 if [ $checkexit -gt 0 ]; then
-    echo -e "${BYel}+++WARNING+++${RCol} Bitte Überprüfen Sie auch die Angaben in $INSTALL_ROOT/email.config" | tee -a $LOGFILE
+    echo -e "${BYel}+++WARNING+++${RCol} Bitte Setzen oder Überprüfen Sie auch die Angaben in $INSTALL_ROOT/email.config" | tee -a $LOGFILE
     echo -e "${Gre}    nano $INSTALL_ROOT/email.config${RCol}" | tee -a $LOGFILE
     echo und führen Sie diesen Script erneut aus. | tee -a $LOGFILE
     echo -e "${Gre}    $SCRIPT${RCol}" | tee -a $LOGFILE
