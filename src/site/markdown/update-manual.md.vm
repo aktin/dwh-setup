@@ -1,6 +1,23 @@
 Manualles Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian, CentOS
 ====================================================
 
+  - [Anmelden als ROOT](#anmelden-als-root)
+  - [Setzen der Umgebungsvariablen zur Vereinfachung des Updates und eventuell Laden des Updatepakets](#setzen-der-umgebungsvariablen-zur-vereinfachung-des-updates-und-eventuell-laden-des-updatepakets)
+  - [Java Version Check und Fix](#java-version-check-und-fix)
+  - [Löschen der alten Software](#l-schen-der-alten-software)
+  - [Anpassen der Konfigurationsdatei `aktin.properties`](#anpassen-der-konfigurationsdatei--aktinproperties-)
+  - [Änderungen an der Konfigurationsdatei `aktin.properties` (nicht relevant für Ersteinrichtung)](#-nderungen-an-der-konfigurationsdatei--aktinproperties---nicht-relevant-f-r-ersteinrichtung-)
+  - [E-Mail-Konfiguration](#e-mail-konfiguration)
+  - [Einspielen der neuen Ontologie-Metadaten](#einspielen-der-neuen-ontologie-metadaten)
+  - [Anpassung der Datumsangaben](#anpassung-der-datumsangaben)
+  - [Entfernen der Defaulteinträge im Webformular](#entfernen-der-defaulteintr-ge-im-webformular)
+  - [Anlegen der AKTIN-Datenbanken und der AKTIN-Datasource in Wildfly](#anlegen-der-aktin-datenbanken-und-der-aktin-datasource-in-wildfly)
+  - [Änderung der Logging-Einstellungen](#-nderung-der-logging-einstellungen)
+  - [Anlegen benötiger Ordnerstruktur](#anlegen-ben-tiger-ordnerstruktur)
+  - [Erhöhung der JAVA-VM Arbeitsspeicher für die Wildfly-Service](#erh-hung-der-java-vm-arbeitsspeicher-f-r-die-wildfly-service)
+  - [Neustart des Wildfly-Services und Löschen der alten Softwarepakete](#neustart-des-wildfly-services-und-l-schen-der-alten-softwarepakete)
+  - [Deployment des neuen Softwarepaketes](#deployment-des-neuen-softwarepaketes)
+
 Anmelden als ROOT
 -----------------
 
@@ -90,59 +107,7 @@ Anpassen der Konfigurationsdatei `aktin.properties`
 
 In einem früheren Update wurd eine Konfigurationsdatei erstellt. Sollten Änderungen an dieser Datei notwendig sein, fügen Sie bitte die neue Einstellungen durch. Die Änderungen können durch den `diff` Befehl erkannt werden. Sie können den Code-Abschnitt aus dem automatischen Updateskript unter dem Abschnitt STEP 0.02 entnehmen und verwenden. Dazu wird auf dem Server die Pakete `diff`, `sed` und `patch` benötigt. Dieser Code-Abschnitt geht davon aus, dass die aktive `aktin.properties`-Datei unter `$WILDFLY_HOME/standalone/configuration/` zu finden ist. Sollten Sie noch keine `$WILDFLY_HOME/standalone/configuration/aktin.properties` eingerichtet haben, richten Sie es bitte wie folgt ein. Ein Template dafür kann dem Updatepaket entnommen (`dwh-update/aktin.properties`) oder per Hand erstellt werden.
 
-Beispieldatei `aktin.properties`
-
-```
-# Currently not used, may be changed (Name of the installation)
-local.cn=AKTIN DWH
-# Used in AKTIN reports, should contain the name of the Organization (Hospital)
-local.o=Ev. Klinikum Beispielhausen
-# Used in AKTIN reports, should contain the name of the Unit (Notaufnahme, Rettungsstelle, ZNA, etc.)
-local.ou=Notaufnahme
-# Town / Stadt
-local.l=Beispielhausen
-# State / Bundesland
-local.s=Niedersachen
-# Country / Staat
-local.c=Deutschland
-# default E-Mail-Address for notifications, reports (non technical); multiple Adresses possible (comma separated in one line)
-local.email=zna-contact@klinikum-beipielhausen.de
-local.tz=Europe/Berlin
-# Language tag according to IETF BCP 47. If not defined, the system language will be used.
-local.language=de-DE
-# Korrektur der Server URL (der Emails)
-# local.server.url=http://IhrServerUrlOderIp/
-# location of the R standalone executable
-rscript.binary=/usr/bin/Rscript
-# needed for read/write access to the i2b2 database
-i2b2.project=AKTIN
-i2b2.datasource.crc=java:/QueryToolDemoDS
-# needed for i2b2 authentication and user management
-i2b2.service.pm=http://localhost:9090/i2b2/services/PMService/
-i2b2.service.domain=i2b2demo
-# TODO create dir /var/lib/aktin and chown to wildfly
-report.data.path=/var/lib/aktin/reports
-report.temp.path=/var/tmp/report-temp
-report.archive.path=/var/lib/aktin/report-archive
-broker.data.path=/var/lib/aktin/broker
-broker.archive.path=/var/lib/aktin/broker-archive
-broker.uris=https://broker.aktin.org/broker/
-broker.intervals=PT15M
-# Used in AKTIN to connect to the broker, you can get your API key from it-support@aktin.org
-broker.keys=XXXyourapikeyXXX
-db.datasource=java:jboss/datasources/AktinDS
-email.session=java:jboss/mail/AktinMailSession
-email.replyto=it-support@aktin.org
-wildfly.management.url=http://localhost:19990/management
-wildfly.management.user=admin
-wildfly.management.password=admin2
-```
-
-Bitte passen Sie lokal bezogene Angaben an wie unter `local.o` den Namen Ihres Hauses.
-
-Besonders wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die z.B. die Monatsberichte geschickt werden sollen. Es ist auch möglich, eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
-
-Per E-Mail sollten Ihnen eine alphanumerischen API-Key von uns zugesandt worden sein. Dies ist unter `broker.keys` einzutragen. Sollten Sie keinen Key erhalten haben, bitte melden Sie sich bei it-support(at)aktin.org. 
+Ein Template sowie weiterführende Erläuterungen zu wichtigen Einstellungen finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin-Properties".
 
 In dieser Datei werden Angaben zum lokalen DWH und Standort-spezifische Änderungen gemacht. Falls die Datei manuell angelegt wird, sollte darauf geachtet werden, dass als Encoding UTF-8 und Unix-Zeilenendungen verwendet werden.
 
@@ -180,6 +145,8 @@ Mit einem früheren Update wurde einen E-Mail-Dienst eingerichtet, der z.B. die 
 
 Sollten Sie bereits den E-Mail-Dienst eingerichtet haben, jedoch die Daten ändern wollen, rufen Sie bitte zuerst das Skript `dwh-update/email_config_reset.sh` aus dem Updatepaket auf, um die vorhandenen Einstellungen zu entfernen. Nach einem Neustart der Wildfly-Service fahren Sie dann bitte wie eine Neueinrichtung fort.
 
+Ein Template und weiterführende Erläuterungen der Parameter finden Sie auf der Seite [Installationsskript](install-script.html) im bereich "E-Mail-Konfiguration".
+
 Zum Einrichten des E-Mail-Services steht auch ein Skript aus dem Updatepaket bereit. Dazu muss die Datei `dwh-update/email.config` angepasst und das Skript `dwh-update/lib/email_create.sh` ausgeführt werden. 
 
 Alternativ können auch direkt die folgenden Befehle aufgerufen werden, wobei die Variablen `XXXsmtphostXXX`, `XXXsmtpportXXX`, `XXXsmtpuserXXX`, `XXXsmtppassXXX`, `XXXusetlsXXX`, `XXXusesslXXX` sowie `XXXmailfromXXX` durch die lokalen Daten ersetzt werden müssen.
@@ -195,7 +162,7 @@ $WILDFLY_HOME/bin/jboss-cli.sh -c "/subsystem=mail/mail-session=AktinMailSession
 Einspielen der neuen Ontologie-Metadaten
 ----------------------------------------
 
-Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${dwhOntologyVersion}.jar` entnommen oder über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${dwhOntologyVersion}/cda-ontology-${dwhOntologyVersion}.jar)heruntergeladen werden:
+Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${dwhOntologyVersion}.jar` entnommen oder über das Paket [CDA-Ontology](${releaseRepoUrl}/org/aktin/cda-ontology/${dwhOntologyVersion}/cda-ontology-${dwhOntologyVersion}.jar) heruntergeladen werden:
 
 ```
 wget ${releaseRepoUrl}/org/aktin/cda-ontology/${dwhOntologyVersion}/cda-ontology-${dwhOntologyVersion}.jar
@@ -403,17 +370,8 @@ ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-*.deployed
 
 Sollte eine Datei angezeigt werden, war das Update erfolgreich.Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen, melden Sie uns bitte den Fehler zusammen mit dem Wildfly-Konsolenlog, zufinden unter `/var/log/wildfly/console.log` oder `/opt/wilfly*/standalone/logs/...`
 
+Nach dem erfolgreichen Update können Sie auf der Seite _`http://IHRSERVER/aktin/admin/plain/test.html`_ die Grundfunktionalität testen.
 
-Nach dem erfolgreichen Update können Sie auf der Seite _`http://IHRSERVER/aktin/admin/test/`_ die Grundfunktionalität testen.
-
-[Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
-Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
-Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
-Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
-
-[Test server configuration]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
-Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Maile-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
-
-[Test server configuration]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"
+Eine weiterführende Anleitung zum testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
 
 Sollten weitere Probleme entstehen, kontaktieren Sie uns bitte unter it-support(at)aktin.org

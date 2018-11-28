@@ -1,6 +1,9 @@
 ﻿Firewall-Einstellungen
 ======================
 
+- [Externer Zugriff](#externer-zugriff)
+- [Interne Regeln](#interne-regeln)
+
 Externer Zugriff
 ----------------
 
@@ -18,6 +21,4 @@ Warehouse sowie Konfigurationoberflächen zuzugreifen.
 Zusätzlich werden Datenimport per RESTful oder SOAP-Schnittstelle über HTTP
 an /aktin/cda gesendet.
 
-Zum Versenden von Benachrichtgungen muss der Server intern
-Emails an ausgewählte lokale Adressen versenden können. Dazu muss
-ein SMTP Server konfiguriert werden.
+Zum Versenden von Benachrichtgungen muss der Server intern Emails an ausgewählte lokale Adressen versenden können. Dazu muss ein SMTP Server konfiguriert werden.

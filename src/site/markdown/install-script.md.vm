@@ -1,11 +1,21 @@
 ﻿Automatische Konfiguration des AKTIN-Applikations-Server mit dem Installationsskript
 ===============================================
 
-Unser Installationsskript wurde getestet mit Debian 8 und CentOS 7.
-Wenn Sie ein anderes System verwenden, müssen Sie die Skripte evtl. 
-anpassen oder die enthaltenen Schritte manuell durchführen.
+- [Installation der Basissoftware](#installation-der-basissoftware)
+- [Konfigurationen und lokale Einstellungen](#konfigurationen-und-lokale-einstellungen)
+  * [Aktin-Properties](#aktin-properties)
+  * [E-Mail-Konfiguration](#e-mail-konfiguration)
+- [Aktin Deployment](#aktin-deployment)
+- [Test der Betriebsfähigkeit](#test-der-betriebsf-higkeit)
+  * [Test des Data Warehouse](#test-des-data-warehouse)
+  * [Test der Importschnittstelle](#test-der-importschnittstelle)
+  * [Test der Verbindung und E-Mail-Konfiguration](#test-der-verbindung-und-e-mail-konfiguration)
 
-Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Installationsvoraussetzungen](install-requirements.html).
+Unser Installationsskript wurde getestet mit Debian 8 und CentOS 7. Wenn Sie ein anderes System verwenden, müssen Sie die Skripte anpassen oder die enthaltenen Schritte manuell durchführen.
+
+Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Server-Installation](install-requirements.html).
+
+# Installation der Basissoftware
 
 Beachten Sie bitte ob Java installiert ist, falls eine bestehende Betriebsversion verwendet wird. 
 Es wird die Version 8 vom Openjdk installiert, sind bereits niedrigere Versionen von Java installiert, 
@@ -23,9 +33,7 @@ In der Konsole sehen Sie dann ähnlich dem Folgenden:
 Linux debian-8 3.16.0-4-amd64 #1 SMP Debian 3.16.7-ckt20-1+deb8u1 (2015-12-14) x86_64 GNU/Linux
 ```
 
-Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server.
-Wechseln Sie zunächst zum Benutzer `root` (z.B. via `su -`). Anschließend
-können Sie unser Paket unter folgendem Link herunterladen:
+Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server. Wechseln Sie zunächst zum Benutzer `root` (z.B. via `su -`). Anschließend können Sie unser Paket unter folgendem Link herunterladen:
 
 ${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
 
@@ -34,18 +42,14 @@ z.B. mit
 ```
 # wget ${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
 ```
-(evtl. mit Option `--no-check-certificate` bei Zertifikatfehlern).
-
-Wenn das Paket heruntergeladen ist, kann es entpackt werden mit 
+(evtl. mit Option `--no-check-certificate` bei Zertifikatfehlern). Wenn das Paket heruntergeladen ist, kann es entpackt werden mit 
 
 ```
 tar xvzf dwh-install-${project.version}.tar.gz
 ```
-Die Dateien werden dann automatisch in 
-den Ordner `aktin-dwh-installer` entpackt.
+Die Dateien werden dann automatisch in den Ordner `aktin-dwh-installer` entpackt.
 
-Die Installation benötigt Zugriff auf das Internet - speziell die jeweiligen 
-Repositories und die Server der Universität Oldenburg, um die benötigten Pakete herunterzuladen.
+Die Installation benötigt Zugriff auf das Internet - speziell die jeweiligen Repositories und die Server der Universität Oldenburg, um die benötigten Pakete herunterzuladen.
 
 Unter Debian 8, starten Sie nun das Skript 
 
@@ -57,28 +61,77 @@ Unter CentOS 7, starten Sie nun das Skript
 ```
 ./aktin-dwh-installer/install_centos.sh
 ```
-SELinux wird in dem Prozess deaktiviert. Sollten Sie SELinux verwenden wollen 
-müssen Sie es entsprechend manuell konfigurieren - oder die Skriptinhalte 
-selektiv manuell ausführen.
+SELinux wird in dem Prozess deaktiviert. Sollten Sie SELinux verwenden wollen müssen Sie es entsprechend manuell konfigurieren - oder die Skriptinhalte selektiv manuell ausführen.
 
-Die Installation kann bis zu 20 Minuten dauern. 
-Um die Konsolenausgaben umzuleiten, können Sie alternativ auch 
+Die Installation kann bis zu 20 Minuten dauern. Um die Konsolenausgaben umzuleiten, können Sie alternativ auch 
 
 ```
 ./aktin-dwh-installer/install_debian.sh > install-aktin-dwh.log
 ```
 ausführen. Die Logausgaben finden Sie dann in der Datei `install-aktin-dwh.log`.
 
-Während der Installation werden Sie zur Konfiguration der `aktin.properties` aufgefordert. In dieser muss als minimale Anpassung ein an Sie ausgebebender Api-Key hinterlegt werden, unter `broker.keys=XXXyourapikeyXXX`. 
+# Konfigurationen und lokale Einstellungen 
 
-Des Weiteren sollten Sie ihre E-Mail-Konfiguration anzupassen. Die Einstellungsdatei befindet sich unter `dwh-update/email.config`, in dieser Datei müssen alle wichtigen Parameter für die automatische Emailbenachrichtigung konfiguriert oder überprüft werden. Wird bei der Installation diese Datei nicht konfiguriert, so werden Standardwerte gesetzt, die nicht zu einer Benachrichtigung führen!
+Während der Installation werden Sie zur Konfiguration der `aktin.properties` aufgefordert. Des Weiteren sollten Sie ihre E-Mail-Konfiguration anzupassen. Die Einstellungsdatei befindet sich unter `dwh-update/email.config`, in dieser Datei müssen alle wichtigen Parameter für die automatische Emailbenachrichtigung konfiguriert oder überprüft werden.
 
-Für die Konfiguration der Dateien finden Sie Informationen unter: https://aktin.org/software/0.10.1/server/update-manual.html  
+## Aktin-Properties
 
 Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
 
 ```
 nano /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties
+```
+
+Wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die die Berichte und Meldungen geschickt werden sollen. Es ist auch möglich eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
+
+Auch sollten Sie unter `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde. Sollten Sie noch keinen Key bekommen haben, melden Sie sich bitte bei it-support(at)aktin.org. 
+
+Welche Wirkung die Angaben haben, finden Sie in diesem Abschnitt weiter unten in der Template-Datei.
+
+Template-Datei für `aktin.properties`
+
+```
+# Currently not used, may be changed (Name of the installation)
+local.cn=AKTIN DWH
+# Used in AKTIN reports, should contain the name of the Organization (Hospital)
+local.o=Ev. Klinikum Beispielhausen
+# Used in AKTIN reports, should contain the name of the Unit (Notaufnahme, Rettungsstelle, ZNA, etc.)
+local.ou=Notaufnahme
+# Town / Stadt
+local.l=Beispielhausen
+# State / Bundesland
+local.s=Niedersachen
+# Country / Staat
+local.c=Deutschland
+# default E-Mail-Address for notifications, reports (non technical); multiple Adresses possible (comma separated in one line)
+local.email=zna-contact@klinikum-beipielhausen.de
+local.tz=Europe/Berlin
+# Language tag according to IETF BCP 47. If not defined, the system language will be used.
+local.language=de-DE
+# location of the R standalone executable
+rscript.binary=/usr/bin/Rscript
+# needed for read/write access to the i2b2 database
+i2b2.project=AKTIN
+i2b2.datasource.crc=java:/QueryToolDemoDS
+# needed for i2b2 authentication and user management
+i2b2.service.pm=http://localhost:9090/i2b2/services/PMService/
+i2b2.service.domain=i2b2demo
+# TODO create dir /var/lib/aktin and chown to wildfly
+report.data.path=/var/lib/aktin/reports
+report.temp.path=/var/tmp/report-temp
+report.archive.path=/var/lib/aktin/report-archive
+broker.data.path=/var/lib/aktin/broker
+broker.archive.path=/var/lib/aktin/broker-archive
+broker.uris=https://broker.aktin.org/broker/
+broker.intervals=PT15M
+# Used in AKTIN to connect to the broker, you can get your API key from it-support@aktin.org
+broker.keys=XXXyourapikeyXXX
+db.datasource=java:jboss/datasources/AktinDS
+email.session=java:jboss/mail/AktinMailSession
+email.replyto=it-support@aktin.org
+wildfly.management.url=http://localhost:19990/management
+wildfly.management.user=admin
+wildfly.management.password=admin2
 ```
 
 Anschließend muss die Datei `aktin.properties` in das Konfigurationsverzeichnis des Anwendungsservers kopiert werden. Dies können Sie mit folgendem Befehl vollziehen:
@@ -88,6 +141,59 @@ cp -v /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly
 ```
 
 Die Befehle bezüglich der Datei `aktin.properties` werden Ihnen auch beim Installationsvorgang angezeigt.
+
+## E-Mail-Konfiguration
+
+Bitte tragen Sie in der Datei `email.config` die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
+
+Wenn Sie Änderungen an der bereits eingestellten E-Mail vornehmen möchten, rufen führen Sie bitte folgende Schritte durch. Bitte beachten Sie, dass die aktuellen Einstellungen nicht in `email.config` zu finden sind. Diese entnehmen Sie bitte Ihre eigenen Daten oder den vorherigen Installationsskripte.
+
+Bitte öffnen Sie `email.config`, auf dem Server oder an Ihrer Arbeitsrechner und laden die Datei dann hoch.
+
+```
+nano email.config
+```
+
+In dieser Datei werden die Einstellungen für den Versand von E-Mails konfiguriert. Hierbei muss man besonders auf die Einstellungen des Mailservers achten und `usessl` und `usetls` richtig setzen, dementsprechend auch den `smtpport`.
+
+Sollten Sie bereits E-Mail eingerichtet haben und möchten diese nun ändern, müssen die folgenden Schritte zusätzlich durchgefführt werden:
+
+Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root` Rechten ausgeführt werden. 
+Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
+
+Template-Datei für E-Mail-Konfiguration `email.config`
+
+```
+#
+#     change mail server configuration here
+#
+#     mail server name
+#
+smtphost=smtp.web.de
+#
+#     mail server port, e.g. 465 (SSL) or 587 (TLS)
+#
+smtpport=587
+#
+#     user name for authentication
+#
+smtpuser=aktin-test@web.de
+#
+#     password for authentication
+#
+smtppass=password
+#
+#     email address (from)
+#
+mailfrom=aktin-test@web.de
+#
+#     security configuration, only one of ssl/tls can be used
+#
+usessl=false
+usetls=true
+```
+
+# Aktin Deployment
 
 Nach den erfolgreichen Anpassungen müssen Sie nochmals das Installationsskript starten:
 
@@ -102,22 +208,22 @@ Unter CentOS 7, starten Sie nun das Skript
 ./aktin-dwh-installer/install_centos.sh
 ```
 
-Nach der Installation der notwendigen Pakete und der Einrichtung der Dienste sowie des i2b2 ruft der Installationsskript den neusten Updateskript auf, um die Einrichtung der neusten Software des Aktin-Projektes sowie die weiteren Anpassungen durchzuführen. In diesem Schritt kann der Skript unterbrochen werden, sollten Angaben Ihrerseits nötig sein. Auf die Angaben werden Sie in der Konsole hingewiesen. 
+Nach der Installation der notwendigen Pakete und der Einrichtung der Dienste sowie des i2b2 ruft das Installationsskript das neueste Updateskript auf, um die Einrichtung der neusten Software des Aktin-Projektes sowie die weiteren Anpassungen durchzuführen. In diesem Schritt kann der Skript unterbrochen werden, sollten Angaben Ihrerseits nötig sein. Auf die Angaben werden Sie in der Konsole hingewiesen. 
 
 Informationen zum Update finden Sie unter [skriptbasierten Update](update-auto.html) oder [manuellen Update](update-manual.html).
 
-Bevor die Funktionalität des Servers getestet werden, benötigt der Server evtl. noch wenige Minuten, um alle beteiligten Dienste zu starten und einzurichten.
-
-Nach der erfolgreichen Installation können Sie auf der Seite _`http://IHRSERVER/aktin/admin/test/`_ die Funktionalität testen.
+Bevor die Funktionalität des Servers getestet werden können, benötigt der Server evtl. noch wenige Minuten, um alle beteiligten Dienste zu starten und einzurichten.
 
 Sollten Sie Fragen zur Installation haben oder Probleme begegnen, kontaktieren Sie uns gerne unter it-support(at)aktin.org
 
+# Test der Betriebsfähigkeit
+
+Nach der Installation der Aktin-Software ist es anzuraten, dessen Betriebsfähigkeit zu testen. Im folgenden Bereich können Sie Methoden und Funktionalitäten für die Verifikation der Betriebsfähigkeit entnehmen.
+
 Test des Data Warehouse
 -----------------------
-Wenn die Installation erfolgreich durchgeführt wurde, kann
-anschließend per Web Browser auf das integrierte Data 
-Warehouse zugegriffen werden. In der Adresszeile muss die 
-entsprechende IP-Adresse / Servername angepasst werden:
+
+Wenn die Installation erfolgreich durchgeführt wurde, kann anschließend per Web Browser auf das integrierte Data Warehouse zugegriffen werden. In der Adresszeile muss die entsprechende IP-Adresse / Servername angepasst werden:
 `http://IHRSERVER/webclient/`
 
 
@@ -134,7 +240,7 @@ java-client-fhir.bat http://IHRSERVER/aktin/cda/fhir/Binary examples\basismodul-
 Test der Verbindung und E-Mail-Konfiguration
 --------------------------------------------
 
-Unter dem Link _`http://IHRSERVER/aktin/admin/test/`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
+Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
 
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
 Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.

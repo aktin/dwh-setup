@@ -1,15 +1,26 @@
 Installation und Update des AKTIN-Applikationsserver
 ===============================================
 
-Diese Informationen richten sich an die Server-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Datawarehouse läuft.
+  - [Komplette Neuinstallation](#komplette-neuinstallation)
+  - [Neuinstallation des Aktin-Applikationsservers](#neuinstallation-des-aktin-applikationsservers)
+  - [Automatisches Update für Debian (und CentOS)](#automatisches-update-f-r-debian--und-centos-)
+  - [Manuelles Update für Debian, CentOS oder andere Betriebssysteme](#manuelles-update-f-r-debian--centos-oder-andere-betriebssysteme)
+  - [Software-Pakete](#software-pakete)
+  - [Kontakt](#kontakt)
 
-Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte.
+Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Datawarehouse läuft.
 
-Nach dem erfolgreichen Update oder Installation können Sie auf der Seite _`http://IHRSERVER/aktin/admin/test/`_ die Funktionalität testen.
+Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte. 
 
-Neuinstallation
+Nach dem erfolgreichen Update oder Installation können Sie auf der Seite _`http://IHRSERVER/aktin/admin/plain/test.html`_ die Funktionalität testen.
+
+Komplette Neuinstallation
 ---------------
-Wenn Sie noch keine Installation haben, oder den Server komplett neu aufsetzen wollen, dann folgen Sie bitte der Anleitung unter dem Punkt AKTIN (NEU-)INSTALLATION. Bitte beachten Sie die [Voraussetzungen](install-requirements.html), dort werden die verschiedenen Varianten der Neu-Installation beschrieben.
+Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionierende Installation eines auf Linux basierenden Server-Betriebsystems. Es wird empfohlen die von uns getesten Debian 8 oder CentOS 7 einzusetzen. Bitte beachten Sie die [Server-Installation](install-requirements.html), dort werden die verschiedenen Varianten der Neu-Installation beschrieben.
+
+## Neuinstallation des Aktin-Applikationsservers
+
+Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu installiert, so müssen sie die Installation des AKTIN-Applikationsservers vornehmen. Eine Anleitung für die Verwendung des automatischen Installationsskriptes finden Sie auf der Seite [Installationsskript](install-script.html).
 
 Sie erhalten mit einer Neuinstallation automatisch den neuesten Release-Stand (${project.version}), d. h. anschließend ist kein Update/Patch mehr notwendig.
 
@@ -33,8 +44,6 @@ __Update auf ${project.version}__
 
 Bitte folgen Sie der Anleitung zum [manuellen Update](update-manual.html)
 
-
-
 Software-Pakete
 ---------------
 
@@ -45,28 +54,6 @@ _Installationspaket mit DWH-J2EE-${dwhJ2EEVersion}_
 _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_
 
 [${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
-
-Beschreibungen und Hinweise
----------------------------
-
-_Installation_
-
-[Voraussetzungen](install-requirements.html)
-[Installationsskript](install-script.html)
-[Firewall Hinweise](install-firewall.html)
-
-_Update_
-
-[Skpriptbasiertes Update](update-auto.html)
-[Manuelles Update](update-manual.html)
-
-_Changelog_
-
-[Changelog](changelog.html)
-
-_Import, CDA und Schnittstelle_
-
-[Import, CDA und Schnittstelle](../../${dwhImportVersion}/dwh-import/index.html)
 
 
 Kontakt

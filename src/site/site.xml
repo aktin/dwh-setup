@@ -5,16 +5,16 @@
 		<version>1.5</version>
 	</skin>
 	<body>
-		<menu name="Importschnittstelle CDA">
-			<item href="../dwh-import/index.html" name="Importbeschreibung" />
+		<menu name="Import, CDA und Schnittstelle">
+			<item href="../../${dwhImportVersion}/dwh-import/index.html" />
 		</menu>
 		<menu name="AKTIN Installation Übersicht">
-			<item href="index.html" name="AKTIN Server Installation" />
+			<item href="index.html" name="AKTIN Installation" />
 		</menu>
 		<menu name="Installation">
-			<item href="install-requirements.html" name="Voraussetzungen" />
-			<item href="install-script.html" name="Installationsskript" />
 			<item href="install-firewall.html" name="Firewall" />
+			<item href="install-requirements.html" name="Server-Installation" />
+			<item href="install-script.html" name="Installationsskript" />
 		</menu>
 		<menu name="Updates und Patches">
 			<item href="update-auto.html" name="Automatisches Update" />

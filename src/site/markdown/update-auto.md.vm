@@ -1,6 +1,13 @@
 Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian (und CentOS)
 ==================================================
 
+  - [Häufige Fehler](#h-ufige-fehler)
+  - [Test der Verbindung und E-Mail-Konfiguration](#test-der-verbindung-und-e-mail-konfiguration)
+  - [Lokale Konfigurationen in der Datei `aktin.properties`](#lokale-konfigurationen-in-der-datei--aktinproperties-)
+  - [E-Mail-Konfiguration und Änderungen](#e-mail-konfiguration-und--nderungen)
+
+
+
 Für laufende DWH Instanzen auf Debian Servern stellen wir ein Update-Skript bereit, zu finden unter 
 [Debian Update Paket](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
 Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. 
@@ -79,24 +86,9 @@ Sollte eine Datei angezeigt werden, war das Update erfolgreich.
 Test der Verbindung und E-Mail-Konfiguration
 --------------------------------------------
 
-Unter dem Link _`http://IPADRESSE/aktin/admin/plain/test.html`_ kann man die oben durchgeführten Anpassungen nun testen. 
+Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die oben durchgeführten Anpassungen nun testen. 
 
-![Test server configuration][testbildschirm]
-Der erste Button testet die Erreichbarkeit des zentralen AKTIN-Broker. Der lokale Server übersendet dem zentralen Brokernur Statusinformationen wie die Serverversion und Aktivität.
-Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
-Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
-
-![Test server configuration][erfolg]
-Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Maile-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
-
-![Test server configuration][fehler]
-Sollten weitere Probleme entstehen, kontaktieren Sie uns bitte unter it-support(at)aktin.org
-
-[testbildschirm]: update_7_test/Screenshot_1.png "Testbildschirm"
-[erfolg]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
-[fehler]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"
-
-<a name="localconf"></a>
+Eine weiterführende Anleitung zum testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
 
 Lokale Konfigurationen in der Datei `aktin.properties`
 ------------------------------------------------------
@@ -106,14 +98,7 @@ Die Datei `aktin.properties` muss für jeden Standort individuell angepasst werd
 ```
 nano aktin.properties
 ```
-Wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die die Berichte und Meldungen geschickt werden sollen. 
-Es ist auch möglich eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht 
-gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
-
-Auch sollten Sie unter `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde. Sollten Sie noch keinen Key bekommen haben, 
-melden Sie sich bitte bei it-support(at)aktin.org. 
-
-Welche Wirkung die Angaben haben, finden Sie in diesem Abschnitt weiter unten in der Template-Datei.
+Ein Template sowie weiterführende Erläuterungen zu wichtigen Einstellungen finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin-Properties".
 
 Nach Bearbeiten der Datei muss diese in den Konfigurationsordner des Wildfly-Servers kopiert werden, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`.
 
@@ -129,54 +114,6 @@ service wildfly stop
 service wildfly start
 ```
 
-Template-Datei für `aktin.properties`
-
-```
-# Currently not used, may be changed (Name of the installation)
-local.cn=AKTIN DWH
-# Used in AKTIN reports, should contain the name of the Organization (Hospital)
-local.o=Ev. Klinikum Beispielhausen
-# Used in AKTIN reports, should contain the name of the Unit (Notaufnahme, Rettungsstelle, ZNA, etc.)
-local.ou=Notaufnahme
-# Town / Stadt
-local.l=Beispielhausen
-# State / Bundesland
-local.s=Niedersachen
-# Country / Staat
-local.c=Deutschland
-# default E-Mail-Address for notifications, reports (non technical); multiple Adresses possible (comma separated in one line)
-local.email=zna-contact@klinikum-beipielhausen.de
-local.tz=Europe/Berlin
-# Language tag according to IETF BCP 47. If not defined, the system language will be used.
-local.language=de-DE
-# Korrektur der Server URL (der Emails)
-# local.server.url=http://IhrServerUrlOderIp/
-# location of the R standalone executable
-rscript.binary=/usr/bin/Rscript
-# needed for read/write access to the i2b2 database
-i2b2.project=AKTIN
-i2b2.datasource.crc=java:/QueryToolDemoDS
-# needed for i2b2 authentication and user management
-i2b2.service.pm=http://localhost:9090/i2b2/services/PMService/
-i2b2.service.domain=i2b2demo
-# TODO create dir /var/lib/aktin and chown to wildfly
-report.data.path=/var/lib/aktin/reports
-report.temp.path=/var/tmp/report-temp
-report.archive.path=/var/lib/aktin/report-archive
-broker.data.path=/var/lib/aktin/broker
-broker.archive.path=/var/lib/aktin/broker-archive
-broker.uris=https://broker.aktin.org/broker/
-broker.intervals=PT15M
-# Used in AKTIN to connect to the broker, you can get your API key from it-support@aktin.org
-broker.keys=XXXyourapikeyXXX
-db.datasource=java:jboss/datasources/AktinDS
-email.session=java:jboss/mail/AktinMailSession
-email.replyto=it-support@aktin.org
-wildfly.management.url=http://localhost:19990/management
-wildfly.management.user=admin
-wildfly.management.password=admin2
-```
-
 [Zurück](#confback)
 
 <a name="emailconf"></a>
@@ -185,51 +122,15 @@ E-Mail-Konfiguration und Änderungen
 ---------------------------------
 Bitte tragen Sie in der Datei `email.config` die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
 
-Wenn Sie Änderungen an der bereits eingestellten E-Mail vornehmen möchten, rufen führen Sie bitte folgende Schritte durch. Bitte beachten Sie, dass die aktuellen Einstellungen nicht in `email.config` zu finden sind. Diese entnehmen Sie bitte Ihre eigenen Daten oder den vorherigen Installationsskripte.
-
-Bitte öffnen Sie `email.config`, auf dem Server oder an Ihrer Arbeitsrechner und laden die Datei dann hoch.
-
 ```
 nano email.config
 ```
 
-In dieser Datei werden die Einstellungen für den Versand von E-Mails konfiguriert. Hierbei muss man besonders auf die Einstellungen des Mailservers achten und `usessl` und `usetls` richtig setzen, dementsprechend auch den `smtpport`.
+Ein Template und weiterführende Erläuterungen der Parameter finden Sie auf der Seite [Installationsskript](install-script.html) im bereich "E-Mail-Konfiguration".
 
 Sollten Sie bereits E-Mail eingerichtet haben und möchten diese nun ändern, müssen die folgenden Schritte zusätzlich durchgefführt werden:
 
 Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root` Rechten ausgeführt werden. 
 Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
-
-Template-Datei für E-Mail-Konfiguration `email.config`
-
-```
-#
-#     change mail server configuration here
-#
-#     mail server name
-#
-smtphost=smtp.web.de
-#
-#     mail server port, e.g. 465 (SSL) or 587 (TLS)
-#
-smtpport=587
-#
-#     user name for authentication
-#
-smtpuser=aktin-test@web.de
-#
-#     password for authentication
-#
-smtppass=password
-#
-#     email address (from)
-#
-mailfrom=aktin-test@web.de
-#
-#     security configuration, only one of ssl/tls can be used
-#
-usessl=false
-usetls=true
-```
 
 [Zurück](#emailback)

@@ -1,70 +1,54 @@
 ﻿Voraussetzungen für eine manuelle Installation des Betriebssystems für den AKTIN-Applikations-Server
 ================================================================
 
-Grundsätzlich sollte unsere Software mit allen Linux-Systemen 
-verwendbar sein.
+  - [Debian 8](#debian-8)
+  - [CentOS 7](#centos-7)
+  - [Benötigte Pakete](#ben-tigte-pakete)
+  - [Manuelle Installation anderer Distributionen](#manuelle-installation-anderer-distributionen)
 
-Für Debian 8 (und eingeschränkt CentOS 7) stellen wir Skripte für 
-eine automatische Installation und Konfiguration zur Verfügung. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Debian 8 funktioniert. Installationen mit Debian 9.x führen zu Problemen mit dem Installationskript.
 
-Nachfolgend ist die Installation der Pakete für ausgewählte Distributionen
-beschrieben:
+Grundsätzlich sollte unsere Software mit allen Linux-Systemen verwendbar sein.
+
+Für Debian 8 (und eingeschränkt CentOS 7) stellen wir Skripte für eine automatische Installation und Konfiguration zur Verfügung. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Debian 8 funktioniert. Installationen mit Debian 9.x führen aktuell zu Problemen mit dem Installationskript.
+
+Nachfolgend ist die Installation der Pakete für ausgewählte Distributionen beschrieben:
 
 Debian 8
 --------
-Wir empfehlen für eine Neuinstallation ein Debian8-Minimalsystem ohne 
-Benutzeroberfläche. Als Installationsmedium kann die [Network-Install-CD]
+Wir empfehlen für eine Neuinstallation ein Debian8-Minimalsystem ohne Benutzeroberfläche. Als Installationsmedium kann die [Network-Install-CD]
 (https://cdimage.debian.org/cdimage/archive/8.11.0/) verwendet werden. Unter dem angegeben Link müssen sie die Zielplattform auswählen und anschließend "iso-cd", um zur Network-Install-Cd zu gelangen.
 
 Nachfolgend Hinweise zur Installation:
 
-Bei der Eingabe des root-Passworts empfehlen wir nur Buchstaben 
-(ohne y, z und Umlaute) und Zahlen zu verwenden. Falls sich bei 
-der Konfigurations des Tastaturlayouts Probleme ergeben, können
+Bei der Eingabe des root-Passworts empfehlen wir nur Buchstaben (ohne y, z und Umlaute) und Zahlen zu verwenden. Falls sich bei der Konfigurations des Tastaturlayouts Probleme ergeben, können
 Sie sich so dennoch problemlos einloggen.
 
-Anschließend muss ein weiterer Benutzer angelegt werden. Diesen 
-Benutzer können Sie nennen wie Sie möchten - sollten aber auch hier
-Name und Passwort notieren. AKTIN benötigt diesen Benutzer nicht.
+Anschließend muss ein weiterer Benutzer angelegt werden. Diesen Benutzer können Sie nennen wie Sie möchten - sollten aber auch hier Name und Passwort notieren. AKTIN benötigt diesen Benutzer nicht.
 
-Bei der Zuteilung des Speicherplatz bzw. Partitionierung empfehlen 
-wir den gesamten Speicherplatz in einer Partition zu verwenden (der 
-Einfachheit halber). 
+Bei der Zuteilung des Speicherplatz bzw. Partitionierung empfehlen wir den gesamten Speicherplatz in einer Partition zu verwenden (der Einfachheit halber). 
 
 ![Partitionierung bei Debian][debian_disks]
 
-
-Sie können die Partitionierung auch anders vornehmen, sollten dann aber
-berücksichtigen, dass die `/var`-Partition den größten Anteil des
-Speicherplatzes erhält. Eine separate `/home`-Partition wird nicht 
+Sie können die Partitionierung auch anders vornehmen, sollten dann aber berücksichtigen, dass die `/var`-Partition den größten Anteil des Speicherplatzes erhält. Eine separate `/home`-Partition wird nicht 
 benötigt.
 
-Wenn Ihr System keinen direkten Zugriff auf das Internet hat, sollte
-für die Installation ein Proxy eingerichtet werden. Damit können 
-Sicherheitsupdates und zusätzliche Pakete heruntergeladen werden.
+Wenn Ihr System keinen direkten Zugriff auf das Internet hat, sollte für die Installation ein Proxy eingerichtet werden. Damit können Sicherheitsupdates und zusätzliche Pakete heruntergeladen werden.
 Nach der Installation kann der Proxyzugang wieder deaktiviert werden.
 
 ![Proxy einrichten][debian_proxy]
 
 
-Im Dialogfeld für die Softwareauswahl ist darauf zu achten, dass 
-ein Haken NUR bei "SSH server" gesetzt ist. Alle anderen Haken 
-sollten entfernt werden. Auf diese Weise wird sichergestellt, dass 
-keine unnötige Software oder Internetdienste auf dem Server 
-installiert werden. 
+Im Dialogfeld für die Softwareauswahl ist darauf zu achten, dass ein Haken NUR bei "SSH server" gesetzt ist. Alle anderen Haken sollten entfernt werden. Auf diese Weise wird sichergestellt, dass keine unnötige Software oder Internetdienste auf dem Server installiert werden. 
 
 ![Softwareauswahl][debian_software]
 
-Nach Abschluss des Installationsassistenten muss der Boot-Loader
-auf die Festplatte geschrieben werden. Dies müssen Sie explizit
-bestätigen.
+Nach Abschluss des Installationsassistenten muss der Boot-Loader auf die Festplatte geschrieben werden. Dies müssen Sie explizit bestätigen.
 
 ![Boot loader][debian_bootloader]
 
 Anschließend started der Server neu (vorher CD entfernen).
 
-Nach der Installation kann unser [AKTIN-Installationsskript](install-script.html) 
-alle weiteren Schritte automatisch durchführen.
+Nach der Installation kann unser [AKTIN-Installationsskript](install-script.html) alle weiteren Schritte automatisch durchführen.
 
 
 [debian_disks]: screens_deb/Screenshot_8.png "Gesamten Speicherplatz in einer Partition"
@@ -75,16 +59,11 @@ alle weiteren Schritte automatisch durchführen.
 CentOS 7
 --------
 
-Auch bei CentOS 7 genügt eine Minimalinstallation ohne Benutzeroberfläche oder
-weitere Internetdienste. Bitte beachten Sie bei der Installation die Hinweise 
-wie bei Debian 8 angegeben.
+Auch bei CentOS 7 genügt eine Minimalinstallation ohne Benutzeroberfläche oder weitere Internetdienste. Eine Liste der aktuellen CentOS 7 ISOs finden sie unter [CentOS 7-ISO](https://wiki.centos.org/Download). Bitte beachten Sie bei der Installation die Hinweise wie bei Debian 8 angegeben.
 
-Nach der Installation kann unser [AKTIN-Installationsskript](install-script.html) 
-alle weiteren Schritte automatisch durchführen.
+Nach der Installation kann unser [AKTIN-Installationsskript](install-script.html) alle weiteren Schritte automatisch durchführen.
 
-
-
-Andere Distributionen
+Benötigte Pakete
 ---------------------
 
 Die folgende Software wird benötigt:
@@ -93,9 +72,7 @@ Die folgende Software wird benötigt:
 * Postgres Datenbank Server
 * Java 8 runtime environment (headless ausreichend)
 
-Wir empfehlen die Software möglichst aus den gewarteten Repositories
-der entsprechenden Linux-Distribution zu verwenden. So können einfach 
-und zuverlässig (Sicherheits-)Updates eingespielt werden.
+Wir empfehlen die Software möglichst aus den gewarteten Repositories der entsprechenden Linux-Distribution zu verwenden. So können einfach und zuverlässig (Sicherheits-)Updates eingespielt werden.
 
 
 Nachfolgend Paketnamen der gängigen Distributionen
@@ -108,7 +85,7 @@ Nachfolgend Paketnamen der gängigen Distributionen
 | R | r-cran-xml r-cran-lattice | R |
 
 
-Manuelle Installation
+Manuelle Installation anderer Distributionen
 ---------------------
 
 Für manuelle Installation anderer Linux-Distributionen empfehlen wir eine Anpassung der gelieferten Skripte. Sollten Sie Fragen dazu haben, wenden Sie sich gerne an uns unter it-support(at)aktin.de
