@@ -5,7 +5,7 @@ Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian (und CentOS)
   - [Test der Verbindung und E-Mail-Konfiguration](#test-der-verbindung-und-e-mail-konfiguration)
   - [Lokale Konfigurationen in der Datei `aktin.properties`](#lokale-konfigurationen-in-der-datei--aktinproperties-)
   - [E-Mail-Konfiguration und Änderungen](#e-mail-konfiguration-und--nderungen)
-
+  - [Aktin Diagnose-Skript](#aktin-diagnose-skript)
 
 
 Für laufende DWH Instanzen auf Debian Servern stellen wir ein Update-Skript bereit, zu finden unter 
@@ -134,3 +134,9 @@ Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `r
 Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
 
 [Zurück](#emailback)
+
+# Aktin Diagnose-Skript
+
+Sollten Probleme beim automatischen Update auftreten, so führen sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html) im bereich "Aktin Diagnose-Skript".
+
+Senden sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Problemen.

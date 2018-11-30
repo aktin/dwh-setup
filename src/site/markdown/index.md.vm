@@ -6,6 +6,7 @@ Installation und Update des AKTIN-Applikationsserver
   - [Automatisches Update für Debian (und CentOS)](#automatisches-update-f-r-debian--und-centos-)
   - [Manuelles Update für Debian, CentOS oder andere Betriebssysteme](#manuelles-update-f-r-debian--centos-oder-andere-betriebssysteme)
   - [Software-Pakete](#software-pakete)
+  - [Aktin-Software-Support](#aktin-software-support)
   - [Kontakt](#kontakt)
 
 Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Datawarehouse läuft.
@@ -55,8 +56,14 @@ _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_
 
 [${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
 
+# Aktin-Software-Support
+
+Sollten Probleme bei der Installation, dem Update oder dem betrieb der Aktin-Software auftreten, so führen sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html) im bereich "Aktin Diagnose-Skript".
+
+Senden sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Problemen.
 
 Kontakt
 -------
+
 Für weitere Infos und Fragen:
 it-support(at)aktin.org
