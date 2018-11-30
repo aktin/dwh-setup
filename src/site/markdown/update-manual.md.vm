@@ -17,6 +17,7 @@ Manualles Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian, CentOS
   - [Erhöhung der JAVA-VM Arbeitsspeicher für die Wildfly-Service](#erh-hung-der-java-vm-arbeitsspeicher-f-r-die-wildfly-service)
   - [Neustart des Wildfly-Services und Löschen der alten Softwarepakete](#neustart-des-wildfly-services-und-l-schen-der-alten-softwarepakete)
   - [Deployment des neuen Softwarepaketes](#deployment-des-neuen-softwarepaketes)
+  - [Aktin Diagnose-Skript](#aktin-diagnose-skript)
 
 Anmelden als ROOT
 -----------------
@@ -375,3 +376,9 @@ Nach dem erfolgreichen Update können Sie auf der Seite _`http://IHRSERVER/aktin
 Eine weiterführende Anleitung zum testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
 
 Sollten weitere Probleme entstehen, kontaktieren Sie uns bitte unter it-support(at)aktin.org
+
+# Aktin Diagnose-Skript
+
+Sollten Probleme beim mauellen Update auftreten, so führen sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html) im bereich "Aktin Diagnose-Skript".
+
+Senden sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Problemen.

@@ -10,6 +10,7 @@
   * [Test des Data Warehouse](#test-des-data-warehouse)
   * [Test der Importschnittstelle](#test-der-importschnittstelle)
   * [Test der Verbindung und E-Mail-Konfiguration](#test-der-verbindung-und-e-mail-konfiguration)
+- [Aktin Diagnose-Skript](#aktin-diagnose-skript)
 
 Unser Installationsskript wurde getestet mit Debian 8 und CentOS 7. Wenn Sie ein anderes System verwenden, müssen Sie die Skripte anpassen oder die enthaltenen Schritte manuell durchführen.
 
@@ -251,3 +252,24 @@ Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Beri
 Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Maile-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
 
 [Test server configuration]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"
+
+# Aktin Diagnose-Skript
+
+Sollten bei der installation Probleme aufgetreten sein, führen sie bitte das Aktin-Diagnose-Skript aus. Dieses befindet sich unter:
+
+```
+/opt/aktin/diagnostic_script
+```
+Sollte die Installation vorzeitig fehlgeschlagen sein finden sie das Skript alternativ unter:
+```
+/BENUTZERNAME/aktin-dwh-installer/dwh-update/
+```
+Sie können das Skript an jedem beliebigen Ort ausführen.
+```
+aktindiag.sh
+```
+Nach dem das Skript erfolgreich durchgelaufen ist, befindet sich im aktuellen Verzeichnis eine .tar.gz-Datei:
+```
+aktindiag.tar.gz
+```
+Senden sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Installations-Problemen.
