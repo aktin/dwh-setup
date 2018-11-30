@@ -270,6 +270,28 @@ chmod a+rx /var/tmp/postgres_db_script.sh
 su - postgres bash -c "/var/tmp/postgres_db_script.sh" 2>&1 | tee -a $LOGFILE
 echo AKTIN database created | tee -a $LOGFILE
 rm /var/tmp/postgres_db_script.sh
+#
+echo +++++ STEP 2.04.1 +++++ Create AKTIN Database in postgres | tee -a $LOGFILE
+UPDATETMPDIR=/var/tmp/updatesql
+mkdir $UPDATE1TMPDIR
+echo "-- executing sql update scripts" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+cp -v $INSTALL_ROOT/lib/update1.sql $UPDATETMPDIR/sql/update1.sql 2>&1 | tee -a $LOGFILE  # copy the update file 1
+cp -v $INSTALL_ROOT/lib/update2.sql $UPDATETMPDIR/sql/update2.sql 2>&1 | tee -a $LOGFILE  # copy the update file 2
+# change the permissions of the folder
+chmod 777 -R $UPDATETMPDIR 
+# call sql update script files. no console output
+echo "-- run update1" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+su - postgres bash -c "psql -d i2b2 -f $UPDATETMPDIR/sql/update1.sql" 2>&1 >> $SQLLOG
+echo "-- run update2" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+su - postgres bash -c "psql -d i2b2 -f $UPDATETMPDIR/sql/update2.sql" 2>&1 >> $SQLLOG
+# delete temp directory
+echo "- delete temp directory"  2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+rm -r $UPDATE1TMPDIR
+
+SQLDIAGSCRIPT=/opt/aktin/diagnostic_script
+mkdir $SQLDIAGSCRIPT
+echo "-- exctracting diagnose script aktindiag.sh to $SQLDIAGSCRIPT" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
+cp -v $INSTALL_ROOT/aktindiag.sh $SQLDIAGSCRIPT/aktindiag.sh 2>&1 | tee -a $LOGFILE  # copy diagnostic script
 
 echo
 echo +++++ STEP 2.05 +++++ Create Aktin Data source in wildfly | tee -a $LOGFILE
