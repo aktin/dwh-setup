@@ -61,6 +61,12 @@ CentOS 7
 
 Auch bei CentOS 7 genügt eine Minimalinstallation ohne Benutzeroberfläche oder weitere Internetdienste. Eine Liste der aktuellen CentOS 7 ISOs finden sie unter [CentOS 7-ISO](https://wiki.centos.org/Download). Bitte beachten Sie bei der Installation die Hinweise wie bei Debian 8 angegeben.
 
+Wird die Minimalinstallation ausgewählt, so muss vor der Installation des Aktin_DWHs noch das Paket wget installiert werden. Dies kann mit folgendem Befehl vollzogen werden.
+
+```
+yum -y install wget
+```
+
 Nach der Installation kann unser [AKTIN-Installationsskript](install-script.html) alle weiteren Schritte automatisch durchführen.
 
 Benötigte Pakete
