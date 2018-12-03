@@ -17,6 +17,7 @@ echo +++++ STEP 0 +++++ Installation der notwendigen Pakete | tee -a $LOGFILE
 echo
 yum clean all
 yum -y update
+yum -y install epel-release
 yum -y install java-1.8.0-openjdk-headless
 yum -y install sudo wget curl dos2unix unzip sed bc ant php php-curl openssh-server
 
@@ -86,9 +87,10 @@ Rscript -e 'install.packages("lattice", repos="https://cran.rstudio.com/")' 2>&1
 
 
 echo
-echo +++++ STEP 0.iv +++++ Deactivierung von SELinux (restart required) | tee -a $LOGFILE
+echo +++++ STEP 0.iv +++++ Deactivierung von SELinux restart required | tee -a $LOGFILE
 echo
-sudo cp /etc/sysconfig/selinux $INSTALL_ROOT/selinux.orig
+sudo cp /etc/sysconfig/selinux $INSTALL_ROOT/selinux.origls
+
 sudo cat $INSTALL_ROOT/selinux.orig | sudo sed 's|SELINUX=enforcing|SELINUX=disabled|' > /etc/sysconfig/selinux
 
 
@@ -206,7 +208,7 @@ systemctl start wildfly
 echo
 echo +++++ STEP IV +++++ Deployment der EAR und Ausführen des aktuellsten Updateskriptes | tee -a $LOGFILE
 echo
-tar xvzf $INSTALL_ROOT $PACKAGES/dwh-update-${project.version}.tar.gz | tee -a $LOGFILE
+tar xvzf $PACKAGES/dwh-update-${project.version}.tar.gz | tee -a $LOGFILE
 
 RCol='\e[0m'; Red='\e[0;31m'; BRed='\e[1;31m'; Yel='\e[0;33m'; BYel='\e[1;33m'; Gre='\e[0;32m'; BGre='\e[1;32m'; Blu='\e[0;34m'; BBlu='\e[1;34m'; 
 echo -e "${BRed}+++INFO+++${Gre}Sollte im folgenden der Skript unterbrochen werden, bitte nur den Updateskript in $INSTALL_ROOT/dwh-update ausführen.${RCol}" | tee -a $LOGFILE
