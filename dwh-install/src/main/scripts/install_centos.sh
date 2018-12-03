@@ -77,8 +77,8 @@ echo
 echo +++++ STEP 0.iii +++++ R Konfiguration | tee -a $LOGFILE
 echo
 # install R libraries for reporting, adding fedora repos
-echo Über Fedora Repo R beziehen : | tee -a $LOGFILE
-rpm -Uvh http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm 2>&1 | tee -a $LOGFILE
+#echo Über Fedora Repo R beziehen : | tee -a $LOGFILE
+#rpm -Uvh http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm 2>&1 | tee -a $LOGFILE
 # preparations for r-xml
 yum -y install libxml2 libxml2-devel 2>&1 | tee -a $LOGFILE
 yum -y install R  2>&1 | tee -a $LOGFILE
