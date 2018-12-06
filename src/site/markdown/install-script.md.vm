@@ -244,11 +244,13 @@ Test der Verbindung und E-Mail-Konfiguration
 Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
 
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
+
 Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
 Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
 Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
 
 [Test server configuration]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
+
 Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Mail-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
 
 [Test server configuration]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"
