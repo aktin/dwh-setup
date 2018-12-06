@@ -6,7 +6,7 @@
 	</skin>
 	<body>
 		<menu name="Import, CDA und Schnittstelle">
-			<item href="../../${dwhImportVersion}/dwh-import/index.html" / name="DHW-Import und Schnittstelle">
+			<item href="../../${dwhImportVersion}/dwh-import/index.html" name="DHW-Import und Schnittstelle" />
 		</menu>
 		<menu name="AKTIN Installation Übersicht">
 			<item href="index.html" name="AKTIN Installation" />
