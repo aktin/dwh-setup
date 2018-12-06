@@ -6,12 +6,12 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>dwh-update</artifactId>
-	<version>1.0rc3</version>
+	<version>1.0rc4-SNAPSHOT</version>
 
 	<parent>
 		<groupId>org.aktin.dwh</groupId>
 		<artifactId>server</artifactId>
-		<version>1.0rc3</version>
+		<version>1.0rc4-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
