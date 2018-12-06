@@ -289,7 +289,7 @@ echo "- delete temp directory"  2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
 rm -r $UPDATE1TMPDIR
 
 SQLDIAGSCRIPT=/opt/aktin/diagnostic_script
-mkdir $SQLDIAGSCRIPT
+mkdir -p $SQLDIAGSCRIPT
 echo "-- exctracting diagnose script aktindiag.sh to $SQLDIAGSCRIPT" 2>&1 | tee -a $LOGFILE | tee -a $SQLLOG
 cp -v $INSTALL_ROOT/aktindiag.sh $SQLDIAGSCRIPT/aktindiag.sh 2>&1 | tee -a $LOGFILE  # copy diagnostic script
 
