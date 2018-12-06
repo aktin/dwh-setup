@@ -1,4 +1,4 @@
-﻿Automatische Konfiguration des AKTIN-Applikations-Server mit dem Installationsskript
+﻿Installationsskript: Automatische Konfiguration des AKTIN-Applikations-Server mit dem Installationsskript
 ===============================================
 
 - [Installation der Basissoftware](#installation-der-basissoftware)
@@ -249,7 +249,7 @@ Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun
 Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
 
 [Test server configuration]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
-Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Maile-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
+Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Mail-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
 
 [Test server configuration]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"
 
