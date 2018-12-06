@@ -7,19 +7,19 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>dwh-install</artifactId>
-	<version>1.0rc4-SNAPSHOT</version>
+	<version>1.0rc2-SNAPSHOT</version>
 
 	<parent>
 		<groupId>org.aktin.dwh</groupId>
 		<artifactId>server</artifactId>
-		<version>1.0rc4-SNAPSHOT</version>
+		<version>1.0rc2-SNAPSHOT</version>
 	</parent>
 	
 	<dependencies>
 		<dependency>
 			<groupId>org.aktin.dwh</groupId>
 			<artifactId>dwh-update</artifactId>
-			<version>1.0rc4-SNAPSHOT</version>
+			<version>1.0rc2-SNAPSHOT</version>
 			<type>tar.gz</type>
 			<exclusions>
 				<!-- already bundled/included with the update -->
