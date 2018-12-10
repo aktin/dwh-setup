@@ -145,11 +145,11 @@ Die Befehle bezüglich der Datei `aktin.properties` werden Ihnen auch beim Insta
 
 ## E-Mail-Konfiguration
 
-Bitte tragen Sie in der Datei `email.config` die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
+Bitte tragen Sie in der Datei `email.config` die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese befindet sich in `/BENUTZERNAME/aktin-dwh-installer/dwh-update/` oder `/BENUTZERNAME/dwh-update/`, der jeweilige Pfad ist davon abhängig, ob sie eine Neuinstallation ode rein Update zuletzt vorgenommen haben. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
 
 Wenn Sie Änderungen an der bereits eingestellten E-Mail vornehmen möchten, rufen führen Sie bitte folgende Schritte durch. Bitte beachten Sie, dass die aktuellen Einstellungen nicht in `email.config` zu finden sind. Diese entnehmen Sie bitte Ihre eigenen Daten oder den vorherigen Installationsskripte.
 
-Bitte öffnen Sie `email.config`, auf dem Server oder an Ihrer Arbeitsrechner und laden die Datei dann hoch.
+Bitte öffnen Sie `email.config`, auf dem Server oder an Ihrer Arbeitsrechner und laden die Datei dann wieder auf den Server.
 
 ```
 nano email.config
@@ -266,9 +266,9 @@ Sollte die Installation vorzeitig fehlgeschlagen sein finden sie das Skript alte
 ```
 /BENUTZERNAME/aktin-dwh-installer/dwh-update/
 ```
-Sie können das Skript an jedem beliebigen Ort ausführen.
+Sie können das Skript an jedem beliebigen Ort, an welchem das Skript liegt, ausführen mit:
 ```
-aktindiag.sh
+./aktindiag.sh
 ```
 Nach dem das Skript erfolgreich durchgelaufen ist, befindet sich im aktuellen Verzeichnis eine .tar.gz-Datei:
 ```
