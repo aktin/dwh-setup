@@ -89,7 +89,7 @@ Auch sollten Sie unter `broker.keys` den alphanumerischen API-Key eintragen, der
 
 Welche Wirkung die Angaben haben, finden Sie in diesem Abschnitt weiter unten in der Template-Datei.
 
-Template-Datei für `aktin.properties`
+Template-Datei für `aktin.properties`:
 
 ```
 # Currently not used, may be changed (Name of the installation)
@@ -133,6 +133,18 @@ email.replyto=it-support@aktin.org
 wildfly.management.url=http://localhost:19990/management
 wildfly.management.user=admin
 wildfly.management.password=admin2
+# patient reference, allowed values: Patient, Encounter, Billing
+study.id.reference=Patient
+# Root numbers of the different reference types. Can be empty.
+cda.patient.root.preset=1.2.276.0.76.4.8
+cda.encounter.root.preset=1.2.276.0.76.4.8
+cda.billing.root.preset=1.2.276.0.76.4.8
+# Label for the extension textfield of the consent manager, based on the reference type.
+study.id.patient.label=Patientennr.
+study.id.encounter.label=Episodennummer
+study.id.billing.label=Fallnummer
+# Character for separating root and extension in case they both have to  be set manually. Is applied if root is not set in properties.
+study.id.separator=/
 ```
 
 Anschließend muss die Datei `aktin.properties` in das Konfigurationsverzeichnis des Anwendungsservers kopiert werden. Dies können Sie mit folgendem Befehl vollziehen:
@@ -142,6 +154,24 @@ cp -v /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly
 ```
 
 Die Befehle bezüglich der Datei `aktin.properties` werden Ihnen auch beim Installationsvorgang angezeigt.
+
+## Änderungen in den Properties ab Version 1.0
+
+Der folgende Abschnitt kann von Kliniken, die eine E.Care- oder AGFA-Schnittstelle verwenden, vernachlässigt werden. Für diese Kliniken sind die Einstellungen in der Properties-Datei bereits korrekt voreingestellt. 
+
+Für den Ein- oder Ausschluss von Patienten im Consent-Manager (weitere Informationen zu diesem Feature finden Sie in der Benutzeranleitung) wird eine Identifikationsnummer des Patienten benötigt. Hierfür stehen drei verschiedene Nummern zur Verfügung: Patientennummer, Episodennummer und Fallnummer. Unter `study.id.reference` muss die entsprechende Referenz, die genutzt werden soll, eingetragen werden (`Patient`, `Encounter` oder `Billing`). Wir empfehlen Ihnen die Patientennummer zu benutzen, da im Gegensatz zu den anderen beiden Nummern hiervon nur eine pro Patient existiert. Zum aktuellen Zeitpunkt findet bei der Eintragung eines Ein- oder Ausschlusses keine Überprüfung statt, ob dieser Patient bereits mit einer anderen Episoden- oder Fallnummer eingetragen wurde, sodass es ggf. zu Dubletten führt, wenn nicht die Patientennummer genutzt wird.
+
+Für jede dieser Nummern gibt es i.d.R. eine feste Root-Nummer, die unter `cda.patient.root.preset`, `cda.encounter.root.preset` bzw. `cda.billing.root.preset` hinterlegt werden kann. Dadurch muss die Root nicht bei jedem Ein- bzw. Ausschluss eingegeben werden, sondern es muss dann nur noch die patienten-, episoden- oder fallbezogene Nummer, die auch im Krankenhausinformationssystem sichtbar ist (die sogenannte Extension-Nummer) eingegeben werden.
+
+Um herauszufinden welche dieser Nummern über die AKTIN-Schnittstelle in das Data-Warehouse übertragen werden und somit in den Properties angegeben werden können, benötigen Sie Zugriff auf ein CDA-Dokument. Dieses wird als Datenstruktur zur Übertragung der Daten aus dem Notaufnahme-System in das klinikinterne Data-Warehouse verwendet. Ein gekürztes CDA-Beispieldokument sieht wie folgt aus:
+
+![IDs im CDA-Dokument][properties]
+
+[properties]: properties/cda-ids.png	"IDs im CDA-Dokument"
+
+Hier befinden sich die jeweiligen Root- und Extension-Nummern der Referenzen. Bei der erste ID unter `encompassingEncounter` ist die Episodennummer zu finden, die zweite ID steht für die Fallnummer. Die Patientennummer steht unter `patientRole.id`. Prüfen Sie welche dieser Nummern dem Notaufnahme-Personal bekannt ist, d.h. welche Nummer mit der im Krankenhausinformationssystem übereinstimmt. Von dieser Nummer tragen Sie die im CDA stehende Root in der Properties-Datei ein und geben die entsprechende Referenz (`Patient`, `Encounter` oder `Billing`) an.
+
+Sollte in der Klinik keine feste Root-Nummer verwendet werden, darf auch keine Root-Nummer in den Properties hinterlegt werden – lassen Sie das Feld dann einfach leer. Dies kann der Fall sein, wenn entweder die Extension-Nummer direkt als Root-Nummer verwendet wird oder sich die Root-Nummer klinikintern unterscheidet. Im ersteren Fall tragen Sie im Consent-Manager ganz normal die Identifikationsnummer ein, welche dann als Root-Nummer erkannt wird. Im letzteren Fall geben Sie unter `study.id.separator` ein Trennzeichen ein und tragen im Consent-Manager die Root-Nummer und die Extension-Nummer mit dem definierten Trennzeichen dazwischen ein.
 
 ## E-Mail-Konfiguration
 
