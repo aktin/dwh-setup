@@ -1,9 +1,6 @@
 ﻿Firewall-Einstellungen
 ======================
 
-- [Externer Zugriff](#externer-zugriff)
-- [Interne Regeln](#interne-regeln)
-
 Externer Zugriff
 ----------------
 

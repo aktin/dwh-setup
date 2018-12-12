@@ -1,12 +1,14 @@
 ﻿Changelog
 =========
 
-Version 0.11
+Version 1.0
 -----------
 * Weboberfläche
-	* Integration von Serien-Anfragen und Freigabe-Regeln
-	* Anfragen-Einzelansicht: leserlicheres Format des Zeitraum der Daten und des Abfrage-Intervalls
+  * Integration von Serien-Anfragen und Freigabe-Regeln
+  * Anfragen-Einzelansicht: leserlicheres Format des Zeitraum der Daten und des Abfrage-Intervalls
+  * Consent-Manager für den Ein- und Ausschluss von Patienten in/aus eine Studie
 * neuer Anfrage-Status: Expired (Anfrage auf Broker bereits geschlossen oder gelöscht)
+* Zuweisung von Rollen in der i2b2-Oberfläche (admin und study_nurse), um Nutzergruppen nur bestimmte Funktionalitäten zur Verfügung zu stellen
 
 Version 0.10.1
 -----------

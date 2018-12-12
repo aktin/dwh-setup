@@ -1,12 +1,6 @@
 ﻿Voraussetzungen für eine manuelle Installation des Betriebssystems für den AKTIN-Applikations-Server
 ================================================================
 
-  - [Debian 8](#debian-8)
-  - [CentOS 7](#centos-7)
-  - [Benötigte Pakete](#ben-tigte-pakete)
-  - [Manuelle Installation anderer Distributionen](#manuelle-installation-anderer-distributionen)
-
-
 Grundsätzlich sollte unsere Software mit allen Linux-Systemen verwendbar sein.
 
 Für Debian 8 (und eingeschränkt CentOS 7) stellen wir Skripte für eine automatische Installation und Konfiguration zur Verfügung. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Debian 8 funktioniert. Installationen mit Debian 9.x führen aktuell zu Problemen mit dem Installationskript.

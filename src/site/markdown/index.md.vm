@@ -1,14 +1,6 @@
 Installation und Update des AKTIN-Applikationsserver
 ===============================================
 
-  - [Komplette Neuinstallation](#komplette-neuinstallation)
-  - [Neuinstallation des Aktin-Applikationsservers](#neuinstallation-des-aktin-applikationsservers)
-  - [Automatisches Update für Debian (und CentOS)](#automatisches-update-f-r-debian--und-centos-)
-  - [Manuelles Update für Debian, CentOS oder andere Betriebssysteme](#manuelles-update-f-r-debian--centos-oder-andere-betriebssysteme)
-  - [Software-Pakete](#software-pakete)
-  - [Aktin-Software-Support](#aktin-software-support)
-  - [Kontakt](#kontakt)
-
 Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Datawarehouse läuft.
 
 Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte. 
