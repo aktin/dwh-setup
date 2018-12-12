@@ -4,7 +4,7 @@
 	
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
   
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
@@ -29,7 +29,7 @@
 	
 	<scm>
 		<developerConnection>scm:git:git@gitlab.uni-oldenburg.de:AKTIN/vagrant-vm.git</developerConnection>
-		<tag>v1.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<modules>
