@@ -1,17 +1,6 @@
 ﻿Installationsskript: Automatische Konfiguration des AKTIN-Applikations-Server mit dem Installationsskript
 ===============================================
 
-- [Installation der Basissoftware](#installation-der-basissoftware)
-- [Konfigurationen und lokale Einstellungen](#konfigurationen-und-lokale-einstellungen)
-  * [Aktin-Properties](#aktin-properties)
-  * [E-Mail-Konfiguration](#e-mail-konfiguration)
-- [Aktin Deployment](#aktin-deployment)
-- [Test der Betriebsfähigkeit](#test-der-betriebsf-higkeit)
-  * [Test des Data Warehouse](#test-des-data-warehouse)
-  * [Test der Importschnittstelle](#test-der-importschnittstelle)
-  * [Test der Verbindung und E-Mail-Konfiguration](#test-der-verbindung-und-e-mail-konfiguration)
-- [Aktin Diagnose-Skript](#aktin-diagnose-skript)
-
 Unser Installationsskript wurde getestet mit Debian 8 und CentOS 7. Wenn Sie ein anderes System verwenden, müssen Sie die Skripte anpassen oder die enthaltenen Schritte manuell durchführen.
 
 Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Server-Installation](install-requirements.html).
@@ -155,7 +144,8 @@ cp -v /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly
 
 Die Befehle bezüglich der Datei `aktin.properties` werden Ihnen auch beim Installationsvorgang angezeigt.
 
-## Änderungen in den Properties ab Version 1.0
+Änderungen in den Properties ab Version 1.0
+-------------------
 
 Der folgende Abschnitt kann von Kliniken, die eine E.Care- oder AGFA-Schnittstelle verwenden, vernachlässigt werden. Für diese Kliniken sind die Einstellungen in der Properties-Datei bereits korrekt voreingestellt. 
 
@@ -175,11 +165,11 @@ Sollte in der Klinik keine feste Root-Nummer verwendet werden, darf auch keine R
 
 ## E-Mail-Konfiguration
 
-Bitte tragen Sie in der Datei `email.config` die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese befindet sich in `/BENUTZERNAME/aktin-dwh-installer/dwh-update/` oder `/BENUTZERNAME/dwh-update/`, der jeweilige Pfad ist davon abhängig, ob sie eine Neuinstallation ode rein Update zuletzt vorgenommen haben. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
+Bitte tragen Sie in der Datei `email.config` die E-Mail-Konfigurationen für die Ausgangsmailadresse ein. Diese befindet sich in `/BENUTZERNAME/aktin-dwh-installer/dwh-update/` oder `/BENUTZERNAME/dwh-update/`, der jeweilige Pfad ist davon abhängig, ob sie zuletzt eine Neuinstallation oder ein Update vorgenommen haben. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
 
-Wenn Sie Änderungen an der bereits eingestellten E-Mail vornehmen möchten, rufen führen Sie bitte folgende Schritte durch. Bitte beachten Sie, dass die aktuellen Einstellungen nicht in `email.config` zu finden sind. Diese entnehmen Sie bitte Ihre eigenen Daten oder den vorherigen Installationsskripte.
+Wenn Sie Änderungen an der bereits eingestellten E-Mail vornehmen möchten, führen Sie bitte folgende Schritte durch. Bitte beachten Sie, dass die aktuellen Einstellungen nicht in `email.config` zu finden sind. Diese entnehmen Sie bitte Ihren eigenen Daten oder den vorherigen Installationsskripten.
 
-Bitte öffnen Sie `email.config`, auf dem Server oder an Ihrer Arbeitsrechner und laden die Datei dann wieder auf den Server.
+Bitte öffnen Sie `email.config` auf dem Server oder an Ihrer Arbeitsrechner und laden die Datei dann wieder auf den Server.
 
 ```
 nano email.config
@@ -187,12 +177,12 @@ nano email.config
 
 In dieser Datei werden die Einstellungen für den Versand von E-Mails konfiguriert. Hierbei muss man besonders auf die Einstellungen des Mailservers achten und `usessl` und `usetls` richtig setzen, dementsprechend auch den `smtpport`.
 
-Sollten Sie bereits E-Mail eingerichtet haben und möchten diese nun ändern, müssen die folgenden Schritte zusätzlich durchgefführt werden:
+Sollten Sie bereits die E-Mail-Konfiguration eingerichtet haben und möchten diese nun ändern, müssen die folgenden Schritte zusätzlich durchgeführt werden:
 
-Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root` Rechten ausgeführt werden. 
+Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root`-Rechten ausgeführt werden. 
 Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
 
-Template-Datei für E-Mail-Konfiguration `email.config`
+Template-Datei für E-Mail-Konfiguration `email.config`:
 
 ```
 #
@@ -239,13 +229,13 @@ Unter CentOS 7, starten Sie nun das Skript
 ./aktin-dwh-installer/install_centos.sh
 ```
 
-Nach der Installation der notwendigen Pakete und der Einrichtung der Dienste sowie des i2b2 ruft das Installationsskript das neueste Updateskript auf, um die Einrichtung der neusten Software des Aktin-Projektes sowie die weiteren Anpassungen durchzuführen. In diesem Schritt kann der Skript unterbrochen werden, sollten Angaben Ihrerseits nötig sein. Auf die Angaben werden Sie in der Konsole hingewiesen. 
+Nach der Installation der notwendigen Pakete und der Einrichtung der Dienste sowie des i2b2 ruft das Installationsskript das neueste Updateskript auf, um die Einrichtung der neusten Software des Aktin-Projektes sowie die weiteren Anpassungen durchzuführen. In diesem Schritt kann das Skript unterbrochen werden, sollten Angaben Ihrerseits nötig sein. Auf die Angaben werden Sie in der Konsole hingewiesen. 
 
-Informationen zum Update finden Sie unter [skriptbasierten Update](update-auto.html) oder [manuellen Update](update-manual.html).
+Informationen zum Update finden Sie unter [skriptbasiertes Update](update-auto.html) oder [manuelles Update](update-manual.html).
 
-Bevor die Funktionalität des Servers getestet werden können, benötigt der Server evtl. noch wenige Minuten, um alle beteiligten Dienste zu starten und einzurichten.
+Bevor die Funktionalitäten des Servers getestet werden können, benötigt der Server evtl. noch wenige Minuten, um alle beteiligten Dienste zu starten und einzurichten.
 
-Sollten Sie Fragen zur Installation haben oder Probleme begegnen, kontaktieren Sie uns gerne unter it-support(at)aktin.org
+Sollten Sie Fragen zur Installation oder Probleme beim Installationsprozess haben, kontaktieren Sie uns gerne unter it-support(at)aktin.org
 
 # Test der Betriebsfähigkeit
 
@@ -260,6 +250,7 @@ Wenn die Installation erfolgreich durchgeführt wurde, kann anschließend per We
 
 Test der Importschnittstelle
 ----------------------------
+
 Die Importschnittstelle des Servers kann mit den Client-Programmen
 aus dem Software-Paket (ZIP) des [Demo-Server](demo-server.html)
 getestet werden:
@@ -273,26 +264,32 @@ Test der Verbindung und E-Mail-Konfiguration
 
 Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
 
+![Testbildschirm][Test server configuration]
+
 [Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
 
 Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
 Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
 Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
 
-[Test server configuration]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
+![Erfolgreicher Testabschluss][Test server configuration success]
+
+[Test server configuration success]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
 
 Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Mail-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
 
-[Test server configuration]: update_7_test/Screenshot_6.png "Fehlerhafte Emailkonfiguration"
+![Fehlerhafte E-Mail-Konfiguration][test server configuration fail]
+
+[Test server configuration fail]: update_7_test/Screenshot_6.png "Fehlerhafte E-Mail-Konfiguration"
 
 # Aktin Diagnose-Skript
 
-Sollten bei der installation Probleme aufgetreten sein, führen sie bitte das Aktin-Diagnose-Skript aus. Dieses befindet sich unter:
+Sollten bei der Installation Probleme aufgetreten sein, führen Sie bitte das Aktin-Diagnose-Skript aus. Dieses befindet sich unter:
 
 ```
 /opt/aktin/diagnostic_script
 ```
-Sollte die Installation vorzeitig fehlgeschlagen sein finden sie das Skript alternativ unter:
+Sollte die Installation vorzeitig fehlgeschlagen sein, finden sie das Skript alternativ unter:
 ```
 /BENUTZERNAME/aktin-dwh-installer/dwh-update/
 ```
@@ -300,8 +297,8 @@ Sie können das Skript an jedem beliebigen Ort, an welchem das Skript liegt, aus
 ```
 ./aktindiag.sh
 ```
-Nach dem das Skript erfolgreich durchgelaufen ist, befindet sich im aktuellen Verzeichnis eine .tar.gz-Datei:
+Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im aktuellen Verzeichnis eine .tar.gz-Datei:
 ```
 aktindiag.tar.gz
 ```
-Senden sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Installations-Problemen.
+Senden Sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Installations-Problemen.

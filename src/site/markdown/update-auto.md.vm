@@ -1,15 +1,8 @@
 Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian (und CentOS)
 ==================================================
 
-  - [Häufige Fehler](#h-ufige-fehler)
-  - [Test der Verbindung und E-Mail-Konfiguration](#test-der-verbindung-und-e-mail-konfiguration)
-  - [Lokale Konfigurationen in der Datei `aktin.properties`](#lokale-konfigurationen-in-der-datei--aktinproperties-)
-  - [E-Mail-Konfiguration und Änderungen](#e-mail-konfiguration-und--nderungen)
-  - [Aktin Diagnose-Skript](#aktin-diagnose-skript)
-
-
-Für laufende DWH Instanzen auf Debian Servern stellen wir ein Update-Skript bereit, zu finden unter 
-[Debian Update Paket](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
+Für laufende DWH-Instanzen auf Debian-Servern stellen wir ein Update-Skript bereit, zu finden unter 
+[Debian Update Paket](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz).
 Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. 
 Dazu führt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), folgendes aus:
 
@@ -22,7 +15,7 @@ oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwor
 su -
 ```
 
-Als erstes muss das Paket heruntergeladen werden und entpackt: 
+Als erstes muss das Paket heruntergeladen und entpackt werden: 
 
 ```
 wget ${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz
@@ -59,8 +52,9 @@ Ebenfalls seit dem Update 0.7 wird eine lokale E-Mailadresse verwendet, um Beric
 Sollte noch keine E-Mail eingestellt sein oder Sie Probleme mit dem Versenden der E-Mails haben, folgen Sie bitte die Anweisungen unter [_"E-Mail-Konfiguration und Änderungen"_](#emailconf). 
 
 Der Update besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
-Am Ende des Skriptes wird der Wildfly Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. 
+Am Ende des Skriptes wird der Wildfly-Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. 
 Bei erfolgreicher Installation kommt folgende Meldung:
+
 ```
 +++SUCCESS+++ EAR successfully deployed after xxx sec
 ```
@@ -88,12 +82,14 @@ Test der Verbindung und E-Mail-Konfiguration
 
 Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die oben durchgeführten Anpassungen nun testen. 
 
-Eine weiterführende Anleitung zum testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
+Eine weiterführende Anleitung zum Testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
 
 Lokale Konfigurationen in der Datei `aktin.properties`
 ------------------------------------------------------
 
-Die Datei `aktin.properties` muss für jeden Standort individuell angepasst werden. 
+Die Datei `aktin.properties` muss für jeden Standort individuell angepasst werden. Dies ist nur nötig, wenn bei einem Update neue Angaben in der Properties-Datei erforderlich sind (z.B. bei Version 1.0). Ihre bisher in der Datei hinterlegten Angaben werden bei einem Update übernommen.
+
+Mit dem unten stehenden Befehl können Sie die Datei bearbeiten, sofern Sie sich im `dwh-update`-Ordner befinden (andernfalls navigieren Sie wieder in das Verzeichnis, in dem Sie zuvor das Update-Skript ausgeführt haben). 
 
 ```
 nano aktin.properties
@@ -106,7 +102,7 @@ Nach Bearbeiten der Datei muss diese in den Konfigurationsordner des Wildfly-Ser
 cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/
 ```
 
-Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden, und im Anschluss den Wildfly Service neugestartet werden:
+Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden. Starten Sie im Anschluss den Wildfly-Service neu:
 
 ```
 nano /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
@@ -130,13 +126,13 @@ Ein Template und weiterführende Erläuterungen der Parameter finden Sie auf der
 
 Sollten Sie bereits E-Mail eingerichtet haben und möchten diese nun ändern, müssen die folgenden Schritte zusätzlich durchgefführt werden:
 
-Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root` Rechten ausgeführt werden. 
+Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root`-Rechten ausgeführt werden. 
 Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
 
 [Zurück](#emailback)
 
 # Aktin Diagnose-Skript
 
-Sollten Probleme beim automatischen Update auftreten, so führen sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html) im bereich "Aktin Diagnose-Skript".
+Sollten Probleme beim automatischen Update auftreten, so führen Sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin Diagnose-Skript".
 
-Senden sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Problemen.
+Senden Sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Problemen.
