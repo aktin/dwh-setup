@@ -4,7 +4,7 @@
 	
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
-	<version>1.0rc4-SNAPSHOT</version>
+	<version>1.0rc5-SNAPSHOT</version>
   
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
@@ -18,7 +18,7 @@
 	<properties>
 		<!-- specifies the package and source version to which the scripts and site refers to -->
 		<!-- dont forget to change dependency further down and in dwh-update/pom.xml -->
-		<dwhJ2EEVersion>1.0rc3</dwhJ2EEVersion>
+		<dwhJ2EEVersion>1.0rc4</dwhJ2EEVersion>
 		<dwhOntologyVersion>0.11</dwhOntologyVersion>
 		<dwhImportVersion>0.11</dwhImportVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
@@ -52,7 +52,7 @@
 			<dependency>
 				<groupId>org.aktin.dwh</groupId>
 				<artifactId>dwh-j2ee</artifactId>
-				<version>1.0rc3</version>
+				<version>1.0rc4</version>
 				<type>ear</type>
 			</dependency>
 		</dependencies>
