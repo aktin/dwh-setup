@@ -21,15 +21,14 @@ _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_
 
 [${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
 
-Kopieren laden oder kopieren Sie diese Datei in Root-Verzeichnis Ihres Servers:
+Kopieren oder laden Sie diese Datei ins Root-Verzeichnis Ihres Servers:
 
 ```
 /
 ```
-Entpacken Sie die Datei und wechseln an schließend in das Verzeichnis des Updates:
+Entpacken Sie die Datei und wechseln Sie anschließend in das Verzeichnis des Updates:
 
 ```
-
 tar xvzf dwh-update-${project.version}.tar.gz
 cd dwh-update
 ```
