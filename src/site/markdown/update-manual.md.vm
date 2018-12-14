@@ -1,5 +1,7 @@
-Manualles Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian, CentOS
+Manualles Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian und CentOS
 ====================================================
+
+<!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
 
 Anmelden als ROOT
 -----------------
@@ -10,20 +12,20 @@ Dazu führt man, falls der User auf der Sudoer-Liste steht (der User `root` hat 
 ```
 sudo su -
 ```
-oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwort), Folgendes:
+Oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwort), Folgendes:
 
 ```
 su -
 ```
 
-Alle folgende Befehle sollten als `root` User ausgeführt werden.
+Alle folgende Befehle sollten als `root`-User ausgeführt werden.
 
 Setzen der Umgebungsvariablen zur Vereinfachung des Updates und eventuell Laden des Updatepakets
 -------------------------------------------------------------------------
 
-Diese Variablen werden nur für dieses Updatesession gesetzt.
+Diese Variablen werden nur für diese Updatesession gesetzt.
 
-Die Variable `WILDFLY_HOME` wird auf den Homedirectory von dem Wildfly Service gesetzt, in Normalfall unter `/opt/wildfly-9.0.2.Final/`.
+Die Variable `WILDFLY_HOME` wird auf den Homedirectory von dem Wildfly-Service gesetzt, in Normalfall unter `/opt/wildfly-9.0.2.Final/`.
 Die Variable `i2b2_WEBDIR` linkt auf den Ordner des i2b2-Webclients. Diese befindet sich im Apache-Webordner, je nach Distribution `/var/www/` oder `/var/www/html/`. In dem ursprünglichen Installationsschritt wurde zur Vereinfachung die Verlinkung `/var/webroot/` erstellt. 
 
 ```
@@ -39,10 +41,10 @@ tar xvzf dwh-update-${project.version}.tar.gz
 ```
 
 
-Java Version Check und Fix
+Installation der korrekten Java-Version
 --------------------------
 
-Vor dem Update sollte die Java-Version des Servers Überprüft werden:
+Vor dem Update sollte die Java-Version des Servers überprüft werden:
 
 ```
 java -version
@@ -53,7 +55,7 @@ java -version
 
 Sollte in der Anzeige stattdessen Java Version 7 angezeigt werden, sollte diese auf Java Version 8 geupdatet werden. 
 
-Unter Debian muss dies über den Jessie-Backport geschehen. Dafür führen Sie bitte folgendes Code aus:
+Unter Debian muss dies über den Jessie-Backport geschehen. Dafür führen Sie bitte folgenden Code aus:
 
 ```
 if [ $(grep -c -e "^deb http://ftp.de.debian.org/debian jessie-backports main" /etc/apt/sources.list) -le 0 ] ; then
@@ -63,12 +65,12 @@ apt-get update ; apt install -t jessie-backports -y openjdk-8-jre-headless ca-ce
 update-alternatives --set java $(update-alternatives --list java | grep "java-8")
 ```
 
-Unter CentOs muss `yum -y install java-1.8.0-openjdk-headless` ausgeführt werden. Unter RedHat müssen Sie eventuell Ihren Serveradministrator um Repository Update bitten.
+Unter CentOS muss `yum -y install java-1.8.0-openjdk-headless` ausgeführt werden. Unter RedHat müssen Sie eventuell Ihren Serveradministrator um ein Repository-Update bitten.
 
 Löschen der alten Software
 --------------------------
 
-Die alte Version von der DWH-J2EE Software muss aus dem Wildfly Service entfernt werden. Mit dem ersten Befehl des folgenden Blockes kann man alle in dem Service gelisteten Softwarepakete anzeigen lassen. Mit dem zweiten spezifisch die aktuell aktiven Pakete. 
+Die alte Version von der DWH-J2EE-Software muss aus dem Wildfly-Service entfernt werden. Mit dem ersten Befehl des folgenden Blockes kann man alle in dem Service gelisteten Softwarepakete anzeigen lassen. Mit dem zweiten spezifisch die aktuell aktiven Pakete. 
 
 ```
 ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*
@@ -78,7 +80,7 @@ ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-* | grep deployed
 # /.../dwh-j2ee-0.6.3.deployed
 ```
 
-Mit dem folgenden Befehl werden alle DWH-J2EE Softwarepakete deaktiviert.
+Mit dem folgenden Befehl werden alle DWH-J2EE-Softwarepakete deaktiviert.
 
 ```
 $WILDFLY_HOME/bin/jboss-cli.sh -c --command="undeploy --name=dwh-j2ee*.ear"
@@ -88,7 +90,7 @@ $WILDFLY_HOME/bin/jboss-cli.sh -c --command="undeploy --name=dwh-j2ee*.ear"
 Anpassen der Konfigurationsdatei `aktin.properties`
 ---------------------------------------------------
 
-In einem früheren Update wurd eine Konfigurationsdatei erstellt. Sollten Änderungen an dieser Datei notwendig sein, fügen Sie bitte die neue Einstellungen durch. Die Änderungen können durch den `diff` Befehl erkannt werden. Sie können den Code-Abschnitt aus dem automatischen Updateskript unter dem Abschnitt STEP 0.02 entnehmen und verwenden. Dazu wird auf dem Server die Pakete `diff`, `sed` und `patch` benötigt. Dieser Code-Abschnitt geht davon aus, dass die aktive `aktin.properties`-Datei unter `$WILDFLY_HOME/standalone/configuration/` zu finden ist. Sollten Sie noch keine `$WILDFLY_HOME/standalone/configuration/aktin.properties` eingerichtet haben, richten Sie es bitte wie folgt ein. Ein Template dafür kann dem Updatepaket entnommen (`dwh-update/aktin.properties`) oder per Hand erstellt werden.
+In einem früheren Update wurd eine Konfigurationsdatei erstellt. Sollten Änderungen an dieser Datei notwendig sein, fügen Sie bitte die neue Einstellungen durch. Die Änderungen können durch den `diff`-Befehl erkannt werden. Sie können den Code-Abschnitt aus dem automatischen Updateskript unter dem Abschnitt STEP 0.02 entnehmen und verwenden. Dazu werden auf dem Server die Pakete `diff`, `sed` und `patch` benötigt. Dieser Code-Abschnitt geht davon aus, dass die aktive `aktin.properties`-Datei unter `$WILDFLY_HOME/standalone/configuration/` zu finden ist. Sollten Sie noch keine `$WILDFLY_HOME/standalone/configuration/aktin.properties` eingerichtet haben, richten Sie es bitte wie folgt ein. Ein Template dafür kann dem Updatepaket entnommen (`dwh-update/aktin.properties`) oder per Hand erstellt werden.
 
 Ein Template sowie weiterführende Erläuterungen zu wichtigen Einstellungen finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin-Properties".
 
@@ -104,7 +106,7 @@ cp aktin.properties $WILDFLY_HOME/standalone/configuration/
 Änderungen an der Konfigurationsdatei `aktin.properties` (nicht relevant für Ersteinrichtung)
 ---------------------------------------------------------------------------------------------
 
-Sollten zu einem späteren Zeitpunkt Änderungen an der Datei erfolgen, muss dies auch in dem Ordner übernommen werden und der Wildfly-Service muss neugestartet werden (Diese Befehle müssen beim Update nicht an dieser ausgeführt werden):
+Sollten zu einem späteren Zeitpunkt Änderungen an der Datei erfolgen, muss dies auch in dem Ordner übernommen werden und der Wildfly-Service muss neugestartet werden (diese Befehle müssen beim Update nicht an dieser ausgeführt werden):
 
 ```
 # debian
@@ -124,11 +126,11 @@ systemctl start wildfly
 E-Mail-Konfiguration
 --------------------
 
-Mit einem früheren Update wurde einen E-Mail-Dienst eingerichtet, der z.B. die monatlich erzeugten Berichtsdokumente an die in `aktin.properties` angegebenen E-Mail-Adresse sendet.
+Mit einem früheren Update wurde ein E-Mail-Dienst eingerichtet, der z.B. die monatlich erzeugten Berichtsdokumente an die in `aktin.properties` angegebenen E-Mail-Adresse sendet.
 
-Sollten Sie bereits den E-Mail-Dienst eingerichtet haben, jedoch die Daten ändern wollen, rufen Sie bitte zuerst das Skript `dwh-update/email_config_reset.sh` aus dem Updatepaket auf, um die vorhandenen Einstellungen zu entfernen. Nach einem Neustart der Wildfly-Service fahren Sie dann bitte wie eine Neueinrichtung fort.
+Sollten Sie bereits den E-Mail-Dienst eingerichtet haben, jedoch die Daten ändern wollen, rufen Sie bitte zuerst das Skript `dwh-update/email_config_reset.sh` aus dem Updatepaket auf, um die vorhandenen Einstellungen zu entfernen. Nach einem Neustart des Wildfly-Service fahren Sie dann bitte wie bei einer Neueinrichtung fort.
 
-Ein Template und weiterführende Erläuterungen der Parameter finden Sie auf der Seite [Installationsskript](install-script.html) im bereich "E-Mail-Konfiguration".
+Ein Template und weiterführende Erläuterungen der Parameter finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "E-Mail-Konfiguration".
 
 Zum Einrichten des E-Mail-Services steht auch ein Skript aus dem Updatepaket bereit. Dazu muss die Datei `dwh-update/email.config` angepasst und das Skript `dwh-update/lib/email_create.sh` ausgeführt werden. 
 
@@ -151,7 +153,7 @@ Die neue Ontologie kann dem Updatepaket `dwh-update/packages/cda-ontology-${dwhO
 wget ${releaseRepoUrl}/org/aktin/cda-ontology/${dwhOntologyVersion}/cda-ontology-${dwhOntologyVersion}.jar
 ```
 
-Man sollte das Paket in ein temporäres Verzeichnis entpacken und die enthaltene `sql` Skripte über den `postgres` User ausführen. Anschließend kann das temporäre Verzeichnis wieder gelöscht werden.
+Man sollte das Paket in ein temporäres Verzeichnis entpacken und die enthaltenen `sql`-Skripte über den `postgres`-User ausführen. Anschließend kann das temporäre Verzeichnis wieder gelöscht werden.
 
 ```
 CDATMPDIR=/var/tmp/cda-ontology
@@ -199,7 +201,7 @@ sed -i "s/name=\"uname\" id=\"loginusr\" value=\"demo\"/name=\"uname\" id=\"logi
 sed -i "s/name=\"pword\" id=\"loginpass\" value=\"demouser\"/name=\"pword\" id=\"loginpass\" value=\"\"/g" $i2b2_WEBDIR/js-i2b2/cells/PM/PM_misc.js
 ```
 
-Zudem sollten, sofern noch nicht geschehen, die Passwörter der Benutzer "i2b2" und "demo" für den Zugang zum i2b2-Web Client geändert werden. Die Standardpasswörter für beide Nutzer lauten "demouser". Das Ändern der Passwörter können Sie nach dem Update in der Adminoberfläche des i2b2 durchführen. Sollte dazu Fragen auftauchen, kontaktieren Sie uns gerne.
+Zudem sollten, sofern noch nicht geschehen, die Passwörter der Benutzer "i2b2" und "demo" für den Zugang zum i2b2-Web-Client geändert werden. Die Standardpasswörter für beide Nutzer lauten "demouser". Das Ändern der Passwörter können Sie nach dem Update in der Adminoberfläche des i2b2 durchführen. Sollte dazu Fragen auftauchen, kontaktieren Sie uns gerne.
 
 
 Anlegen der AKTIN-Datenbanken und der AKTIN-Datasource in Wildfly
@@ -225,7 +227,7 @@ psql -c "GRANT ALL ON SCHEMA aktin to aktin" aktin
 psql -c "ALTER ROLE aktin WITH LOGIN" aktin
 ```
 
-Anschließend wird der User zurück auf `root` gewechselt (`postgres` user wird abgemeldet):
+Anschließend wird der User zurück auf `root` gewechselt (`postgres`-User wird abgemeldet):
 
 ```
 exit
@@ -243,7 +245,7 @@ Zur Überprüfung kann dann folgender Befehl ausgeführt werden:
 $WILDFLY_HOME/bin/jboss-cli.sh -c --command="/subsystem=datasources:read-resource"
 ```
 
-Die Änderungen treten erst nach einem Neustart des Services in Kraft (in der Konsole wird `reload-required` angezeigt. Da im Updateverlauf noch der Neustart erfolgt, wird der Neustart in diesem Schritt übersprungen).
+Die Änderungen treten erst nach einem Neustart des Services in Kraft. (In der Konsole wird `reload-required` angezeigt. Da im Updateverlauf noch der Neustart erfolgt, wird der Neustart in diesem Schritt übersprungen).
 
 
 Änderung der Logging-Einstellungen
@@ -285,7 +287,7 @@ mkdir -p /var/lib/aktin
 chown wildfly /var/lib/aktin
 ```
 
-Erhöhung der JAVA-VM Arbeitsspeicher für die Wildfly-Service
+Erhöhung des JAVA-VM-Arbeitsspeichers für den Wildfly-Service
 ------------------------------------------------------------
 
 Diese Einstellung muss nur einmal ausgeführt werden. Sollte sie bereits vorhanden sein, bitte diesen Abschnitt überspringen.
@@ -337,7 +339,7 @@ service wildfly start # debian
 Deployment des neuen Softwarepaketes
 ------------------------------------
 
-Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder herunter geladen werden unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear). Es muss in das Wildfly-Deploymentordner kopiert werden. 
+Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder herunter geladen werden unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear). Es muss in denWildfly-Deploymentordner kopiert werden. 
 
 ```
 cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear $WILDFLY_HOME/standalone/deployments/
@@ -355,7 +357,7 @@ Sollte eine Datei angezeigt werden, war das Update erfolgreich.Sollte stattdesse
 
 Nach dem erfolgreichen Update können Sie auf der Seite _`http://IHRSERVER/aktin/admin/plain/test.html`_ die Grundfunktionalität testen.
 
-Eine weiterführende Anleitung zum testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
+Eine weiterführende Anleitung zum Testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
 
 Sollten weitere Probleme entstehen, kontaktieren Sie uns bitte unter it-support(at)aktin.org
 

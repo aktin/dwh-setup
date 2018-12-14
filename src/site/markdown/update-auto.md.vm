@@ -1,6 +1,12 @@
 Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian (und CentOS)
 ==================================================
 
+
+<!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
+
+Ausführung des Updates
+---------------------------------------
+
 Für laufende DWH-Instanzen auf Debian-Servern stellen wir ein Update-Skript bereit, zu finden unter 
 [Debian Update Paket](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz).
 Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. 
@@ -15,17 +21,24 @@ oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwor
 su -
 ```
 
-Als erstes muss das Paket heruntergeladen und entpackt werden: 
+Als erstes muss das Paket _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_ heruntergeladen und entpackt werden: 
 
-_Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_
+Haben Sie direkt vom Server aus die Möglichkeit das Paket herunterzuladen, können Sie hierfür den folgenden Befehl nutzen:
+
+```
+wget ${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz
+```
+
+Besteht diese Möglichkeit nicht, können Sie das Paket alternativ von einem anderen Rechner aus herunterladen:
 
 [${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
 
 Kopieren oder laden Sie diese Datei ins Root-Verzeichnis Ihres Servers:
 
 ```
-/
+/root
 ```
+
 Entpacken Sie die Datei und wechseln Sie anschließend in das Verzeichnis des Updates:
 
 ```
@@ -87,7 +100,7 @@ ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-*.deployed
 Sollte eine Datei angezeigt werden, war das Update erfolgreich.
 
 
-Test der Verbindung und E-Mail-Konfiguration
+Test der Verbindung und der E-Mail-Konfiguration
 --------------------------------------------
 
 Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die oben durchgeführten Anpassungen nun testen. 
@@ -124,9 +137,9 @@ service wildfly start
 
 <a name="emailconf"></a>
 
-E-Mail-Konfiguration und Änderungen
+Konfiguration und Änderung der E-Mail-Einstellungen
 ---------------------------------
-Bitte tragen Sie in der Datei `email.config` die E-Mail-konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
+Bitte tragen Sie in der Datei `email.config` die E-Mail-Konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
 
 ```
 nano email.config
@@ -141,8 +154,9 @@ Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_
 
 [Zurück](#emailback)
 
-# Aktin Diagnose-Skript
+Aktin-Diagnose-Skript
+----------------------------------
 
-Sollten Probleme beim automatischen Update auftreten, so führen Sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin Diagnose-Skript".
+Sollten Probleme beim automatischen Update auftreten, so führen Sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin-Diagnose-Skript".
 
 Senden Sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Problemen.
