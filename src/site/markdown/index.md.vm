@@ -7,11 +7,13 @@ Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten 
 
 Nach dem erfolgreichen Update oder Installation können Sie auf der Seite _`http://IHRSERVER/aktin/admin/plain/test.html`_ die Funktionalität testen.
 
+<!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
+
 Komplette Neuinstallation
 ---------------
 Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionierende Installation eines auf Linux basierenden Server-Betriebsystems. Es wird empfohlen die von uns getesten Debian 8 oder CentOS 7 einzusetzen. Bitte beachten Sie die [Server-Installation](install-requirements.html), dort werden die verschiedenen Varianten der Neu-Installation beschrieben.
 
-## Neuinstallation des Aktin-Applikationsservers
+<h3> Neuinstallation des Aktin-Applikationsservers</h3>
 
 Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu installiert, so müssen sie die Installation des AKTIN-Applikationsservers vornehmen. Eine Anleitung für die Verwendung des automatischen Installationsskriptes finden Sie auf der Seite [Installationsskript](install-script.html).
 
@@ -48,7 +50,8 @@ _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_
 
 [${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
 
-# Aktin-Software-Support
+Aktin-Software-Support
+--------------------------------------
 
 Sollten Probleme bei der Installation, dem Update oder dem betrieb der Aktin-Software auftreten, so führen sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html) im bereich "Aktin Diagnose-Skript".
 

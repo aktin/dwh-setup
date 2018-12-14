@@ -5,7 +5,10 @@ Unser Installationsskript wurde getestet mit Debian 8 und CentOS 7. Wenn Sie ein
 
 Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Server-Installation](install-requirements.html).
 
-# Installation der Basissoftware
+<!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
+
+Installation der Basissoftware
+------------------------------------------
 
 Beachten Sie bitte ob Java installiert ist, falls eine bestehende Betriebsversion verwendet wird. 
 Es wird die Version 8 vom Openjdk installiert, sind bereits niedrigere Versionen von Java installiert, 
@@ -41,12 +44,12 @@ Die Dateien werden dann automatisch in den Ordner `aktin-dwh-installer` entpackt
 
 Die Installation benötigt Zugriff auf das Internet - speziell die jeweiligen Repositories und die Server der Universität Oldenburg, um die benötigten Pakete herunterzuladen.
 
-Unter Debian 8, starten Sie nun das Skript 
+Unter Debian 8, starten Sie nun das Skript mit:
 
 ```
 ./aktin-dwh-installer/install_debian.sh
 ```
-Unter CentOS 7, starten Sie nun das Skript
+Unter CentOS 7, starten Sie nun das Skript mit:
 
 ```
 ./aktin-dwh-installer/install_centos.sh
@@ -60,11 +63,12 @@ Die Installation kann bis zu 20 Minuten dauern. Um die Konsolenausgaben umzuleit
 ```
 ausführen. Die Logausgaben finden Sie dann in der Datei `install-aktin-dwh.log`.
 
-# Konfigurationen und lokale Einstellungen 
+Konfigurationen und lokale Einstellungen
+----------------------------------------------------------------
 
 Während der Installation werden Sie zur Konfiguration der `aktin.properties` aufgefordert. Des Weiteren sollten Sie ihre E-Mail-Konfiguration anzupassen. Die Einstellungsdatei befindet sich unter `dwh-update/email.config`, in dieser Datei müssen alle wichtigen Parameter für die automatische Emailbenachrichtigung konfiguriert oder überprüft werden.
 
-## Aktin-Properties
+<h3>Aktin-Properties</h3>
 
 Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
 
@@ -144,8 +148,7 @@ cp -v /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly
 
 Die Befehle bezüglich der Datei `aktin.properties` werden Ihnen auch beim Installationsvorgang angezeigt.
 
-Änderungen in den Properties ab Version 1.0
--------------------
+<h4>Änderungen in den Properties ab Version 1.0</h4>
 
 Der folgende Abschnitt kann von Kliniken, die eine E.Care- oder AGFA-Schnittstelle verwenden, vernachlässigt werden. Für diese Kliniken sind die Einstellungen in der Properties-Datei bereits korrekt voreingestellt. 
 
@@ -163,7 +166,7 @@ Hier befinden sich die jeweiligen Root- und Extension-Nummern der Referenzen. Be
 
 Sollte in der Klinik keine feste Root-Nummer verwendet werden, darf auch keine Root-Nummer in den Properties hinterlegt werden – lassen Sie das Feld dann einfach leer. Dies kann der Fall sein, wenn entweder die Extension-Nummer direkt als Root-Nummer verwendet wird oder sich die Root-Nummer klinikintern unterscheidet. Im ersteren Fall tragen Sie im Consent-Manager ganz normal die Identifikationsnummer ein, welche dann als Root-Nummer erkannt wird. Im letzteren Fall geben Sie unter `study.id.separator` ein Trennzeichen ein und tragen im Consent-Manager die Root-Nummer und die Extension-Nummer mit dem definierten Trennzeichen dazwischen ein.
 
-## E-Mail-Konfiguration
+<h3>E-Mail-Konfiguration</h3>
 
 Bitte tragen Sie in der Datei `email.config` die E-Mail-Konfigurationen für die Ausgangsmailadresse ein. Diese befindet sich in `/BENUTZERNAME/aktin-dwh-installer/dwh-update/` oder `/BENUTZERNAME/dwh-update/`, der jeweilige Pfad ist davon abhängig, ob sie zuletzt eine Neuinstallation oder ein Update vorgenommen haben. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
 
@@ -214,7 +217,8 @@ usessl=false
 usetls=true
 ```
 
-# Aktin Deployment
+Aktin Deployment
+----------------------------
 
 Nach den erfolgreichen Anpassungen müssen Sie nochmals das Installationsskript starten:
 
@@ -237,19 +241,18 @@ Bevor die Funktionalitäten des Servers getestet werden können, benötigt der S
 
 Sollten Sie Fragen zur Installation oder Probleme beim Installationsprozess haben, kontaktieren Sie uns gerne unter it-support(at)aktin.org
 
-# Test der Betriebsfähigkeit
+Test der Betriebsfähigkeit
+-----------------------------------------
 
 Nach der Installation der Aktin-Software ist es anzuraten, dessen Betriebsfähigkeit zu testen. Im folgenden Bereich können Sie Methoden und Funktionalitäten für die Verifikation der Betriebsfähigkeit entnehmen.
 
-Test des Data Warehouse
------------------------
+<h3>Test des Data Warehouse</h3>
 
 Wenn die Installation erfolgreich durchgeführt wurde, kann anschließend per Web Browser auf das integrierte Data Warehouse zugegriffen werden. In der Adresszeile muss die entsprechende IP-Adresse / Servername angepasst werden:
 `http://IHRSERVER/webclient/`
 
 
-Test der Importschnittstelle
-----------------------------
+<h3>Test der Importschnittstelle</h3>
 
 Die Importschnittstelle des Servers kann mit den Client-Programmen
 aus dem Software-Paket (ZIP) des [Demo-Server](demo-server.html)
@@ -259,8 +262,7 @@ getestet werden:
 java-client-fhir.bat http://IHRSERVER/aktin/cda/fhir/Binary examples\basismodul-beispiel-storyboard01.xml
 ```
 
-Test der Verbindung und E-Mail-Konfiguration
---------------------------------------------
+<h3>Test der Verbindung und E-Mail-Konfiguration</h3>
 
 Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
 
@@ -282,23 +284,27 @@ Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsm
 
 [Test server configuration fail]: update_7_test/Screenshot_6.png "Fehlerhafte E-Mail-Konfiguration"
 
-# Aktin Diagnose-Skript
+Aktin-Diagnose-Skript
+----------------------------------
 
 Sollten bei der Installation Probleme aufgetreten sein, führen Sie bitte das Aktin-Diagnose-Skript aus. Dieses befindet sich unter:
 
 ```
 /opt/aktin/diagnostic_script
 ```
-Sollte die Installation vorzeitig fehlgeschlagen sein, finden sie das Skript alternativ unter:
+
+Sollte die Installation vorzeitig fehlgeschlagen sein, finden Sie das Skript alternativ unter:
+
 ```
 /BENUTZERNAME/aktin-dwh-installer/dwh-update/
 ```
+
 Sie können das Skript an jedem beliebigen Ort, an welchem das Skript liegt, ausführen mit:
+
 ```
 ./aktindiag.sh
 ```
-Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im aktuellen Verzeichnis eine .tar.gz-Datei:
-```
-aktindiag.tar.gz
-```
+
+Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im aktuellen Verzeichnis eine .tar.gz-Datei: `aktindiag.tar.gz`
+
 Senden Sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Installations-Problemen.

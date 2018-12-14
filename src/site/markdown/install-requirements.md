@@ -5,7 +5,9 @@ Grundsätzlich sollte unsere Software mit allen Linux-Systemen verwendbar sein.
 
 Für Debian 8 (und eingeschränkt CentOS 7) stellen wir Skripte für eine automatische Installation und Konfiguration zur Verfügung. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Debian 8 funktioniert. Installationen mit Debian 9.x führen aktuell zu Problemen mit dem Installationskript.
 
-Nachfolgend ist die Installation der Pakete für ausgewählte Distributionen beschrieben:
+Nachfolgend ist die Installation der Pakete für ausgewählte Distributionen beschrieben.
+
+<!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
 
 Debian 8
 --------
@@ -66,14 +68,13 @@ Nach der Installation kann unser [AKTIN-Installationsskript](install-script.html
 Benötigte Pakete
 ---------------------
 
-Die folgende Software wird benötigt:
+Sollten Sie nicht das [AKTIN-Installationsskript](install-script.html) nutzen, so wird die folgende Software benötigt:
 
 * Apache2 + PHP5 + php_curl + mod_proxy (http)
 * Postgres Datenbank Server
 * Java 8 runtime environment (headless ausreichend)
 
 Wir empfehlen die Software möglichst aus den gewarteten Repositories der entsprechenden Linux-Distribution zu verwenden. So können einfach und zuverlässig (Sicherheits-)Updates eingespielt werden.
-
 
 Nachfolgend Paketnamen der gängigen Distributionen
 
