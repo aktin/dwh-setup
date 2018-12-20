@@ -74,6 +74,8 @@ Sie bitte die Anweisungen unter [_"Lokale Konfigurationen in der Datei `aktin.pr
 Ebenfalls seit dem Update 0.7 wird eine lokale E-Mailadresse verwendet, um Berichte und Meldungen an die Nutzer zu versenden.
 Sollte noch keine E-Mail eingestellt sein oder Sie Probleme mit dem Versenden der E-Mails haben, folgen Sie bitte die Anweisungen unter [_"E-Mail-Konfiguration und Änderungen"_](#emailconf). 
 
+Ab Update 1.0 werden Angaben bzgl. der CDAs in den AKTIN-Properties für den Consent-Manager benötigt. Diese Angaben sind nur nötig, wenn Sie an einer Studie beteiligt sind, die den Consent-Manager nutzt. Falls ihr KIS-Anbieter E.Care oder AGFA ist, brauchen Sie keine Änderungen vornehmen, da die voreingestellten Angaben bereits korrekt sind. Andernfalls halten Sie sich bitte an die Anleitung im Abschnitt "Änderungen ab Version 1.0"  auf der Seite des [Installationsskripts](install-script.html).
+
 Der Update besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
 Am Ende des Skriptes wird der Wildfly-Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. 
 Bei erfolgreicher Installation kommt folgende Meldung:
