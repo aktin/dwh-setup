@@ -80,13 +80,13 @@ top -b -n 1 > $tempdir/ram.txt
 # Ordnerberechtigungen und Existenz
 if [ -d /var/lib/aktin/ ]
 	then
-	printf "/var/lib/aktin/\n" > $tempdir/permissions.txt
-	ls -ld >> $tempdir/permissions.txt
+		printf "/var/lib/aktin/\n" > $tempdir/permissions.txt
+		ls -ld /var/lib/aktin/ >> $tempdir/permissions.txt
 	#reports
 	if [ -d /var/lib/aktin/reports ]
 	then
 		printf "\n/var/lib/aktin/reports\n" >> $tempdir/permissions.txt
-		ls -ld >> $tempdir/permissions.txt
+		ls -ld /var/lib/aktin/reports >> $tempdir/permissions.txt
 	else
 		printf "\nreports ordner existiert nicht\n" >> $tempdir/permissions.txt
 	fi
@@ -94,7 +94,7 @@ if [ -d /var/lib/aktin/ ]
 	if [ -d /var/tmp/report-temp ]
 	then
 		printf "\n/var/tmp/report-temp\n" >> $tempdir/permissions.txt
-		ls -ld >> $tempdir/permissions.txt
+		ls -ld /var/tmp/report-temp >> $tempdir/permissions.txt
 	else
 		printf "\nreport-temp ordner existiert nicht\n" >> $tempdir/permissions.txt
 	fi
@@ -102,7 +102,7 @@ if [ -d /var/lib/aktin/ ]
 	if [ -d /var/lib/aktin/report-archive ]
 	then
 		printf "\n/var/lib/aktin/report-archive\n" >> $tempdir/permissions.txt
-		ls -ld >> $tempdir/permissions.txt
+		ls -ld /var/lib/aktin/report-archive >> $tempdir/permissions.txt
 	else
 		printf "\nreport-archive ordner existiert nicht\n" >> $tempdir/permissions.txt
 	fi
@@ -110,7 +110,7 @@ if [ -d /var/lib/aktin/ ]
 	if [ -d /var/lib/aktin/broker ]
 	then
 		printf "\n/var/lib/aktin/broker\n" >> $tempdir/permissions.txt
-		ls -ld >> $tempdir/permissions.txt
+		ls -ld /var/lib/aktin/broker >> $tempdir/permissions.txt
 	else
 		printf "\nbroker ordner existiert nicht\n" >> $tempdir/permissions.txt
 	fi
@@ -118,7 +118,7 @@ if [ -d /var/lib/aktin/ ]
 	if [ -d /var/lib/aktin/broker-archive ]
 	then
 		printf "\n/var/lib/aktin/broker-archive\n" >> $tempdir/permissions.txt
-		ls -ld >> $tempdir/permissions.txt
+		ls -ld /var/lib/aktin/broker-archive >> $tempdir/permissions.txt
 	else
 		printf "\nbroker-archive ordner existiert nicht\n" >> $tempdir/permissions.txt
 	fi
