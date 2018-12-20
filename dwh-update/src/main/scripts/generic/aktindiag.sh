@@ -91,9 +91,9 @@ if [ -d /var/lib/aktin/ ]
 		printf "\nreports ordner existiert nicht\n" >> $tempdir/permissions.txt
 	fi
 	#report-temp
-	if [ -d /var/lib/aktin/report-temp ]
+	if [ -d /var/tmp/report-temp ]
 	then
-		printf "\n/var/lib/aktin/report-temp\n" >> $tempdir/permissions.txt
+		printf "\n/var/tmp/report-temp\n" >> $tempdir/permissions.txt
 		ls -ld >> $tempdir/permissions.txt
 	else
 		printf "\nreport-temp ordner existiert nicht\n" >> $tempdir/permissions.txt
