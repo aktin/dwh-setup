@@ -1,6 +1,14 @@
 ﻿Changelog
 =========
 
+Version 1.0.2
+-------------
+* Implizite Fall-Merges führen nun nicht mehr zu duplikaten Datenbankeinträgen. Seit 1.0 kam dieses Problem vor wenn das gleiche CDA-Dokument mit unterschiedlicher Patientennummer (aber gleicher Fallnummer) erneut geschickt wird.
+
+Version 1.0.1
+-------------
+* E-Mail-Benachrichtigungen geben nun eine explizite Absenderadresse (From) an. In bestimmten Fällen wurde vorher ohne Absenderadresse ein Spam-Filter aktiv.
+
 Version 1.0
 -----------
 * Weboberfläche
@@ -11,7 +19,7 @@ Version 1.0
 * Zuweisung von Rollen in der i2b2-Oberfläche (admin und study_nurse), um Nutzergruppen nur bestimmte Funktionalitäten zur Verfügung zu stellen
 
 Version 0.10.1
------------
+--------------
 * CDA-Import
     * Bei der Transformation aus dem CDA in das DWH wurde ein Fehler für "Tetanusschutz unbekannt" behoben - dies wurde als "Tetanusschutz" importiert. Dadurch sind alle Daten, die mit einem früheren Release importiert wurden in diesem Punkt falsch
 * Aktualisierung des Monatsbericht auf V01.4
