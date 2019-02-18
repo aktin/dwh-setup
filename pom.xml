@@ -18,9 +18,9 @@
 	<properties>
 		<!-- specifies the package and source version to which the scripts and site refers to -->
 		<!-- dont forget to change dependency further down and in dwh-update/pom.xml -->
-		<dwhJ2EEVersion>1.0.1</dwhJ2EEVersion>
-		<dwhOntologyVersion>0.11</dwhOntologyVersion>
-		<dwhImportVersion>0.11</dwhImportVersion>
+		<dwhJ2EEVersion>1.0.2</dwhJ2EEVersion>
+		<dwhOntologyVersion>0.12</dwhOntologyVersion>
+		<dwhImportVersion>0.12</dwhImportVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
 		<!-- encoding stuff -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -47,12 +47,12 @@
 			<dependency>
 			    <groupId>org.aktin</groupId>
 			    <artifactId>cda-ontology</artifactId>
-			    <version>0.11</version>
+			    <version>0.12</version>
 			</dependency>
 			<dependency>
 				<groupId>org.aktin.dwh</groupId>
 				<artifactId>dwh-j2ee</artifactId>
-				<version>1.0.1</version>
+				<version>1.0.2</version>
 				<type>ear</type>
 			</dependency>
 		</dependencies>
