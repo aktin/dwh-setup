@@ -130,8 +130,8 @@ wildfly.management.password=admin2
 study.id.reference=Patient
 # Root numbers of the different reference types. Can be empty.
 cda.patient.root.preset=1.2.276.0.76.4.8
-cda.encounter.root.preset=1.2.276.0.76.4.8
-cda.billing.root.preset=1.2.276.0.76.4.8
+cda.encounter.root.preset=1.2.276.0.76.3.87686 
+cda.billing.root.preset=1.2.276.0.76.3.87686.1.45 
 # Label for the extension textfield of the consent manager, based on the reference type.
 study.id.patient.label=Patientennr.
 study.id.encounter.label=Episodennummer
@@ -150,7 +150,19 @@ Die Befehle bezüglich der Datei `aktin.properties` werden Ihnen auch beim Insta
 
 <h4>Änderungen in den Properties ab Version 1.0</h4>
 
-Der folgende Abschnitt kann von Kliniken, die eine E.Care- oder AGFA-Schnittstelle verwenden, vernachlässigt werden. Für diese Kliniken sind die Einstellungen in der Properties-Datei bereits korrekt voreingestellt. 
+Für Kliniken, die die Root-ID aus dem Beispiel-CDA übernommen haben (hierzu zählen z.B. Kliniken mit einer E.Care-Schnittstelle) und für den Consent-Manager die Patientennummer verwenden (empfohlene Einstellung), müssen keine weiteren Änderungen vorgenommen werden. Für diese Kliniken sind die Einstellungen in der Properties-Datei bereits korrekt voreingestellt. 
+
+Für Kliniken mit AGFA-Schnittstelle muss lediglich die Patientennummer geändert werden. Suchen Sie hierfür in der Datei `aktin.properties` die Zeile
+
+```
+cda.patient.root.preset=1.2.276.0.76.4.8
+```
+
+heraus und ändern Sie den Wert auf `1.2.276.0.76.4.17.9814184919`. 
+
+Sollten Sie die Änderungen im Zuge eines Updates und nicht einer Installation durchführen, so halten Sie sich bitte an den untersten Absatz des Abschnitts "Lokale Konfigurationen in der Datei `aktin.properties`" auf der Seite [Automatisches Update](update-auto.html), um den Wildfly-Service zu stoppen und zu starten.
+
+Sollten Sie die Fallnummer oder die Encounter-Nummer statt der Patientennummer für den Consent-Manager verwenden wollen und/oder Ihr KIS-Anbieter weder AGFA ist noch die Beispiel-Root-IDs übernommen hat, so sind weitere Konfigurationen notwendig. Befolgen Sie hierfür bitte die folgende Anleitung und halten Sie ggf. Rücksprache mit uns (it-support(at)aktin.org), falls Unklarheiten auftreten: 
 
 Für den Ein- oder Ausschluss von Patienten im Consent-Manager (weitere Informationen zu diesem Feature finden Sie in der Benutzeranleitung) wird eine Identifikationsnummer des Patienten benötigt. Hierfür stehen drei verschiedene Nummern zur Verfügung: Patientennummer, Episodennummer und Fallnummer. Unter `study.id.reference` muss die entsprechende Referenz, die genutzt werden soll, eingetragen werden (`Patient`, `Encounter` oder `Billing`). Wir empfehlen Ihnen die Patientennummer zu benutzen, da im Gegensatz zu den anderen beiden Nummern hiervon nur eine pro Patient existiert. Zum aktuellen Zeitpunkt findet bei der Eintragung eines Ein- oder Ausschlusses keine Überprüfung statt, ob dieser Patient bereits mit einer anderen Episoden- oder Fallnummer eingetragen wurde, sodass es ggf. zu Dubletten führt, wenn nicht die Patientennummer genutzt wird.
 

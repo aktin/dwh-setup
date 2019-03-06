@@ -74,7 +74,7 @@ Sie bitte die Anweisungen unter [_"Lokale Konfigurationen in der Datei `aktin.pr
 Ebenfalls seit dem Update 0.7 wird eine lokale E-Mailadresse verwendet, um Berichte und Meldungen an die Nutzer zu versenden.
 Sollte noch keine E-Mail eingestellt sein oder Sie Probleme mit dem Versenden der E-Mails haben, folgen Sie bitte die Anweisungen unter [_"E-Mail-Konfiguration und Änderungen"_](#emailconf). 
 
-Ab Update 1.0 werden Angaben bzgl. der CDAs in den AKTIN-Properties für den Consent-Manager benötigt. Diese Angaben sind nur nötig, wenn Sie an einer Studie beteiligt sind, die den Consent-Manager nutzt. Falls ihr KIS-Anbieter E.Care oder AGFA ist, brauchen Sie keine Änderungen vornehmen, da die voreingestellten Angaben bereits korrekt sind. Andernfalls halten Sie sich bitte an die Anleitung im Abschnitt "Änderungen ab Version 1.0"  auf der Seite des [Installationsskripts](install-script.html).
+Ab Update 1.0 werden Angaben bzgl. der CDAs in den AKTIN-Properties für den Consent-Manager benötigt. Diese Angaben sind nur nötig, wenn Sie an einer Studie beteiligt sind, die den Consent-Manager nutzt. Falls ihr KIS-Anbieter die Beispiel-Root-IDs übernommen hat (z.B. E.Care), brauchen Sie keine Änderungen vornehmen, da die voreingestellten Angaben bereits korrekt sind. Andernfalls halten Sie sich bitte an die Anleitung im Abschnitt "Änderungen ab Version 1.0"  auf der Seite des [Installationsskripts](install-script.html).
 
 Der Update besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
 Am Ende des Skriptes wird der Wildfly-Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. 
@@ -106,10 +106,6 @@ Sollte eine Datei angezeigt werden, war das Update erfolgreich.
 **In der i2b2-Adminoberfläche werden keine Nutzer und Projekte angezeigt.**
 
 Im Internet Explorer kommt es in der i2b2-Oberfläche zu Darstellungsfehlern. So werden z.B. keine User unter "Manage Users" angezeigt und unter "Manage Projects" sind die Projekte nicht einsehbar (sattdessen erscheint ein permanentes Ladezeichen). Dieser Fehler ist bereits bekannt, kann aber von unserer Seite aus nicht behoben werden, da i2b2 eine externe Software von der wir lediglich die Schnittstelle nutzen. Wir würden Sie daher bitten für die Nutzerverwaltung einen anderen Browser zu verwenden (z.B. Firefox oder Chrome).
-
-**Die Testseite gibt weder eine positive noch eine negative Rückmeldung.**
-
-Dies ist ein Problem, das ab Version 1.0 im Internet Explorer besteht, alle anderen gängigen Browser sind hiervon nicht betroffen. Wir versuchen das Problem in einem kommenden Update zu beheben. Bitte verwenden Sie solange für das Testen der Verbindung und der E-Mail-Konfiguration einen anderen Browser.
 
 
 Test der Verbindung und der E-Mail-Konfiguration
