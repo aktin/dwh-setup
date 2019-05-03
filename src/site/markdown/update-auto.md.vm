@@ -65,6 +65,7 @@ Das Updateskript kann wie folgt ausgeführt werden:
 ./aktin_dwh_update.sh
 ```
 <a name="confback"></a>
+
 Seit dem Update 0.7 werden einige wichtige Einstellungen in der Datei `aktin.properties` abgespeichert. 
 Sollten Sie diese Datei noch nicht angepasst und in den entsprechenden Ordner kopiert haben, 
 werden Sie in der Konsole darauf hingewiesen und das Skript wird unterbrochen. In dem Fall folgen 
@@ -74,8 +75,6 @@ Sie bitte die Anweisungen unter [_"Lokale Konfigurationen in der Datei `aktin.pr
 Ebenfalls seit dem Update 0.7 wird eine lokale E-Mailadresse verwendet, um Berichte und Meldungen an die Nutzer zu versenden.
 Sollte noch keine E-Mail eingestellt sein oder Sie Probleme mit dem Versenden der E-Mails haben, folgen Sie bitte die Anweisungen unter [_"E-Mail-Konfiguration und Änderungen"_](#emailconf). 
 
-Ab Update 1.0 werden Angaben bzgl. der CDAs in den AKTIN-Properties für den Consent-Manager benötigt. Diese Angaben sind nur nötig, wenn Sie an einer Studie beteiligt sind, die den Consent-Manager nutzt. Falls ihr KIS-Anbieter die Beispiel-Root-IDs übernommen hat (z.B. E.Care), brauchen Sie keine Änderungen vornehmen, da die voreingestellten Angaben bereits korrekt sind. Andernfalls halten Sie sich bitte an die Anleitung im Abschnitt "Änderungen ab Version 1.0"  auf der Seite des [Installationsskripts](install-script.html).
-
 Der Update besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
 Am Ende des Skriptes wird der Wildfly-Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. 
 Bei erfolgreicher Installation kommt folgende Meldung:
@@ -83,6 +82,20 @@ Bei erfolgreicher Installation kommt folgende Meldung:
 ```
 +++SUCCESS+++ EAR successfully deployed after xxx sec
 ```
+
+
+Wichtige Änderungen seit Version 1.0
+----
+
+Ab Update 1.0 werden Angaben bzgl. der CDAs in den AKTIN-Properties für den Consent-Manager benötigt. Diese Angaben sind nur nötig, wenn Sie an einer Studie beteiligt sind, die den Consent-Manager nutzt. Falls ihr KIS-Anbieter die Beispiel-Root-IDs übernommen hat (z.B. E.Care), brauchen Sie keine Änderungen vornehmen, da die voreingestellten Angaben bereits korrekt sind. Andernfalls halten Sie sich bitte an die Anleitung im Abschnitt "Änderungen ab Version 1.0"  auf der Seite des [Installationsskripts](install-script.html).
+
+Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der kein i2b2-Admin ist (d.h. keinen Zugriff auf die i2b2-Adminoberfläche unter `http://IHRSERVER/admin` hat), sind noch die folgenden zwei Schritte für einen erfolgreichen Login in den Data-Warehouse-Manager notwendig:
+1. Zuordnung des Nutzers zum AKTIN-Projekt
+2. Zuweisung einer AKTIN-Rolle an den Benutzer
+
+Das genaue Vorgehen hierfür können Sie in den letzten beiden Abschnitten ("Benutzer einem Projekt hinzufügen" und "AKTIN-Rolle zuweisen") der i2b2-Benutzeranleitung nachlesen: https://www.na-register.de/de-de/support/anwender.html 
+
+
 
 Häufige Fehler
 --------------
