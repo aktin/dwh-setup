@@ -255,6 +255,14 @@ Bevor die Funktionalitäten des Servers getestet werden können, benötigt der S
 
 Sollten Sie Fragen zur Installation oder Probleme beim Installationsprozess haben, kontaktieren Sie uns gerne unter it-support(at)aktin.org
 
+Einstellungen in der i2b2-Adminoberfläche
+----
+Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der kein i2b2-Admin ist (d.h. keinen Zugriff auf die i2b2-Adminoberfläche unter `http://IHRSERVER/admin` hat), sind noch die folgenden zwei Schritte für einen erfolgreichen Login in den Data-Warehouse-Manager notwendig:
+1. Zuordnung des Nutzers zum AKTIN-Projekt
+2. Zuweisung einer AKTIN-Rolle an den Benutzer
+
+Das genaue Vorgehen hierfür können Sie in den letzten beiden Abschnitten ("Benutzer einem Projekt hinzufügen" und "AKTIN-Rolle zuweisen") der i2b2-Benutzeranleitung nachlesen: https://www.na-register.de/de-de/support/anwender.html 
+
 Test der Betriebsfähigkeit
 -----------------------------------------
 
