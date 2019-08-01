@@ -1,6 +1,11 @@
 ﻿Changelog
 =========
 
+Version 1.1
+* CDA-Validierung aktualisiert
+* Keine Unterstützung mehr für alte CDA-Template-Versionen
+* Verteiltes Rechnen mit Rscript vor Datenübertragung
+
 Version 1.0.2
 -------------
 * Implizite Fall-Merges führen nun nicht mehr zu duplikaten Datenbankeinträgen. Seit 1.0 kam dieses Problem vor wenn das gleiche CDA-Dokument mit unterschiedlicher Patientennummer (aber gleicher Fallnummer) erneut geschickt wird.
