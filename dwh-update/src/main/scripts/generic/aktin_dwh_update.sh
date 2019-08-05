@@ -100,8 +100,10 @@ echo
 echo +++++ STEP 0.02.0a +++++ Vorbereitung auf Patch  | tee -a $LOGFILE
 echo
 if [ "$OS_VERSION" == "debian" ] ; then
-
-    apt-get update
+    sudo cp /etc/apt/sources.list  /etc/apt/sources.list.old
+    sed -i 's/deb http:\/\/ftp.de.debian.org\/debian jessie-backports main/deb http:\/\/ftp.de.debian.org\/debian-archive\/debian jessie-backports main/g' "/etc/apt/sources.list"
+    sed -i 's/deb http:\/\/http.debian.net\/debian jessie-backports main/deb http:\/\/archive.debian.org\/debian jessie-backports main/g' "/etc/apt/sources.list"
+    apt-get -o Acquire::Check-Valid-Until=false update
     apt install -y patch
 fi
 if [ "$OS_VERSION" == "centos" ] ; then
