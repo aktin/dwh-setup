@@ -89,4 +89,4 @@ Nachfolgend Paketnamen der gängigen Distributionen
 Manuelle Installation anderer Distributionen
 ---------------------
 
-Für manuelle Installation anderer Linux-Distributionen empfehlen wir eine Anpassung der gelieferten Skripte. Sollten Sie Fragen dazu haben, wenden Sie sich gerne an uns unter it-support(at)aktin.de
+Für manuelle Installation anderer Linux-Distributionen empfehlen wir eine Anpassung der gelieferten Skripte. Sollten Sie Fragen dazu haben, wenden Sie sich gerne an uns unter it-support(at)aktin.org.
