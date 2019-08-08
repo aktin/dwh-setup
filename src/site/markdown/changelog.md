@@ -2,6 +2,7 @@
 =========
 
 Version 1.1
+---------
 * CDA-Validierung aktualisiert
 * Keine Unterstützung mehr für alte CDA-Template-Versionen
 * Verteiltes Rechnen mit Rscript vor Datenübertragung
