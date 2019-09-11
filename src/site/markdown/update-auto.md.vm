@@ -46,7 +46,6 @@ Der Inhalt (`ls`) sollte dann etwa wie folgt aussehen:
 dwh-update
 - aktin.properties
 - aktin_dwh_update.sh
-- dubletten_cleanup.sh
 - email.config
 - email_config_reset.sh
 - README.md
@@ -54,15 +53,7 @@ dwh-update
 - - ...
 ```
 
-Führen Sie das Skript zum Entfernen von ggf. vorhandenen Dubletten aus:
-
-```
-chmod a+x dubletten_cleanup.sh; ./dubletten_cleanup.sh
-```
-
-Nach Beendigung des Skripts befindet sich ein gleichnamiger Ordner im übergeordneten Verzeichnis (/root). In diesem befinden sich zur Nachvollziehbarkeit die verwendeten SQL-Statements sowie die Einträge (bzw. deren patient_num, encounter_num und sourcesystem_cd), die von der Löschung betroffen waren.
-
-Das Updateskript kann danach wie folgt ausgeführt werden:
+Das Updateskript kann wie folgt ausgeführt werden:
 
 ```
 ./aktin_dwh_update.sh
