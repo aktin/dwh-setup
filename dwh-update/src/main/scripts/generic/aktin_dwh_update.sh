@@ -172,6 +172,8 @@ $INSTALL_ROOT/lib/undeploy_dwh_ear.sh 2>&1 | tee -a $LOGFILE
 echo
 echo "+++++ STEP 2 +++++ Execute scripts (SQL, Copy files etc.)" | tee -a $LOGFILE
 echo
+echo "Remove duplicates, see log folder under /root for complete log." | tee -a $LOGFILE
+$INSTALL_ROOT/dubletten_cleanup.sh
 
 
 #echo
@@ -371,7 +373,7 @@ else
 fi
 
 echo
-echo +++++ STEP 4.01 +++++  Alte, periodische Logdateien Komprimieren und Löschen | tee -a $LOGFILE
+echo +++++ STEP 4.01 +++++  Alte, periodische Logdateien komprimieren und löschen | tee -a $LOGFILE
 echo
 if [ $( ls /opt/wildfly-9.0.2.Final/standalone/log/server.log.201* 2>/dev/null | wc -l ) -gt 0 ] ; 
 then
