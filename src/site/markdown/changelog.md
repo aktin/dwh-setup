@@ -2,9 +2,12 @@
 =========
 
 Version 1.1
+-----------
 * CDA-Validierung aktualisiert
 * Keine Unterstützung mehr für alte CDA-Template-Versionen
 * Verteiltes Rechnen mit Rscript vor Datenübertragung
+* ENQUIRE-SIC-Erzeugung überspringt nun keine Nummern mehr bei Fehlern
+
 
 Version 1.0.2
 -------------
