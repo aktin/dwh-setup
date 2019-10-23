@@ -174,8 +174,8 @@ echo "+++++ STEP 2 +++++ Execute scripts (SQL, Copy files etc.)" | tee -a $LOGFI
 echo
 echo "Remove duplicates, see log folder under /root for complete log." | tee -a $LOGFILE
 $INSTALL_ROOT/dubletten_cleanup.sh
-echo "Change boker URI to https://aktin-broker.klinikum.rwth-aachen.de/broker"
-sed -i 's/https:\/\/broker.aktin.org\/broker\//https:\/\/aktin-broker.klinikum.rwth-aachen.de\/broker/g' $WILDFLY_HOME/standalone/configuration/aktin.properties
+echo "Change boker URI to https://aktin-broker.klinikum.rwth-aachen.de/broker/"
+sed -i 's/https:\/\/broker.aktin.org\/broker\//https:\/\/aktin-broker.klinikum.rwth-aachen.de\/broker\//g' $WILDFLY_HOME/standalone/configuration/aktin.properties
 
 
 #echo
