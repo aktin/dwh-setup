@@ -69,7 +69,6 @@ Konfigurationen und lokale Einstellungen
 Während der Installation werden Sie zur Konfiguration der `aktin.properties` aufgefordert. Des Weiteren sollten Sie ihre E-Mail-Konfiguration anzupassen. Die Einstellungsdatei befindet sich unter `dwh-update/email.config`, in dieser Datei müssen alle wichtigen Parameter für die automatische Emailbenachrichtigung konfiguriert oder überprüft werden.
 
 <h3>Aktin-Properties</h3>
-
 Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
 
 ```
@@ -117,7 +116,7 @@ report.archive.path=/var/lib/aktin/report-archive
 report.debug.keeptempfiles=false
 broker.data.path=/var/lib/aktin/broker
 broker.archive.path=/var/lib/aktin/broker-archive
-broker.uris=https://broker.aktin.org/broker/
+broker.uris=https://aktin-broker.klinikum.rwth-aachen.de/broker/
 broker.intervals=PT15M
 # Used in AKTIN to connect to the broker, you can get your API key from it-support@aktin.org
 broker.keys=XXXyourapikeyXXX
@@ -154,7 +153,6 @@ cp -v /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly
 Die Befehle bezüglich der Datei `aktin.properties` werden Ihnen auch beim Installationsvorgang angezeigt.
 
 <h4>Änderungen in den Properties ab Version 1.0</h4>
-
 Für Kliniken, die die Root-ID aus dem Beispiel-CDA übernommen haben (hierzu zählen z.B. Kliniken mit einer E.Care-Schnittstelle) und für den Consent-Manager die Patientennummer verwenden (empfohlene Einstellung), müssen keine weiteren Änderungen vorgenommen werden. Für diese Kliniken sind die Einstellungen in der Properties-Datei bereits korrekt voreingestellt. 
 
 Für Kliniken mit AGFA-Schnittstelle muss lediglich die Patientennummer geändert werden. Suchen Sie hierfür in der Datei `aktin.properties` die Zeile
@@ -184,7 +182,6 @@ Hier befinden sich die jeweiligen Root- und Extension-Nummern der Referenzen. Be
 Sollte in der Klinik keine feste Root-Nummer verwendet werden, darf auch keine Root-Nummer in den Properties hinterlegt werden – lassen Sie das Feld dann einfach leer. Dies kann der Fall sein, wenn entweder die Extension-Nummer direkt als Root-Nummer verwendet wird oder sich die Root-Nummer klinikintern unterscheidet. Im ersteren Fall tragen Sie im Consent-Manager ganz normal die Identifikationsnummer ein, welche dann als Root-Nummer erkannt wird. Im letzteren Fall geben Sie unter `study.id.separator` ein Trennzeichen ein und tragen im Consent-Manager die Root-Nummer und die Extension-Nummer mit dem definierten Trennzeichen dazwischen ein.
 
 <h3>E-Mail-Konfiguration</h3>
-
 Bitte tragen Sie in der Datei `email.config` die E-Mail-Konfigurationen für die Ausgangsmailadresse ein. Diese befindet sich in `/BENUTZERNAME/aktin-dwh-installer/dwh-update/` oder `/BENUTZERNAME/dwh-update/`, der jeweilige Pfad ist davon abhängig, ob sie zuletzt eine Neuinstallation oder ein Update vorgenommen haben. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
 
 Wenn Sie Änderungen an der bereits eingestellten E-Mail vornehmen möchten, führen Sie bitte folgende Schritte durch. Bitte beachten Sie, dass die aktuellen Einstellungen nicht in `email.config` zu finden sind. Diese entnehmen Sie bitte Ihren eigenen Daten oder den vorherigen Installationsskripten.
@@ -272,13 +269,11 @@ Test der Betriebsfähigkeit
 Nach der Installation der Aktin-Software ist es anzuraten, dessen Betriebsfähigkeit zu testen. Im folgenden Bereich können Sie Methoden und Funktionalitäten für die Verifikation der Betriebsfähigkeit entnehmen.
 
 <h3>Test des Data Warehouse</h3>
-
 Wenn die Installation erfolgreich durchgeführt wurde, kann anschließend per Web Browser auf das integrierte Data Warehouse zugegriffen werden. In der Adresszeile muss die entsprechende IP-Adresse / Servername angepasst werden:
 `http://IHRSERVER/webclient/`
 
 
 <h3>Test der Importschnittstelle</h3>
-
 Die Importschnittstelle des Servers kann mit den Client-Programmen
 aus dem Software-Paket (ZIP) des [Demo-Server](demo-server.html)
 getestet werden:
@@ -288,7 +283,6 @@ java-client-fhir.bat http://IHRSERVER/aktin/cda/fhir/Binary examples\basismodul-
 ```
 
 <h3>Test der Verbindung und E-Mail-Konfiguration</h3>
-
 Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
 
 ![Testbildschirm][Test server configuration]
