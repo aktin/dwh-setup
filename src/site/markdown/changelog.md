@@ -7,6 +7,7 @@ Version 1.1
 * Keine Unterstützung mehr für alte CDA-Template-Versionen
 * Verteiltes Rechnen mit Rscript vor Datenübertragung
 * ENQUIRE-SIC-Erzeugung überspringt nun keine Nummern mehr bei Fehlern
+* Neue Serveradresse für Umzug des AKTIN-Query-Brokers nach Aachen
 
 
 Version 1.0.2
