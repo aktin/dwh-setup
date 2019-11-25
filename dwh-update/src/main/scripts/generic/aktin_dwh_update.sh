@@ -79,7 +79,7 @@ echo +++++ STEP 0.01 +++++ JDK08 Fix  | tee -a $LOGFILE
 echo
 if [ "$OS_VERSION" == "debian" ] && [ $(java -version 2>&1 | grep -c "build 1.8") -le 0 ] ; then
 
-    echo -e "${BYel}+++WARNING+++${RCol} Java Version ist nicht 1.8. Dies kann zu Probleme führen."
+    echo -e "${BYel}+++WARNING+++${RCol} Java Version ist nicht 1.8. Dies kann zu Problemen führen."
     # java is not jdk 8
     # Enable backports
     # http.debian.net/debian jessie-backports main
@@ -96,18 +96,19 @@ fi
 
 
 
+# TODO hier vorher testen, ob patch bereits installiert ist. Wenn nicht, dann geht das auch nicht offline.
 echo
 echo +++++ STEP 0.02.0a +++++ Vorbereitung auf Patch  | tee -a $LOGFILE
 echo
 if [ "$OS_VERSION" == "debian" ] ; then
-    sudo cp /etc/apt/sources.list  /etc/apt/sources.list.old
-    sed -i 's/deb http:\/\/ftp.de.debian.org\/debian jessie-backports main/deb http:\/\/ftp.de.debian.org\/debian-archive\/debian jessie-backports main/g' "/etc/apt/sources.list"
-    sed -i 's/deb http:\/\/http.debian.net\/debian jessie-backports main/deb http:\/\/archive.debian.org\/debian jessie-backports main/g' "/etc/apt/sources.list"
-    apt-get -o Acquire::Check-Valid-Until=false update
-    apt install -y patch
+    #sudo cp /etc/apt/sources.list  /etc/apt/sources.list.old
+    #sed -i 's/deb http:\/\/ftp.de.debian.org\/debian jessie-backports main/deb http:\/\/ftp.de.debian.org\/debian-archive\/debian jessie-backports main/g' "/etc/apt/sources.list"
+    #sed -i 's/deb http:\/\/http.debian.net\/debian jessie-backports main/deb http:\/\/archive.debian.org\/debian jessie-backports main/g' "/etc/apt/sources.list"
+    #apt-get -o Acquire::Check-Valid-Until=false update
+    #apt install -y patch
 fi
 if [ "$OS_VERSION" == "centos" ] ; then
-    yum -y install patch
+    #yum -y install patch
 fi
 
 
