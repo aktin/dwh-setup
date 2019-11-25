@@ -6,10 +6,11 @@
 Externer Zugriff
 ----------------
 
-Der AKTIN Server muss periodisch auf folgende Server
-der Universität Oldenburg via HTTPS (Port 443) zugreifen können:
+Der AKTIN Server muss periodisch auf folgenden Server
+der an der Uniklinik RWTH Aachen via HTTPS (Port 443) zugreifen können:
 
-* `broker.aktin.org` mit dem IP: 134.106.87.42
+* `aktin-broker.klinikum.rwth-aachen.de` mit der IP-Adresse: 134.130.15.153
+
 
 Interne Regeln
 --------------
