@@ -32,7 +32,7 @@ apt-get update
 # apt-get install -y ca-certificates-java
 # apt-get install -y openjdk-8-jre-headless
 apt install -t jessie-backports -y openjdk-8-jre-headless ca-certificates-java
-apt-get install -y sudo wget curl dos2unix unzip sed bc ant postgresql apache2
+apt-get install -y sudo wget curl dos2unix unzip sed bc ant postgresql apache2 patch
 
 # install R libraries for reporting
 apt-get install -y r-cran-xml r-cran-lattice

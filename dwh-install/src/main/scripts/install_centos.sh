@@ -19,7 +19,7 @@ yum clean all
 yum -y update
 yum -y install epel-release
 yum -y install java-1.8.0-openjdk-headless
-yum -y install sudo wget curl dos2unix unzip sed bc ant php php-curl openssh-server
+yum -y install sudo wget curl dos2unix unzip sed bc ant php php-curl openssh-server patch
 
 echo
 echo +++++ STEP 0.i +++++ CentOs HTTPD Konfiguration | tee -a $LOGFILE
