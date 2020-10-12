@@ -1,9 +1,7 @@
-﻿Installationsskript: Automatische Konfiguration des AKTIN-Applikations-Server mit dem Installationsskript
+Installationsskript: Automatische Konfiguration des AKTIN-Applikations-Server mit dem Installationsskript
 ===============================================
 
-Unser Installationsskript wurde getestet mit Debian 8 und CentOS 7. Wenn Sie ein anderes System verwenden, müssen Sie die Skripte anpassen oder die enthaltenen Schritte manuell durchführen.
-
-Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Server-Installation](install-requirements.html).
+Unser Installationsskript wurde getestet Ubuntu 18.04 LTS und Ubuntu 20.04 LTS. Wenn Sie ein anderes System verwenden, müssen Sie die Skripte anpassen oder die enthaltenen Schritte manuell durchführen. Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Server-Installation](install-requirements.html).
 
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
 
