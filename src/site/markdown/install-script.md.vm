@@ -216,3 +216,9 @@ Sollten bei der Installation Probleme aufgetreten sein, führen Sie bitte das AK
 Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im Verzeichnis `/opt/aktin_log/aktin_diag_{ZEITPUNKT DER DURCHFÜHRUNG}/` eine .tar.gz-Datei: `aktin_diag_{ZEITPUNKT DER DURCHFÜHRUNG}.tar.gz`.
 
 Senden Sie diese Datei bitte mit einer Support-Anfrage an [it-support@aktin.org](mailto:it-support@aktin.org). Die erzeugten Logs helfen bei der Identifizierung von Installations-Problemen.
+
+
+Weitere Anmerkungen
+----------------------------------------------------------------
+* Die AKTIN-Komponente des Applikations-Server hat eine hohe Abhängigkeit zum Postgres Datenbank-Server. Der Wildfly-Server mit der AKTIN-Komponente sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart des Postgres Datenbank-Servers der Wildfly-Server neugestartet werden.
+
