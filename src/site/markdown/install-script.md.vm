@@ -3,10 +3,32 @@ Installationsskript: Automatische Konfiguration des AKTIN-Applikations-Server mi
 Unser Installationsskript wurde getestet Ubuntu 18.04 LTS und Ubuntu 20.04 LTS. Wenn Sie ein anderes System verwenden, müssen Sie die Skripte anpassen oder die enthaltenen Schritte manuell durchführen. Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Server-Installation](install-requirements.html).
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
 
-Erste Schritte und lokale Einstellungen
+Erste Schritte
 ----------------------------------------------------------------
-Kopieren Sie zunächst den gesamten Installationsordner in ein beliebiges Verzeichnis auf Ihrem Applikations-Server und entpacken Sie ihn gegebenenfalls.
+Falls eine bestehende Betriebsversion verwendet wird, beachten Sie bitte, ob Java installiert ist. Mittels des AKTIN-Installationsskriptes wird Java Version 11 von OpenJDK installiert. Sind bereits niedrigere Versionen von Java vorhanden, kann dies zu Problemen bei der Installation und im Betrieb führen.
 
+Mit dem Befehl
+```
+uname -a
+```
+können Sie die Distribution des Linux-Systems herausfinden. In der Konsole sehen Sie dann ähnlich dem Folgenden:
+```
+Linux 013f83fb24f0 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server. Wechseln Sie zunächst zum Benutzer `root` (z.B. via `su -`). Anschließend können Sie unser Paket unter folgendem Link herunterladen:
+```
+# TODO LINK EINFÜGEN
+```
+(evtl. mit Option `--no-check-certificate` bei Zertifikatfehlern). Wenn das Paket heruntergeladen ist, kann es entpackt werden mit
+```
+# TODO tar xvzf aktin_installer.tar.gz
+```
+Die Dateien werden anschließend automatisch in einen Ordner namens `aktin_installer` entpackt.
+
+
+Konfiguration und lokale Einstellungen
+----------------------------------------------------------------
 Vor Start der Installation ist es notwendig, `aktin.properties` und `email.config` an Ihre Anforderungen zu konfigurieren. Beide Dateien befinden sich im Installationsordner.
 
 **aktin.properties**
@@ -80,3 +102,117 @@ import.cda.debug.dir=/tmp/
 import.cda.debug.level=none
 import.cda.fhir.outcome.level=info
 ````
+
+Für Kliniken, die die Root-ID aus dem Beispiel-CDA übernommen haben (hierzu zählen z.B. Kliniken mit einer E.Care-Schnittstelle) und für den Consent-Manager die Patientennummer verwenden (empfohlene Einstellung), müssen keine weiteren Änderungen vorgenommen werden. Für diese Kliniken sind die Einstellungen in der Properties-Datei bereits korrekt voreingestellt.
+
+Für Kliniken mit einer AGFA-Schnittstelle muss lediglich die Patientennummer geändert werden. Suchen Sie hierfür in der Datei `aktin.properties` die Zeile
+```
+cda.patient.root.preset=1.2.276.0.76.4.8
+```
+heraus und ändern Sie den Wert auf `1.2.276.0.76.4.17.9814184919`.
+
+Sollten Sie die Fallnummer oder die Encounter-Nummer statt der Patientennummer für den Consent-Manager verwenden wollen und/oder Ihr KIS-Anbieter weder AGFA noch die Beispiel-Root-IDs übernommen hat, so befolgen Sie bitte die folgende Anleitung und halten Sie gegebenenfalls Rücksprache mit [it-support@aktin.org](mailto:it-support@aktin.org):
+
+Für den Ein- oder Ausschluss von Patienten im Consent-Manager (weitere Informationen zu diesem Feature finden Sie in der Benutzeranleitung) wird eine Identifikationsnummer des Patienten benötigt. Hierfür stehen drei verschiedene Nummern zur Verfügung: Patientennummer (`Patient`), Episodennummer (`Encounter`) und Fallnummer (`Billing`). Unter dem Feld `study.id.reference` muss die entsprechende Referenz eingetragen werden. Wir empfehlen Ihnen, die Patientennummer (`Patient`) zu benutzen, da im Gegensatz zu den anderen beiden Nummern diese für jeden Patienten einzigartig ist. Zum aktuellen Zeitpunkt findet bei der Eintragung eines Ein- oder Ausschlusses keine Überprüfung statt, ob der Patient bereits mit einer anderen Episoden- oder Fallnummer eingetragen wurde, sodass es gegebenenfalls zu Dubletten kommen kann, wenn nicht die Patientennummer genutzt wird.
+
+Für jede dieser Nummern gibt es i.d.R. eine feste Root-Nummer, die unter den Feldern `cda.patient.root.preset`, `cda.encounter.root.preset` bzw. `cda.billing.root.preset` hinterlegt werden kann. Dadurch muss die Root-Nummer nicht bei jedem Ein- bzw. Ausschluss angegeben werden und die Angabe der patienten-, episoden- oder fallbezogenen Nummer, die auch im Krankenhausinformationssystem sichtbar ist (die sogenannte Extension-Nummer), ist ausreichend.
+
+Um herauszufinden, welche dieser Nummern über die AKTIN-Schnittstelle in das Data-Warehouse übertragen werden und somit in den Einstellungen angegeben werden können, benötigen Sie Zugriff auf ein CDA-Dokument. Dieses wird als Datenstruktur zur Übertragung der Daten aus dem Notaufnahme-System in das klinikinterne Data-Warehouse verwendet. Ein gekürztes CDA-Beispieldokument sieht wie folgt aus:
+
+![img1](https://git.rwth-aachen.de/aktin/dwh-setup/-/raw/master/src/site/resources/properties/cda-ids.png)
+
+Hier befinden sich die jeweiligen Root- und Extension-Nummern der Referenzen. Bei der ersten ID unter `encompassingEncounter` ist die Episodennummer zu finden. Die zweite ID steht für die Fallnummer. Die Patientennummer ist unter `patientRole.id` zu finden. Prüfen Sie, welche dieser Nummern dem Notaufnahme-Personal bekannt ist, d.h. welche der Nummern mit der im Krankenhausinformationssystem übereinstimmt. Tragen Sie von dieser Nummer die im CDA-stehende Root-Nummer in die Datei `aktin.properties` ein und geben die entsprechende Referenz (`Patient`, `Encounter` oder `Billing`) an.
+
+Sollte in der Klinik keine feste Root-Nummer verwendet werden, darf auch keine Root-Nummer in `aktin.properties` hinterlegt werden – lassen Sie das Feld in diesem Fall einfach leer. Dies kann der Fall sein, wenn entweder die Extension-Nummer direkt als Root-Nummer verwendet wird oder sich die Root-Nummer klinikintern unterscheidet. Im ersteren Fall tragen Sie im Consent-Manager ganz normal die Identifikationsnummer ein, welche dann als Root-Nummer erkannt wird. Im letzteren Fall geben Sie unter `study.id.separator` ein Trennzeichen ein und tragen im Consent-Manager die Root-Nummer und die Extension-Nummer mit dem definierten Trennzeichen dazwischen ein.
+
+**email.config**
+Für das Anpassen der Datei `email.config` muss folgender Befehl ausgeführt werden:
+```
+nano {VERZEICHNIS}/email.config
+```
+
+In dieser Datei wird die E-Mail-Konfigurationen für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation. Hierbei muss besonders auf die Einstellungen des Mailservers geachtet werden, wobei die Felder `usessl`, `usetls` und `smtpport` richtig gesetzt werden müssen. 
+
+Die jeweiligen Felder von `email.config` sind in folgender Template-Datei zu sehen:
+```
+# email config : change mail server configuration here
+
+# mail server name
+SMTPHOST=smtp.web.de
+
+# mail server port, e.g. 465 (SSL) or 587 (TLS), or 25 (no auth)
+SMTPPORT=587
+
+# mail server authentification
+# false for no login is needed for the mail server
+AUTH=true
+
+# user name for authentication
+SMTPUSER=aktin-test@web.de
+
+# password for authentication
+SMTPPASS=XXXpasswordXXX
+
+# email address (from)
+MAILFROM=aktin-test@web.de
+
+# security configuration, only one of ssl/tls can be used
+USESSL=false
+USETLS=true 
+```
+
+
+Installation der Basissoftware
+----------------------------------------------------------------
+Nachdem Sie alle Dateien an Ihre Anforderungen konfiguriert haben, starten Sie das Skript mit:
+```
+./{VERZEICHNIS}/aktin_install.sh
+```
+Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, um entsprechende Pakete und Komponente herunterzuladen. Sämtliche Logausgaben finden Sie nach der Installation im Verzeichnis `/opt/aktin_log`.
+
+
+Einstellungen in der i2b2-Adminoberfläche
+----------------------------------------------------------------
+Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der kein i2b2-Admin ist (d.h. keinen Zugriff auf die i2b2-Adminoberfläche unter `http://{IHRSERVER}/admin` hat), sind noch die folgenden zwei Schritte für einen erfolgreichen Login in den Data-Warehouse-Manager notwendig:
+1. Zuordnung des Nutzers zum AKTIN-Projekt 
+2. Zuweisung einer AKTIN-Rolle an den Benutzer
+
+Das genaue Vorgehen hierfür können Sie in den letzten beiden Abschnitten (“Benutzer einem Projekt hinzufügen” und “AKTIN-Rolle zuweisen”) der [i2b2-Benutzeranleitung](https://www.na-register.de/de-de/support/anwender.html) nachlesen.
+
+
+Test der Betriebsfähigkeit
+----------------------------------------------------------------
+Nach der Installation der AKTIN-Software ist es anzuraten, dessen Betriebsfähigkeit zu testen. Im folgenden Bereich können Sie Methoden und Funktionalitäten für die Verifikation der Betriebsfähigkeit entnehmen.
+
+**Data Warehouse**
+Wenn die Installation erfolgreich durchgeführt wurde, kann anschließend per Webbrowser auf das integrierte Data Warehouse zugegriffen werden. In der Adresszeile muss die entsprechende IP-Adresse/Servername angepasst werden: `http://{IHRSERVER}/webclient/`
+
+**CDA Importschnittstelle**
+Die Importschnittstelle des Servers kann mit den Client-Programmen aus dem Software-Paket (ZIP) des [Demo-Server](https://www.aktin.org/software/0.11/dwh-import/demo-server.html) getestet werden:
+```
+java-client-fhir.bat http://IHRSERVER/aktin/cda/fhir/Binary examples\basismodul-beispiel-storyboard01.xml
+```
+
+**Verbindung und E-Mail-Konfiguration**
+Unter dem Link `http://{IHRSERVER}/aktin/admin/plain/test.html` lassen sich die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen.
+
+![img2](https://git.rwth-aachen.de/aktin/dwh-setup/-/raw/master/src/site/resources/update_7_test/Screenshot_1.png)
+
+Der erste Button testet die Erreichbarkeit des zentralen AKTIN-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen, wie die Serverversion und Aktivität. Der zweite Button testet die eingerichtete E-Mail-Adresse. Nach Bestätigung des Buttons wird eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse gesendet. Der dritte Button testet die R-Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
+
+![img3](https://git.rwth-aachen.de/aktin/dwh-setup/-/raw/master/src/site/resources/update_7_test/Screenshot_5.png)
+
+Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung anzeigen, könnte dies ein Hinweis auf fehlerhafte E-Mail-Einstellung sein. In dem Fall muss die E-Mail-Konfiguration geändert (Abschnitt “E-Mail-Konfiguration und Änderungen”) und die Softwarepakete erneut geladen werden.
+
+![img4](https://git.rwth-aachen.de/aktin/dwh-setup/-/raw/master/src/site/resources/update_7_test/Screenshot_6.png)
+
+
+AKTIN-Diagnose-Skript
+----------------------------------------------------------------
+Sollten bei der Installation Probleme aufgetreten sein, führen Sie bitte das AKTIN-Diagnose-Skript aus:
+```
+./{VERZEICHNIS}/scripts/aktin_diag.sh
+```
+Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im Verzeichnis `/opt/aktin_log/aktin_diag_{ZEITPUNKT DER DURCHFÜHRUNG}/` eine .tar.gz-Datei: `aktin_diag_{ZEITPUNKT DER DURCHFÜHRUNG}.tar.gz`.
+
+Senden Sie diese Datei bitte mit einer Support-Anfrage an [it-support@aktin.org](mailto:it-support@aktin.org). Die erzeugten Logs helfen bei der Identifizierung von Installations-Problemen.
