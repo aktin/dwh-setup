@@ -3,15 +3,10 @@ Voraussetzungen für eine manuelle Installation des Betriebssystems für den AKT
 
 Grundsätzlich ist die Software auf allen Linux-Systemen verwendbar.
 
-Für Ubuntu 20.04 LTS werden Skripte für eine automatische Installation und Konfiguration bereitgestellt. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Ubuntu 20.04 LTS und Ubuntu 18.04 LTS getestet wurde.
-
-Nachfolgend ist die Installation der Pakete beschrieben:
-
+Für Ubuntu 20.04 LTS werden Skripte für eine automatische Installation und Konfiguration bereitgestellt. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Ubuntu 20.04 LTS und Ubuntu 18.04 LTS getestet wurde. Für eine Neuinstallation wird Ubuntu Server 20.04 LTS empfohlen. Dabei handelt es sich um eine minimalistische Ubuntu-Version optimiert für das Betreiben von Servern. Als Installationsmedium empfehlen wir, das offizielle [ISO-Abbild](https://ubuntu.com/download/server) zu verwenden.
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
 
-Für eine Neuinstallation wird Ubuntu Server 20.04 LTS empfohlen. Dabei handelt es sich um eine minimalistische Ubuntu-Version optimiert für das Betreiben von Servern. Als Installationsmedium wird das offizielle [ISO-Abbild](https://ubuntu.com/download/server) empfohlen.
-
-Nachfolgende Hinweise zur Installation:
+**Nachfolgende Hinweise zur Installation:**
 
 Bei der Eingabe des root-Passworts empfehlen wir eine Kombination aus Buchstaben (Ausnahme „y“, „z“ sowie Umlaute) und Zahlen zu verwenden. Somit können sich bei einer möglicher Fehl-Konfiguration des Tastaturlayouts dennoch problemlos einloggen.
 
