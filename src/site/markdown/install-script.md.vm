@@ -1,103 +1,42 @@
 Installationsskript: Automatische Konfiguration des AKTIN-Applikations-Server mit dem Installationsskript
 ===============================================
-
 Unser Installationsskript wurde getestet Ubuntu 18.04 LTS und Ubuntu 20.04 LTS. Wenn Sie ein anderes System verwenden, müssen Sie die Skripte anpassen oder die enthaltenen Schritte manuell durchführen. Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Server-Installation](install-requirements.html).
-
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
 
-Installation der Basissoftware
-------------------------------------------
-
-Beachten Sie bitte ob Java installiert ist, falls eine bestehende Betriebsversion verwendet wird. 
-Es wird die Version 8 vom Openjdk installiert, sind bereits niedrigere Versionen von Java installiert, 
-kann dies zu Problemen bei der Installation und dem Betrieb führen.
-
-Mit dem Befehl 
-
-```
-uname -a
-```
-können Sie die Distribution des Linux-Systems herausfinden. 
-In der Konsole sehen Sie dann ähnlich dem Folgenden: 
-
-```
-Linux debian-8 3.16.0-4-amd64 #1 SMP Debian 3.16.7-ckt20-1+deb8u1 (2015-12-14) x86_64 GNU/Linux
-```
-
-Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server. Wechseln Sie zunächst zum Benutzer `root` (z.B. via `su -`). Anschließend können Sie unser Paket unter folgendem Link herunterladen:
-
-${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
-
-z.B. mit 
-
-```
-# wget ${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
-```
-(evtl. mit Option `--no-check-certificate` bei Zertifikatfehlern). Wenn das Paket heruntergeladen ist, kann es entpackt werden mit 
-
-```
-tar xvzf dwh-install-${project.version}.tar.gz
-```
-Die Dateien werden dann automatisch in den Ordner `aktin-dwh-installer` entpackt.
-
-Die Installation benötigt Zugriff auf das Internet - speziell die jeweiligen Repositories und die Server der Universität Oldenburg, um die benötigten Pakete herunterzuladen.
-
-Unter Debian 8, starten Sie nun das Skript mit:
-
-```
-./aktin-dwh-installer/install_debian.sh
-```
-Unter CentOS 7, starten Sie nun das Skript mit:
-
-```
-./aktin-dwh-installer/install_centos.sh
-```
-SELinux wird in dem Prozess deaktiviert. Sollten Sie SELinux verwenden wollen müssen Sie es entsprechend manuell konfigurieren - oder die Skriptinhalte selektiv manuell ausführen.
-
-Die Installation kann bis zu 20 Minuten dauern. Um die Konsolenausgaben umzuleiten, können Sie alternativ auch 
-
-```
-./aktin-dwh-installer/install_debian.sh > install-aktin-dwh.log
-```
-ausführen. Die Logausgaben finden Sie dann in der Datei `install-aktin-dwh.log`.
-
-Konfigurationen und lokale Einstellungen
+Erste Schritte und lokale Einstellungen
 ----------------------------------------------------------------
+Kopieren Sie zunächst den gesamten Installationsordner in ein beliebiges Verzeichnis auf Ihrem Applikations-Server und entpacken Sie ihn gegebenenfalls.
 
-Während der Installation werden Sie zur Konfiguration der `aktin.properties` aufgefordert. Des Weiteren sollten Sie ihre E-Mail-Konfiguration anzupassen. Die Einstellungsdatei befindet sich unter `dwh-update/email.config`, in dieser Datei müssen alle wichtigen Parameter für die automatische Emailbenachrichtigung konfiguriert oder überprüft werden.
+Vor Start der Installation ist es notwendig, `aktin.properties` und `email.config` an Ihre Anforderungen zu konfigurieren. Beide Dateien befinden sich im Installationsordner.
 
-<h3>Aktin-Properties</h3>
+**aktin.properties**
 Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
-
 ```
-nano /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties
+nano {VERZEICHNIS}/aktin.properties
 ```
 
-Wichtig ist `local.email`, wo die E-Mail-Adresse eingetragen wird, an die die Berichte und Meldungen geschickt werden sollen. Es ist auch möglich eine Komma-separierte Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme).
+Wichtig ist hierbei das Feld `local.email`, in das die E-Mail-Adresse eingetragen wird. An diese eingetragene Adresse werden später Berichte und Meldungen geschickt. Es ist auch möglich, eine Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme). In diesem Fall müssen die Einträge komma-separiert ohne Leerzeichen erfolgen.
 
-Auch sollten Sie unter `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde. Sollten Sie noch keinen Key bekommen haben, melden Sie sich bitte bei it-support(at)aktin.org. 
+Auch sollten Sie unter dem Feld `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde. Sollten Sie noch keinen Key bekommen haben, melden Sie sich bitte bei [it-support@aktin.org](mailto:it-support@aktin.org).
 
-Welche Wirkung die Angaben haben, finden Sie in diesem Abschnitt weiter unten in der Template-Datei.
-
-Template-Datei für `aktin.properties`:
-
+Welche Wirkung die jeweiligen Felder haben, finden Sie in diesem Abschnitt in der Template-Datei:
 ```
-# Currently not used, may be changed (Name of the installation)
+# name of the installation
 local.cn=AKTIN DWH
-# Used in AKTIN reports, should contain the name of the Organization (Hospital)
+# used in AKTIN reports, should contain the name of the Organization (Hospital)
 local.o=Ev. Klinikum Beispielhausen
-# Used in AKTIN reports, should contain the name of the Unit (Notaufnahme, Rettungsstelle, ZNA, etc.)
+# used in AKTIN reports, should contain the name of the Unit (Notaufnahme, Rettungsstelle, ZNA, etc.)
 local.ou=Notaufnahme
-# Town / Stadt
+# town
 local.l=Beispielhausen
-# State / Bundesland
+# state
 local.s=Niedersachen
-# Country / Staat
+# country
 local.c=Deutschland
-# default E-Mail-Address for notifications, reports (non technical); multiple Adresses possible (comma separated in one line)
+# default e-mail-adress for notifications, reports (non technical); multiple adresses possible (comma separated in one line without empty space)
 local.email=zna-contact@klinikum-beipielhausen.de
 local.tz=Europe/Berlin
-# Language tag according to IETF BCP 47. If not defined, the system language will be used.
+# language tag according to IETF BCP 47. If not defined, the system language will be used.
 local.language=de-DE
 # location of the R standalone executable
 rscript.binary=/usr/bin/Rscript
@@ -107,7 +46,7 @@ i2b2.datasource.crc=java:/QueryToolDemoDS
 # needed for i2b2 authentication and user management
 i2b2.service.pm=http://localhost:9090/i2b2/services/PMService/
 i2b2.service.domain=i2b2demo
-# TODO create dir /var/lib/aktin and chown to wildfly
+# broker and report paths
 report.data.path=/var/lib/aktin/reports
 report.temp.path=/var/tmp/report-temp
 report.archive.path=/var/lib/aktin/report-archive
@@ -116,212 +55,28 @@ broker.data.path=/var/lib/aktin/broker
 broker.archive.path=/var/lib/aktin/broker-archive
 broker.uris=https://aktin-broker.klinikum.rwth-aachen.de/broker/
 broker.intervals=PT15M
-# Used in AKTIN to connect to the broker, you can get your API key from it-support@aktin.org
+# used in AKTIN to connect to the broker, you can get your API key from it-support@aktin.org
 broker.keys=XXXyourapikeyXXX
 db.datasource=java:jboss/datasources/AktinDS
 email.session=java:jboss/mail/AktinMailSession
 email.replyto=it-support@aktin.org
-wildfly.management.url=http://localhost:19990/management
+wildfly.management.url=http://localhost:9990/management
 wildfly.management.user=admin
 wildfly.management.password=admin2
 # patient reference, allowed values: Patient, Encounter, Billing
 study.id.reference=Patient
-# Root numbers of the different reference types. Can be empty.
+# root numbers of the different reference types. Can be empty.
 cda.patient.root.preset=1.2.276.0.76.4.8
 cda.encounter.root.preset=1.2.276.0.76.3.87686 
 cda.billing.root.preset=1.2.276.0.76.3.87686.1.45 
-# Label for the extension textfield of the consent manager, based on the reference type.
+# label for the extension textfield of the consent-manager, based on the reference type.
 study.id.patient.label=Patientennr.
 study.id.encounter.label=Episodennummer
 study.id.billing.label=Fallnummer
-# Character for separating root and extension in case they both have to  be set manually. Is applied if root is not set in properties.
+# character for separating root and extension in case of manual setting. Will be applied if root is not set in properties.
 study.id.separator=/
-# Log-Funktion für importierte CDAs: Alle importierten CDAs werden zusaetzlich als Datei abgelegt (Werte: all, info oder none)
+# log function for imported CDAs: all imported CDAs are stored as a file (Allowed values: 'all','info' or 'none')
 import.cda.debug.dir=/tmp/
 import.cda.debug.level=none
 import.cda.fhir.outcome.level=info
-```
-
-Anschließend muss die Datei `aktin.properties` in das Konfigurationsverzeichnis des Anwendungsservers kopiert werden. Dies können Sie mit folgendem Befehl vollziehen:
-
-```
-cp -v /BENUTZERNAME/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
-```
-
-Die Befehle bezüglich der Datei `aktin.properties` werden Ihnen auch beim Installationsvorgang angezeigt.
-
-<h4>Änderungen in den Properties ab Version 1.0</h4>
-Für Kliniken, die die Root-ID aus dem Beispiel-CDA übernommen haben (hierzu zählen z.B. Kliniken mit einer E.Care-Schnittstelle) und für den Consent-Manager die Patientennummer verwenden (empfohlene Einstellung), müssen keine weiteren Änderungen vorgenommen werden. Für diese Kliniken sind die Einstellungen in der Properties-Datei bereits korrekt voreingestellt. 
-
-Für Kliniken mit AGFA-Schnittstelle muss lediglich die Patientennummer geändert werden. Suchen Sie hierfür in der Datei `aktin.properties` die Zeile
-
-```
-cda.patient.root.preset=1.2.276.0.76.4.8
-```
-
-heraus und ändern Sie den Wert auf `1.2.276.0.76.4.17.9814184919`. 
-
-Sollten Sie die Änderungen im Zuge eines Updates und nicht einer Installation durchführen, so halten Sie sich bitte an den untersten Absatz des Abschnitts "Lokale Konfigurationen in der Datei `aktin.properties`" auf der Seite [Automatisches Update](update-auto.html), um den Wildfly-Service zu stoppen und zu starten.
-
-Sollten Sie die Fallnummer oder die Encounter-Nummer statt der Patientennummer für den Consent-Manager verwenden wollen und/oder Ihr KIS-Anbieter weder AGFA ist noch die Beispiel-Root-IDs übernommen hat, so sind weitere Konfigurationen notwendig. Befolgen Sie hierfür bitte die folgende Anleitung und halten Sie ggf. Rücksprache mit uns (it-support(at)aktin.org), falls Unklarheiten auftreten: 
-
-Für den Ein- oder Ausschluss von Patienten im Consent-Manager (weitere Informationen zu diesem Feature finden Sie in der Benutzeranleitung) wird eine Identifikationsnummer des Patienten benötigt. Hierfür stehen drei verschiedene Nummern zur Verfügung: Patientennummer, Episodennummer und Fallnummer. Unter `study.id.reference` muss die entsprechende Referenz, die genutzt werden soll, eingetragen werden (`Patient`, `Encounter` oder `Billing`). Wir empfehlen Ihnen die Patientennummer zu benutzen, da im Gegensatz zu den anderen beiden Nummern hiervon nur eine pro Patient existiert. Zum aktuellen Zeitpunkt findet bei der Eintragung eines Ein- oder Ausschlusses keine Überprüfung statt, ob dieser Patient bereits mit einer anderen Episoden- oder Fallnummer eingetragen wurde, sodass es ggf. zu Dubletten führt, wenn nicht die Patientennummer genutzt wird.
-
-Für jede dieser Nummern gibt es i.d.R. eine feste Root-Nummer, die unter `cda.patient.root.preset`, `cda.encounter.root.preset` bzw. `cda.billing.root.preset` hinterlegt werden kann. Dadurch muss die Root nicht bei jedem Ein- bzw. Ausschluss eingegeben werden, sondern es muss dann nur noch die patienten-, episoden- oder fallbezogene Nummer, die auch im Krankenhausinformationssystem sichtbar ist (die sogenannte Extension-Nummer) eingegeben werden.
-
-Um herauszufinden welche dieser Nummern über die AKTIN-Schnittstelle in das Data-Warehouse übertragen werden und somit in den Properties angegeben werden können, benötigen Sie Zugriff auf ein CDA-Dokument. Dieses wird als Datenstruktur zur Übertragung der Daten aus dem Notaufnahme-System in das klinikinterne Data-Warehouse verwendet. Ein gekürztes CDA-Beispieldokument sieht wie folgt aus:
-
-![IDs im CDA-Dokument][properties]
-
-[properties]: properties/cda-ids.png	"IDs im CDA-Dokument"
-
-Hier befinden sich die jeweiligen Root- und Extension-Nummern der Referenzen. Bei der erste ID unter `encompassingEncounter` ist die Episodennummer zu finden, die zweite ID steht für die Fallnummer. Die Patientennummer steht unter `patientRole.id`. Prüfen Sie welche dieser Nummern dem Notaufnahme-Personal bekannt ist, d.h. welche Nummer mit der im Krankenhausinformationssystem übereinstimmt. Von dieser Nummer tragen Sie die im CDA stehende Root in der Properties-Datei ein und geben die entsprechende Referenz (`Patient`, `Encounter` oder `Billing`) an.
-
-Sollte in der Klinik keine feste Root-Nummer verwendet werden, darf auch keine Root-Nummer in den Properties hinterlegt werden – lassen Sie das Feld dann einfach leer. Dies kann der Fall sein, wenn entweder die Extension-Nummer direkt als Root-Nummer verwendet wird oder sich die Root-Nummer klinikintern unterscheidet. Im ersteren Fall tragen Sie im Consent-Manager ganz normal die Identifikationsnummer ein, welche dann als Root-Nummer erkannt wird. Im letzteren Fall geben Sie unter `study.id.separator` ein Trennzeichen ein und tragen im Consent-Manager die Root-Nummer und die Extension-Nummer mit dem definierten Trennzeichen dazwischen ein.
-
-<h3>E-Mail-Konfiguration</h3>
-Bitte tragen Sie in der Datei `email.config` die E-Mail-Konfigurationen für die Ausgangsmailadresse ein. Diese befindet sich in `/BENUTZERNAME/aktin-dwh-installer/dwh-update/` oder `/BENUTZERNAME/dwh-update/`, der jeweilige Pfad ist davon abhängig, ob sie zuletzt eine Neuinstallation oder ein Update vorgenommen haben. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
-
-Wenn Sie Änderungen an der bereits eingestellten E-Mail vornehmen möchten, führen Sie bitte folgende Schritte durch. Bitte beachten Sie, dass die aktuellen Einstellungen nicht in `email.config` zu finden sind. Diese entnehmen Sie bitte Ihren eigenen Daten oder den vorherigen Installationsskripten.
-
-Bitte öffnen Sie `email.config` auf dem Server oder an Ihrer Arbeitsrechner und laden die Datei dann wieder auf den Server.
-
-```
-nano email.config
-```
-
-In dieser Datei werden die Einstellungen für den Versand von E-Mails konfiguriert. Hierbei muss man besonders auf die Einstellungen des Mailservers achten und `usessl` und `usetls` richtig setzen, dementsprechend auch den `smtpport`.
-
-Sollten Sie bereits die E-Mail-Konfiguration eingerichtet haben und möchten diese nun ändern, müssen die folgenden Schritte zusätzlich durchgeführt werden:
-
-Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root`-Rechten ausgeführt werden. 
-Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
-
-Template-Datei für E-Mail-Konfiguration `email.config`:
-
-```
-#
-#     change mail server configuration here
-#
-#     mail server name
-#
-smtphost=smtp.web.de
-#
-#     mail server port, e.g. 465 (SSL) or 587 (TLS)
-#
-smtpport=587
-#
-#     user name for authentication
-#
-smtpuser=aktin-test@web.de
-#
-#     password for authentication
-#
-smtppass=password
-#
-#     email address (from)
-#
-mailfrom=aktin-test@web.de
-#
-#     security configuration, only one of ssl/tls can be used
-#
-usessl=false
-usetls=true
-```
-
-Aktin Deployment
-----------------------------
-
-Nach den erfolgreichen Anpassungen müssen Sie nochmals das Installationsskript starten:
-
-Unter Debian 8, starten Sie nun das Skript 
-
-```
-./aktin-dwh-installer/install_debian.sh
-```
-Unter CentOS 7, starten Sie nun das Skript
-
-```
-./aktin-dwh-installer/install_centos.sh
-```
-
-Nach der Installation der notwendigen Pakete und der Einrichtung der Dienste sowie des i2b2 ruft das Installationsskript das neueste Updateskript auf, um die Einrichtung der neusten Software des Aktin-Projektes sowie die weiteren Anpassungen durchzuführen. In diesem Schritt kann das Skript unterbrochen werden, sollten Angaben Ihrerseits nötig sein. Auf die Angaben werden Sie in der Konsole hingewiesen. 
-
-Informationen zum Update finden Sie unter [skriptbasiertes Update](update-auto.html) oder [manuelles Update](update-manual.html).
-
-Bevor die Funktionalitäten des Servers getestet werden können, benötigt der Server evtl. noch wenige Minuten, um alle beteiligten Dienste zu starten und einzurichten.
-
-Sollten Sie Fragen zur Installation oder Probleme beim Installationsprozess haben, kontaktieren Sie uns gerne unter it-support(at)aktin.org
-
-Einstellungen in der i2b2-Adminoberfläche
-----
-Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der kein i2b2-Admin ist (d.h. keinen Zugriff auf die i2b2-Adminoberfläche unter `http://IHRSERVER/admin` hat), sind noch die folgenden zwei Schritte für einen erfolgreichen Login in den Data-Warehouse-Manager notwendig:
-1. Zuordnung des Nutzers zum AKTIN-Projekt
-2. Zuweisung einer AKTIN-Rolle an den Benutzer
-
-Das genaue Vorgehen hierfür können Sie in den letzten beiden Abschnitten ("Benutzer einem Projekt hinzufügen" und "AKTIN-Rolle zuweisen") der i2b2-Benutzeranleitung nachlesen: https://www.na-register.de/de-de/support/anwender.html 
-
-Test der Betriebsfähigkeit
------------------------------------------
-
-Nach der Installation der Aktin-Software ist es anzuraten, dessen Betriebsfähigkeit zu testen. Im folgenden Bereich können Sie Methoden und Funktionalitäten für die Verifikation der Betriebsfähigkeit entnehmen.
-
-<h3>Test des Data Warehouse</h3>
-Wenn die Installation erfolgreich durchgeführt wurde, kann anschließend per Web Browser auf das integrierte Data Warehouse zugegriffen werden. In der Adresszeile muss die entsprechende IP-Adresse / Servername angepasst werden:
-`http://IHRSERVER/webclient/`
-
-
-<h3>Test der Importschnittstelle</h3>
-Die Importschnittstelle des Servers kann mit den Client-Programmen
-aus dem Software-Paket (ZIP) des [Demo-Server](demo-server.html)
-getestet werden:
-
-```
-java-client-fhir.bat http://IHRSERVER/aktin/cda/fhir/Binary examples\basismodul-beispiel-storyboard01.xml
-```
-
-<h3>Test der Verbindung und E-Mail-Konfiguration</h3>
-Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen. 
-
-![Testbildschirm][Test server configuration]
-
-[Test server configuration]: update_7_test/Screenshot_1.png "Testbildschirm"
-
-Der erste Button testet die Erreichbarkeit des zentralen Aktin-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen wie die Serverversion und Aktivität.
-Der zweite Button testet die oben eingerichtete E-Mail-Adresse. Diese sendet nun eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse.
-Der dritte Button testet die R Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
-
-![Erfolgreicher Testabschluss][Test server configuration success]
-
-[Test server configuration success]: update_7_test/Screenshot_5.png "Erfolgreicher Testabschluss"
-
-Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung wie in dem obigen Bild, sondern Fehlermeldungen, könnte dies ein Hinweis auf fehlerhafte E-Mail-Einstellung sein. In dem Fall muss man die E-Mail-Konfiguration ändern wie in Abschnitt "E-Mail-Konfiguration und Änderungen" und die Softwarepakete erneut laden.
-
-![Fehlerhafte E-Mail-Konfiguration][test server configuration fail]
-
-[Test server configuration fail]: update_7_test/Screenshot_6.png "Fehlerhafte E-Mail-Konfiguration"
-
-Aktin-Diagnose-Skript
-----------------------------------
-
-Sollten bei der Installation Probleme aufgetreten sein, führen Sie bitte das Aktin-Diagnose-Skript aus. Dieses befindet sich unter:
-
-```
-/opt/aktin/diagnostic_script
-```
-
-Sollte die Installation vorzeitig fehlgeschlagen sein, finden Sie das Skript alternativ unter:
-
-```
-/BENUTZERNAME/aktin-dwh-installer/dwh-update/
-```
-
-Sie können das Skript an jedem beliebigen Ort, an welchem das Skript liegt, ausführen mit:
-
-```
-./aktindiag.sh
-```
-
-Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im aktuellen Verzeichnis eine .tar.gz-Datei: `aktindiag.tar.gz`
-
-Senden Sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Installations-Problemen.
+````
