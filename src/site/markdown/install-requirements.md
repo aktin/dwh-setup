@@ -9,7 +9,7 @@ Nachfolgend ist die Installation der Pakete beschrieben:
 
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
 
-Für eine Neuinstallation wird Ubuntu Server 20.04 LTS empfohlen. Dabei handelt es sich um eine minimalistische Ubuntu-Version optimiert für das Betreiben von Servern. Als Installationsmedium wird das offizielle [ISO-Abbild] (https://ubuntu.com/download/server) empfohlen.
+Für eine Neuinstallation wird Ubuntu Server 20.04 LTS empfohlen. Dabei handelt es sich um eine minimalistische Ubuntu-Version optimiert für das Betreiben von Servern. Als Installationsmedium wird das offizielle [ISO-Abbild](https://ubuntu.com/download/server) empfohlen.
 
 Nachfolgende Hinweise zur Installation:
 
