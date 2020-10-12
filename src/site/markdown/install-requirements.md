@@ -1,6 +1,6 @@
 Manuelle Installation des Betriebssystems für den AKTIN-Applikationsserver
 ================================================================
-Grundsätzlich ist die Software auf allen Linux-Systemen verwendbar. Für manuelle Installation anderer Linux-Distributionen empfehlen wir eine Anpassung der gelieferten Skripte. Sollten Sie Fragen dazu haben, wenden Sie sich gerne an uns unter [it-support@aktin.org](mailto:it-support@aktin.org).
+Grundsätzlich ist die Software auf allen Linux-Systemen verwendbar. Für eine manuelle Installation anderer Linux-Distributionen empfehlen wir eine Anpassung der gelieferten Skripte. Sollten Sie Fragen dazu haben, wenden Sie sich gerne an uns unter [it-support@aktin.org](mailto:it-support@aktin.org).
 
 Für Ubuntu 20.04 LTS werden Skripte für eine automatische Installation und Konfiguration bereitgestellt. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Ubuntu 20.04 LTS und Ubuntu 18.04 LTS getestet wurde. Für eine Neuinstallation wird [Ubuntu Server 20.04 LTS](https://ubuntu.com/download/server) empfohlen. Dabei handelt es sich um eine minimalistische Ubuntu-Version optimiert für das Betreiben von Servern.
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
