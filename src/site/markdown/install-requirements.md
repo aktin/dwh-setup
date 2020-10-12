@@ -1,6 +1,5 @@
 Manuelle Installation des Betriebssystems für den AKTIN-Applikationsserver
 ================================================================
-
 Grundsätzlich ist die Software auf allen Linux-Systemen verwendbar. Für manuelle Installation anderer Linux-Distributionen empfehlen wir eine Anpassung der gelieferten Skripte. Sollten Sie Fragen dazu haben, wenden Sie sich gerne an uns unter [it-support@aktin.org](mailto:it-support@aktin.org).
 
 Für Ubuntu 20.04 LTS werden Skripte für eine automatische Installation und Konfiguration bereitgestellt. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Ubuntu 20.04 LTS und Ubuntu 18.04 LTS getestet wurde. Für eine Neuinstallation wird [Ubuntu Server 20.04 LTS](https://ubuntu.com/download/server) empfohlen. Dabei handelt es sich um eine minimalistische Ubuntu-Version optimiert für das Betreiben von Servern.
@@ -12,8 +11,6 @@ Für Ubuntu 20.04 LTS werden Skripte für eine automatische Installation und Kon
 Sollte Ihr System keinen direkten Zugriff auf das Internet haben, ist es empfehlenswert, eine Proxy für die Installation einzurichten, um das Herunterladen von Sicherheitsupdates und zusätzlichen Paketen zu ermöglichen. Nach Abschluss der Installation kann der Proxyzugang wieder deaktiviert werden.
 
 ![img1](https://git.rwth-aachen.de/aktin/dwh-setup/-/raw/master/src/site/resources/screens_ubuntu/ubuntu_5.png)
-
-
 
 - **Profile setup**<br>
 Bei der Eingabe des root-Passworts empfehlen wir eine Kombination aus Buchstaben (Ausnahme „y“, „z“ sowie Umlaute) und Zahlen zu verwenden. Somit können sich bei einer möglicher Fehl-Konfiguration des Tastaturlayouts dennoch problemlos einloggen. Anschließend muss ein weiterer Benutzer angelegt werden. Diesen Benutzer können Sie benennen wie Sie möchten. Name und Passwort sollten hier dennoch notiert werden. Dieser Benutzer wird nicht auf AKTIN zugreifen.
@@ -37,7 +34,6 @@ Nach Abschluss des Installationsassistenten muss der Boot-Loader auf die Festpla
 
 Benötigte Pakete
 ---------------------
-
 Sollten Sie nicht das [AKTIN-Installationsskript](install-script.html) nutzen, so werden folgende Softwarepakete benötigt:
 
 * Java 11 Runtime Environment (openjdk-11-jre-headless)
