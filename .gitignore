@@ -12,3 +12,4 @@ dwh-install/temp/
 *.iso
 *.pub
 *.pkcs8
+.idea
