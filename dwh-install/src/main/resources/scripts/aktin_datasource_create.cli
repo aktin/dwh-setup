@@ -1,0 +1,13 @@
+# script create a datasource for AKTIN, is injected into wildfly/standalone.xml via JBOSS cli
+
+set jdbcUrl=jdbc:postgresql://localhost:5432/aktin
+set username=aktin
+set password=aktin
+set driver=postgresql-42.2.8.jar
+set module=com.postgresql
+set resource=postgresql-42.2.8.jar
+set name=AktinDS
+set jndiname=java:jboss/datasources/AktinDS
+  
+data-source add --name=$name --jndi-name=$jndiname --driver-name=$driver --jta=false --connection-url=$jdbcUrl --user-name=$username --password=$password
+/subsystem=datasources:read-resource

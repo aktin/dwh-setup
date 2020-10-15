@@ -1,0 +1,369 @@
+#! /bin/bash
+
+# script to install i2b2 with aktin-addon on ubuntu 20.04
+# maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
+# september 2020
+
+# all version numbers of used software
+readonly JAVA_VERSION=${java.version}
+readonly WILDFLY_VERSION=${wildfly.version}
+readonly PG_VERSION=${postgresql.version}
+readonly JDBC_VERSION=${jdbc.driver.version}
+readonly I2B2_VERSION=${i2b2.version}
+readonly PHP_VERSION=${php.version}
+readonly PYTHON_VERSION=${python.version}
+readonly R_VERSION=${r.version} # TODO only for info, R version relies on keyserver
+
+readonly INSTALL_ROOT=$(pwd) # current directory with installation files
+readonly INSTALL_DEST=/opt # destination of aktin installation
+readonly SQL_FILES=$INSTALL_ROOT/sql
+readonly SCRIPT_FILES=$INSTALL_ROOT/scripts
+readonly XML_FILES=$INSTALL_ROOT/xml
+readonly PACKAGES=$INSTALL_ROOT/packages
+
+readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
+readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
+readonly JAVA_HOME=/usr/lib/jvm/java-$JAVA_VERSION-openjdk-amd64
+
+# colors for console output
+readonly WHI='\033[0m'
+readonly RED='\e[1;31m'
+readonly ORA='\e[0;33m'
+readonly YEL='\e[1;33m'
+readonly GRE='\e[0;32m'
+
+# create a logfile for this installation
+readonly LOGFILE=$INSTALL_DEST/aktin_log/aktin_install_$(date +%Y_%h_%d_%H:%M).log
+if [[ ! -d $INSTALL_DEST/aktin_log ]]; then
+    mkdir $INSTALL_DEST/aktin_log
+fi
+
+
+
+
+step_I(){
+set -euo pipefail # stop installation on errors
+echo
+echo -e "${YEL}+++++ STEP I +++++ Installation der notwendigen Pakete${WHI}"
+echo
+
+# create timezone data to make installation non-interactive (tzdata needs this)
+local TZ=Europe/Berlin
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# repository for php and python
+apt-get update && apt-get install -y software-properties-common
+add-apt-repository -y ppa:ondrej/php
+add-apt-repository -y ppa:deadsnakes/ppa
+
+# keyserver for R
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | apt-key add -
+
+# install packages
+apt-get update && apt-get install -y \
+curl sudo wget nano unzip libpq-dev \
+openjdk-$JAVA_VERSION-jre-headless \
+postgresql-$PG_VERSION \
+apache2 \
+php$PHP_VERSION php$PHP_VERSION-common libapache2-mod-php$PHP_VERSION php$PHP_VERSION-curl \
+r-base r-cran-xml r-cran-lattice \
+python$PYTHON_VERSION python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv
+
+
+# installation of i2b2 webclient
+if [[ ! -d /var/www/html/webclient ]]; then
+
+	# download i2b2 webclient into apache2 web directory and rename it to webclient
+	echo -e "${YEL}Der Webclient von i2b2 wird heruntergeladen und in das Apache2-Verzeichnis verschoben.${WHI}"
+	wget https://github.com/i2b2/i2b2-webclient/archive/v$I2B2_VERSION.0002.zip -P /tmp
+	unzip /tmp/v$I2B2_VERSION.0002.zip -d /var/www/html/
+	mv /var/www/html/i2b2-webclient-* /var/www/html/webclient
+
+	# change domain of i2b2 webclient from edu.harvard to localhost
+	echo -e "${YEL}Die Domain des Webclients wird von Harvard auf AKTIN geändert.${WHI}"
+	sed -i 's|name: \"HarvardDemo\",|name: \"AKTIN\",|' /var/www/html/webclient/i2b2_config_data.js
+	sed -i 's|urlCellPM: \"http://services.i2b2.org/i2b2/services/PMService/\",|urlCellPM: \"http://127.0.0.1:9090/i2b2/services/PMService/\",|' /var/www/html/webclient/i2b2_config_data.js
+
+	# remove default username and pw in login dialog box
+	echo -e "${YEL}Die voreingestellten Eingaben von Nutzer und Passwort werden entfernt.${WHI}"
+	sed -i 's|loginDefaultUsername : \"demo\"|loginDefaultUsername : \"\"|' /var/www/html/webclient/js-i2b2/i2b2_ui_config.js
+	sed -i 's|loginDefaultPassword : \"demouser\"|loginDefaultPassword : \"\"|' /var/www/html/webclient/js-i2b2/i2b2_ui_config.js
+else
+	echo -e "${ORA}Der Webclient von i2b2 befindet sich bereits im Apache2-Verzeichnis.${WHI}"
+fi
+
+# installation of wildlfy
+if [[ ! -d $INSTALL_DEST/wildfly ]]; then
+
+	# download wildfly server into install destination and rename server to wildfly
+	echo -e "${YEL}Wildfly-Server wird heruntergeladen und nach $INSTALL_DEST entpackt.${WHI}"
+	wget https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.zip -P /tmp
+	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d $INSTALL_DEST
+	mv $INSTALL_DEST/wildfly-$WILDFLY_VERSION $INSTALL_DEST/wildfly
+
+	# set wildfly to run as a service
+	echo -e "${YEL}Ein /etc/init.d-Service wird für den Wildfly-Server erstellt.${WHI}"
+
+	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly-init-debian.sh /etc/init.d/wildfly
+	mkdir /etc/default/wildfly
+	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly.conf /etc/default/wildfly
+	echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly/wildfly-conf
+	echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly/wildfly-conf
+else
+	echo -e "${ORA}Der Wildfly-Server wurde bereits installiert.${WHI}"
+fi
+}
+
+
+
+
+step_II(){
+set -euo pipefail # stop installation on errors
+echo
+echo -e "${YEL}+++++ STEP II +++++ Installation der i2b2-Datenbank${WHI}"
+echo
+
+service postgresql start
+# count databases with name i2b2
+if  [[ $(sudo -u postgres psql -l | grep "i2b2" | wc -l) == 0 ]]; then
+
+	# create database i2b2 and respective users
+	echo -e "${YEL}Eine Datenbank mit Namen i2b2 und entsprechenden Usern wird erstellt.${WHI}"
+	sudo -u postgres psql -v ON_ERROR_STOP=1 -f $SQL_FILES/i2b2_postgres_init.sql
+		
+	# build i2b2 data and load into database
+	echo -e "${YEL}Daten werden in die Datenbank i2b2 eingelesen.${WHI}"
+	sudo -u postgres psql -d i2b2 -f $SQL_FILES/i2b2_db.sql
+else
+	echo -e "${ORA}Die Installation der i2b2-Datenbank wurde bereits durchgeführt.${WHI}"
+fi
+service postgresql stop
+}
+
+
+
+
+step_III(){
+set -euo pipefail # stop installation on errors
+echo
+echo -e "${YEL}+++++ STEP III +++++ Konfiguration von Apache2${WHI}"
+echo
+
+# activate php-curl extension for apache2
+if [[ -n $(grep ";extension=curl" /etc/php/7.3/apache2/php.ini) ]]; then
+	echo -e "${YEL}PHP-curl für apache2 wird aktiviert.${WHI}"
+	sed -i 's/;extension=curl/extension=curl/' /etc/php/7.3/apache2/php.ini
+else
+	echo -e "${ORA}PHP-curl für apache2 wurde bereits aktiviert.${WHI}"
+fi
+
+# reverse proxy configuration (from wildfly 9090 to apache 80)
+local CONF=/etc/apache2/conf-available/aktin-j2ee-reverse-proxy.conf
+if [[ ! -f $CONF ]]; then
+	echo -e "${YEL}Proxy für apache2 wird konfiguriert.${WHI}"
+	echo "ProxyPreserveHost On" > $CONF
+	echo "ProxyPass /aktin http://localhost:9090/aktin" >> $CONF
+	echo "ProxyPassReverse /aktin http://localhost:9090/aktin" >> $CONF
+	a2enmod proxy_http
+	a2enconf aktin-j2ee-reverse-proxy
+else
+	echo -e "${ORA}Proxy für apache2 wurde bereits konfiguriert.${WHI}"
+fi
+}
+
+
+
+
+step_IV(){
+set -euo pipefail # stop installation on errors
+echo
+echo -e "${YEL}+++++ STEP IV +++++ Konfiguration von WildFly${WHI}"
+echo
+
+# create user for wildfly server and give permissions to wildfly folder
+if [[ -z $(grep "wildfly" /etc/passwd) ]]; then
+	echo -e "${YEL}User wildfly für den Wildfly-Server wird erstellt.${WHI}"
+	adduser --system --group --disabled-login wildfly
+	chown -R wildfly:wildfly $WILDFLY_HOME
+else
+	echo -e "${ORA}Der User wildfly ist bereits vorhanden.${WHI}"
+fi
+
+# increase memory storage of java vm to 1g/2g
+if [[ -z $(grep "Xms1024m -Xmx2g" $WILDFLY_HOME/bin/appclient.conf) ]]; then
+	echo -e "${YEL}Java VM-Speicher für den Wildfly-Server wird erhöht.${WHI}"
+	sed -i 's/-Xms64m -Xmx512m/-Xms1024m -Xmx2g/' $WILDFLY_HOME/bin/appclient.conf
+	sed -i 's/-Xms64m -Xmx512m/-Xms1014m -Xmx2g/' $WILDFLY_HOME/bin/standalone.conf
+else
+	echo -e "${ORA}Der Wildfly-Speicher für Java VM wurde bereits erhöht.${WHI}"
+fi
+
+# change size limit of log rotation to 1g
+if [[ -z $(grep "<rotate-size value=\"50m\"/>" $WILDFLY_HOME/standalone/configuration/standalone.xml) ]]; then
+	echo -e "${YEL}Das Limit für die Log-Rotation des Wildfly-Servers wird erhöht.${WHI}"
+	sed -i 's|<rotate-size value=\"50m\"/>|<rotate-size value=\"1g\"/>|' $WILDFLY_HOME/standalone/configuration/standalone.xml
+else
+	echo -e "${ORA}Das Limit für die Log-Rotation des Wildfly-Servers wurde bereits erhöht.${WHI}"
+fi
+
+# change port of wildfly from 8080 to 9090
+if [[ -z $(grep "port:9090" $WILDFLY_HOME/standalone/configuration/standalone.xml) ]]; then
+	echo -e "${YEL}Der Port des Wildfly-Servers wird von 8080 auf 9090 geändert.${WHI}"
+	sed -i 's|<socket-binding name="http" port="${jboss.http.port:8080}"/>|<socket-binding name="http" port="${jboss.http.port:9090}"/>|' $WILDFLY_HOME/standalone/configuration/standalone.xml
+else
+	echo -e "${ORA}Der Port des Wildfly-Servers wurde bereits von 8080 auf 9090 geändert.${WHI}"
+fi
+
+# TODO
+# download i2b2.war (https://community.i2b2.org/wiki/) into wildfly
+if [[ ! -f $WILDFLY_HOME/standalone/deployments/i2b2.war ]]; then
+	echo -e "${YEL}i2b2.war wird nach $WILDFLY_HOME/standalone/deployments heruntergeladen.${WHI}"
+	cp $PACKAGES/i2b2.war $WILDFLY_HOME/standalone/deployments/
+else
+	echo -e "${ORA}i2b2.war ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
+fi
+
+# download postgresql jdbc driver into wildfly
+if [[ ! -f $WILDFLY_HOME/standalone/deployments/postgresql-$JDBC_VERSION.jar ]]; then
+	echo -e "${YEL}postgresql-JDBC_VERSION.jar wird nach $WILDFLY_HOME/standalone/deployments heruntergeladen.${WHI}"
+	wget https://jdbc.postgresql.org/download/postgresql-$JDBC_VERSION.jar -P $WILDFLY_HOME/standalone/deployments/
+else
+	echo -e "${ORA}postgresql-JDBC_VERSION.jar ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
+fi
+
+# move datasource xml-files into wildfly
+array=( crc im ont pm work )
+for i in "${array[@]}"
+do
+	if [[ ! -f $WILDFLY_HOME/standalone/deployments/$i-ds.xml ]]; then
+		echo -e "${YEL}$i-ds.xml wird nach $WILDFLY_HOME/standalone/deployments verschoben.${WHI}"
+		cp $XML_FILES/$i-ds.xml $WILDFLY_HOME/standalone/deployments/
+	else
+		echo -e "${ORA}$i-ds.xml ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
+	fi
+done
+}
+
+
+
+
+step_V(){
+set -euo pipefail # stop installation on errors
+echo
+echo -e "${YEL}+++++ STEP V +++++ Installation der aktin Datenbank${WHI}"
+echo
+
+service postgresql start
+# count databases with name aktin
+if  [[ $(sudo -u postgres psql -l | grep "aktin" | wc -l) == 0 ]]; then
+	
+	# add aktin data to i2b2 database
+	echo -e "${YEL}AKTIN-Daten werden der Datenbank i2b2 hinzugefügt.${WHI}"
+	sudo -u postgres psql -d i2b2 -v ON_ERROR_STOP=1 -f $SQL_FILES/addon_i2b2metadata.i2b2.sql
+	sudo -u postgres psql -d i2b2 -v ON_ERROR_STOP=1 -f $SQL_FILES/addon_i2b2crcdata.concept_dimension.sql
+
+	# create database aktin and respective user
+	echo -e "${YEL}Eine Datenbank mit Namen aktin und entsprechendem User wird erstellt.${WHI}"
+	sudo -u postgres psql -v ON_ERROR_STOP=1 -f $SQL_FILES/aktin_postgres_init.sql
+else
+	echo -e "${ORA}Die Integration der AKTIN-Datenbank wurde bereits durchgeführt.${WHI}"
+fi
+service postgresql stop
+
+# start wildfly server safely (JBOSS cli needs running server)
+cd $SCRIPT_FILES
+./wildfly_safe_start.sh
+
+# change logging properties of wildfly server
+if [[ $(grep -c "size-rotating-file-handler name=\"srf\"" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then
+	echo -e "${YEL}Das Logging des Wildfly-Servers wird aktualisiert.${WHI}"
+	$JBOSSCLI --file="$SCRIPT_FILES/wildfly_logging_update.cli"
+else
+	echo -e "${ORA}Das Logging des Wildfly-Servers wurde bereits aktualisiert.${WHI}"
+fi
+
+# increase deployment timeout of wildfly server
+if [[ $(grep -c "deployment-timeout" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then
+	echo -e "${YEL}Das Zeitlimit des Deployments wird erhöht.${WHI}"
+	$JBOSSCLI --file="$SCRIPT_FILES/wildfly_deployment_timeout.cli"
+else
+	echo -e "${ORA}Das Zeitlimit des Deployments wurde bereits aktualisiert.${WHI}"
+fi
+
+# create aktin datasource
+if [[ $(grep -c "jndi-name=\"java:jboss/datasources/AktinDS\"" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then
+	echo -e "${YEL}Eine Datasource für AKTIN wird im Wildfly-Server generiert.${WHI}"
+	$JBOSSCLI --file="$SCRIPT_FILES/aktin_datasource_create.cli"
+else
+	echo -e "${ORA}Die Datasource für AKTIN wurde bereits im Wildfly-Server generiert.${WHI}"
+fi
+
+# set new SMTP configuration
+if [[ $(grep -c "mail-session name=\"AktinMailSession\"" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then 
+	echo -e "${YEL}Die Konfiguration der Email wird vorgenommen.${WHI}"
+	cd $SCRIPT_FILES
+	./email_create.sh
+else
+	echo -e "${ORA}Die Konfiguration der Email wurde bereits vorgenommen.${WHI}"
+fi
+
+# stop wildfly server safely
+cd $SCRIPT_FILES
+./wildfly_safe_stop.sh
+
+# give wildfly user permission for aktin.properties and copy it into wildfly server
+if [[ ! $(stat -c '%U' $INSTALL_ROOT/aktin.properties) == "wildfly" ]]; then
+	echo -e "${YEL}Dem User wildfly werden Rechte für die Datei aktin.properties übergeben und die Datei wird nach $WILDFLY_HOME/standalone/configuration verschoben.${WHI}"
+	chown wildfly:wildfly $INSTALL_ROOT/aktin.properties
+	cp $INSTALL_ROOT/aktin.properties $WILDFLY_HOME/standalone/configuration/
+else
+	echo -e "${ORA}Der User wildfly besitzt bereits Rechte für die Datei aktin.properties und die Datei wurde nach $WILDFLY_HOME/standalone/configuration verschoben.${WHI}"
+fi
+
+# create /var/lib/aktin and give permissions to wildfly user
+if [[ ! -d /var/lib/aktin ]]; then
+	echo -e "${YEL}Der Ordner /var/lib/aktin wird erstellt.${WHI}"
+	mkdir -p /var/lib/aktin
+	chown wildfly /var/lib/aktin
+else
+	echo -e "${ORA}Der Ordner /var/lib/aktin existiert bereits.${WHI}"
+fi
+
+# TODO
+# aktin_update.sh
+}
+
+
+
+
+end_message(){
+set -euo pipefail # stop installation on errors
+echo
+echo -e "${YEL}"
+echo "Installation abgeschlossen!"
+echo "Vielen Dank, dass Sie die AKTIN-Software verwenden."
+echo 
+echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
+echo -e "Um das AKTIN-Notaufnahmeregister zu nutzen, vergewissern Sie sich, dass Sie die Dateien "${GRE}"$INSTALL_ROOT/email.config"${WHI}" und "${GRE}"$INSTALL_ROOT/aktin.properties"${WHI}" vor der Installation richtig konfiguriert haben!"
+echo
+echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
+echo -e "Bitte melden Sie auftretende Fehler an it-support@aktin.org!"
+echo
+echo
+}
+
+
+
+
+main(){
+set -euo pipefail # stop installation on errors
+step_I | tee -a $LOGFILE
+step_II | tee -a $LOGFILE
+step_III | tee -a $LOGFILE
+step_IV | tee -a $LOGFILE
+step_V | tee -a $LOGFILE
+end_message | tee -a $LOGFILE
+}
+
+main
