@@ -22,6 +22,17 @@
 		<dwhOntologyVersion>0.13</dwhOntologyVersion>
 		<dwhImportVersion>0.13</dwhImportVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
+
+		<!-- version number to use in scripts -->
+		<java.version>11</java.version>
+		<wildfly.version>18.0.0.Final</wildfly.version>
+		<postgresql.version>12</postgresql.version>
+		<jdbc.driver.version>42.2.8</jdbc.driver.version>
+		<i2b2.version>1.7.12a</i2b2.version>
+		<php.version>7.3</php.version>
+		<python.version>3.8</python.version>
+		<r.version>3.6.3</r.version>
+
 		<!-- encoding stuff -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

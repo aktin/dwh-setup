@@ -27,11 +27,6 @@
 		</dependency> 
 	</dependencies>
 
-	<properties>
-		<!-- version number to use in scripts -->
-		<wildfly.version>9.0.2.Final</wildfly.version>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
