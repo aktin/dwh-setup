@@ -1,12 +1,12 @@
 #! /bin/bash
 
 # script to remove i2b2 with aktin-addon from ubuntu 20.04
-# installed packages are not removed, only the components 'webclient','wildfly' and 'databases' with their configuration
+# installed packages are not removed, only the components 'webclient','wildfly' and 'databases' are removed with their configuration
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
 # september 2020
 
 readonly INSTALL_ROOT=$(dirname "$(pwd)") # current directory with installation files
-readonly INSTALL_DEST=/opt # destination of aktin installation
+readonly INSTALL_DEST=${install.destination} # destination of aktin installation
 readonly SQL_FILES=$INSTALL_ROOT/sql
 
 # colors for console output
@@ -168,10 +168,10 @@ echo
 
 # clean folder /tmp/
 if [ -n "$(ls -A /tmp/)" ]; then
-   	echo -e "${YEL}Der Ordner /tmp/ wird geleert.${WHI}"
+   	echo -e "${YEL}Der Ordner /tmp wird geleert.${WHI}"
 	rm -r /tmp/*
 else
-   echo -e "${ORA}Der Ordner /tmp/ wurde bereits geleert.${WHI}"
+   echo -e "${ORA}Der Ordner /tmp wurde bereits geleert.${WHI}"
 fi
 
 # end message

@@ -6,7 +6,7 @@
 
 set -euo pipefail # stop on errors
 
-readonly INSTALL_DEST=/opt # destination of aktin installation
+readonly INSTALL_DEST=${install.destination} # destination of aktin installation
 readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
 
 # colors for console output

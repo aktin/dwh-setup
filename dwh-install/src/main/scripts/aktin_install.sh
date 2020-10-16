@@ -15,7 +15,7 @@ readonly PYTHON_VERSION=${python.version}
 readonly R_VERSION=${r.version} # TODO only for info, R version relies on keyserver
 
 readonly INSTALL_ROOT=$(pwd) # current directory with installation files
-readonly INSTALL_DEST=/opt # destination of aktin installation
+readonly INSTALL_DEST=${install.destination} # destination of aktin installation
 readonly SQL_FILES=$INSTALL_ROOT/sql
 readonly SCRIPT_FILES=$INSTALL_ROOT/scripts
 readonly XML_FILES=$INSTALL_ROOT/xml
@@ -251,7 +251,7 @@ done
 step_V(){
 set -euo pipefail # stop installation on errors
 echo
-echo -e "${YEL}+++++ STEP V +++++ Installation der aktin Datenbank${WHI}"
+echo -e "${YEL}+++++ STEP V +++++ Installation der AKTIN Datenbank${WHI}"
 echo
 
 service postgresql start
@@ -329,10 +329,22 @@ if [[ ! -d /var/lib/aktin ]]; then
 else
 	echo -e "${ORA}Der Ordner /var/lib/aktin existiert bereits.${WHI}"
 fi
+}
 
-# TODO
-# aktin_update.sh
-# tar xvzf $PACKAGES/dwh-update-${project.version}.tar.gz | tee -a $LOGFILE
+
+
+
+step_VI(){
+set -euo pipefail # stop installation on errors
+echo
+echo -e "${YEL}+++++ STEP V +++++ Ausführung des AKTIN-Update${WHI}"
+echo
+
+cd $PACKAGES
+tar xvzf dwh-update-*.tar.gz
+
+cd dwh-update
+./aktin_update.sh
 }
 
 
@@ -364,6 +376,7 @@ step_II | tee -a $LOGFILE
 step_III | tee -a $LOGFILE
 step_IV | tee -a $LOGFILE
 step_V | tee -a $LOGFILE
+step_VI | tee -a $LOGFILE
 end_message | tee -a $LOGFILE
 }
 

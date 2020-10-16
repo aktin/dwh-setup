@@ -33,6 +33,10 @@
 		<python.version>3.8</python.version>
 		<r.version>3.6.3</r.version>
 
+		<!-- pathing to use in scripts -->
+		<install.destination>/opt</install.destination>
+		
+
 		<!-- encoding stuff -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

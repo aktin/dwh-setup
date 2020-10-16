@@ -4,7 +4,7 @@
 set -euo pipefail # stop on errors
 
 readonly INSTALL_ROOT=$(dirname "$(pwd)") # current directory with installation files
-readonly INSTALL_DEST=/opt # destination of aktin installation
+readonly INSTALL_DEST=${install.destination} # destination of aktin installation
 readonly SCRIPT_FILES=$INSTALL_ROOT/scripts
 
 readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
