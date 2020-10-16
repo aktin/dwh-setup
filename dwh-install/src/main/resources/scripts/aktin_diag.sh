@@ -6,7 +6,7 @@
 
 set -euo pipefail # stop on errors
 
-readonly INSTALL_DEST=${install.destination} # destination of aktin installation
+readonly INSTALL_DEST=${install.destination}
 readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
 
 # colors for console output
@@ -16,13 +16,15 @@ readonly ORA='\e[0;33m'
 readonly YEL='\e[1;33m'
 readonly GRE='\e[0;32m'
 
-# create a log folder for this "diagnosis"
+# create a log folder for this diagnosis
 CURRENT=$(date +%Y_%h_%d_%H:%M)
-readonly LOGFOLDER=$INSTALL_DEST/aktin_log/aktin_diag_$CURRENT
-if [[ ! -d $INSTALL_DEST/aktin_log/aktin_diag_$CURRENT ]]; then
-    mkdir $INSTALL_DEST/aktin_log/aktin_diag_$CURRENT
+readonly LOGFOLDER=${path.log.folder}/aktin_diag_$CURRENT
+if [[ ! -d ${path.log.folder} ]]; then
+    mkdir ${path.log.folder}
 fi
-
+if [[ ! -d ${path.log.folder}/aktin_diag_$CURRENT ]]; then
+    mkdir ${path.log.folder}/aktin_diag_$CURRENT
+fi
 
 # check for root privileges
 if [[ $EUID -ne 0 ]]; then
