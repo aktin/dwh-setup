@@ -1,0 +1,9 @@
+# Created by AKTIN@2015
+
+db.type=@DBTYPE@
+db.username=@I2B2DEMOUSER@
+db.password=@I2B2DEMOPWD@
+db.server=@SERVERURL@@DBNAME@?searchpath=@I2B2DEMOUSER@
+db.driver=@DBDRIVER@
+db.url=@DBURL@@DBNAME@?searchpath=@I2B2DEMOUSER@
+db.project=@I2B2PROJECT@

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema">
+
+    <!-- IMBootStrapDS  -->
+	<datasource jta="false" jndi-name="java:/IMBootStrapDS" 
+		pool-name="IMBootStrapDS" enabled="true" use-ccm="false">
+		<connection-url>@DBURL@@DBNAME@?searchpath=@I2B2HIVEUSER@</connection-url>
+		<driver-class>@DBDRIVER@</driver-class>
+		<driver>@DBDRIVERJAR@</driver>
+		<security>
+			<user-name>@I2B2HIVEUSER@</user-name>
+			<password>@I2B2HIVEPWD@</password>
+		</security>
+		<validation>
+			<validate-on-match>false</validate-on-match>
+			<background-validation>false</background-validation>
+		</validation>
+		<statement>
+			<share-prepared-statements>false</share-prepared-statements>
+		</statement>
+	</datasource>
+	
+<!--WIZARDINSERT-->
+    <!--BOSTONSTART-->
+    <!-- IM DS for @I2B2PROJECTNAME@ -->
+	
+	<datasource jta="false" jndi-name="java:/IM@I2B2PROJECTNAME@DS"
+		pool-name="IM@I2B2PROJECTNAME@DS" enabled="true" use-ccm="false">
+		<connection-url>@DBURL@@DBNAME@?searchpath=@I2B2IMUSER@</connection-url>
+		<driver-class>@DBDRIVER@</driver-class>
+		<driver>@DBDRIVERJAR@</driver>
+		<security>
+			<user-name>@I2B2WORKUSER@</user-name>
+			<password>@I2B2WORKPWD@</password>
+		</security>
+		<validation>
+			<validate-on-match>false</validate-on-match>
+			<background-validation>false</background-validation>
+		</validation>
+		<statement>
+			<share-prepared-statements>false</share-prepared-statements>
+		</statement>
+	</datasource>
+  
+    <!--BOSTONEND-->
+            
+</datasources>
