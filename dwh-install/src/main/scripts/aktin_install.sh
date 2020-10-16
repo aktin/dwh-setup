@@ -332,6 +332,7 @@ fi
 
 # TODO
 # aktin_update.sh
+# tar xvzf $PACKAGES/dwh-update-${project.version}.tar.gz | tee -a $LOGFILE
 }
 
 
