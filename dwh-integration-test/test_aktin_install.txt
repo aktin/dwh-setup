@@ -11,3 +11,6 @@ DANN
 	# set ports to all IP adresses, DOCKER ONLY; TODO REMOVE
 sed -i 's/Listen 80/Listen 0.0.0.0:80/' /etc/apache2/ports.conf
 sed -i 's/Listen 443/Listen 0.0.0.0:443/g' /etc/apache2/ports.conf
+
+
+# NEEDS demo-server-0.13.jar
