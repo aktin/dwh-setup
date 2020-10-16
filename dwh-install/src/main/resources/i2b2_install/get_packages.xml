@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+$Id: data_build.xml,v 1.2 2010/04/05 13:52:11 lcp5 Exp $
+-->
+<project name="AKTIN DWH" basedir=".">
+
+    <property file="build.properties"/>
+	<property environment="env" />
+
+	<target name="check_packages">
+		<available file="${packages.dir}" type="dir" property="package.dir.exists"/>
+		<available file="${packages.dir}/${axis2.zip.name}" type="file" property="package.axis2.zip.exists"/>
+		<available file="${packages.dir}/${axis2.patch.zip.name}" type="file" property="package.axis2.patch.zip.exists"/>
+		<available file="${packages.dir}/${i2b2.db.name}" type="file" property="package.i2b2.db.exists"/>
+		<available file="${packages.dir}/${i2b2.core.name}" type="file" property="package.i2b2.core.exists"/>
+		<available file="${packages.dir}/${i2b2.webclient.name}" type="file" property="package.i2b2.webclient.exists"/>
+		<available file="${packages.dir}/${jboss.zip.name}" type="file" property="package.jboss.zip.exists"/>
+		<available file="${packages.dir}/${db.driver.jar}" type="file" property="package.db.driver.exists"/>
+	</target>
+
+	<target name="mkdir_packages" depends="check_packages" unless="${package.dir.exists}">
+		<echo message="make packages folder"/>
+		<mkdir dir="${packages.dir}"/>
+	</target>
+	<target name="download_axis2" depends="mkdir_packages, check_packages" unless="${package.axis2.zip.exists}">
+		<echo message="dowload axis2.zip"/>
+		<get src="${axis2.zip.url}" dest="${packages.dir}/${axis2.zip.name}"/>
+	</target>
+	<target name="download_axis2_patch" depends="mkdir_packages, check_packages" unless="${package.axis2.patch.zip.exists}">
+		<echo message="dowload axis2_patch.zip"/>
+		<get src="${axis2.patch.zip.url}" dest="${packages.dir}/${axis2.patch.zip.name}"/>
+	</target>
+	<target name="download_i2b2_db" depends="mkdir_packages, check_packages" unless="${package.i2b2.db.exists}">
+		<echo message="dowload i2b2.db"/>
+		<get src="${i2b2.db.url}" dest="${packages.dir}/${i2b2.db.name}"/>
+	</target>
+	<target name="download_i2b2_core" depends="mkdir_packages, check_packages" unless="${package.i2b2.core.exists}">
+		<echo message="dowload i2b2.core"/>
+		<get src="${i2b2.core.url}" dest="${packages.dir}/${i2b2.core.name}"/>
+	</target>
+	<target name="download_i2b2_webclient" depends="mkdir_packages, check_packages" unless="${package.i2b2.webclient.exists}">
+		<echo message="dowload i2b2.webclient"/>
+		<get src="${i2b2.webclient.url}" dest="${packages.dir}/${i2b2.webclient.name}"/>
+	</target>
+	<target name="download_jboss" depends="mkdir_packages, check_packages" unless="${package.jboss.zip.exists}">
+		<echo message="dowload jboss.zip"/>
+		<get src="${jboss.zip.url}" dest="${packages.dir}/${jboss.zip.name}"/>
+	</target>
+	<target name="download_db_driver" depends="mkdir_packages, check_packages" unless="${package.db.driver.exists}">
+		<echo message="dowload db.driver"/>
+		<get src="${db.driver.url}" dest="${packages.dir}/${db.driver.jar}"/>
+	</target>
+
+	<target name="download_all" depends="mkdir_packages, download_axis2, download_axis2_patch, download_i2b2_db, download_i2b2_core, download_i2b2_webclient, download_jboss, download_db_driver">
+		<echo message="dowloaded all needed packages"/>
+	</target>
+	
+</project>
