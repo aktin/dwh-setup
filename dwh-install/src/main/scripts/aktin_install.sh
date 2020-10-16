@@ -15,11 +15,11 @@ readonly PYTHON_VERSION=${version.python}
 readonly R_VERSION=${version.r} # TODO only for info, R version relies on keyserver
 
 readonly INSTALL_ROOT=$(pwd) # current directory with installation files
+readonly INSTALL_PACKAGES=$INSTALL_ROOT/packages
 readonly INSTALL_DEST=${path.install.destination}
 readonly SQL_FILES=$INSTALL_ROOT/sql
 readonly SCRIPT_FILES=$INSTALL_ROOT/scripts
 readonly XML_FILES=$INSTALL_ROOT/xml
-readonly PACKAGES=$INSTALL_ROOT/packages
 
 readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
@@ -36,7 +36,7 @@ readonly GRE=${color.green}
 readonly URL_I2B2_WEBCLIENT=${url.i2b2.webclient}
 readonly URL_WILDFLY=${url.wildfly}
 readonly URL_JDBC_DRIVER=${url.jdbc.driver}
-
+readonly URL_I2B2=${url.i2b2.war}
 
 # create a logfile for this installation
 readonly LOGFILE=${path.log.folder}/aktin_install_$(date +%Y_%h_%d_%H:%M).log
@@ -80,50 +80,6 @@ apache2 \
 php$PHP_VERSION php$PHP_VERSION-common libapache2-mod-php$PHP_VERSION php$PHP_VERSION-curl \
 r-base r-cran-xml r-cran-lattice \
 python$PYTHON_VERSION python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv
-
-
-# installation of i2b2 webclient
-if [[ ! -d /var/www/html/webclient ]]; then
-
-	# download i2b2 webclient into apache2 web directory and rename it to webclient
-	echo -e "${YEL}Der Webclient von i2b2 wird heruntergeladen und in das Apache2-Verzeichnis verschoben.${WHI}"
-	wget $URL_I2B2_WEBCLIENT -P /tmp
-	unzip /tmp/v$I2B2_VERSION.0002.zip -d /var/www/html/
-	mv /var/www/html/i2b2-webclient-* /var/www/html/webclient
-
-	# change domain of i2b2 webclient from edu.harvard to localhost
-	echo -e "${YEL}Die Domain des Webclients wird von Harvard auf AKTIN geändert.${WHI}"
-	sed -i 's|name: \"HarvardDemo\",|name: \"AKTIN\",|' /var/www/html/webclient/i2b2_config_data.js
-	sed -i 's|urlCellPM: \"http://services.i2b2.org/i2b2/services/PMService/\",|urlCellPM: \"http://127.0.0.1:9090/i2b2/services/PMService/\",|' /var/www/html/webclient/i2b2_config_data.js
-
-	# remove default username and pw in login dialog box
-	echo -e "${YEL}Die voreingestellten Eingaben von Nutzer und Passwort werden entfernt.${WHI}"
-	sed -i 's|loginDefaultUsername : \"demo\"|loginDefaultUsername : \"\"|' /var/www/html/webclient/js-i2b2/i2b2_ui_config.js
-	sed -i 's|loginDefaultPassword : \"demouser\"|loginDefaultPassword : \"\"|' /var/www/html/webclient/js-i2b2/i2b2_ui_config.js
-else
-	echo -e "${ORA}Der Webclient von i2b2 befindet sich bereits im Apache2-Verzeichnis.${WHI}"
-fi
-
-# installation of wildlfy
-if [[ ! -d $INSTALL_DEST/wildfly ]]; then
-
-	# download wildfly server into install destination and rename server to wildfly
-	echo -e "${YEL}Wildfly-Server wird heruntergeladen und nach $INSTALL_DEST entpackt.${WHI}"
-	wget $URL_WILDFLY -P /tmp
-	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d $INSTALL_DEST
-	mv $INSTALL_DEST/wildfly-$WILDFLY_VERSION $INSTALL_DEST/wildfly
-
-	# set wildfly to run as a service
-	echo -e "${YEL}Ein /etc/init.d-Service wird für den Wildfly-Server erstellt.${WHI}"
-
-	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly-init-debian.sh /etc/init.d/wildfly
-	mkdir /etc/default/wildfly
-	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly.conf /etc/default/wildfly
-	echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly/wildfly-conf
-	echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly/wildfly-conf
-else
-	echo -e "${ORA}Der Wildfly-Server wurde bereits installiert.${WHI}"
-fi
 }
 
 
@@ -158,8 +114,36 @@ service postgresql stop
 step_III(){
 set -euo pipefail # stop installation on errors
 echo
-echo -e "${YEL}+++++ STEP III +++++ Konfiguration von Apache2${WHI}"
+echo -e "${YEL}+++++ STEP III +++++ Installation des i2b2-Webclient${WHI}"
 echo
+
+# download i2b2 webclient into apache2 web directory and rename it to webclient
+if [[ ! -d /var/www/html/webclient ]]; then
+	echo -e "${YEL}Der Webclient von i2b2 wird heruntergeladen und in das Apache2-Verzeichnis verschoben.${WHI}"
+	wget $URL_I2B2_WEBCLIENT -P /tmp
+	unzip /tmp/v$I2B2_VERSION.0002.zip -d /var/www/html/
+	mv /var/www/html/i2b2-webclient-* /var/www/html/webclient
+else
+	echo -e "${ORA}Der Webclient von i2b2 befindet sich bereits im Apache2-Verzeichnis.${WHI}"
+fi
+
+# change domain of i2b2 webclient from edu.harvard to localhost
+if [[ -z $(grep "AKTIN" /var/www/html/webclient/i2b2_config_data.js) ]]; then
+	echo -e "${YEL}Die Domain des Webclient wird von Harvard auf AKTIN geändert.${WHI}"
+	sed -i 's|name: \"HarvardDemo\",|name: \"AKTIN\",|' /var/www/html/webclient/i2b2_config_data.js
+	sed -i 's|urlCellPM: \"http://services.i2b2.org/i2b2/services/PMService/\",|urlCellPM: \"http://127.0.0.1:9090/i2b2/services/PMService/\",|' /var/www/html/webclient/i2b2_config_data.js
+else
+	echo -e "${ORA}Die Domain des Webclient wurde bereits auf AKTIN geändert.${WHI}"
+fi
+
+# remove default username and pw in login dialog box
+if [[ -n $(grep "loginDefaultUsername : \"demo\"" /var/www/html/webclient/js-i2b2/i2b2_ui_config.js) ]]; then
+	echo -e "${YEL}Die voreingestellten Eingaben von Nutzer und Passwort werden entfernt.${WHI}"
+	sed -i 's|loginDefaultUsername : \"demo\"|loginDefaultUsername : \"\"|' /var/www/html/webclient/js-i2b2/i2b2_ui_config.js
+	sed -i 's|loginDefaultPassword : \"demouser\"|loginDefaultPassword : \"\"|' /var/www/html/webclient/js-i2b2/i2b2_ui_config.js
+else
+	echo -e "${ORA}Die voreingestellten Eingaben von Nutzer und Passwort wurden bereits entfernt.${WHI}"
+fi
 
 # activate php-curl extension for apache2
 if [[ -n $(grep ";extension=curl" /etc/php/7.3/apache2/php.ini) ]]; then
@@ -189,8 +173,30 @@ fi
 step_IV(){
 set -euo pipefail # stop installation on errors
 echo
-echo -e "${YEL}+++++ STEP IV +++++ Konfiguration von WildFly${WHI}"
+echo -e "${YEL}+++++ STEP IV +++++ Installation von WildFly${WHI}"
 echo
+
+# download wildfly server into install destination and rename server to wildfly
+if [[ ! -d $INSTALL_DEST/wildfly ]]; then
+	echo -e "${YEL}Wildfly-Server wird heruntergeladen und nach $INSTALL_DEST entpackt.${WHI}"
+	wget $URL_WILDFLY -P /tmp
+	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d $INSTALL_DEST
+	mv $INSTALL_DEST/wildfly-$WILDFLY_VERSION $INSTALL_DEST/wildfly
+else
+	echo -e "${ORA}Der Wildfly-Server befindet sich bereits in $INSTALL_DEST.${WHI}"
+fi
+
+# set wildfly to run as a service
+if [[ ! -d /etc/default/wildfly ]]; then
+	echo -e "${YEL}Ein /etc/init.d-Service wird für den Wildfly-Server erstellt.${WHI}"
+	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly-init-debian.sh /etc/init.d/wildfly
+	mkdir /etc/default/wildfly
+	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly.conf /etc/default/wildfly
+	echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly/wildfly-conf
+	echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly/wildfly-conf
+else
+	echo -e "${ORA}}Ein /etc/init.d-Service existiert bereits für den Wildfly-Server.${WHI}"
+fi
 
 # create user for wildfly server and give permissions to wildfly folder
 if [[ -z $(grep "wildfly" /etc/passwd) ]]; then
@@ -226,11 +232,10 @@ else
 	echo -e "${ORA}Der Port des Wildfly-Servers wurde bereits von 8080 auf 9090 geändert.${WHI}"
 fi
 
-# TODO
 # download i2b2.war (https://community.i2b2.org/wiki/) into wildfly
 if [[ ! -f $WILDFLY_HOME/standalone/deployments/i2b2.war ]]; then
 	echo -e "${YEL}i2b2.war wird nach $WILDFLY_HOME/standalone/deployments heruntergeladen.${WHI}"
-	cp $PACKAGES/i2b2.war $WILDFLY_HOME/standalone/deployments/
+	wget $URL_I2B2 -P $WILDFLY_HOME/standalone/deployments/
 else
 	echo -e "${ORA}i2b2.war ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi
@@ -283,7 +288,6 @@ fi
 service postgresql stop
 
 # start wildfly server safely (JBOSS cli needs running server)
-cd $SCRIPT_FILES
 ./wildfly_safe_start.sh
 
 # change logging properties of wildfly server
@@ -313,14 +317,12 @@ fi
 # set new SMTP configuration
 if [[ $(grep -c "mail-session name=\"AktinMailSession\"" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then 
 	echo -e "${YEL}Die Konfiguration der Email wird vorgenommen.${WHI}"
-	cd $SCRIPT_FILES
 	./email_create.sh
 else
 	echo -e "${ORA}Die Konfiguration der Email wurde bereits vorgenommen.${WHI}"
 fi
 
 # stop wildfly server safely
-cd $SCRIPT_FILES
 ./wildfly_safe_stop.sh
 
 # give wildfly user permission for aktin.properties and copy it into wildfly server
@@ -351,7 +353,7 @@ echo
 echo -e "${YEL}+++++ STEP V +++++ Ausführung des AKTIN-Update${WHI}"
 echo
 
-cd $PACKAGES
+cd $INSTALL_PACKAGES
 tar xvzf dwh-update-*.tar.gz
 
 cd dwh-update
