@@ -41,7 +41,3 @@ if [[ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear ]]; 
 else
 	echo -e "${ORA}dwh-j2ee-$AKTIN_VERSION.ear ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi
-
-# start wildfly server safely
-cd $INSTALL_ROOT
-./wildfly_safe_start.sh
