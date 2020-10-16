@@ -6,7 +6,7 @@
 
 set -euo pipefail # stop on errors
 
-readonly INSTALL_DEST=${install.destination}
+readonly INSTALL_DEST=${path.install.destination}
 readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
 
 # colors for console output
