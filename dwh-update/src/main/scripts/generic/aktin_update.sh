@@ -4,19 +4,27 @@
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
 # september 2020
 
-# current version of aktin
 readonly AKTIN_VERSION=${dwhJ2EEVersion}
 
+readonly INSTALL_ROOT=${path.install.link}
+readonly SQL_FILES=$INSTALL_ROOT/sql
+readonly PACKAGES=$INSTALL_ROOT/packages
+
+readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
+
 # colors for console output
-readonly WHI='\033[0m'
-readonly RED='\e[1;31m'
-readonly ORA='\e[0;33m'
-readonly YEL='\e[1;33m'
-readonly GRE='\e[0;32m'
-
-check wildlfy server
+readonly WHI=${color.white}
+readonly RED=${color.red}
+readonly ORA=${color.orange}
+readonly YEL=${color.yellow}
+readonly GRE=${color.green}
 
 
+# stop wildfly server safely
+cd $SCRIPT_FILES
+./wildfly_safe_stop.sh
+
+# remove all old dwh-j2ee.ears
 if [[ -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.ear ]]; then
 	echo -e "${YEL}Alte dwh-j2ee.ear werden gelöscht.${WHI}"
 	rm $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*
@@ -31,3 +39,7 @@ if [[ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear ]]; 
 else
 	echo -e "${ORA}dwh-j2ee-$AKTIN_VERSION.ear ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi
+
+# start wildfly server safely
+cd $SCRIPT_FILES
+./wildfly_safe_start.sh

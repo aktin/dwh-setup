@@ -5,17 +5,17 @@
 # september 2020
 
 # all version numbers of used software
-readonly JAVA_VERSION=${java.version}
-readonly WILDFLY_VERSION=${wildfly.version}
-readonly PG_VERSION=${postgresql.version}
-readonly JDBC_VERSION=${jdbc.driver.version}
-readonly I2B2_VERSION=${i2b2.version}
-readonly PHP_VERSION=${php.version}
-readonly PYTHON_VERSION=${python.version}
-readonly R_VERSION=${r.version} # TODO only for info, R version relies on keyserver
+readonly JAVA_VERSION=${version.java}
+readonly WILDFLY_VERSION=${version.wildfly}
+readonly PG_VERSION=${version.postgresql}
+readonly JDBC_VERSION=${version.jdbc.driver}
+readonly I2B2_VERSION=${version.i2b2}
+readonly PHP_VERSION=${version.php}
+readonly PYTHON_VERSION=${version.python}
+readonly R_VERSION=${version.r} # TODO only for info, R version relies on keyserver
 
 readonly INSTALL_ROOT=$(pwd) # current directory with installation files
-readonly INSTALL_DEST=${install.destination} # destination of aktin installation
+readonly INSTALL_DEST=${path.install.destination}
 readonly SQL_FILES=$INSTALL_ROOT/sql
 readonly SCRIPT_FILES=$INSTALL_ROOT/scripts
 readonly XML_FILES=$INSTALL_ROOT/xml
@@ -26,16 +26,27 @@ readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 readonly JAVA_HOME=/usr/lib/jvm/java-$JAVA_VERSION-openjdk-amd64
 
 # colors for console output
-readonly WHI='\033[0m'
-readonly RED='\e[1;31m'
-readonly ORA='\e[0;33m'
-readonly YEL='\e[1;33m'
-readonly GRE='\e[0;32m'
+readonly WHI=${color.white}
+readonly RED=${color.red}
+readonly ORA=${color.orange}
+readonly YEL=${color.yellow}
+readonly GRE=${color.green}
+
+# urls for packages to download
+readonly URL_I2B2_WEBCLIENT=${url.i2b2.webclient}
+readonly URL_WILDFLY=${url.wildfly}
+readonly URL_JDBC_DRIVER=${url.jdbc.driver}
+
 
 # create a logfile for this installation
-readonly LOGFILE=$INSTALL_DEST/aktin_log/aktin_install_$(date +%Y_%h_%d_%H:%M).log
-if [[ ! -d $INSTALL_DEST/aktin_log ]]; then
-    mkdir $INSTALL_DEST/aktin_log
+readonly LOGFILE=${path.log.folder}/aktin_install_$(date +%Y_%h_%d_%H:%M).log
+if [[ ! -d ${path.log.folder} ]]; then
+    mkdir ${path.log.folder}
+fi
+
+# create link to this folder in /opt/ for other files
+if [[ ! -f ${path.install.link} ]]; then
+	ln -s $(pwd) ${path.install.link}
 fi
 
 
@@ -76,7 +87,7 @@ if [[ ! -d /var/www/html/webclient ]]; then
 
 	# download i2b2 webclient into apache2 web directory and rename it to webclient
 	echo -e "${YEL}Der Webclient von i2b2 wird heruntergeladen und in das Apache2-Verzeichnis verschoben.${WHI}"
-	wget https://github.com/i2b2/i2b2-webclient/archive/v$I2B2_VERSION.0002.zip -P /tmp
+	wget $URL_I2B2_WEBCLIENT -P /tmp
 	unzip /tmp/v$I2B2_VERSION.0002.zip -d /var/www/html/
 	mv /var/www/html/i2b2-webclient-* /var/www/html/webclient
 
@@ -98,7 +109,7 @@ if [[ ! -d $INSTALL_DEST/wildfly ]]; then
 
 	# download wildfly server into install destination and rename server to wildfly
 	echo -e "${YEL}Wildfly-Server wird heruntergeladen und nach $INSTALL_DEST entpackt.${WHI}"
-	wget https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.zip -P /tmp
+	wget $URL_WILDFLY -P /tmp
 	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d $INSTALL_DEST
 	mv $INSTALL_DEST/wildfly-$WILDFLY_VERSION $INSTALL_DEST/wildfly
 
@@ -227,7 +238,7 @@ fi
 # download postgresql jdbc driver into wildfly
 if [[ ! -f $WILDFLY_HOME/standalone/deployments/postgresql-$JDBC_VERSION.jar ]]; then
 	echo -e "${YEL}postgresql-JDBC_VERSION.jar wird nach $WILDFLY_HOME/standalone/deployments heruntergeladen.${WHI}"
-	wget https://jdbc.postgresql.org/download/postgresql-$JDBC_VERSION.jar -P $WILDFLY_HOME/standalone/deployments/
+	wget $URL_JDBC_DRIVER -P $WILDFLY_HOME/standalone/deployments/
 else
 	echo -e "${ORA}postgresql-JDBC_VERSION.jar ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi

@@ -5,21 +5,21 @@
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
 # september 2020
 
-readonly INSTALL_ROOT=$(dirname "$(pwd)") # current directory with installation files
-readonly INSTALL_DEST=${install.destination} # destination of aktin installation
+readonly INSTALL_ROOT=${path.install.link}
+readonly INSTALL_DEST=${install.destination}
 readonly SQL_FILES=$INSTALL_ROOT/sql
 
 # colors for console output
-readonly WHI='\033[0m'
-readonly RED='\e[1;31m'
-readonly ORA='\e[0;33m'
-readonly YEL='\e[1;33m'
-readonly GRE='\e[0;32m'
+readonly WHI=${color.white}
+readonly RED=${color.red}
+readonly ORA=${color.orange}
+readonly YEL=${color.yellow}
+readonly GRE=${color.green}
 
 # create a logfile for this reset
-readonly LOGFILE=$INSTALL_DEST/aktin_log/aktin_remove_$(date +%Y_%h_%d_%H:%M).log
-if [[ ! -d $INSTALL_DEST/aktin_log ]]; then
-    mkdir $INSTALL_DEST/aktin_log
+readonly LOGFILE=${path.log.folder}/aktin_reset_$(date +%Y_%h_%d_%H:%M).log
+if [[ ! -d ${path.log.folder} ]]; then
+    mkdir ${path.log.folder}
 fi
 
 # if running, stop apache2, postgresql and wildfly service
@@ -32,6 +32,8 @@ fi
 if  [[ ! $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
 	service wildfly stop
 fi
+
+
 
 
 step_I(){

@@ -3,7 +3,7 @@
 # script to stop wildfly after safely starting it
 set -euo pipefail # stop on errors
 
-readonly INSTALL_DEST=/opt # destination of aktin installation
+readonly INSTALL_DEST=${install.destination}
 readonly WILDFLY_DEPLOYMENTS=$INSTALL_DEST/wildfly/standalone/deployments
 
 
