@@ -28,10 +28,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.aktin</groupId>
-			<artifactId>cda-ontology</artifactId>
-		</dependency>
 	</dependencies>
     
 	<profiles>

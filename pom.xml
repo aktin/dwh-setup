@@ -54,12 +54,6 @@
 	<dependencyManagement>
 		<!-- dependency version+scope inherited by child projects -->
 		<dependencies>
-			<!-- second dependency must be the ontology -->
-			<dependency>
-			    <groupId>org.aktin</groupId>
-			    <artifactId>cda-ontology</artifactId>
-			    <version>0.13</version>
-			</dependency>
 			<dependency>
 				<groupId>org.aktin.dwh</groupId>
 				<artifactId>dwh-j2ee</artifactId>
