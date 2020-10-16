@@ -21,10 +21,6 @@
 			<version>1.1rc1</version>
 			<type>ear</type>
 		</dependency>
-		<dependency>
-			<groupId>org.aktin</groupId>
-			<artifactId>cda-ontology</artifactId>
-		</dependency> 
 	</dependencies>
 
 	<build>

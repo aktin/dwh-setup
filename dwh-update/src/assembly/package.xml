@@ -20,12 +20,16 @@
 
     <fileSets>
         <fileSet>
-            <directory>src/main/scripts/generic</directory>
+            <directory>${project.build.scriptSourceDirectory}</directory>
             <outputDirectory>dwh-update</outputDirectory>
             <filtered>true</filtered>
             <fileMode>755</fileMode>
             <lineEnding>unix</lineEnding>
         </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>dwh-update</outputDirectory>
+            <filtered>false</filtered>
+        </fileSet>
     </fileSets>
-
 </assembly>
