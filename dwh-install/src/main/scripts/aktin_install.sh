@@ -242,10 +242,10 @@ fi
 
 # download postgresql jdbc driver into wildfly
 if [[ ! -f $WILDFLY_HOME/standalone/deployments/postgresql-$JDBC_VERSION.jar ]]; then
-	echo -e "${YEL}postgresql-JDBC_VERSION.jar wird nach $WILDFLY_HOME/standalone/deployments heruntergeladen.${WHI}"
+	echo -e "${YEL}postgresql-$JDBC_VERSION.jar wird nach $WILDFLY_HOME/standalone/deployments heruntergeladen.${WHI}"
 	wget $URL_JDBC_DRIVER -P $WILDFLY_HOME/standalone/deployments/
 else
-	echo -e "${ORA}postgresql-JDBC_VERSION.jar ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
+	echo -e "${ORA}postgresql-$JDBC_VERSION.jar ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi
 
 # move datasource xml-files into wildfly
