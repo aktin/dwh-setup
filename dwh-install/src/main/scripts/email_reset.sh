@@ -4,15 +4,14 @@
 set -euo pipefail # stop on errors
 
 readonly INSTALL_ROOT=${path.install.link}
-readonly INSTALL_DEST=${install.destination}
-readonly SCRIPT_FILES=$INSTALL_ROOT/scripts
+readonly INSTALL_DEST=${path.install.destination}
 
 readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
 
 # start wildfly safely
-cd $SCRIPT_FILES
+cd $INSTALL_ROOT
 ./wildfly_safe_start.sh
 
 # not changeable parameters
@@ -32,5 +31,5 @@ if [ $( grep -c "mail-session name=\"$SESSIONNAME\"" $WILDFLY_HOME/standalone/co
 fi	
 
 # stop wildfly safely
-cd $SCRIPT_FILES
+cd $INSTALL_ROOT
 ./wildfly_safe_stop.sh
