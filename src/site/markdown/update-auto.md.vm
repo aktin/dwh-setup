@@ -1,187 +1,54 @@
-Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Debian (und CentOS)
-==================================================
-
+Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Ubuntu
+===============================================
 
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
 
-Ausführung des Updates
----------------------------------------
-
-Für laufende DWH-Instanzen auf Debian-Servern stellen wir ein Update-Skript bereit, zu finden unter 
-[Debian Update Paket](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz).
-Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. 
-Dazu führt man, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), folgendes aus:
-
+Anmelden als ROOT
+---------------------
+Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. Dazu führen Sie, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), folgenden Befehl aus:
 ```
 sudo su -
 ```
-oder, wenn der User nicht auf der Sudoer-Liste steht (`root` hat eigenes Passwort), folgendes:
-
+oder, falls der User nicht auf der Sudoer-Liste steht (`root` hat ein eigenes Passwort):
 ```
 su -
 ```
+Alle folgende Befehle sollten als `root`-User ausgeführt werden.
 
-Als erstes muss das Paket _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_ heruntergeladen und entpackt werden: 
+Ausführung des Updates
+---------------------
+Für laufende Data Warehouse-Instanzen auf Ubuntu-Servern wird ein Update-Skript bereitgestellt. Das Update-Skript finden Sie unter [Ubuntu Update Paket](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz). 
 
-Haben Sie direkt vom Server aus die Möglichkeit das Paket herunterzuladen, können Sie hierfür den folgenden Befehl nutzen:
-
+Zuerst muss das Paket _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_ heruntergeladen und entpackt werden. Haben Sie direkt vom Server aus die Möglichkeit das Paket herunterzuladen, können Sie hierfür den folgenden Befehl nutzen:
 ```
 wget ${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz
 ```
 
-Besteht diese Möglichkeit nicht, können Sie das Paket alternativ von einem anderen Rechner aus herunterladen. Kopieren oder laden Sie diese Datei anschließend ins Root Verzeichnis (`/root`) Ihres Servers:
-
+Besteht diese Möglichkeit nicht, können Sie das Paket alternativ von einem anderen Rechner aus herunterladen:
 [${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
 
-Entpacken Sie die Datei und wechseln Sie anschließend in das Verzeichnis des Updates:
-
+Kopieren oder laden Sie anschließend die Datei ins `/root`-Verzeichnis Ihres Servers. Entpacken Sie diese Datei und wechseln Sie anschließend in das Verzeichnis des Updates:
 ```
 tar xvzf dwh-update-${project.version}.tar.gz
 cd dwh-update
 ```
 
-Der Inhalt (`ls`) sollte dann etwa wie folgt aussehen:
-
+Der Inhalt des Ordners (über den Befehl `ls`) sollte in etwa wie folgt aussehen:
 ```
 dwh-update
-- aktin.properties
-- aktin_dwh_update.sh
-- dubletten_cleanup.sh
-- email.config
-- email_config_reset.sh
-- README.md
-- lib/
-- - ...
+- aktin_update.sh
 ```
 
-Das Updateskript kann dann wie folgt ausgeführt werden:
-
+Das Updateskript kann anschließend über den folgenden Befehl ausgeführt werden: 
 ```
 ./aktin_dwh_update.sh
 ```
-<a name="confback"></a>
 
-Seit dem Update 0.7 werden einige wichtige Einstellungen in der Datei `aktin.properties` abgespeichert. 
-Sollten Sie diese Datei noch nicht angepasst und in den entsprechenden Ordner kopiert haben, 
-werden Sie in der Konsole darauf hingewiesen und das Skript wird unterbrochen. In dem Fall folgen 
-Sie bitte die Anweisungen unter [_"Lokale Konfigurationen in der Datei `aktin.properties`"_](#localconf). 
-
-<a name="emailback"></a>
-Ebenfalls seit dem Update 0.7 wird eine lokale E-Mailadresse verwendet, um Berichte und Meldungen an die Nutzer zu versenden.
-Sollte noch keine E-Mail eingestellt sein oder Sie Probleme mit dem Versenden der E-Mails haben, folgen Sie bitte die Anweisungen unter [_"E-Mail-Konfiguration und Änderungen"_](#emailconf). 
-
-Der Update besteht aus 6 Schritten. In der Konsole werden während des Updates die Schritte und Informationen sowie eventuelle Fehlermeldungen ausgegeben. 
-Am Ende des Skriptes wird der Wildfly-Server neugestartet und das neue Softwarepaket bereitgestellt. Abhängig von der Serverleistung kann dies mehrere Minuten dauern. 
-Bei erfolgreicher Installation kommt folgende Meldung:
-
+Nach Abschluss des Update wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sie können dies mit folgendem Befehl kontrollieren:
 ```
-+++SUCCESS+++ EAR successfully deployed after xxx sec
+ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed
 ```
 
-```diff 
-- ACHTUNG: Ab Version 1.1 wird das alte CDA-Template V1.21 nicht mehr unterstützt! Bitte stellen Sie Ihre Version auf V1.26 um.```
-```
+Sollte die Datei angezeigt werden, war das Update erfolgreich. Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen oder ein anderer Fehler auftreten, so führen Sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin Diagnose-Skript".
 
-
-
-Wichtige Änderungen seit Version 1.0
-----
-
-Ab Update 1.0 werden Angaben bzgl. der CDAs in den AKTIN-Properties für den Consent-Manager benötigt. Diese Angaben sind nur nötig, wenn Sie an einer Studie beteiligt sind, die den Consent-Manager nutzt. Falls ihr KIS-Anbieter die Beispiel-Root-IDs übernommen hat (z.B. E.Care), brauchen Sie keine Änderungen vornehmen, da die voreingestellten Angaben bereits korrekt sind. Andernfalls halten Sie sich bitte an die Anleitung im Abschnitt "Änderungen ab Version 1.0"  auf der Seite des [Installationsskripts](install-script.html).
-
-Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der kein i2b2-Admin ist (d.h. keinen Zugriff auf die i2b2-Adminoberfläche unter `http://IHRSERVER/admin` hat), sind noch die folgenden zwei Schritte für einen erfolgreichen Login in den Data-Warehouse-Manager notwendig:
-1. Zuordnung des Nutzers zum AKTIN-Projekt
-2. Zuweisung einer AKTIN-Rolle an den Benutzer
-
-Das genaue Vorgehen hierfür können Sie in den letzten beiden Abschnitten ("Benutzer einem Projekt hinzufügen" und "AKTIN-Rolle zuweisen") der i2b2-Benutzeranleitung nachlesen: https://www.na-register.de/de-de/support/anwender.html 
-
-
-
-Häufige Fehler
---------------
-
-**Nach dem Ausführen des Update-Skripts erscheint keine Success-Meldung, sondern ein Fehler/eine Warnung.**
-
-Sollte die Bereitstellung bis Skriptende immer noch nicht fertiggestellt sein, kommt folgende Fehlermeldung:
-
-```
-+++WARNING+++ file not successfully deployed, check for file: dwh-j2ee-${dwhJ2EEVersion}.ear.deployed
-```
-
-Dies muss kein Fehler sein. Das Script wartet nur zwei Minuten und gibt dann die Warnung aus. Bitte überprüfen Sie nach einigen Minuten den Deployment-Ordner `/opt/wildfly-9.0.2.Final/standalone/deployments`, z.B. mit dem Befehl
-
-```
-ls /opt/wildfly-9.0.2.Final/standalone/deployments/dwh-j2ee-*.deployed
-```
-
-Sollte eine Datei angezeigt werden, war das Update erfolgreich.
-
-**In der i2b2-Adminoberfläche werden keine Nutzer und Projekte angezeigt.**
-
-Im Internet Explorer kommt es in der i2b2-Oberfläche zu Darstellungsfehlern. So werden z.B. keine User unter "Manage Users" angezeigt und unter "Manage Projects" sind die Projekte nicht einsehbar (sattdessen erscheint ein permanentes Ladezeichen). Dieser Fehler ist bereits bekannt, kann aber von unserer Seite aus nicht behoben werden, da i2b2 eine externe Software von der wir lediglich die Schnittstelle nutzen. Wir würden Sie daher bitten für die Nutzerverwaltung einen anderen Browser zu verwenden (z.B. Firefox oder Chrome).
-
-
-Test der Verbindung und der E-Mail-Konfiguration
---------------------------------------------
-
-Unter dem Link _`http://IHRSERVER/aktin/admin/plain/test.html`_ kann man die oben durchgeführten Anpassungen nun testen. 
-
-Eine weiterführende Anleitung zum Testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
-
-Lokale Konfigurationen in der Datei `aktin.properties`
-------------------------------------------------------
-
-Die Datei `aktin.properties` muss für jeden Standort individuell angepasst werden. Dies ist nur nötig, wenn bei einem Update neue Angaben in der Properties-Datei erforderlich sind (z.B. bei Version 1.0). Ihre bisher in der Datei hinterlegten Angaben werden bei einem Update übernommen.
-
-Mit dem unten stehenden Befehl können Sie die Datei bearbeiten, sofern Sie sich im `dwh-update`-Ordner befinden (andernfalls navigieren Sie wieder in das Verzeichnis, in dem Sie zuvor das Update-Skript ausgeführt haben). 
-
-```
-nano aktin.properties
-```
-Ein Template sowie weiterführende Erläuterungen zu wichtigen Einstellungen finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin-Properties".
-
-Nach Bearbeiten der Datei muss diese in den Konfigurationsordner des Wildfly-Servers kopiert werden, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/`.
-
-```
-cp aktin.properties /opt/wildfly-9.0.2.Final/standalone/configuration/
-```
-
-Sollte später die Einstellung geändert werden, muss man dies direkt in dem Wildfly-Konfigurationsordner machen, im Normalfall unter `/opt/wildfly-9.0.2.Final/standalone/configuration/` zu finden. Starten Sie im Anschluss den Wildfly-Service neu:
-
-```
-nano /opt/wildfly-9.0.2.Final/standalone/configuration/aktin.properties
-service wildfly stop
-service wildfly start
-```
-
-[Zurück](#confback)
-
-<a name="emailconf"></a>
-
-Konfiguration und Änderung der E-Mail-Einstellungen
----------------------------------
-Bitte tragen Sie in der Datei `email.config` die E-Mail-Konfigurationen für die Ausgangsmailadresse ein. Diese Adresse wird für Benachrichtigungen und Berichte hausintern verwendet. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für dieses Update. 
-
-```
-nano email.config
-```
-
-Ein Template und weiterführende Erläuterungen der Parameter finden Sie auf der Seite [Installationsskript](install-script.html) im bereich "E-Mail-Konfiguration".
-
-Sollten Sie bereits E-Mail eingerichtet haben und möchten diese nun ändern, müssen die folgenden Schritte zusätzlich durchgefführt werden:
-
-Als erstes muss das Skript `./email_config_reset.sh` aus dem Updateordner mit `root`-Rechten ausgeführt werden. 
-Nach dem Bearbeiten der `email.config` führt man das Updateskript `./aktin_dwh_update.sh` wieder mit `root` aus.
-
-[Zurück](#emailback)
-
-Aktin-Diagnose-Skript
-----------------------------------
-
-Sollten Probleme beim automatischen Update auftreten, so führen Sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin-Diagnose-Skript".
-
-Senden Sie diese Datei bitte an den Aktin-Support, unter it-support(at)aktin.org, mit einer Support-Anfrage. Die erzeugten Logs helfen bei der Identifizierung von Problemen.
-
-```
-
-```
+Nach dem erfolgreichen Update können Sie auf der Seite `http://IHRSERVER/aktin/admin/plain/test.html` die Grundfunktionalität testen. Eine weiterführende Anleitung zum Testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
