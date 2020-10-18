@@ -9,6 +9,7 @@ readonly JAVA_VERSION=${version.java}
 readonly WILDFLY_VERSION=${version.wildfly}
 readonly PG_VERSION=${version.postgresql}
 readonly JDBC_VERSION=${version.jdbc.driver}
+readonly APACHE2_VERSION=${version.apache2}
 readonly I2B2_VERSION=${version.i2b2}
 readonly PHP_VERSION=${version.php}
 readonly PYTHON_VERSION=${version.python}
@@ -72,7 +73,7 @@ apt-get update && apt-get install -y \
 curl sudo wget nano unzip libpq-dev \
 openjdk-$JAVA_VERSION-jre-headless \
 postgresql-$PG_VERSION \
-apache2 \
+apache2=$APACHE2_VERSION \
 php$PHP_VERSION php$PHP_VERSION-common libapache2-mod-php$PHP_VERSION php$PHP_VERSION-curl \
 r-base-core=$R_VERSION r-cran-lattice r-cran-xml
 python$PYTHON_VERSION python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv
