@@ -31,7 +31,7 @@
 		<version.i2b2>1.7.12a</version.i2b2>
 		<version.php>7.3</version.php>
 		<version.python>3.8</version.python>
-		<version.r>3.6.3</version.r>
+		<version.r>3.6.3-2</version.r>
 
 		<!-- pathing to use in scripts -->
 		<path.install.destination>/opt</path.install.destination>
@@ -42,7 +42,7 @@
 		<url.i2b2.webclient>https://github.com/i2b2/i2b2-webclient/archive/v${version.i2b2}.0002.zip</url.i2b2.webclient>
 		<url.wildfly>https://download.jboss.org/wildfly/${version.wildfly}/wildfly-${version.wildfly}.zip</url.wildfly>
 		<url.jdbc.driver>https://jdbc.postgresql.org/download/postgresql-${version.jdbc.driver}.jar</url.jdbc.driver>
-		<url.i2b2.war>https://www.aktin.org/software/repo/org/i2b2/1.7.12a/i2b2.war</url.i2b2.war>
+		<url.i2b2.war>https://www.aktin.org/software/repo/org/i2b2/${version.i2b2}/i2b2.war</url.i2b2.war>
 
 
 		<!-- colors for bash scripting -->
