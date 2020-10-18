@@ -28,6 +28,7 @@
 		<version.wildfly>18.0.0.Final</version.wildfly>
 		<version.postgresql>12</version.postgresql>
 		<version.jdbc.driver>42.2.8</version.jdbc.driver>
+		<version.apache2>2.4.41-4ubuntu3.1</version.apache2>
 		<version.i2b2>1.7.12a</version.i2b2>
 		<version.php>7.3</version.php>
 		<version.python>3.8</version.python>
