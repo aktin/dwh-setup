@@ -35,10 +35,10 @@
 		<version.r>3.6.3-2</version.r>
 
 		<!-- pathing to use in scripts -->
-		<path.install.home>/home</path.install.home>
-		<path.log.folder>${path.install.home}/aktin_log</path.log.folder>
-		<path.install.link>${path.install.home}/link_installer</path.install.link>
-		<path.wildfly.link>${path.install.home}/link_wildfly</path.wildfly.link>
+		<path.home>/home</path.home>
+		<path.log.folder>${path.home}/aktin_log</path.log.folder>
+		<path.install.link>${path.home}/link_installer</path.install.link>
+		<path.wildfly.link>${path.home}/link_wildfly</path.wildfly.link>
 
 		<!-- urls for packages -->
 		<url.i2b2.webclient>https://github.com/i2b2/i2b2-webclient/archive/v${version.i2b2}.0002.zip</url.i2b2.webclient>

@@ -2,7 +2,7 @@
 
 # script to install i2b2 with aktin-addon on ubuntu 20.04
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
-# september 2020
+set -euo pipefail
 
 # all version numbers of used software
 readonly JAVA_VERSION=${version.java}
@@ -44,7 +44,7 @@ if [[ ! -d ${path.log.folder} ]]; then
     mkdir ${path.log.folder}
 fi
 
-# create link to this folder in ${path.install.home} for other files
+# create link to this folder in ${path.home} for other files
 if [[ ! -f ${path.install.link} ]]; then
 	ln -s $(pwd) ${path.install.link}
 fi
@@ -183,12 +183,12 @@ else
 	echo -e "${ORA}Der Wildfly-Server befindet sich bereits in /opt.${WHI}"
 fi
 
-# create link to wildfly folder in ${path.install.home}
+# create link to wildfly folder in ${path.home}
 if [[ ! -f ${path.wildfly.link} ]]; then
-	echo -e "${YEL}Ein Link zum Wildfly-Server wird in ${path.install.home} abgelegt.${WHI}"
+	echo -e "${YEL}Ein Link zum Wildfly-Server wird in ${path.home} abgelegt.${WHI}"
 	ln -s /opt/wildfly ${path.wildfly.link}
 else
-	echo -e "${YEL}Ein Link für den Wildfly-Server ist bereits in ${path.install.home} vorhanden.${WHI}"
+	echo -e "${YEL}Ein Link für den Wildfly-Server ist bereits in ${path.home} vorhanden.${WHI}"
 fi
 
 # set wildfly to run as a service

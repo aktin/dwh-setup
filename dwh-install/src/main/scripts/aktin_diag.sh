@@ -2,9 +2,7 @@
 
 # script to diagnose errors in i2b2 and aktin installation
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
-# september 2020
-
-set -euo pipefail # stop on errors
+set -euo pipefail 
 
 readonly WILDFLY_HOME=${path.wildfly.link}
 
