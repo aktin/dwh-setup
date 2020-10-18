@@ -3,7 +3,7 @@
 # script to remove i2b2 with aktin-addon from ubuntu 20.04
 # installed packages are not removed, only the components 'webclient','wildfly' and 'databases' are removed with their configuration
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
-# september 2020
+set -euo pipefail
 
 readonly INSTALL_ROOT=${path.install.link}
 readonly SQL_FILES=$INSTALL_ROOT/sql

@@ -2,7 +2,7 @@
 
 # script to install aktin-update on ubuntu 20.04
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
-set -euo pipefail # stop on errors
+set -euo pipefail
 
 readonly AKTIN_VERSION=${dwhJ2EEVersion}
 
@@ -19,6 +19,8 @@ readonly ORA=${color.orange}
 readonly YEL=${color.yellow}
 readonly GRE=${color.green}
 
+# create a logfile for this update
+readonly LOGFILE=${path.log.folder}/aktin_update_$(date +%Y_%h_%d_%H:%M).log
 
 # stop wildfly server safely
 cd $INSTALL_ROOT
