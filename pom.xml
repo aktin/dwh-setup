@@ -34,9 +34,10 @@
 		<version.r>3.6.3-2</version.r>
 
 		<!-- pathing to use in scripts -->
-		<path.install.destination>/opt</path.install.destination>
-		<path.install.link>${path.install.destination}/link_installer</path.install.link>
-		<path.log.folder>${path.install.destination}/aktin_log</path.log.folder>
+		<path.install.home>/home</path.install.home>
+		<path.log.folder>${path.install.home}/aktin_log</path.log.folder>
+		<path.install.link>${path.install.home}/link_installer</path.install.link>
+		<path.wildfly.link>${path.install.home}/link_wildfly</path.wildfly.link>
 
 		<!-- urls for packages -->
 		<url.i2b2.webclient>https://github.com/i2b2/i2b2-webclient/archive/v${version.i2b2}.0002.zip</url.i2b2.webclient>
@@ -44,14 +45,12 @@
 		<url.jdbc.driver>https://jdbc.postgresql.org/download/postgresql-${version.jdbc.driver}.jar</url.jdbc.driver>
 		<url.i2b2.war>https://www.aktin.org/software/repo/org/i2b2/${version.i2b2}/i2b2.war</url.i2b2.war>
 
-
 		<!-- colors for bash scripting -->
 		<color.white>'\033[0m'</color.white>
 		<color.red>'\e[1;31m'</color.red>
 		<color.orange>'\e[0;33m'</color.orange>
 		<color.yellow>'\e[1;33m'</color.yellow>
 		<color.green>'\e[0;32m'</color.green>
-
 
 		<!-- encoding stuff -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

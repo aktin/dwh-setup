@@ -6,7 +6,6 @@
 # september 2020
 
 readonly INSTALL_ROOT=${path.install.link}
-readonly INSTALL_DEST=${install.destination}
 readonly SQL_FILES=$INSTALL_ROOT/sql
 
 # colors for console output
@@ -55,9 +54,9 @@ echo
 # - creation of aktin datasource
 # - setting of smtp configuration
 # - deployment of aktin.ear and given permussion to user wildfly
-if [[ -d $INSTALL_DEST/wildfly ]]; then
+if [[ -d /opt/wildfly ]]; then
 	echo -e "${YEL}Der Wildfly-Server wird entfernt.${WHI}"
-	rm -r $INSTALL_DEST/wildfly
+	rm -r /opt/wildfly
 else 
 	echo -e "${ORA}Der Wildfly-Server wurde bereits entfernt.${WHI}"
 fi
