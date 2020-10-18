@@ -22,6 +22,17 @@ readonly GRE=${color.green}
 # create a logfile for this update
 readonly LOGFILE=${path.log.folder}/aktin_update_$(date +%Y_%h_%d_%H:%M).log
 
+# if running, stop apache2, postgresql and wildfly service
+if  [[ ! $(service apache2 status | grep "not" | wc -l) == 1 ]]; then
+	service apache2 stop
+fi
+if  [[ $(service postgresql status | grep "online" | wc -l) == 1 ]]; then
+	service postgresql stop
+fi
+if  [[ ! $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
+	service wildfly stop
+fi
+
 
 # stop wildfly server safely
 cd $INSTALL_ROOT
@@ -43,3 +54,8 @@ if [[ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear ]]; 
 else
 	echo -e "${ORA}dwh-j2ee-$AKTIN_VERSION.ear ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi
+
+# start all services
+service apache2 start
+service postgresl start
+service wildfly start
