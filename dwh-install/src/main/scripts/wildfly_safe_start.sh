@@ -3,8 +3,7 @@
 # script to safely start wildfly
 set -euo pipefail # stop on errors
 
-readonly INSTALL_DEST=${path.install.destination}
-readonly WILDFLY_DEPLOYMENTS=$INSTALL_DEST/wildfly/standalone/deployments
+readonly WILDFLY_DEPLOYMENTS=${path.wildfly.link}/standalone/deployments
 
 
 # start wildfly if not running

@@ -7,11 +7,10 @@ set -euo pipefail # stop on errors
 readonly AKTIN_VERSION=${dwhJ2EEVersion}
 
 readonly INSTALL_ROOT=${path.install.link}
-readonly INSTALL_DEST=${path.install.destination}
 readonly UPDATE_ROOT=$(pwd)
 readonly UPDATE_PACKAGES=$UPDATE_ROOT/packages
 
-readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
+readonly WILDFLY_HOME=${path.wildfly.link}
 
 # colors for console output
 readonly WHI=${color.white}

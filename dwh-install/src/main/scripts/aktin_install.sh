@@ -12,16 +12,15 @@ readonly JDBC_VERSION=${version.jdbc.driver}
 readonly I2B2_VERSION=${version.i2b2}
 readonly PHP_VERSION=${version.php}
 readonly PYTHON_VERSION=${version.python}
-readonly R_VERSION=${version.r} # TODO only for info, R version relies on keyserver
+readonly R_VERSION=${version.r}
 
 readonly INSTALL_ROOT=$(pwd) # current directory with installation files
 readonly INSTALL_PACKAGES=$INSTALL_ROOT/packages
-readonly INSTALL_DEST=${path.install.destination}
 readonly SQL_FILES=$INSTALL_ROOT/sql
 readonly SCRIPT_FILES=$INSTALL_ROOT/scripts
 readonly XML_FILES=$INSTALL_ROOT/xml
 
-readonly WILDFLY_HOME=$INSTALL_DEST/wildfly
+readonly WILDFLY_HOME=${path.wildfly.link}
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 readonly JAVA_HOME=/usr/lib/jvm/java-$JAVA_VERSION-openjdk-amd64
 
@@ -44,10 +43,11 @@ if [[ ! -d ${path.log.folder} ]]; then
     mkdir ${path.log.folder}
 fi
 
-# create link to this folder in /opt/ for other files
+# create link to this folder in ${path.install.home} for other files
 if [[ ! -f ${path.install.link} ]]; then
 	ln -s $(pwd) ${path.install.link}
 fi
+
 
 
 
@@ -173,13 +173,21 @@ echo -e "${YEL}+++++ STEP IV +++++ Installation von WildFly${WHI}"
 echo
 
 # download wildfly server into install destination and rename server to wildfly
-if [[ ! -d $INSTALL_DEST/wildfly ]]; then
-	echo -e "${YEL}Der Wildfly-Server wird heruntergeladen und nach $INSTALL_DEST entpackt.${WHI}"
+if [[ ! -d /opt/wildfly ]]; then
+	echo -e "${YEL}Der Wildfly-Server wird heruntergeladen und nach /opt entpackt.${WHI}"
 	wget $URL_WILDFLY -P /tmp
-	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d $INSTALL_DEST
-	mv $INSTALL_DEST/wildfly-$WILDFLY_VERSION $INSTALL_DEST/wildfly
+	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d /opt
+	mv /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
 else
-	echo -e "${ORA}Der Wildfly-Server befindet sich bereits in $INSTALL_DEST.${WHI}"
+	echo -e "${ORA}Der Wildfly-Server befindet sich bereits in /opt.${WHI}"
+fi
+
+# create link to wildfly folder in ${path.install.home}
+if [[ ! -f ${path.wildfly.link} ]]; then
+	echo -e "${YEL}Ein Link zum Wildfly-Server wird in ${path.install.home} abgelegt.${WHI}"
+	ln -s /opt/wildfly ${path.wildfly.link}
+else
+	echo -e "${YEL}Ein Link für den Wildfly-Server ist bereits in ${path.install.home} vorhanden.${WHI}"
 fi
 
 # set wildfly to run as a service
