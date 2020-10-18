@@ -44,7 +44,7 @@ if [[ ! -d ${path.log.folder} ]]; then
     mkdir ${path.log.folder}
 fi
 
-# create link to this folder in ${path.home} for other files
+# create link to this folder in ${path.home} for future updates
 if [[ ! -f ${path.install.link} ]]; then
 	ln -s $(pwd) ${path.install.link}
 fi
@@ -85,7 +85,7 @@ python$PYTHON_VERSION python3-pandas python3-numpy python3-requests python3-sqla
 step_II(){
 set -euo pipefail # stop installation on errors
 echo
-echo -e "${YEL}+++++ STEP II +++++ Installation der i2b2-Datenbank${WHI}"
+echo -e "${YEL}+++++ STEP II +++++ Installation der i2b2- und AKTIN-Datenbank${WHI}"
 echo
 
 service postgresql start
@@ -101,6 +101,21 @@ if  [[ $(sudo -u postgres psql -l | grep "i2b2" | wc -l) == 0 ]]; then
 	sudo -u postgres psql -d i2b2 -f $SQL_FILES/i2b2_db.sql
 else
 	echo -e "${ORA}Die Installation der i2b2-Datenbank wurde bereits durchgeführt.${WHI}"
+fi
+
+# count databases with name aktin
+if  [[ $(sudo -u postgres psql -l | grep "aktin" | wc -l) == 0 ]]; then
+	
+	# add aktin data to i2b2 database
+	echo -e "${YEL}AKTIN-Daten werden der Datenbank i2b2 hinzugefügt.${WHI}"
+	sudo -u postgres psql -d i2b2 -v ON_ERROR_STOP=1 -f $SQL_FILES/addon_i2b2metadata.i2b2.sql
+	sudo -u postgres psql -d i2b2 -v ON_ERROR_STOP=1 -f $SQL_FILES/addon_i2b2crcdata.concept_dimension.sql
+
+	# create database aktin and respective user
+	echo -e "${YEL}Eine Datenbank mit Namen aktin und entsprechendem User wird erstellt.${WHI}"
+	sudo -u postgres psql -v ON_ERROR_STOP=1 -f $SQL_FILES/aktin_postgres_init.sql
+else
+	echo -e "${ORA}Die Integration der AKTIN-Datenbank wurde bereits durchgeführt.${WHI}"
 fi
 service postgresql stop
 }
@@ -170,7 +185,7 @@ fi
 step_IV(){
 set -euo pipefail # stop installation on errors
 echo
-echo -e "${YEL}+++++ STEP IV +++++ Installation von WildFly${WHI}"
+echo -e "${YEL}+++++ STEP IV +++++ Installation des WildFly-Servers${WHI}"
 echo
 
 # download wildfly server into install destination and rename server to wildfly
@@ -264,33 +279,6 @@ do
 		echo -e "${ORA}$i-ds.xml ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 	fi
 done
-}
-
-
-
-
-step_V(){
-set -euo pipefail # stop installation on errors
-echo
-echo -e "${YEL}+++++ STEP V +++++ Installation der AKTIN Datenbank${WHI}"
-echo
-
-service postgresql start
-# count databases with name aktin
-if  [[ $(sudo -u postgres psql -l | grep "aktin" | wc -l) == 0 ]]; then
-	
-	# add aktin data to i2b2 database
-	echo -e "${YEL}AKTIN-Daten werden der Datenbank i2b2 hinzugefügt.${WHI}"
-	sudo -u postgres psql -d i2b2 -v ON_ERROR_STOP=1 -f $SQL_FILES/addon_i2b2metadata.i2b2.sql
-	sudo -u postgres psql -d i2b2 -v ON_ERROR_STOP=1 -f $SQL_FILES/addon_i2b2crcdata.concept_dimension.sql
-
-	# create database aktin and respective user
-	echo -e "${YEL}Eine Datenbank mit Namen aktin und entsprechendem User wird erstellt.${WHI}"
-	sudo -u postgres psql -v ON_ERROR_STOP=1 -f $SQL_FILES/aktin_postgres_init.sql
-else
-	echo -e "${ORA}Die Integration der AKTIN-Datenbank wurde bereits durchgeführt.${WHI}"
-fi
-service postgresql stop
 
 # start wildfly server safely (JBOSS cli needs running server)
 ./wildfly_safe_start.sh
@@ -359,7 +347,7 @@ fi
 
 
 
-step_VI(){
+step_V(){
 set -euo pipefail # stop installation on errors
 echo
 echo -e "${YEL}+++++ STEP V +++++ Ausführung des AKTIN-Update${WHI}"
@@ -402,7 +390,6 @@ step_II | tee -a $LOGFILE
 step_III | tee -a $LOGFILE
 step_IV | tee -a $LOGFILE
 step_V | tee -a $LOGFILE
-step_VI | tee -a $LOGFILE
 end_message | tee -a $LOGFILE
 }
 
