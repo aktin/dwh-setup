@@ -1,10 +1,12 @@
 Installationsskript: Automatische Konfiguration des AKTIN-Applikations-Server mit dem Installationsskript
 ===============================================
 Unser Installationsskript wurde getestet Ubuntu 18.04 LTS und Ubuntu 20.04 LTS. Wenn Sie ein anderes System verwenden, müssen Sie die Skripte anpassen oder die enthaltenen Schritte manuell durchführen. Bei einer Neuinstallation beachten Sie bitte die Hinweise unter: [Server-Installation](install-requirements.html).
+
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
 
+
 Erste Schritte
-----------------------------------------------------------------
+---------------------
 Falls eine bestehende Betriebsversion verwendet wird, beachten Sie bitte, ob Java installiert ist. Mittels des AKTIN-Installationsskriptes wird Java Version ${version.java} von OpenJDK installiert. Sind bereits niedrigere Versionen von Java vorhanden, kann dies zu Problemen bei der Installation und im Betrieb führen.
 
 Mit dem Befehl
@@ -28,7 +30,7 @@ Die Dateien werden anschließend automatisch in einen Ordner namens `aktin-dwh-i
 
 
 Konfiguration und lokale Einstellungen
-----------------------------------------------------------------
+---------------------
 Vor Start der Installation ist es notwendig, `aktin.properties` und `email.config` an die Anforderungen Ihres Systems zu konfigurieren. Beide Dateien befinden sich im Installationsordner.
 
 **aktin.properties**
@@ -36,7 +38,6 @@ Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt
 ```
 nano {VERZEICHNIS}/aktin.properties
 ```
-
 Wichtig ist hierbei das Feld `local.email`, in das die E-Mail-Adresse eingetragen wird. An diese eingetragene Adresse werden später Berichte und Meldungen geschickt. Es ist auch möglich, eine Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme). In diesem Fall müssen die Einträge komma-separiert ohne Leerzeichen erfolgen.
 
 Auch sollten Sie unter dem Feld `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde. Sollten Sie noch keinen Key bekommen haben, melden Sie sich bitte bei [it-support@aktin.org](mailto:it-support@aktin.org).
@@ -130,7 +131,6 @@ Für das Anpassen der Datei `email.config` muss folgender Befehl ausgeführt wer
 ```
 nano {VERZEICHNIS}/email.config
 ```
-
 In dieser Datei wird die E-Mail-Konfigurationen für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation. Hierbei muss besonders auf die Einstellungen des Mailservers geachtet werden, wobei die Felder `usessl`, `usetls` und `smtpport` richtig gesetzt werden müssen. 
 
 Die jeweiligen Felder von `email.config` sind in folgender Template-Datei zu sehen:
@@ -163,16 +163,26 @@ USETLS=true
 
 
 Installation der Basissoftware
-----------------------------------------------------------------
+---------------------
 Nachdem Sie alle Dateien an Ihre Anforderungen konfiguriert haben, starten Sie das Skript mit:
 ```
 ./{VERZEICHNIS}/aktin_install.sh
 ```
-Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Sämtliche Logausgaben finden Sie nach der Installation im Verzeichnis `${path.log.folder}`.
+Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Sämtliche Logausgaben finden Sie nach der Installation im Verzeichnis `${path.log.folder}`. Folgende Pakete werden dabei installiert und konfiguriert:
+
+| Software | Version | Paket(e) |
+|---|---|---|
+| Wildfly | ${version.wildfly} | - |
+| Postgres Datenbank Server | ${version.postgresql} | postgresql-${version.postgresql} |
+| Apache2 | ${version.apache2} | apache2 |
+| Java Runtime Environment | ${version.java} | openjdk-${version.java}-jre-headless |
+| PHP | ${version.php} | php${version.php}<br>php${version.php}-common<br>libapache2-mod-php${version.php}<br>php${version.php}-curl |
+| R | ${version.r} | r-base-core=${version.r}<br>r-cran-xml<br>r-cran-lattice)
+| OPTIONAL: Python | ${version.python} | python${version.python}<br>python3-pandas<br>python3-numpy<br>python3-requests<br>python3-sqlalchemy<br>python3-psycopg2<br>python3-postgresql<br>python3-zipp<br>python3-plotly<br>python3-unicodecsv |
 
 
 Einstellungen in der i2b2-Adminoberfläche
-----------------------------------------------------------------
+---------------------
 Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der kein i2b2-Admin ist (d.h. keinen Zugriff auf die i2b2-Adminoberfläche unter `http://{IHRSERVER}/admin` hat), sind noch die folgenden zwei Schritte für einen erfolgreichen Login in den Data-Warehouse-Manager notwendig:
 1. Die Zuordnung des Nutzers zum AKTIN-Projekt 
 2. Die Zuweisung einer AKTIN-Rolle an den Benutzer
@@ -181,7 +191,7 @@ Das genaue Vorgehen hierfür können Sie in den letzten beiden Abschnitten (“B
 
 
 Test der Betriebsfähigkeit
-----------------------------------------------------------------
+---------------------
 Nach der Installation der AKTIN-Software ist es anzuraten, dessen Betriebsfähigkeit zu testen. Im folgenden Bereich können Sie Methoden und Funktionalitäten für die Verifikation der Betriebsfähigkeit entnehmen.
 
 **Data Warehouse**
@@ -208,7 +218,7 @@ Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsm
 
 
 AKTIN-Diagnose-Skript
-----------------------------------------------------------------
+---------------------
 Sollten bei der Installation Probleme aufgetreten sein, führen Sie bitte das AKTIN-Diagnose-Skript aus:
 ```
 ./{VERZEICHNIS}/scripts/aktin_diag.sh
@@ -219,6 +229,5 @@ Senden Sie diese Datei bitte mit einer Support-Anfrage an [it-support@aktin.org]
 
 
 Weitere Anmerkungen
-----------------------------------------------------------------
+---------------------
 * Die AKTIN-Komponente des Applikations-Server hat eine hohe Abhängigkeit zum Postgres Datenbank-Server. Der Wildfly-Server mit der AKTIN-Komponente sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart des Postgres Datenbank-Servers auch der Wildfly-Server neugestartet werden.
-
