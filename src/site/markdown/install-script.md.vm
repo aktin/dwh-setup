@@ -5,7 +5,7 @@ Unser Installationsskript wurde getestet Ubuntu 18.04 LTS und Ubuntu 20.04 LTS. 
 
 Erste Schritte
 ----------------------------------------------------------------
-Falls eine bestehende Betriebsversion verwendet wird, beachten Sie bitte, ob Java installiert ist. Mittels des AKTIN-Installationsskriptes wird Java Version 11 von OpenJDK installiert. Sind bereits niedrigere Versionen von Java vorhanden, kann dies zu Problemen bei der Installation und im Betrieb führen.
+Falls eine bestehende Betriebsversion verwendet wird, beachten Sie bitte, ob Java installiert ist. Mittels des AKTIN-Installationsskriptes wird Java Version ${version.java} von OpenJDK installiert. Sind bereits niedrigere Versionen von Java vorhanden, kann dies zu Problemen bei der Installation und im Betrieb führen.
 
 Mit dem Befehl
 ```
@@ -18,18 +18,18 @@ Linux 013f83fb24f0 4.19.76-linuxkit #1 SMP Tue May 26 11:42:35 UTC 2020 x86_64 x
 
 Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server. Wechseln Sie zunächst zum Benutzer `root` (z.B. via `su -`). Anschließend können Sie unser Paket unter folgendem Link herunterladen:
 ```
-# TODO LINK EINFÜGEN
+${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
 ```
 (evtl. mit Option `--no-check-certificate` bei Zertifikatfehlern). Wenn das Paket heruntergeladen ist, kann es entpackt werden mit
 ```
-# TODO tar xvzf aktin_installer.tar.gz
+tar xvzf dwh-install-${project.version}.tar.gz
 ```
-Die Dateien werden anschließend automatisch in einen Ordner namens `aktin_installer` entpackt.
+Die Dateien werden anschließend automatisch in einen Ordner namens `aktin-dwh-installer` entpackt.
 
 
 Konfiguration und lokale Einstellungen
 ----------------------------------------------------------------
-Vor Start der Installation ist es notwendig, `aktin.properties` und `email.config` an Ihre Anforderungen zu konfigurieren. Beide Dateien befinden sich im Installationsordner.
+Vor Start der Installation ist es notwendig, `aktin.properties` und `email.config` an die Anforderungen Ihres Systems zu konfigurieren. Beide Dateien befinden sich im Installationsordner.
 
 **aktin.properties**
 Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
@@ -119,7 +119,7 @@ Für jede dieser Nummern gibt es i.d.R. eine feste Root-Nummer, die unter den Fe
 
 Um herauszufinden, welche dieser Nummern über die AKTIN-Schnittstelle in das Data-Warehouse übertragen werden und somit in den Einstellungen angegeben werden können, benötigen Sie Zugriff auf ein CDA-Dokument. Dieses wird als Datenstruktur zur Übertragung der Daten aus dem Notaufnahme-System in das klinikinterne Data-Warehouse verwendet. Ein gekürztes CDA-Beispieldokument sieht wie folgt aus:
 
-![img1](https://git.rwth-aachen.de/aktin/dwh-setup/-/raw/master/src/site/resources/properties/cda-ids.png)
+![img1](properties/cda-ids.png)
 
 Hier befinden sich die jeweiligen Root- und Extension-Nummern der Referenzen. Bei der ersten ID unter `encompassingEncounter` ist die Episodennummer zu finden. Die zweite ID steht für die Fallnummer. Die Patientennummer ist unter `patientRole.id` zu finden. Prüfen Sie, welche dieser Nummern dem Notaufnahme-Personal bekannt ist, d.h. welche der Nummern mit der im Krankenhausinformationssystem übereinstimmt. Tragen Sie von dieser Nummer die im CDA-stehende Root-Nummer in die Datei `aktin.properties` ein und geben die entsprechende Referenz (`Patient`, `Encounter` oder `Billing`) an.
 
@@ -168,14 +168,14 @@ Nachdem Sie alle Dateien an Ihre Anforderungen konfiguriert haben, starten Sie d
 ```
 ./{VERZEICHNIS}/aktin_install.sh
 ```
-Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, um entsprechende Pakete und Komponente herunterzuladen. Sämtliche Logausgaben finden Sie nach der Installation im Verzeichnis `/opt/aktin_log`.
+Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Sämtliche Logausgaben finden Sie nach der Installation im Verzeichnis `${path.log.folder}`.
 
 
 Einstellungen in der i2b2-Adminoberfläche
 ----------------------------------------------------------------
 Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der kein i2b2-Admin ist (d.h. keinen Zugriff auf die i2b2-Adminoberfläche unter `http://{IHRSERVER}/admin` hat), sind noch die folgenden zwei Schritte für einen erfolgreichen Login in den Data-Warehouse-Manager notwendig:
-1. Zuordnung des Nutzers zum AKTIN-Projekt 
-2. Zuweisung einer AKTIN-Rolle an den Benutzer
+1. Die Zuordnung des Nutzers zum AKTIN-Projekt 
+2. Die Zuweisung einer AKTIN-Rolle an den Benutzer
 
 Das genaue Vorgehen hierfür können Sie in den letzten beiden Abschnitten (“Benutzer einem Projekt hinzufügen” und “AKTIN-Rolle zuweisen”) der [i2b2-Benutzeranleitung](https://www.na-register.de/de-de/support/anwender.html) nachlesen.
 
@@ -196,15 +196,15 @@ java-client-fhir.bat http://IHRSERVER/aktin/cda/fhir/Binary examples\basismodul-
 **Verbindung und E-Mail-Konfiguration**
 Unter dem Link `http://{IHRSERVER}/aktin/admin/plain/test.html` lassen sich die durchgeführten Anpassungen bezüglich Broker und E-Mail sowie Reporterstellung testen.
 
-![img2](https://git.rwth-aachen.de/aktin/dwh-setup/-/raw/master/src/site/resources/update_7_test/Screenshot_1.png)
+![img2](update_7_test/Screenshot_1.png)
 
 Der erste Button testet die Erreichbarkeit des zentralen AKTIN-Broker. Der lokale Server übersendet dem zentralen Broker nur Statusinformationen, wie die Serverversion und Aktivität. Der zweite Button testet die eingerichtete E-Mail-Adresse. Nach Bestätigung des Buttons wird eine E-Mail an die in `aktin.properties` angegebene Ziel-Adresse gesendet. Der dritte Button testet die R-Bibliotheken. Diese werden zur Erzeugung der Berichte verwendet.
 
-![img3](https://git.rwth-aachen.de/aktin/dwh-setup/-/raw/master/src/site/resources/update_7_test/Screenshot_5.png)
+![img3](update_7_test/Screenshot_5.png)
 
 Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung anzeigen, könnte dies ein Hinweis auf fehlerhafte E-Mail-Einstellung sein. In dem Fall muss die E-Mail-Konfiguration geändert (Abschnitt “E-Mail-Konfiguration und Änderungen”) und die Softwarepakete erneut geladen werden.
 
-![img4](https://git.rwth-aachen.de/aktin/dwh-setup/-/raw/master/src/site/resources/update_7_test/Screenshot_6.png)
+![img4](update_7_test/Screenshot_6.png)
 
 
 AKTIN-Diagnose-Skript
@@ -220,5 +220,5 @@ Senden Sie diese Datei bitte mit einer Support-Anfrage an [it-support@aktin.org]
 
 Weitere Anmerkungen
 ----------------------------------------------------------------
-* Die AKTIN-Komponente des Applikations-Server hat eine hohe Abhängigkeit zum Postgres Datenbank-Server. Der Wildfly-Server mit der AKTIN-Komponente sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart des Postgres Datenbank-Servers der Wildfly-Server neugestartet werden.
+* Die AKTIN-Komponente des Applikations-Server hat eine hohe Abhängigkeit zum Postgres Datenbank-Server. Der Wildfly-Server mit der AKTIN-Komponente sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart des Postgres Datenbank-Servers auch der Wildfly-Server neugestartet werden.
 
