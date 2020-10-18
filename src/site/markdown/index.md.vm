@@ -1,41 +1,39 @@
 Installation und Update des AKTIN-Applikationsserver
 ===============================================
-Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Data Warehouse läuft.Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte. Nach dem erfolgreichen Update oder Installation können Sie auf der Seite `http://IHRSERVER/aktin/admin/plain/test.html` die Funktionalität testen.
+Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Data Warehouse läuft. Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte. Nach dem erfolgreichen Update oder Installation können Sie auf der Seite `http://IHRSERVER/aktin/admin/plain/test.html` die Funktionalität testen.
 
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
+
 
 Komplette Neuinstallation
 ---------------------
 Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionierende Installation eines auf Linux basierenden Server-Betriebsystems. Es wird empfohlen, das von uns geteste Ubuntu 20.04 LTS einzusetzen. Bitte beachten Sie auch die [Server-Installation](install-requirements.html). Dort werden die verschiedenen Schritte für eine Neu-Installation beschrieben.
 
+
 Neuinstallation des AKTIN-Applikationsservers
 ---------------------
-Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu installiert, so müssen sie die Installation des AKTIN-Applikationsservers vornehmen. Eine Anleitung für die Verwendung des automatischen Installationsskriptes finden Sie auf der Seite [Installationsskript](install-script.html).
+Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu installiert, so müssen sie die Installation des AKTIN-Applikationsservers vornehmen. Eine Anleitung für die Verwendung des automatischen Installationsskriptes finden Sie auf der Seite [Installationsskript](install-script.html). Sie erhalten mit einer Neuinstallation automatisch den aktuellesten Stand von Version ${project.version}. Somit ist im Anschluss kein Update oder Patch mehr notwendig.
 
-Sie erhalten mit einer Neuinstallation automatisch den aktuellesten Stand von Version ${project.version}. Somit ist im Anschluss kein Update oder Patch mehr notwendig.
 
 Automatisches Update für Ubuntu
 ---------------------
-Falls Sie einen Ubuntu-Server nutzen, der anhand der Anleitung eingerichtet wurde, sollten die Update-Scripte bei Ihnen funktionieren. 
+Falls Sie einen Ubuntu-Server nutzen, der anhand der Anleitung eingerichtet wurde, sollten die Update-Scripte bei Ihnen funktionieren. Für einen Update auf ${project.version} folgen Sie der Anleitung zum [skriptbasierten Update](update-auto.html). Diese Skript kann nach manueller Anpassung auch bei RedHat-Servern benutzt werden.
 
-Für einen Update auf ${project.version} folgen Sie der Anleitung zum [skriptbasierten Update](update-auto.html). Diese Skript kann nach manueller Anpassung auch bei RedHat-Servern benutzt werden.
 
 Manuelles Update für Ubuntu oder andere Betriebssysteme
 ---------------------
 Bei individuell konfigurierten Servern oder anderen Linux-Distributionen führen Sie die einzelnen Schritte des Skriptes manuell durch und passen gegebenenfalls die Pfade oder andere Besonderheiten entsprechend an. Bitte folgen Sie dabei der Anleitung zum [manuellen Update](update-manual.html)
 
+
 Software-Pakete
 ---------------------
 **Installationspaket mit DWH-J2EE-${dwhJ2EEVersion}** (Installation und Update)
-
 [${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz)
 
 **Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}** (nur Update)
-
 [${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
+
 
 AKTIN-Software-Support
 ---------------------
-Sollten Probleme bei der Installation, dem Update oder dem Betrieb der AKTIN-Software auftreten, so führen Sie bitte das AKTIN-Diagnose-Skript aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html) im bereich "AKTIN Diagnose-Skript".
-
-Senden Sie die dabei erzeugte Datei bitte mit einer Support-Anfrage an den AKTIN-Support unter [it-support@aktin.org](mailto:it-support@aktin.org). Die durch das Skript erzeugten Logs helfen uns bei der Identifizierung des Problems. Bei weiteren Infos und Fragen stehen wir Ihnen gerne unter der genannte E-Mail-Adresse zur Verfügung.
+Sollten Probleme bei der Installation, dem Update oder dem Betrieb der AKTIN-Software auftreten, so führen Sie bitte das AKTIN-Diagnose-Skript aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html) im bereich "AKTIN Diagnose-Skript". Senden Sie die dabei erzeugte Datei bitte mit einer Support-Anfrage an den AKTIN-Support unter [it-support@aktin.org](mailto:it-support@aktin.org). Die durch das Skript erzeugten Logs helfen uns bei der Identifizierung des Problems. Bei weiteren Infos und Fragen stehen wir Ihnen gerne unter der genannte E-Mail-Adresse zur Verfügung.

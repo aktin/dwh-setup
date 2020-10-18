@@ -1,9 +1,11 @@
 Manuelle Installation des Betriebssystems für den AKTIN-Applikationsserver
-================================================================
+===============================================
 Grundsätzlich ist die Software auf allen Linux-Systemen verwendbar. Für eine manuelle Installation anderer Linux-Distributionen empfehlen wir eine Anpassung der gelieferten Skripte. Sollten Sie Fragen dazu haben, wenden Sie sich gerne an uns unter [it-support@aktin.org](mailto:it-support@aktin.org).
 
 Für Ubuntu 20.04 LTS werden Skripte für eine automatische Installation und Konfiguration bereitgestellt. Es wird an dieser Stelle explizit darauf verwiesen, dass das Installationsskript aktuell nur mit Ubuntu 20.04 LTS und Ubuntu 18.04 LTS getestet wurde. Für eine Neuinstallation wird [Ubuntu Server 20.04 LTS](https://ubuntu.com/download/server) empfohlen. Dabei handelt es sich um eine minimalistische Ubuntu-Version optimiert für das Betreiben von Servern.
+
 <!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
+
 
 Nachfolgende Hinweise zur Installation
 ---------------------
@@ -31,16 +33,3 @@ Im Dialogfeld für die Softwareauswahl ist darauf zu achten, dass NUR “SSH ser
 
 - **Bootloader**<br>
 Nach Abschluss des Installationsassistenten muss der Boot-Loader auf die Festplatte geschrieben werden. Dies müssen Sie explizit bestätigen. Anschließend startet das System neu. Die Installation ist somit abgeschlossen und AKTIN kann im nächsten Schritt von dem [AKTIN-Installationsskript](install-script.html) installiert werden.
-
-Benötigte Pakete
----------------------
-Sollten Sie nicht das [AKTIN-Installationsskript](install-script.html) nutzen, so werden folgende Softwarepakete benötigt. Wir empfehlen, die Software möglichst aus den gewarteten Repositories der entsprechenden Linux-Distribution zu verwenden. So können einfach und zuverlässig (Sicherheits-)Updates eingespielt werden.
-
-| Paketname | Version | Paket(e) |
-|---|---|---|
-| Java Runtime Environment | ${version.java} | openjdk-${version.java}-jre-headless |
-| Postgres Datenbank Server | ${version.postgresql} | postgresql-${version.postgresql} |
-| Apache2 | ${version.apache2} | apache2 |
-| PHP | ${version.php} | php${version.php}<br>php${version.php}-common<br>libapache2-mod-php${version.php}<br>php${version.php}-curl |
-| R | ${version.r} | r-base-core=${version.r}<br>r-cran-xml<br>r-cran-lattice)
-| OPTIONAL: Python | ${version.python} | python${version.python}<br>python3-pandas<br>python3-numpy<br>python3-requests<br>python3-sqlalchemy<br>python3-psycopg2<br>python3-postgresql<br>python3-zipp<br>python3-plotly<br>python3-unicodecsv |
