@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # script to install i2b2 with aktin-addon on ubuntu 20.04
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
@@ -67,10 +67,6 @@ apt-get update && apt-get install -y software-properties-common
 add-apt-repository -y ppa:ondrej/php
 add-apt-repository -y ppa:deadsnakes/ppa
 
-# keyserver for R
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | apt-key add -
-
 # install packages
 apt-get update && apt-get install -y \
 curl sudo wget nano unzip libpq-dev \
@@ -78,7 +74,7 @@ openjdk-$JAVA_VERSION-jre-headless \
 postgresql-$PG_VERSION \
 apache2 \
 php$PHP_VERSION php$PHP_VERSION-common libapache2-mod-php$PHP_VERSION php$PHP_VERSION-curl \
-r-base r-cran-xml r-cran-lattice \
+r-base-core=$R_VERSION r-cran-lattice r-cran-xml
 python$PYTHON_VERSION python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv
 }
 
@@ -156,14 +152,14 @@ fi
 # reverse proxy configuration (from wildfly 9090 to apache 80)
 local CONF=/etc/apache2/conf-available/aktin-j2ee-reverse-proxy.conf
 if [[ ! -f $CONF ]]; then
-	echo -e "${YEL}Proxy für apache2 wird konfiguriert.${WHI}"
+	echo -e "${YEL}Die Proxy für apache2 wird konfiguriert.${WHI}"
 	echo "ProxyPreserveHost On" > $CONF
 	echo "ProxyPass /aktin http://localhost:9090/aktin" >> $CONF
 	echo "ProxyPassReverse /aktin http://localhost:9090/aktin" >> $CONF
 	a2enmod proxy_http
 	a2enconf aktin-j2ee-reverse-proxy
 else
-	echo -e "${ORA}Proxy für apache2 wurde bereits konfiguriert.${WHI}"
+	echo -e "${ORA}Die Proxy für apache2 wurde bereits konfiguriert.${WHI}"
 fi
 }
 
@@ -178,7 +174,7 @@ echo
 
 # download wildfly server into install destination and rename server to wildfly
 if [[ ! -d $INSTALL_DEST/wildfly ]]; then
-	echo -e "${YEL}Wildfly-Server wird heruntergeladen und nach $INSTALL_DEST entpackt.${WHI}"
+	echo -e "${YEL}Der Wildfly-Server wird heruntergeladen und nach $INSTALL_DEST entpackt.${WHI}"
 	wget $URL_WILDFLY -P /tmp
 	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d $INSTALL_DEST
 	mv $INSTALL_DEST/wildfly-$WILDFLY_VERSION $INSTALL_DEST/wildfly
@@ -200,7 +196,7 @@ fi
 
 # create user for wildfly server and give permissions to wildfly folder
 if [[ -z $(grep "wildfly" /etc/passwd) ]]; then
-	echo -e "${YEL}User wildfly für den Wildfly-Server wird erstellt.${WHI}"
+	echo -e "${YEL}Der User wildfly für den Wildfly-Server wird erstellt.${WHI}"
 	adduser --system --group --disabled-login wildfly
 	chown -R wildfly:wildfly $WILDFLY_HOME
 else
@@ -300,10 +296,10 @@ fi
 
 # increase deployment timeout of wildfly server
 if [[ $(grep -c "deployment-timeout" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then
-	echo -e "${YEL}Das Zeitlimit des Deployments wird erhöht.${WHI}"
+	echo -e "${YEL}Das Zeitlimit für das Deployment wird erhöht.${WHI}"
 	$JBOSSCLI --file="$SCRIPT_FILES/wildfly_deployment_timeout.cli"
 else
-	echo -e "${ORA}Das Zeitlimit des Deployments wurde bereits aktualisiert.${WHI}"
+	echo -e "${ORA}Das Zeitlimit für das Deployment wurde bereits erhöht.${WHI}"
 fi
 
 # create aktin datasource
@@ -325,13 +321,20 @@ fi
 # stop wildfly server safely
 ./wildfly_safe_stop.sh
 
-# give wildfly user permission for aktin.properties and copy it into wildfly server
+# give wildfly user permission for aktin.properties
 if [[ ! $(stat -c '%U' $INSTALL_ROOT/aktin.properties) == "wildfly" ]]; then
-	echo -e "${YEL}Dem User wildfly werden Rechte für die Datei aktin.properties übergeben und die Datei wird nach $WILDFLY_HOME/standalone/configuration verschoben.${WHI}"
+	echo -e "${YEL}Dem User wildfly werden Rechte für die Datei aktin.properties übergeben.${WHI}"
 	chown wildfly:wildfly $INSTALL_ROOT/aktin.properties
+else
+	echo -e "${ORA}Der User wildfly besitzt bereits Rechte für die Datei aktin.properties.${WHI}"
+fi
+
+# copy aktin.properties into wildfly server
+if [[ ! -f $WILDFLY_HOME/standalone/configuration/aktin.properties ]]; then
+	echo -e "${YEL}Die Datei aktin.properties wird nach $WILDFLY_HOME/standalone/configuration kopiert.${WHI}"
 	cp $INSTALL_ROOT/aktin.properties $WILDFLY_HOME/standalone/configuration/
 else
-	echo -e "${ORA}Der User wildfly besitzt bereits Rechte für die Datei aktin.properties und die Datei wurde nach $WILDFLY_HOME/standalone/configuration verschoben.${WHI}"
+	echo -e "${ORA}Die Datei aktin.properties befindet sich bereits in $WILDFLY_HOME/standalone/configuration.{WHI}"
 fi
 
 # create /var/lib/aktin and give permissions to wildfly user
@@ -357,6 +360,7 @@ cd $INSTALL_PACKAGES
 tar xvzf dwh-update-*.tar.gz
 
 cd dwh-update
+chmod +x aktin_update.sh # ToDo: Fix this
 ./aktin_update.sh
 }
 
