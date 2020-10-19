@@ -389,7 +389,7 @@ step_I | tee -a $LOGFILE
 step_II | tee -a $LOGFILE
 step_III | tee -a $LOGFILE
 step_IV | tee -a $LOGFILE
-step_V | tee -a $LOGFILE
+step_V # update has its own logfile
 end_message | tee -a $LOGFILE
 }
 
