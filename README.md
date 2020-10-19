@@ -13,6 +13,7 @@ Installation
 Verteiltes Management
 ---------------------
 Einrichten z.B. mit Chef/puppet/..
+
 Geht das Management auch Offline?
 
 Netzwerkanbindung VPN
