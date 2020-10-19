@@ -203,7 +203,7 @@ if [[ ! -e ${path.wildfly.link} ]]; then
 	echo -e "${YEL}Ein Link zum Wildfly-Server wird in ${path.home} abgelegt.${WHI}"
 	ln -s /opt/wildfly ${path.wildfly.link}
 else
-	echo -e "${YEL}Ein Link für den Wildfly-Server ist bereits in ${path.home} vorhanden.${WHI}"
+	echo -e "${ORA}Ein Link für den Wildfly-Server ist bereits in ${path.home} vorhanden.${WHI}"
 fi
 
 # set wildfly to run as a service
@@ -215,7 +215,7 @@ if [[ ! -d /etc/default/wildfly ]]; then
 	echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly/wildfly-conf
 	echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly/wildfly-conf
 else
-	echo -e "${ORA}}Ein /etc/init.d-Service existiert bereits für den Wildfly-Server.${WHI}"
+	echo -e "${ORA}Ein /etc/init.d-Service existiert bereits für den Wildfly-Server.${WHI}"
 fi
 
 # create user for wildfly server and give permissions to wildfly folder
