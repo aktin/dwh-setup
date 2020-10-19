@@ -1,43 +1,11 @@
-Virtuelle Maschine fuer Data Warehouse
+Virtuelle Maschine für das Data Warehouse
 ======================================
 
 Erstellung der Packete
 ----------------------
-In dwh-install ein Maven clean install durchfhren:
-```
-mvn clean install
-```
-Dabei wird ein Datei mit dem Namen `dwh-install-0.1-SNAPSHOT-full.tar.gz` erstellt. Mittels `tar -zxvf` entpackt, erhlt man den vollstndigen `aktin-dwh-snapshot`, wobei alle bentigten Pakete bereits in `aktin-dwh-snapshot/packages/` enthalten sind. 
-Mit dem Befehl 
-```
-mvn install -P profile-name,second-profile-name
-```
-kann man einzelne oder mehrere Installierprofile aufrufen. Mit z.B. `mvn install -P aktin-installer,aktin-package-only` werden zwei Pakete erstellt. 
-Mit `mvn install -P aktin-testing` wird ein Ordner erstellt, womit man direkt ein Vagrant Testinstanz laden kann. 
+In dwh-install ein `mvn clean install` durchfüren. Dabei wird ein Datei mit dem Namen `dwh-install-{VERSION}.tar.gz` erstellt. Mittels `tar -zxvf` kann man das Verzeichnis entpacken. Es entsteht ein Ordner namens `aktin-dwh-installer` mit allen benötigten Paketen. Zusätzlich ist in `aktin-dwh-installer/packages/` immer die aktuelleste Version von `aktin-dwh-update` enthalten. 
 
-Simple-CDD
-----------
-Zum erstellen des Prepared-ISO ...
-
-Ordner packages/
-----------------
-
-Im Ordner 'packages' sollten ZIP Archive liegen, die
-fr die Installation bentigt werden.
-
-Von den offiziellen Webseiten von i2b2 https://www.i2b2.org/software/
-mssen die folgenden Pakete heruntergeladen werden, da sie aus 
-Lizenzgrnden nicht automatisch heruntergeladen werden knnen:
-* i2b2core-src-1706.zip
-* i2b2createdb-1706.zip
-* i2b2webclient-1706.zip
-
-Zustzlich werden Pakete die folgenden Pakete bei Bedarf
-automatisch heruntergeladen:
-
-* Axis2 1.6.2
-* JBoss  Wildfly 9.0.2 Final
-
+Mit dem Befehl `mvn install -P profile-name,second-profile-name` kann man einzelne oder mehrere Installierprofile aufrufen. Mit z.B. `mvn install -P aktin-installer,aktin-package-only` werden zwei Pakete erstellt. Mit `mvn install -P aktin-testing` wird ein Ordner erstellt, womit man direkt eine Vagrant Testinstanz laden kann. 
 
 TODO
 ----
