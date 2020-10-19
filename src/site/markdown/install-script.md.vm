@@ -34,9 +34,9 @@ Konfiguration und lokale Einstellungen
 Vor Start der Installation ist es notwendig, `aktin.properties` und `email.config` an die Anforderungen Ihres Systems zu konfigurieren. Beide Dateien befinden sich im Installationsordner.
 
 **aktin.properties**
-Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
+In dieser Datei werden Angaben zum lokalen DWH und Standort-spezifische Änderungen gemacht. Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
 ```
-nano {VERZEICHNIS}/aktin.properties
+nano {INSTALLATIONS-ORDNER}/aktin.properties
 ```
 Wichtig ist hierbei das Feld `local.email`, in das die E-Mail-Adresse eingetragen wird. An diese eingetragene Adresse werden später Berichte und Meldungen geschickt. Es ist auch möglich, eine Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme). In diesem Fall müssen die Einträge komma-separiert ohne Leerzeichen erfolgen.
 
@@ -127,11 +127,11 @@ Hier befinden sich die jeweiligen Root- und Extension-Nummern der Referenzen. Be
 Sollte in der Klinik keine feste Root-Nummer verwendet werden, darf auch keine Root-Nummer in `aktin.properties` hinterlegt werden – lassen Sie das Feld in diesem Fall einfach leer. Dies kann der Fall sein, wenn entweder die Extension-Nummer direkt als Root-Nummer verwendet wird oder sich die Root-Nummer klinikintern unterscheidet. Im ersteren Fall tragen Sie im Consent-Manager ganz normal die Identifikationsnummer ein, welche dann als Root-Nummer erkannt wird. Im letzteren Fall geben Sie unter `study.id.separator` ein Trennzeichen ein und tragen im Consent-Manager die Root-Nummer und die Extension-Nummer mit dem definierten Trennzeichen dazwischen ein.
 
 **email.config**
-Für das Anpassen der Datei `email.config` muss folgender Befehl ausgeführt werden:
+In dieser Datei wird die E-Mail-Konfigurationen für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll (z.B. für den Versand von monatlich erzeugten Berichtsdokumente an die in `aktin.properties` angegebenen E-Mail-Adresse). Die in 'email.config' angegebene Adresse sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation. Für das Anpassen der Datei `email.config` muss folgender Befehl ausgeführt werden:
 ```
-nano {VERZEICHNIS}/email.config
+nano {INSTALLATIONS-ORDNER}/email.config
 ```
-In dieser Datei wird die E-Mail-Konfigurationen für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll. Dies sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation. Hierbei muss besonders auf die Einstellungen des Mailservers geachtet werden, wobei die Felder `usessl`, `usetls` und `smtpport` richtig gesetzt werden müssen. 
+ Hierbei muss besonders auf die Einstellungen des Mailservers geachtet werden, wobei die Felder `usessl`, `usetls` und `smtpport` richtig gesetzt werden müssen. 
 
 Die jeweiligen Felder von `email.config` sind in folgender Template-Datei zu sehen:
 ```
@@ -178,7 +178,7 @@ Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt
 | Java Runtime Environment | ${version.java} | openjdk-${version.java}-jre-headless |
 | PHP | ${version.php} | php${version.php}<br>php${version.php}-common<br>libapache2-mod-php${version.php}<br>php${version.php}-curl |
 | R | ${version.r} | r-base-core=${version.r}<br>r-cran-xml<br>r-cran-lattice)
-| OPTIONAL: Python | ${version.python} | python${version.python}<br>python3-pandas<br>python3-numpy<br>python3-requests<br>python3-sqlalchemy<br>python3-psycopg2<br>python3-postgresql<br>python3-zipp<br>python3-plotly<br>python3-unicodecsv |
+| Python | ${version.python} | python${version.python}<br>python3-pandas<br>python3-numpy<br>python3-requests<br>python3-sqlalchemy<br>python3-psycopg2<br>python3-postgresql<br>python3-zipp<br>python3-plotly<br>python3-unicodecsv |
 
 
 Einstellungen in der i2b2-Adminoberfläche
@@ -221,9 +221,9 @@ AKTIN-Diagnose-Skript
 ---------------------
 Sollten bei der Installation Probleme aufgetreten sein, führen Sie bitte das AKTIN-Diagnose-Skript aus:
 ```
-./{VERZEICHNIS}/scripts/aktin_diag.sh
+./{INSTALLATIONS-ORDNER}/scripts/aktin_diag.sh
 ```
-Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im Verzeichnis `/opt/aktin_log/aktin_diag_{ZEITPUNKT DER DURCHFÜHRUNG}/` eine .tar.gz-Datei: `aktin_diag_{ZEITPUNKT DER DURCHFÜHRUNG}.tar.gz`.
+Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im Verzeichnis `${path.log.folder}/aktin_diag_{ZEITPUNKT DER DURCHFÜHRUNG}/` eine .tar.gz-Datei: `aktin_diag_{ZEITPUNKT DER DURCHFÜHRUNG}.tar.gz`.
 
 Senden Sie diese Datei bitte mit einer Support-Anfrage an [it-support@aktin.org](mailto:it-support@aktin.org). Die erzeugten Logs helfen bei der Identifizierung von Installations-Problemen.
 
@@ -231,3 +231,27 @@ Senden Sie diese Datei bitte mit einer Support-Anfrage an [it-support@aktin.org]
 Weitere Anmerkungen
 ---------------------
 * Die AKTIN-Komponente des Applikations-Server hat eine hohe Abhängigkeit zum Postgres Datenbank-Server. Der Wildfly-Server mit der AKTIN-Komponente sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart des Postgres Datenbank-Servers auch der Wildfly-Server neugestartet werden.
+
+* Im Internet Explorer kommt es in der i2b2-Oberfläche zu Darstellungsfehlern. So werden z.B. keine User unter _Manage Users_ angezeigt und unter _Manage Projects_ sind die Projekte nicht einsehbar (sattdessen erscheint ein permanentes Ladezeichen). Dieser Fehler ist bereits bekannt, kann aber von unserer Seite aus nicht behoben werden, da i2b2 eine externe Software von der wir lediglich die Schnittstelle nutzen. Wir würden Sie daher bitten für die Nutzerverwaltung einen anderen Browser zu verwenden (z.B. Firefox oder Chrome).
+
+* Für nachträgliche Änderungen in der Datei 'aktin.properties' müssen Sie zunächst den laufenden Wildfly-Server stoppen. Bearbeiten Sie anschließend über den Befehl 'nano' die im Wildfly-Konfigurationsordner hinterlegte 'aktin.properties'. Nach Abschluss der Bearbeitung, speichern Sie die Änderungen in der Konfigurationsdatei und starten Sie den Wildfly-Server neu:
+```
+service wildfly stop
+
+nano /opt/wildfly/standalone/configuration/aktin.properties
+
+service wildfly start
+```
+
+* Für nachträgliche Änderungen in der Datei 'email.config' müssen die Änderungen während eines laufenden Wildfly-Servers geschehen, da sämtliche Konfigurationen in der Datei 'standalone.xml' des Servers hinterlegt sind. Bearbeiten Sie zunächst über den Befehl 'nano' die im Installationsordner hinterlegte Konfigurationsdatei. Führen Sie anschießend das Skript 'email_reset.sh' aus, um die derzeitigen Konfigurationseinstellungen aus der 'standalone.xml' zu löschen. Laden Sie anschließend Ihre aktualisierte Konfiguration über den Befehl 'email_create.sh' in die 'standalone.xml' ein. Starten Sie anschließend den Wildfly-Server neu:
+```
+cd {INSTALLATIONSORDNER}
+
+nano email.config
+
+./email_reset.sh
+
+./email_create.sh
+
+service wildfly restart
+```
