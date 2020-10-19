@@ -39,7 +39,7 @@ cd $INSTALL_ROOT
 ./wildfly_safe_stop.sh
 
 # remove all old dwh-j2ee.ears
-if [[ -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.ear ]]; then
+if [[ -n $(ls /opt/wildfly/standalone/deployments/ | grep -c dwh-j2ee-*) ]]; then
 	echo -e "${YEL}Alte dwh-j2ee.ear werden gelöscht.${WHI}"
 	rm $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*
 else
@@ -57,5 +57,5 @@ fi
 
 # start all services
 service apache2 start
-service postgresl start
+service postgresql start
 service wildfly start
