@@ -22,7 +22,7 @@ Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden 
 cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear $WILDFLY_HOME/standalone/deployments/
 ```
 
-Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sie können dies mit folgendem Befehl kontrollieren:
+Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Stellen Sie jedoch sicher, dass es sich bei Ihrer kopierten EAR-Datei um die einzige Datei mit dieser Endung handelt. Löschen Sie gegebenenfalls sämtliche andere Dateien mit der Endung '.ear' aus dem Ordner. Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sie können dies mit folgendem Befehl kontrollieren:
 ```
 ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed
 ```
