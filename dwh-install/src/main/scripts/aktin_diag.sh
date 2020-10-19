@@ -7,11 +7,11 @@ set -euo pipefail
 readonly WILDFLY_HOME=${path.wildfly.link}
 
 # colors for console output
-readonly WHI='\033[0m'
-readonly RED='\e[1;31m'
-readonly ORA='\e[0;33m'
-readonly YEL='\e[1;33m'
-readonly GRE='\e[0;32m'
+readonly WHI=${color.white}
+readonly RED=${color.red}
+readonly ORA=${color.orange}
+readonly YEL=${color.yellow}
+readonly GRE=${color.green}
 
 # create a log folder for this diagnosis
 CURRENT=$(date +%Y_%h_%d_%H:%M)
