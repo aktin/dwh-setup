@@ -32,7 +32,7 @@ echo -e "${YEL}+++++ STEP A +++++ Deployment der EAR{WHI}"
 echo
 
 # remove all old dwh-j2ee.ears
-if [[ -n $(ls /opt/wildfly/standalone/deployments/ | grep -c dwh-j2ee-*) ]]; then
+if [[ $(ls /opt/wildfly/standalone/deployments/ | grep -c dwh-j2ee-*) != 0 ]]; then
 	echo -e "${YEL}Alte dwh-j2ee.ear werden gelöscht.${WHI}"
 	rm $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*
 else
