@@ -35,7 +35,7 @@ if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
 fi
 
 
-if [[ -z $(cat /var/www/html/webclient/i2b2_config_data.js | grep "debug: false") ]]; then
+if [[ -n $(cat /var/www/html/webclient/i2b2_config_data.js | grep "debug: false") ]]; then
 
 # activacte i2b2 webclient debugging
 sed -i 's|debug: false|debug: true|' /var/www/html/webclient/i2b2_config_data.js
