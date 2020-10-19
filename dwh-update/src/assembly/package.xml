@@ -21,12 +21,12 @@
     <fileSets>
         <fileSet>
             <directory>${project.build.scriptSourceDirectory}</directory>
-            <outputDirectory>/dwh-update</outputDirectory>
+            <outputDirectory>dwh-update</outputDirectory>
             <filtered>true</filtered>
         </fileSet>
         <fileSet>
             <directory>src/main/resources</directory>
-            <outputDirectory>/dwh-update</outputDirectory>
+            <outputDirectory>dwh-update</outputDirectory>
             <filtered>false</filtered>
         </fileSet>
     </fileSets>
