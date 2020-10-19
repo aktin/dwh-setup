@@ -45,7 +45,7 @@ if [[ ! -d ${path.log.folder} ]]; then
 fi
 
 # create link to this folder in ${path.home} for future updates
-if [[ ! -f ${path.install.link} ]]; then
+if [[ ! -e ${path.install.link} ]]; then
 	ln -s $(pwd) ${path.install.link}
 fi
 
@@ -75,7 +75,7 @@ openjdk-$JAVA_VERSION-jre-headless \
 postgresql-$PG_VERSION \
 apache2=$APACHE2_VERSION \
 php$PHP_VERSION php$PHP_VERSION-common libapache2-mod-php$PHP_VERSION php$PHP_VERSION-curl \
-r-base-core=$R_VERSION r-cran-lattice r-cran-xml
+r-base-core=$R_VERSION r-cran-lattice r-cran-xml \
 python$PYTHON_VERSION python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv
 }
 
@@ -199,7 +199,7 @@ else
 fi
 
 # create link to wildfly folder in ${path.home}
-if [[ ! -f ${path.wildfly.link} ]]; then
+if [[ ! -e ${path.wildfly.link} ]]; then
 	echo -e "${YEL}Ein Link zum Wildfly-Server wird in ${path.home} abgelegt.${WHI}"
 	ln -s /opt/wildfly ${path.wildfly.link}
 else
@@ -222,7 +222,7 @@ fi
 if [[ -z $(grep "wildfly" /etc/passwd) ]]; then
 	echo -e "${YEL}Der User wildfly für den Wildfly-Server wird erstellt.${WHI}"
 	adduser --system --group --disabled-login wildfly
-	chown -R wildfly:wildfly $WILDFLY_HOME
+	chown -R wildfly:wildfly /opt/wildfly
 else
 	echo -e "${ORA}Der User wildfly ist bereits vorhanden.${WHI}"
 fi
