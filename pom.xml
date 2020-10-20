@@ -34,13 +34,6 @@
 		<version.python>3.8</version.python>
 		<version.r>3.6.3-2</version.r>
 
-		<!-- pathing to use in scripts -->
-		<path.home>~</path.home>
-		<path.log.folder>${path.home}/aktin_log</path.log.folder>
-
-
-
-
 		<!-- urls for packages -->
 		<url.i2b2.webclient>https://github.com/i2b2/i2b2-webclient/archive/v${version.i2b2}.0002.zip</url.i2b2.webclient>
 		<url.wildfly>https://download.jboss.org/wildfly/${version.wildfly}/wildfly-${version.wildfly}.zip</url.wildfly>

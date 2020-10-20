@@ -22,7 +22,6 @@ readonly XML_FILES=$UPDATE_ROOT/xml
 
 readonly WILDFLY_HOME=/opt/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
-readonly JAVA_HOME=/usr/lib/jvm/java-$JAVA_VERSION-openjdk-amd64
 
 # colors for console output
 readonly WHI=${color.white}
@@ -38,10 +37,7 @@ readonly URL_JDBC_DRIVER=${url.jdbc.driver}
 readonly URL_I2B2=${url.i2b2.war}
 
 # create a logfile for this installation
-readonly LOGFILE=${path.log.folder}/aktin_install_$(date +%Y_%h_%d_%H:%M).log
-if [[ ! -d ${path.log.folder} ]]; then
-    mkdir ${path.log.folder}
-fi
+readonly LOGFILE=aktin_install_$(date +%Y_%h_%d_%H:%M).log
 
 # unzip update.tar.gz to acces scripts within
 tar xvzf packages/dwh-update-*.tar.gz
