@@ -15,7 +15,7 @@ readonly PHP_VERSION=${version.php}
 readonly PYTHON_VERSION=${version.python}
 readonly R_VERSION=${version.r}
 
-readonly UPDATE_ROOT=$(pwd)/packages/dwh-update # directory of dwh-update with installation files
+readonly UPDATE_ROOT=$(pwd)/dwh-update # directory of dwh-update with installation files
 readonly SQL_FILES=$UPDATE_ROOT/sql
 readonly SCRIPT_FILES=$UPDATE_ROOT/scripts
 readonly XML_FILES=$UPDATE_ROOT/xml
@@ -41,7 +41,7 @@ readonly LOGFILE=aktin_install_$(date +%Y_%h_%d_%H:%M).log
 
 # unzip update.tar.gz to acces scripts within
 tar xvzf packages/dwh-update-*.tar.gz
-
+chmod +x dwh-update/*
 
 
 
@@ -181,7 +181,7 @@ echo -e "${YEL}+++++ STEP IV +++++ Installation des WildFly-Servers${WHI}"
 echo
 
 # download wildfly server into install destination and rename server to wildfly
-if [[ ! -d /opt/wildfly ]]; then
+if [[ ! -d /opt/wildfly-$WILDFLY_VERSION ]]; then
 	echo -e "${YEL}Der Wildfly-Server wird heruntergeladen und nach /opt entpackt.${WHI}"
 	wget $URL_WILDFLY -P /tmp
 	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d /opt
@@ -189,12 +189,12 @@ else
 	echo -e "${ORA}Der Wildfly-Server befindet sich bereits in /opt.${WHI}"
 fi
 
-# create link to wildfly folder in ${path.home}
-if [[ ! -e /opt/wildlfy ]]; then
-	echo -e "${YEL}Ein Link zum Wildfly-Server wird in ${path.home} abgelegt.${WHI}"
+# create link to wildfly folder in /opt
+if [[ ! -L /opt/wildlfy && ! -d /opt/wildlfy ]]; then
+	echo -e "${YEL}Ein Link zum Wildfly-Server wird in /opt abgelegt.${WHI}"
 	ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
 else
-	echo -e "${ORA}Ein Link für den Wildfly-Server ist bereits in ${path.home} vorhanden.${WHI}"
+	echo -e "${ORA}Ein Link für den Wildfly-Server ist bereits in /opt vorhanden.${WHI}"
 fi
 
 # set wildfly to run as a service
@@ -213,7 +213,7 @@ fi
 if [[ -z $(grep "wildfly" /etc/passwd) ]]; then
 	echo -e "${YEL}Der User wildfly für den Wildfly-Server wird erstellt.${WHI}"
 	adduser --system --group --disabled-login wildfly
-	chown -R wildfly:wildfly /opt/wildfly
+	chown -R wildfly:wildfly /opt/wildfly-$WILDFLY_VERSION
 else
 	echo -e "${ORA}Der User wildfly ist bereits vorhanden.${WHI}"
 fi
@@ -272,6 +272,7 @@ do
 done
 
 # start wildfly server safely (JBOSS cli needs running server)
+cd $UPDATE_ROOT
 ./wildfly_safe_start.sh
 
 # change logging properties of wildfly server
@@ -307,6 +308,7 @@ else
 fi
 
 # stop wildfly server safely
+cd $UPDATE_ROOT
 ./wildfly_safe_stop.sh
 
 # give wildfly user permission for aktin.properties
@@ -344,9 +346,7 @@ echo
 echo -e "${YEL}+++++ STEP V +++++ Ausführung des AKTIN-Update${WHI}"
 echo
 
-cd packages/dwh-update
-
-chmod +x aktin_update.sh # ToDo: Fix this
+cd $UPDATE_ROOT
 ./aktin_update.sh
 }
 
