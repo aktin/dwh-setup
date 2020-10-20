@@ -5,7 +5,6 @@
 set -euo pipefail
 
 readonly INTEGRATION_ROOT=$(pwd)
-readonly INTEGRATION_PACKAGES=$INTEGRATION_ROOT/packages
 readonly SQL_FILES=$INTEGRATION_ROOT/sql
 
 # colors for console output
@@ -15,10 +14,11 @@ readonly ORA=${color.orange}
 readonly YEL=${color.yellow}
 readonly GRE=${color.green}
 
-# run dwh-install with dwh-update
-cd $INTEGRATION_PACKAGES
-tar xvzf dwh-install-*.tar.gz
+# make all test skripts executable
+chmod +x *
 
+# run dwh-install with dwh-update
+tar xvzf packages/dwh-install-*.tar.gz
 cd aktin-dwh-installer
 ./aktin_install.sh
 
@@ -56,7 +56,6 @@ echo -e "${YEL}+++++ STEP I +++++ Integration test I2B2${WHI}"
 echo
 
 # test a basic query in i2b2
-chmod +x test_i2b2_query.sh
 ./test_i2b2_query.sh
 
 echo
@@ -64,14 +63,11 @@ echo -e "${YEL}+++++ STEP II +++++ Integration test AKTIN${WHI}"
 echo
 
 # test CDA import
-chmod +x test_aktin_cda_import.sh
 ./test_aktin_cda_import.sh
 
 # test plain modules
-chmod +x test_aktin_plain.sh
 ./test_aktin_plain.sh
 
 # test consent-manager
-chmod +x test_aktin_consent_manager.sh
 ./test_aktin_consent_manager.sh
 
