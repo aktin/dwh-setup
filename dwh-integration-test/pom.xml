@@ -17,7 +17,7 @@
     <properties>
         <org.aktin.demo-distribution.version>0.14-SNAPSHOT</org.aktin.demo-distribution.version>
     </properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.aktin.dwh</groupId>

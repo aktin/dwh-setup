@@ -5,7 +5,7 @@ set -euo pipefail # stop on errors
 
 readonly INSTALL_ROOT=${path.install.link}
 
-readonly WILDFLY_HOME=${path.wildfly.link}
+readonly WILDFLY_HOME=/opt/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
 
