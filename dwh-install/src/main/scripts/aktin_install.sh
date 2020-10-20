@@ -15,11 +15,10 @@ readonly PHP_VERSION=${version.php}
 readonly PYTHON_VERSION=${version.python}
 readonly R_VERSION=${version.r}
 
-readonly INSTALL_ROOT=$(pwd) # current directory with installation files
-readonly INSTALL_PACKAGES=$INSTALL_ROOT/packages
-readonly SQL_FILES=$INSTALL_ROOT/sql
-readonly SCRIPT_FILES=$INSTALL_ROOT/scripts
-readonly XML_FILES=$INSTALL_ROOT/xml
+readonly UPDATE_ROOT=$(pwd)/packages/dwh-update # directory of dwh-update with installation files
+readonly SQL_FILES=$UPDATE_ROOT/sql
+readonly SCRIPT_FILES=$UPDATE_ROOT/scripts
+readonly XML_FILES=$UPDATE_ROOT/xml
 
 readonly WILDFLY_HOME=/opt/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
@@ -44,11 +43,8 @@ if [[ ! -d ${path.log.folder} ]]; then
     mkdir ${path.log.folder}
 fi
 
-# create link to this folder in ${path.home} for future updates
-if [[ ! -e ${path.install.link} ]]; then
-	ln -s $(pwd) ${path.install.link}
-fi
-
+# unzip update.tar.gz to acces scripts within
+tar xvzf packages/dwh-update-*.tar.gz
 
 
 
@@ -318,9 +314,9 @@ fi
 ./wildfly_safe_stop.sh
 
 # give wildfly user permission for aktin.properties
-if [[ ! $(stat -c '%U' $INSTALL_ROOT/aktin.properties) == "wildfly" ]]; then
+if [[ ! $(stat -c '%U' $UPDATE_ROOT/aktin.properties) == "wildfly" ]]; then
 	echo -e "${YEL}Dem User wildfly werden Rechte für die Datei aktin.properties übergeben.${WHI}"
-	chown wildfly:wildfly $INSTALL_ROOT/aktin.properties
+	chown wildfly:wildfly $UPDATE_ROOT/aktin.properties
 else
 	echo -e "${ORA}Der User wildfly besitzt bereits Rechte für die Datei aktin.properties.${WHI}"
 fi
@@ -328,7 +324,7 @@ fi
 # copy aktin.properties into wildfly server
 if [[ ! -f $WILDFLY_HOME/standalone/configuration/aktin.properties ]]; then
 	echo -e "${YEL}Die Datei aktin.properties wird nach $WILDFLY_HOME/standalone/configuration kopiert.${WHI}"
-	cp $INSTALL_ROOT/aktin.properties $WILDFLY_HOME/standalone/configuration/
+	cp $UPDATE_ROOT/aktin.properties $WILDFLY_HOME/standalone/configuration/
 else
 	echo -e "${ORA}Die Datei aktin.properties befindet sich bereits in $WILDFLY_HOME/standalone/configuration.{WHI}"
 fi
@@ -352,10 +348,8 @@ echo
 echo -e "${YEL}+++++ STEP V +++++ Ausführung des AKTIN-Update${WHI}"
 echo
 
-cd $INSTALL_PACKAGES
-tar xvzf dwh-update-*.tar.gz
+cd packages/dwh-update
 
-cd dwh-update
 chmod +x aktin_update.sh # ToDo: Fix this
 ./aktin_update.sh
 }
@@ -371,7 +365,7 @@ echo "Installation abgeschlossen!"
 echo "Vielen Dank, dass Sie die AKTIN-Software verwenden."
 echo 
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
-echo -e "Um das AKTIN-Notaufnahmeregister zu nutzen, vergewissern Sie sich, dass Sie die Dateien "${GRE}"$INSTALL_ROOT/email.config"${WHI}" und "${GRE}"$INSTALL_ROOT/aktin.properties"${WHI}" vor der Installation richtig konfiguriert haben!"
+echo -e "Um das AKTIN-Notaufnahmeregister zu nutzen, vergewissern Sie sich, dass Sie die Dateien "${GRE}"$UPDATE_ROOT/email.config"${WHI}" und "${GRE}"$UPDATE_ROOT/aktin.properties"${WHI}" vor der Installation richtig konfiguriert haben!"
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
 echo -e "Bitte melden Sie auftretende Fehler an it-support@aktin.org!"

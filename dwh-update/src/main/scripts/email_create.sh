@@ -3,18 +3,14 @@
 # skript to inject email-configuration in wildfly/standalone.xml
 set -euo pipefail # stop on errors
 
-readonly INSTALL_ROOT=${path.install.link}
-
 readonly WILDFLY_HOME=/opt/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
 
 # start wildfly safely
-cd $INSTALL_ROOT
 ./wildfly_safe_start.sh
 
 # get smtp settings (see email.config)
-cd $INSTALL_ROOT
 . email.config
 
 # not changeable parameters
@@ -33,5 +29,4 @@ fi
 $JBOSSCLI "/subsystem=mail/mail-session=$SESSIONNAME/:write-attribute(name=from, value=$MAILFROM)"
 
 # stop wildfly safely
-cd $INSTALL_ROOT
 ./wildfly_safe_stop.sh

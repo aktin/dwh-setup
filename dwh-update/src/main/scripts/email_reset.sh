@@ -3,14 +3,11 @@
 # skript to remove email-configuration in wildfly/standalone.xml
 set -euo pipefail # stop on errors
 
-readonly INSTALL_ROOT=${path.install.link}
-
 readonly WILDFLY_HOME=/opt/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
 
 # start wildfly safely
-cd $INSTALL_ROOT
 ./wildfly_safe_start.sh
 
 # not changeable parameters
@@ -30,5 +27,4 @@ if [ $( grep -c "mail-session name=\"$SESSIONNAME\"" $WILDFLY_HOME/standalone/co
 fi	
 
 # stop wildfly safely
-cd $INSTALL_ROOT
 ./wildfly_safe_stop.sh

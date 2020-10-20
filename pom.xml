@@ -37,7 +37,6 @@
 		<!-- pathing to use in scripts -->
 		<path.home>~</path.home>
 		<path.log.folder>${path.home}/aktin_log</path.log.folder>
-		<path.install.link>${path.home}/link_installer</path.install.link>
 
 
 

@@ -6,7 +6,6 @@ set -euo pipefail
 
 readonly AKTIN_VERSION=${dwhJ2EEVersion}
 
-readonly INSTALL_ROOT=${path.install.link}
 readonly UPDATE_ROOT=$(pwd)
 readonly UPDATE_PACKAGES=$UPDATE_ROOT/packages
 
