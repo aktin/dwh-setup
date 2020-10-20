@@ -19,7 +19,7 @@ readonly YEL=${color.yellow}
 readonly GRE=${color.green}
 
 # create a logfile for this update
-readonly LOGFILE=${path.log.folder}/aktin_update_$(date +%Y_%h_%d_%H:%M).log
+readonly LOGFILE=aktin_update_$(date +%Y_%h_%d_%H:%M).log
 
 
 

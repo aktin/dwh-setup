@@ -13,7 +13,7 @@ readonly YEL=${color.yellow}
 readonly GRE=${color.green}
 
 # create a logfile for this reset
-readonly LOGFILE=${path.log.folder}/aktin_reset_$(date +%Y_%h_%d_%H:%M).log
+readonly LOGFILE=aktin_reset_$(date +%Y_%h_%d_%H:%M).log
 
 # if running, stop apache2, postgresql and wildfly service
 if  [[ ! $(service apache2 status | grep "not" | wc -l) == 1 ]]; then
@@ -107,10 +107,10 @@ fi
 
 
 
-step_I(){
+step_III(){
 set -euo pipefail # stop reset on errors
 echo
-echo -e "${YEL}+++++ STEP I +++++ Entfernung des Wildfly-Servers${WHI}"
+echo -e "${YEL}+++++ STEP III +++++ Entfernung des Wildfly-Servers${WHI}"
 echo
 
 # remove wildfly folder
@@ -155,14 +155,6 @@ else
 	echo -e "${ORA}Der User wildfly wurde bereits entfernt.${WHI}"
 fi
 }
-
-
-
-
-
-
-
-
 
 
 
