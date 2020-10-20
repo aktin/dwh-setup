@@ -21,7 +21,7 @@ readonly SQL_FILES=$INSTALL_ROOT/sql
 readonly SCRIPT_FILES=$INSTALL_ROOT/scripts
 readonly XML_FILES=$INSTALL_ROOT/xml
 
-readonly WILDFLY_HOME=${path.wildfly.link}
+readonly WILDFLY_HOME=/opt/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 readonly JAVA_HOME=/usr/lib/jvm/java-$JAVA_VERSION-openjdk-amd64
 
@@ -193,15 +193,14 @@ if [[ ! -d /opt/wildfly ]]; then
 	echo -e "${YEL}Der Wildfly-Server wird heruntergeladen und nach /opt entpackt.${WHI}"
 	wget $URL_WILDFLY -P /tmp
 	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d /opt
-	mv /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
 else
 	echo -e "${ORA}Der Wildfly-Server befindet sich bereits in /opt.${WHI}"
 fi
 
 # create link to wildfly folder in ${path.home}
-if [[ ! -e ${path.wildfly.link} ]]; then
+if [[ ! -e /opt/wildlfy ]]; then
 	echo -e "${YEL}Ein Link zum Wildfly-Server wird in ${path.home} abgelegt.${WHI}"
-	ln -s /opt/wildfly ${path.wildfly.link}
+	ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
 else
 	echo -e "${ORA}Ein Link für den Wildfly-Server ist bereits in ${path.home} vorhanden.${WHI}"
 fi

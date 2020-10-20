@@ -4,7 +4,7 @@
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
 set -euo pipefail 
 
-readonly WILDFLY_HOME=${path.wildfly.link}
+readonly WILDFLY_HOME=/opt/wildfly
 
 # colors for console output
 readonly WHI=${color.white}

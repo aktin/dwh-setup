@@ -3,7 +3,7 @@
 # script to stop wildfly after safely starting it
 set -euo pipefail # stop on errors
 
-readonly WILDFLY_DEPLOYMENTS=${path.wildfly.link}/standalone/deployments
+readonly WILDFLY_DEPLOYMENTS=/opt/wildfly/standalone/deployments
 
 
 # stop wildfly if running
