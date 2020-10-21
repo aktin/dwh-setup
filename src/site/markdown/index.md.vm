@@ -1,5 +1,5 @@
 <h3><u>Installation und Update des AKTIN-Applikationsserver</u></h3>
-Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Data Warehouse läuft. Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte. Nach dem erfolgreichen Update oder Installation können Sie auf der Seite `http://{IHRSERVER}/aktin/admin/plain/test.html` die Funktionalität testen.
+Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Data Warehouse läuft. Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte. Nach dem erfolgreichen Update oder Installation können Sie auf der Seite `http://<IHR SERVER>/aktin/admin/plain/test.html` die Funktionalität testen.
 <br></br>
 
 <h4>Komplette Neuinstallation</h4>
