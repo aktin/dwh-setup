@@ -19,7 +19,7 @@ readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
 # create a logfile for this update
-readonly LOGFILE=aktin_update_$(date +%Y_%h_%d_%H:%M).log
+readonly LOGFILE=$(pwd)/aktin_update_$(date +%Y_%h_%d_%H:%M).log
 
 
 
@@ -78,8 +78,6 @@ set -euo pipefail
 services_stop | tee -a $LOGFILE
 
 step_A | tee -a $LOGFILE
-
-services_start | tee -a $LOGFILE
 }
 
 main

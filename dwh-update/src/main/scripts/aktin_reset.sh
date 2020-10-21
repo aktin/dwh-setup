@@ -13,7 +13,7 @@ readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
 # create a logfile for this reset
-readonly LOGFILE=aktin_reset_$(date +%Y_%h_%d_%H:%M).log
+readonly LOGFILE=$(pwd)/aktin_reset_$(date +%Y_%h_%d_%H:%M).log
 
 # if running, stop apache2, postgresql and wildfly service
 if  [[ ! $(service apache2 status | grep "not" | wc -l) == 1 ]]; then
