@@ -5,15 +5,15 @@
 set -euo pipefail
 
 # all version numbers of used software
-readonly JAVA_VERSION=${version.java}
-readonly WILDFLY_VERSION=${version.wildfly}
-readonly PG_VERSION=${version.postgresql}
-readonly JDBC_VERSION=${version.jdbc.driver}
-readonly APACHE2_VERSION=${version.apache2}
-readonly I2B2_VERSION=${version.i2b2}
-readonly PHP_VERSION=${version.php}
-readonly PYTHON_VERSION=${version.python}
-readonly R_VERSION=${version.r}
+readonly JAVA_VERSION=${version_java}
+readonly WILDFLY_VERSION=${version_wildfly}
+readonly PG_VERSION=${version_postgresql}
+readonly JDBC_VERSION=${version_jdbc_driver}
+readonly APACHE2_VERSION=${version_apache2}
+readonly I2B2_VERSION=${version_i2b2}
+readonly PHP_VERSION=${version_php}
+readonly PYTHON_VERSION=${version_python}
+readonly R_VERSION=${version_r}
 
 readonly UPDATE_ROOT=$(pwd)/dwh-update # directory of dwh-update with installation files
 readonly SQL_FILES=$UPDATE_ROOT/sql
@@ -24,17 +24,17 @@ readonly WILDFLY_HOME=/opt/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
 # colors for console output
-readonly WHI=${color.white}
-readonly RED=${color.red}
-readonly ORA=${color.orange}
-readonly YEL=${color.yellow}
-readonly GRE=${color.green}
+readonly WHI=${color_white}
+readonly RED=${color_red}
+readonly ORA=${color_orange}
+readonly YEL=${color_yellow}
+readonly GRE=${color_green}
 
 # urls for packages to download
-readonly URL_I2B2_WEBCLIENT=${url.i2b2.webclient}
-readonly URL_WILDFLY=${url.wildfly}
-readonly URL_JDBC_DRIVER=${url.jdbc.driver}
-readonly URL_I2B2=${url.i2b2.war}
+readonly URL_I2B2_WEBCLIENT=${url_i2b2_webclient}
+readonly URL_WILDFLY=${url_wildfly}
+readonly URL_JDBC_DRIVER=${url_jdbc_driver}
+readonly URL_I2B2=${url_i2b2_war}
 
 # create a logfile for this installation
 readonly LOGFILE=aktin_install_$(date +%Y_%h_%d_%H:%M).log
