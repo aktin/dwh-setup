@@ -16,7 +16,7 @@ readonly PYTHON_VERSION=${version_python}
 readonly R_VERSION=${version_r}
 
 readonly UPDATE_ROOT=$(pwd)/dwh-update # directory of dwh-update with installation files
-readonly SQL_FILES=$UPDATE_ROOT/sql
+readonly SQL_FILES=/tmp/sql
 readonly SCRIPT_FILES=$UPDATE_ROOT/scripts
 readonly XML_FILES=$UPDATE_ROOT/xml
 
@@ -81,6 +81,14 @@ echo
 echo -e "${YEL}+++++ STEP II +++++ Installation der i2b2- und AKTIN-Datenbank${WHI}"
 echo
 
+# copy sql folder to a location where postgres user can execute them
+if [[ ! -d /tmp/sql ]]; then
+echo -e "${YEL}SQL-Dateien werden nach /tmp kopiert.${WHI}"
+mkdir $SQL_FILES
+cp $UPDATE_ROOT/sql/* $SQL_FILES/
+chmod 777 -R $SQL_FILES
+fi
+
 service postgresql start
 # count databases with name i2b2
 if  [[ $(sudo -u postgres psql -l | grep "i2b2" | wc -l) == 0 ]]; then
@@ -111,6 +119,12 @@ else
 	echo -e "${ORA}Die Integration der AKTIN-Datenbank wurde bereits durchgeführt.${WHI}"
 fi
 service postgresql stop
+
+# delete sql folder from /tmp
+if [[ -d /tmp/sql ]]; then
+echo -e "${YEL}SQL-Dateien werden aus /tmp wieder gelöscht.${WHI}"
+rm -r $SQL_FILES
+fi
 }
 
 
@@ -363,10 +377,10 @@ echo -e "Bearbeiten Sie die Datei email.config und passen Sie die jeweiligen Fel
 echo
 echo -e "${GRE} nano "$UPDATE_ROOT/email.config"${WHI}"
 echo 
-echo -e "Führen Sie anschließend bei laufendem Wildfly-Server das Skript email_create.sh aus."
+echo -e "Führen Sie anschließend das Skript email_create.sh aus."
 echo
-echo -e "${GRE} service wildfly start${WHI}"
-echo -e "${GRE} ."$UPDATE_ROOT"/email_create.sh${WHI}"
+echo -e "${GRE} cd "$UPDATE_ROOT"${WHI}"
+echo -e "${GRE} ./email_create.sh${WHI}"
 echo
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
