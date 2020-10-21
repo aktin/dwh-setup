@@ -1,11 +1,11 @@
 #! /bin/bash
 
 # colors for console output
-readonly WHI=${color.white}
-readonly RED=${color.red}
-readonly ORA=${color.orange}
-readonly YEL=${color.yellow}
-readonly GRE=${color.green}
+readonly WHI=${color_white}
+readonly RED=${color_red}
+readonly ORA=${color_orange}
+readonly YEL=${color_yellow}
+readonly GRE=${color_green}
 
 # login into aktin/admin and get bearer-token
 BEARER_TOKEN=$(curl -s --location --request POST 'http://localhost:80/aktin/admin/rest/auth/login/' --header 'Content-Type: application/json' --data-raw '{ "username": "i2b2", "password": "demouser" }')

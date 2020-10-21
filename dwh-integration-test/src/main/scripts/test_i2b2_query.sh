@@ -4,11 +4,11 @@ readonly INTEGRATION_ROOT=$(pwd)
 readonly XML_FILES=$INTEGRATION_ROOT/xml
 
 # colors for console output
-readonly WHI=${color.white}
-readonly RED=${color.red}
-readonly ORA=${color.orange}
-readonly YEL=${color.yellow}
-readonly GRE=${color.green}
+readonly WHI=${color_white}
+readonly RED=${color_red}
+readonly ORA=${color_orange}
+readonly YEL=${color_yellow}
+readonly GRE=${color_green}
 
 # destination for query testing
 URL="http://localhost:80/webclient/"

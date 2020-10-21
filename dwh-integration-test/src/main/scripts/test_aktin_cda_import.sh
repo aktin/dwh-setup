@@ -6,11 +6,11 @@ readonly XML_FILES=$INTEGRATION_ROOT/xml
 readonly PROPERTIES_FILES=$INTEGRATION_ROOT/properties
 
 # colors for console output
-readonly WHI=${color.white}
-readonly RED=${color.red}
-readonly ORA=${color.orange}
-readonly YEL=${color.yellow}
-readonly GRE=${color.green}
+readonly WHI=${color_white}
+readonly RED=${color_red}
+readonly ORA=${color_orange}
+readonly YEL=${color_yellow}
+readonly GRE=${color_green}
 
 # destination url for fhir testing
 URL="http://localhost:80/aktin/cda/fhir/Binary/"
