@@ -22,8 +22,10 @@ tar xvzf packages/dwh-install-*.tar.gz
 cd aktin-dwh-installer
 ./aktin_install.sh
 
+
 # copy aktin.properties in wildfly configuration folder
-cp $(pwd)/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
+cd $INTEGRATION_ROOT
+cp aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
 
 # if not running, start apache2, postgresql and wildfly service
 if  [[ $(service apache2 status | grep "not" | wc -l) == 1 ]]; then
@@ -37,8 +39,9 @@ if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
 fi
 
 # write email.config into standalone.xml
-cd $(pwd)/aktin-dwh-installer/dwh-update
+cd aktin-dwh-installer/dwh-update
 ./email_create.sh
+service wildfly start
 
 
 if [[ -n $(cat /var/www/html/webclient/i2b2_config_data.js | grep "debug: false") ]]; then
@@ -51,7 +54,9 @@ sed -i 's/Listen 80/Listen 0.0.0.0:80/' /etc/apache2/ports.conf
 sed -i 's/Listen 443/Listen 0.0.0.0:443/g' /etc/apache2/ports.conf
 
 # add i2b2 demo data
-sudo -u postgres psql -d i2b2 -f $SQL_FILES/i2b2_db_demo.sql
+cp $SQL_FILES/i2b2_db_demo.sql /tmp/
+sudo -u postgres psql -d i2b2 -f /tmp/i2b2_db_demo.sql
+rm /tmp/i2b2_db_demo.sql
 fi
 
 
