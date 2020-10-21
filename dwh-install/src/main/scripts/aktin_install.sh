@@ -37,11 +37,12 @@ readonly URL_JDBC_DRIVER=${url_jdbc_driver}
 readonly URL_I2B2=${url_i2b2_war}
 
 # create a logfile for this installation
-readonly LOGFILE=aktin_install_$(date +%Y_%h_%d_%H:%M).log
+readonly LOGFILE=$(pwd)/aktin_install_$(date +%Y_%h_%d_%H:%M).log
 
 # unzip update.tar.gz to acces scripts within
 tar xvzf packages/dwh-update-*.tar.gz
 chmod +x dwh-update/*
+
 
 
 
@@ -299,14 +300,6 @@ else
 	echo -e "${ORA}Die Datasource für AKTIN wurde bereits im Wildfly-Server generiert.${WHI}"
 fi
 
-# set new SMTP configuration
-if [[ $(grep -c "mail-session name=\"AktinMailSession\"" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then 
-	echo -e "${YEL}Die Konfiguration der Email wird vorgenommen.${WHI}"
-	./email_create.sh
-else
-	echo -e "${ORA}Die Konfiguration der Email wurde bereits vorgenommen.${WHI}"
-fi
-
 # stop wildfly server safely
 cd $UPDATE_ROOT
 ./wildfly_safe_stop.sh
@@ -317,14 +310,6 @@ if [[ ! $(stat -c '%U' $UPDATE_ROOT/aktin.properties) == "wildfly" ]]; then
 	chown wildfly:wildfly $UPDATE_ROOT/aktin.properties
 else
 	echo -e "${ORA}Der User wildfly besitzt bereits Rechte für die Datei aktin.properties.${WHI}"
-fi
-
-# copy aktin.properties into wildfly server
-if [[ ! -f $WILDFLY_HOME/standalone/configuration/aktin.properties ]]; then
-	echo -e "${YEL}Die Datei aktin.properties wird nach $WILDFLY_HOME/standalone/configuration kopiert.${WHI}"
-	cp $UPDATE_ROOT/aktin.properties $WILDFLY_HOME/standalone/configuration/
-else
-	echo -e "${ORA}Die Datei aktin.properties befindet sich bereits in $WILDFLY_HOME/standalone/configuration.{WHI}"
 fi
 
 # create /var/lib/aktin and give permissions to wildfly user
@@ -360,12 +345,32 @@ echo -e "${YEL}"
 echo "Installation abgeschlossen!"
 echo "Vielen Dank, dass Sie die AKTIN-Software verwenden."
 echo 
+echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
-echo -e "Um das AKTIN-Notaufnahmeregister zu nutzen, vergewissern Sie sich, dass Sie die Dateien "${GRE}"$UPDATE_ROOT/email.config"${WHI}" und "${GRE}"$UPDATE_ROOT/aktin.properties"${WHI}" vor der Installation richtig konfiguriert haben!"
+echo -e "Um das AKTIN-Notaufnahmeregister zu nutzen, sind noch einige Konfigurationen nötig."
+echo
+echo -e "${RED}aktin.properties${WHI}"
+echo -e "Bearbeiten Sie die Datei aktin.properties und passen Sie die jeweiligen Felder an Ihre Einstellungen an."
+echo
+echo -e "${GRE} nano "$UPDATE_ROOT/aktin.properties"${WHI}"
+echo
+echo -e "Kopieren Sie die Datei anschließend in das Konfigurationsverzeichnis des Wildfly-Servers"
+echo
+echo -e "${GRE} cp "$UPDATE_ROOT/aktin.properties $WILDFLY_HOME"/standalone/configuration/${WHI}"
+echo 
+echo -e "${RED}email.config${WHI}"
+echo -e "Bearbeiten Sie die Datei email.config und passen Sie die jeweiligen Felder an Ihre Einstellungen an."
+echo
+echo -e "${GRE} nano "$UPDATE_ROOT/email.config"${WHI}"
+echo 
+echo -e "Führen Sie anschließend bei laufendem Wildfly-Server das Skript email_create.sh aus."
+echo
+echo -e "${GRE} service wildfly start${WHI}"
+echo -e "${GRE} ."$UPDATE_ROOT"/email_create.sh${WHI}"
+echo
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
 echo -e "Bitte melden Sie auftretende Fehler an it-support@aktin.org!"
-echo
 echo
 }
 

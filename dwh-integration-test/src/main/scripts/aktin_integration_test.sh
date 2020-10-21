@@ -22,6 +22,8 @@ tar xvzf packages/dwh-install-*.tar.gz
 cd aktin-dwh-installer
 ./aktin_install.sh
 
+# copy aktin.properties in wildfly configuration folder
+cp $(pwd)/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
 
 # if not running, start apache2, postgresql and wildfly service
 if  [[ $(service apache2 status | grep "not" | wc -l) == 1 ]]; then
@@ -33,6 +35,10 @@ fi
 if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
 	service wildfly start
 fi
+
+# write email.config into standalone.xml
+cd $(pwd)/aktin-dwh-installer/dwh-update
+./email_create.sh
 
 
 if [[ -n $(cat /var/www/html/webclient/i2b2_config_data.js | grep "debug: false") ]]; then

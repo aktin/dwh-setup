@@ -15,9 +15,9 @@ readonly GRE=${color_green}
 
 # create a log folder for this diagnosis
 CURRENT=$(date +%Y_%h_%d_%H:%M)
-readonly LOGFOLDER=aktin_diag_$CURRENT
-if [[ ! -d aktin_diag_$CURRENT ]]; then
-    mkdir aktin_diag_$CURRENT
+readonly LOGFOLDER=$(pwd)/aktin_diag_$CURRENT
+if [[ ! -d $(pwd)/aktin_diag_$CURRENT ]]; then
+    mkdir $(pwd)/aktin_diag_$CURRENT
 fi
 
 # check for root privileges
