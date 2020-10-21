@@ -1,39 +1,34 @@
-Installation und Update des AKTIN-Applikationsserver
-===============================================
-Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Data Warehouse läuft. Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte. Nach dem erfolgreichen Update oder Installation können Sie auf der Seite `http://IHRSERVER/aktin/admin/plain/test.html` die Funktionalität testen.
+<h3><u>Installation und Update des AKTIN-Applikationsserver</u></h3>
+Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung der Linux-Server in den Kliniken zuständig sind, auf denen das AKTIN-Data Warehouse läuft. Beschrieben wird das Vorgehen für eine Neuinstallation, verschiedene Varianten zum Update sowie optionale Konfigurationsschritte. Nach dem erfolgreichen Update oder Installation können Sie auf der Seite `http://{IHRSERVER}/aktin/admin/plain/test.html` die Funktionalität testen.
+<br></br>
 
-<!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
+<h4>Komplette Neuinstallation</h4>
+Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionierende Installation eines auf Linux basierenden Server-Betriebsystems. Es wird empfohlen, das von uns geteste Ubuntu 20.04 LTS einzusetzen. Bitte beachten Sie auch die Seite [Server-Installation](install-requirements.html). Dort werden die verschiedenen Schritte für eine Neu-Installation beschrieben.
+<br></br>
 
+<h4>Neuinstallation des AKTIN-Applikationsservers</h4>
+Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu installiert, so müssen Sie die Installation des AKTIN-Applikationsservers vornehmen. Eine Anleitung für die Verwendung des automatischen Installationsskriptes finden Sie auf der Seite [Installationsskript](install-script.html). Sie erhalten mit einer Neuinstallation automatisch den aktuellesten Stand von Version ${project.version}. Somit ist im Anschluss kein Update oder Patch mehr notwendig.
+<br></br>
 
-Komplette Neuinstallation
----------------------
-Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionierende Installation eines auf Linux basierenden Server-Betriebsystems. Es wird empfohlen, das von uns geteste Ubuntu 20.04 LTS einzusetzen. Bitte beachten Sie auch die [Server-Installation](install-requirements.html). Dort werden die verschiedenen Schritte für eine Neu-Installation beschrieben.
+<h4>Automatisches Update für Ubuntu</h4>
+Falls Sie einen Ubuntu-Server nutzen, der anhand der Anleitung eingerichtet wurde, sollte das Update-Skript bei Ihnen funktionieren. Für einen Update auf Version ${project.version} folgen Sie der Anleitung zum [skriptbasierten Update](update-auto.html). Diese Skript kann nach manueller Anpassung auch bei RedHat-Servern benutzt werden.
+<br></br>
 
-
-Neuinstallation des AKTIN-Applikationsservers
----------------------
-Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu installiert, so müssen sie die Installation des AKTIN-Applikationsservers vornehmen. Eine Anleitung für die Verwendung des automatischen Installationsskriptes finden Sie auf der Seite [Installationsskript](install-script.html). Sie erhalten mit einer Neuinstallation automatisch den aktuellesten Stand von Version ${project.version}. Somit ist im Anschluss kein Update oder Patch mehr notwendig.
-
-
-Automatisches Update für Ubuntu
----------------------
-Falls Sie einen Ubuntu-Server nutzen, der anhand der Anleitung eingerichtet wurde, sollten die Update-Scripte bei Ihnen funktionieren. Für einen Update auf ${project.version} folgen Sie der Anleitung zum [skriptbasierten Update](update-auto.html). Diese Skript kann nach manueller Anpassung auch bei RedHat-Servern benutzt werden.
-
-
-Manuelles Update für Ubuntu oder andere Betriebssysteme
----------------------
+<h4>Manuelles Update für Ubuntu oder andere Betriebssysteme</h4>
 Bei individuell konfigurierten Servern oder anderen Linux-Distributionen führen Sie die einzelnen Schritte des Skriptes manuell durch und passen gegebenenfalls die Pfade oder andere Besonderheiten entsprechend an. Bitte folgen Sie dabei der Anleitung zum [manuellen Update](update-manual.html)
+<br></br>
 
-
-Software-Pakete
----------------------
+<h4>Software-Pakete</h4>
 **Installationspaket mit DWH-J2EE-${dwhJ2EEVersion}** (Installation und Update)
+
 [${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz)
 
 **Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}** (nur Update)
+
 [${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
+<br></br>
 
+<h4>AKTIN-Software-Support</h4>
+Sollten Sie bei der Installation, dem Update oder dem Betrieb der AKTIN-Software auf Probeleme stoßen, so führen Sie bitte das AKTIN-Diagnose-Skript `aktin_diag.sh` aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html#AKTIN-Diagnose-Skript).
 
-AKTIN-Software-Support
----------------------
-Sollten Probleme bei der Installation, dem Update oder dem Betrieb der AKTIN-Software auftreten, so führen Sie bitte das AKTIN-Diagnose-Skript aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html) im bereich "AKTIN Diagnose-Skript". Senden Sie die dabei erzeugte Datei bitte mit einer Support-Anfrage an den AKTIN-Support unter [it-support@aktin.org](mailto:it-support@aktin.org). Die durch das Skript erzeugten Logs helfen uns bei der Identifizierung des Problems. Bei weiteren Infos und Fragen stehen wir Ihnen gerne unter der genannte E-Mail-Adresse zur Verfügung.
+Senden Sie die dabei erzeugte Datei bitte mit einer Support-Anfrage an den AKTIN-Support unter [it-support@aktin.org](mailto:it-support@aktin.org). Die durch das Skript erzeugten Logs helfen uns bei der Identifizierung des Problems. Bei weiteren Infos und Fragen stehen wir Ihnen selbstverständlich ebenso unter der genannte E-Mail-Adresse zur Verfügung.
