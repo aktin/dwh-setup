@@ -5,6 +5,9 @@
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
 set -euo pipefail
 
+readonly UPDATE_ROOT=$(pwd)
+readonly SQL_FILES=/tmp/sql
+
 # colors for console output
 readonly WHI=${color_white}
 readonly RED=${color_red}
@@ -35,6 +38,14 @@ echo
 echo -e "${YEL}+++++ STEP I +++++ Entfernung der Datenbanken i2b2 und aktin${WHI}"
 echo
 
+# copy sql folder to a location where postgres user can execute them
+if [[ ! -d /tmp/sql ]]; then
+echo -e "${YEL}SQL-Dateien werden nach /tmp kopiert.${WHI}"
+mkdir $SQL_FILES
+cp $UPDATE_ROOT/sql/* $SQL_FILES/
+chmod 777 -R $SQL_FILES
+fi
+
 service postgresql start
 # delete aktin database and respective users
 if  [[ $(sudo -u postgres psql -l | grep "aktin" | wc -l) == 1 ]]; then
@@ -55,6 +66,12 @@ else
 	echo -e "${ORA}Die Datenbank i2b2 und die entsprechenden User wurden bereits entfernt.${WHI}"
 fi
 service postgresql stop
+
+# delete sql folder from /tmp
+if [[ -d /tmp/sql ]]; then
+echo -e "${YEL}SQL-Dateien werden aus /tmp wieder gelöscht.${WHI}"
+rm -r $SQL_FILES
+fi
 }
 
 
@@ -159,19 +176,8 @@ fi
 
 
 
-final_steps(){
-set -euo pipefail # stop reset on errors
-echo 
-
-# clean folder /tmp/
-if [ -n "$(ls -A /tmp/)" ]; then
-   	echo -e "${YEL}Der Ordner /tmp wird geleert.${WHI}"
-	rm -r /tmp/*
-else
-   echo -e "${ORA}Der Ordner /tmp wurde bereits geleert.${WHI}"
-fi
-
-# end message
+end_message(){
+set -euo pipefail # stop installation on errors
 echo
 echo -e "${YEL}"
 echo "Reset abgeschlossen!"
@@ -181,15 +187,12 @@ echo "Eine Neuinstallation der Komponenten ist nun möglich."
 echo -e "${WHI}"
 }
 
-
-
-
 main(){
 set -euo pipefail # stop reset on errors
 step_I | tee -a $LOGFILE
 step_II | tee -a $LOGFILE
 step_III | tee -a $LOGFILE
-final_steps | tee -a $LOGFILE
+end_message | tee -a $LOGFILE
 }
 
 main
