@@ -1,10 +1,10 @@
-<h3><u>Installationsskript: Automatische Konfiguration des AKTIN-Applikations-Server mit dem Installationsskript</u></h3>
-Unser Installationsskript wurde getestet mit Ubuntu 18.04 LTS und Ubuntu 20.04 LTS. Wenn Sie ein anderes System verwenden, müssen Sie die breitgestellten Skripte anpassen oder die enthaltenen Schritte manuell durchführen. Bei einer Neuinstallation beachten Sie bitte die Hinweise unter der Seite [Server-Installation](install-requirements.html).
+<h3><u>Installationsskript: Automatische Installation und Konfiguration der AKTIN-Datawarehouse-Software mit dem Installationsskript</u></h3>
+Mit diesem Installationsskript wird der AKTIN-Applikations-Server und die AKTIN-DWH-Software die auf diesem ausgeführt wird installiert. Die AKTIN-DWH-Software ist auf allen Linux Distributionen ausführbar. Das Installationsskript wurde unter Ubuntu 18.04 LTS und Ubuntu 20.04 LTS getestet. Wenn Sie eine andere Distribution verwenden möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org). Bei einer Neuinstallation beachten Sie bitte die Hinweise unter der Seite [Server-Installation](install-requirements.html).
 
 <!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
 <br></br>
 
-<h4>Erste Schritte</h4>
+<h4>Vorbereitung der Installation</h4>
 Falls eine bestehende Betriebsversion verwendet wird, beachten Sie bitte, ob Java installiert ist. Mittels des AKTIN-Installationsskriptes wird Java Version ${version_java} von OpenJDK installiert. Sind bereits niedrigere Versionen von Java vorhanden, kann dies zu Problemen bei der Installation und im Betrieb führen. Sofern Java installiert ist, können Sie die Version über folgenden Befehl herausfinden:
 
 ````
@@ -38,11 +38,11 @@ Ist das Paket heruntergeladen, kann es entpackt werden mit
 tar xvzf dwh-install-${project.version}.tar.gz
 ```
 
-Die Dateien werden dabei automatisch in einen Ordner namens `aktin-dwh-installer` entpackt.
+Die Dateien werden dabei automatisch im Ordner `aktin-dwh-installer` entpackt.
 <br></br>
 
 
-<h4>Installation der Basissoftware</h4>
+<h4>Installation der AKTIN-DWH-Software</h4>
 Starten Sie das Skript mit:
 
 ```
@@ -244,21 +244,12 @@ Haben Sie die `aktin.properties` nach Ihren Wünschen angepasst, kopieren Sie si
 cp /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
 ```
 
-Nachdem Sie die Datei `aktin.properties` in das Konfigurationsverzeichnis kopiert haben, muss der Wildfly-Server neugestartet werden. Im Zuge der Installation wurden bereits alle Komponenten des AKTIN Data Warehous automatisch gestartet. Führen Sie also den Befehl
-
-```
-service wildfly restart
-```
-
-aus, um den Server neuzustarten und die neuen Einstellungen in den Wildfly-Server einzulesen.
-
 Für nachträgliche Änderungen an `aktin.properties` beachten Sie die Hinweise im Abschnitt [Weitere Anmerkungen](install-script.html#Weitere_Anmerkungen).
 <br></br>
 
-
 <h5>email.config</h5>
 
-In dieser Datei wird die E-Mail-Konfiguration für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll (z.B. für den Versand von monatlich erzeugten Berichtsdokumente an die in `aktin.properties` angegebenen E-Mail-Adresse). Die in `email.config` angegebene Adresse sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation. Für das Anpassen der Datei `email.config` muss folgender Befehl ausgeführt werden:
+In dieser Datei wird die E-Mail-Konfiguration für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll (z.B. für den Versand von monatlich erzeugten Berichtsdokumente an die in `aktin.properties` angegebenen E-Mail-Adresse). Die in `email.config` angegebene Adresse sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort oder Funktions-E-Mail-Adresse) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation. Für das Anpassen der Datei `email.config` muss folgender Befehl ausgeführt werden:
 
 ```
 nano /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/email.config
@@ -321,7 +312,7 @@ Das genaue Vorgehen hierfür können Sie in den letzten beiden Abschnitten **Ben
 
 
 <h4>Test der Betriebsfähigkeit</h4>
-Nach der Installation der AKTIN-Software ist es anzuraten, dessen Betriebsfähigkeit zu testen. Im folgenden Bereich können Sie Methoden und Funktionalitäten für die Verifikation der Betriebsfähigkeit entnehmen.
+Nach der Installation der AKTIN-DWH-Software ist es anzuraten, dessen Betriebsfähigkeit zu testen. Im folgenden Bereich können Sie Methoden und Funktionalitäten für die Verifikation der Betriebsfähigkeit entnehmen.
 
 <h5>Data Warehouse</h5>
 
@@ -365,23 +356,25 @@ Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im Verzeichnis `
 
 
 <h4>Weitere Anmerkungen</h4>
-* Der Wildfly-Server hat während des Betriebs eine hohe Abhängigkeit zum Postgres Datenbank-Server. Der Wildfly-Server sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart des Postgres Datenbank auch der Wildfly-Server neugestartet werden.
-
-* Im Internet Explorer kommt es in der i2b2-Oberfläche zu Darstellungsfehlern. So werden z.B. keine User unter _Manage Users_ angezeigt und unter _Manage Projects_ sind die Projekte nicht einsehbar (sattdessen erscheint ein permanentes Ladezeichen). Dieser Fehler ist bereits bekannt, kann aber von unserer Seite aus nicht behoben werden, da i2b2 eine externe Software von der wir lediglich die Schnittstelle nutzen. Wir würden Sie daher bitten für die Nutzerverwaltung einen anderen Browser zu verwenden (z.B. Firefox oder Chrome).
-
-* Für nachträgliche Änderungen in der Datei `aktin.properties` bearbeiten Sie über den Befehl `nano` die im Wildfly-Konfigurationsordner hinterlegte Datei. Nach Abschluss der Bearbeitung, speichern Sie die Änderungen in der Konfigurationsdatei ab und starten Sie den Wildfly-Server neu:
-
+* Der Wildfly-Server hat ist während des Betriebs  Abhängig vom Postgres Datenbank-Server. Der Wildfly-Server sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart der Postgres Datenbank auch der Wildfly-Server neugestartet werden mit dem Befehl 
 ```
-nano /opt/wildfly/standalone/configuration/aktin.properties
-
 service wildfly restart
 ```
 
-* Für nachträgliche Änderungen in der Datei `email.config` müssen die Änderungen während eines laufenden Wildfly-Servers geschehen, da sämtliche Konfigurationen in der Datei `standalone.xml` des Servers hinterlegt sind. Vergewissern Sie sich über den Befehl `service wildfly status`, dass der Wildfly-Server online ist. Sofern er dies ist, bearbeiten Sie den Befehl `nano` die im Update-Verzeichnis hinterlegte Konfigurationsdatei. Führen Sie danach das Skript `email_reset.sh` aus, um die derzeitigen Konfigurationseinstellungen aus `standalone.xml` zu löschen. Laden Sie im Anschluss Ihre aktualisierte Konfiguration über das Skript `email_create.sh` in `standalone.xml` ein:
+* Im Internet Explorer kommt es in der i2b2-Oberfläche zu Darstellungsfehlern. So werden z.B. keine User unter _Manage Users_ angezeigt und unter _Manage Projects_ sind die Projekte nicht einsehbar (sattdessen erscheint ein permanentes Ladezeichen). Dieser Fehler ist bereits bekannt, kann aber von unserer Seite aus nicht behoben werden, da i2b2 von i2b2 Foundation Inc. entwickelt wird. Wir würden Sie daher bitten für die Nutzerverwaltung einen anderen Browser zu verwenden (z.B. Firefox oder Chrome).
+
+* Für nachträgliche Änderungen in der Datei `aktin.properties` bearbeiten Sie über den Befehl `nano aktin.properties` die im Wildfly-Konfigurationsordner hinterlegte Datei. Nach Abschluss der Bearbeitung, speichern Sie die Änderungen ab und starten Sie den Wildfly neu.
 
 ```
-service wildfly status
+nano /opt/wildfly/standalone/configuration/aktin.properties
+```
+```
+service wildfly restart
+```
 
+* Für nachträgliche Änderungen in der Datei `email.config` müssen die Änderungen während eines laufenden Wildfly-Servers geschehen, da sämtliche Konfigurationen in der Datei `standalone.xml` des Servers hinterlegt sind. Bearbeiten Sie zunächst über den Befehl `nano` die im Update-Verzeichnis hinterlegte Konfigurationsdatei. Führen Sie danach das Skript `email_reset.sh` aus, um die derzeitigen Konfigurationseinstellungen aus `standalone.xml` zu löschen. Laden Sie im Anschluss Ihre aktualisierte Konfiguration über das Skript `email_create.sh` in `standalone.xml` ein:
+
+```
 cd /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/
 
 nano email.config
