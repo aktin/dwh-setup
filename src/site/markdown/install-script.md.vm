@@ -244,8 +244,17 @@ Haben Sie die `aktin.properties` nach Ihren Wünschen angepasst, kopieren Sie si
 cp /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
 ```
 
+Nachdem Sie die Datei `aktin.properties` in das Konfigurationsverzeichnis kopiert haben, muss der Wildfly-Server neugestartet werden. Im Zuge der Installation wurden bereits alle Komponenten des AKTIN Data Warehous automatisch gestartet. Führen Sie also den Befehl
+
+```
+service wildfly restart
+```
+
+aus, um den Server neuzustarten und die neuen Einstellungen in den Wildfly-Server einzulesen.
+
 Für nachträgliche Änderungen an `aktin.properties` beachten Sie die Hinweise im Abschnitt [Weitere Anmerkungen](install-script.html#Weitere_Anmerkungen).
 <br></br>
+
 
 <h5>email.config</h5>
 
@@ -356,7 +365,8 @@ Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im Verzeichnis `
 
 
 <h4>Weitere Anmerkungen</h4>
-* Der Wildfly-Server hat ist während des Betriebs  Abhängig vom Postgres Datenbank-Server. Der Wildfly-Server sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart der Postgres Datenbank auch der Wildfly-Server neugestartet werden mit dem Befehl 
+* Der Wildfly-Server hat ist während des Betriebs abhängig vom Postgres Datenbank-Server. Der Wildfly-Server sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart der Postgres Datenbank auch der Wildfly-Server neugestartet werden mit dem Befehl
+
 ```
 service wildfly restart
 ```
@@ -372,10 +382,12 @@ nano /opt/wildfly/standalone/configuration/aktin.properties
 service wildfly restart
 ```
 
-* Für nachträgliche Änderungen in der Datei `email.config` müssen die Änderungen während eines laufenden Wildfly-Servers geschehen, da sämtliche Konfigurationen in der Datei `standalone.xml` des Servers hinterlegt sind. Bearbeiten Sie zunächst über den Befehl `nano` die im Update-Verzeichnis hinterlegte Konfigurationsdatei. Führen Sie danach das Skript `email_reset.sh` aus, um die derzeitigen Konfigurationseinstellungen aus `standalone.xml` zu löschen. Laden Sie im Anschluss Ihre aktualisierte Konfiguration über das Skript `email_create.sh` in `standalone.xml` ein:
+* Für nachträgliche Änderungen in der Datei `email.config` müssen die Änderungen während eines laufenden Wildfly-Servers geschehen, da sämtliche Konfigurationen in der Datei `standalone.xml` des Servers hinterlegt sind. Vergewissern Sie sich über den Befehl `service wildfly status`, dass der Wildfly-Server online ist. Sofern er dies ist, bearbeiten Sie zunächst über den Befehl `nano` die im Update-Verzeichnis hinterlegte Konfigurationsdatei. Führen Sie danach das Skript `email_reset.sh` aus, um die derzeitigen Konfigurationseinstellungen aus `standalone.xml` zu löschen. Laden Sie im Anschluss Ihre aktualisierte Konfiguration über das Skript `email_create.sh` in `standalone.xml` ein:
 
 ```
 cd /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/
+
+service wildfly status
 
 nano email.config
 
