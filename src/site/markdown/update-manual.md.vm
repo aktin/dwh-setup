@@ -7,13 +7,27 @@ Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sol
 <br></br>
 
 <h4>Deployment des neuen Softwarepaketes</h4>
-Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear) heruntergeladen werden. Anschließend muss es in den Ordner `deployments` des Wildfly-Servers kopiert werden.
+Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear) heruntergeladen werden. Sofern Sie eine laufende Instanz des Wildlfy-Servers besitzen, so stoppen Sie diese zunächst über den folgenden Befehl:
 
 ```
+service wildfly stop
+```
+
+Anschließend kann die heruntergeladene Datei in den Ordner `deployments` des Wildfly-Servers kopiert werden. Stellen Sie jedoch sicher, dass es sich bei Ihrer kopierten EAR-Datei um die einzige Datei mit dieser Endung handelt. Löschen Sie gegebenenfalls vor dem Kopieren sämtliche andere Dateien mit der Endung `.ear` aus dem Ordner.
+
+```
+rm /opt/wildlfy/standalone/deployments/*.ear*
+
 cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear /opt/wildlfy/standalone/deployments/
 ```
 
-Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Stellen Sie jedoch sicher, dass es sich bei Ihrer kopierten EAR-Datei um die einzige Datei mit dieser Endung handelt. Löschen Sie gegebenenfalls sämtliche andere Dateien mit der Endung '.ear' aus dem Ordner. Nach erfolgereichem Deployment wird die Datei `opt/wildlfy/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sie können dies mit folgendem Befehl kontrollieren:
+Starten Sie nach dem Kopieren den Wildlfy-Server:
+
+```
+service wildfly start
+```
+
+Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Nach erfolgereichem Deployment wird die Datei `opt/wildlfy/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sie können dies mit folgendem Befehl kontrollieren:
 
 ```
 ls /opt/wildfly/standalone/deployments/dwh-j2ee-*.deployed
