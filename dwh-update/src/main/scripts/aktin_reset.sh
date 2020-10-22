@@ -146,17 +146,11 @@ echo
 # - setting of smtp configuration
 # - deployment of aktin.ear and given permission to user wildfly
 if [[ -d /opt/wildfly-$WILDFLY_VERSION ]]; then
-	echo -e "${YEL}Der Wildfly-Server wird entfernt.${WHI}"
+	echo -e "${YEL}Der Wildfly-Server und der Link zum Wildfly-Server werden entfernt.${WHI}"
 	rm -r /opt/wildfly-$WILDFLY_VERSION
+	rm /opt/wildfly
 else 
-	echo -e "${ORA}Der Wildfly-Server wurde bereits entfernt.${WHI}"
-fi
-
-if [[ -d /opt/wildfly ]]; then
-	echo -e "${YEL}Der Link zum Wildfly-Server wird entfernt.${WHI}"
-	rm -r /opt/wildfly
-else 
-	echo -e "${ORA}Der Link zum Wildfly-Server wurde bereits entfernt.${WHI}"
+	echo -e "${ORA}Der Wildfly-Server und der Link zum Wildfly-Server wurden bereits entfernt.${WHI}"
 fi
 
 # remove wildfly service
