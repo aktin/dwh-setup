@@ -52,7 +52,7 @@ else
 	echo -e "${ORA}dwh-j2ee-$AKTIN_VERSION.ear ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi
 
-# start wildfly if nor running
+# start wildfly if not running
 if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
 	service wildfly start
 fi
