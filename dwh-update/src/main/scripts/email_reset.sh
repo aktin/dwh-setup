@@ -6,9 +6,15 @@ set -euo pipefail # stop on errors
 readonly WILDFLY_HOME=/opt/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
+# colors for console output
+readonly WHI=${color_white}
+readonly RED=${color_red}
 
-# start wildfly safely
-./wildfly_safe_start.sh
+# check for running wildlfy server
+if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
+   echo "${RED}Running instance of wildfly could not be found!${WHI}"
+   exit 1
+fi
 
 # not changeable parameters
 readonly SESSIONNAME=AktinMailSession
@@ -25,6 +31,3 @@ fi
 if [ $( grep -c "mail-session name=\"$SESSIONNAME\"" $WILDFLY_HOME/standalone/configuration/standalone.xml ) -gt 0 ]; then 
 	$JBOSSCLI "/subsystem=mail/mail-session=$SESSIONNAME:remove"
 fi	
-
-# stop wildfly safely
-./wildfly_safe_stop.sh

@@ -6,9 +6,15 @@ set -euo pipefail # stop on errors
 readonly WILDFLY_HOME=/opt/wildfly
 readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
+# colors for console output
+readonly WHI=${color_white}
+readonly RED=${color_red}
 
-# start wildfly safely
-./wildfly_safe_start.sh
+# check for running wildlfy server
+if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
+   echo "${RED}Running instance of wildfly could not be found!${WHI}"
+   exit 1
+fi
 
 # get smtp settings (see email.config)
 . email.config
@@ -27,6 +33,3 @@ else
 	$JBOSSCLI "/subsystem=mail/mail-session=$SESSIONNAME/server=smtp:add(outbound-socket-binding-ref=$SMTPBIND)"
 fi
 $JBOSSCLI "/subsystem=mail/mail-session=$SESSIONNAME/:write-attribute(name=from, value=$MAILFROM)"
-
-# stop wildfly safely
-./wildfly_safe_stop.sh

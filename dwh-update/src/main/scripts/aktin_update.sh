@@ -51,21 +51,6 @@ fi
 
 
 
-services_stop(){
-set -euo pipefail
-
-# if running, stop apache2, postgresql and wildfly service
-if  [[ ! $(service apache2 status | grep "not" | wc -l) == 1 ]]; then
-	service apache2 stop
-fi
-if  [[ $(service postgresql status | grep "online" | wc -l) == 1 ]]; then
-	service postgresql stop
-fi
-if  [[ ! $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
-	service wildfly stop
-fi
-}
-
 end_message(){
 set -euo pipefail # stop installation on errors
 echo
@@ -75,7 +60,6 @@ echo
 
 main(){
 set -euo pipefail
-services_stop | tee -a $LOGFILE
 step_A | tee -a $LOGFILE
 end_message | tee -a $LOGFILE
 }
