@@ -47,6 +47,9 @@ echo "INJECT email.config"
 cd aktin-dwh-installer/dwh-update
 ./email_create.sh
 
+# restart wildfly to apply new aktin.properties
+service wildfly restart
+
 # activacte i2b2 webclient debugging
 echo "ACTIVATE debugging"
 sed -i 's|debug: false|debug: true|' /var/www/html/webclient/i2b2_config_data.js
