@@ -27,7 +27,7 @@ readonly LOGFILE=$(pwd)/aktin_update_$(date +%Y_%h_%d_%H:%M).log
 step_A(){
 set -euo pipefail
 echo
-echo -e "${YEL}++ STEP A ++ Deployment der EAR{WHI}"
+echo -e "${YEL}+++++ AKTIN-Update : STEP A +++++ Deployment der EAR{WHI}"
 echo
 
 # remove all old dwh-j2ee.ears
@@ -49,6 +49,8 @@ fi
 }
 
 
+
+
 services_stop(){
 set -euo pipefail
 
@@ -64,20 +66,18 @@ if  [[ ! $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
 fi
 }
 
-services_start(){
-set -euo pipefail
-
-# start all services
-service apache2 start
-service postgresql start
-service wildfly start
+end_message(){
+set -euo pipefail # stop installation on errors
+echo
+echo -e "${YEL}Update erfolgreich abgeschlossen!${WHI}"
+echo
 }
 
 main(){
 set -euo pipefail
 services_stop | tee -a $LOGFILE
-
 step_A | tee -a $LOGFILE
+end_message | tee -a $LOGFILE
 }
 
 main

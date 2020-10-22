@@ -341,9 +341,6 @@ fi
 
 step_V(){
 set -euo pipefail # stop installation on errors
-echo
-echo -e "${YEL}+++++ STEP V +++++ Ausführung des AKTIN-Update${WHI}"
-echo
 
 cd $UPDATE_ROOT
 ./aktin_update.sh
@@ -387,9 +384,6 @@ echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
 echo -e "Bitte melden Sie auftretende Fehler an it-support@aktin.org!"
 echo
 }
-
-
-
 
 main(){
 set -euo pipefail # stop installation on errors
