@@ -23,10 +23,6 @@ cd aktin-dwh-installer
 ./aktin_install.sh
 
 
-# copy aktin.properties in wildfly configuration folder
-cd $INTEGRATION_ROOT
-cp aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
-
 # if not running, start apache2, postgresql and wildfly service
 if  [[ $(service apache2 status | grep "not" | wc -l) == 1 ]]; then
 	service apache2 start
@@ -38,22 +34,30 @@ if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
 	service wildfly start
 fi
 
-# write email.config into standalone.xml
-cd aktin-dwh-installer/dwh-update
-./email_create.sh
-service wildfly start
-
 
 if [[ -n $(cat /var/www/html/webclient/i2b2_config_data.js | grep "debug: false") ]]; then
 
+# copy aktin.properties in wildfly configuration folder
+echo "COPY aktin.properties"
+cd $INTEGRATION_ROOT
+cp aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
+
+# write email.config into standalone.xml
+echo "INJECT email.config"
+cd aktin-dwh-installer/dwh-update
+./email_create.sh
+
 # activacte i2b2 webclient debugging
+echo "ACTIVATE debugging"
 sed -i 's|debug: false|debug: true|' /var/www/html/webclient/i2b2_config_data.js
 
 # set ports of apache2 to all IP adresses
+echo "CHANGE ports"
 sed -i 's/Listen 80/Listen 0.0.0.0:80/' /etc/apache2/ports.conf
 sed -i 's/Listen 443/Listen 0.0.0.0:443/g' /etc/apache2/ports.conf
 
 # add i2b2 demo data
+echo "ADD db_demo"
 cp $SQL_FILES/i2b2_db_demo.sql /tmp/
 sudo -u postgres psql -d i2b2 -f /tmp/i2b2_db_demo.sql
 rm /tmp/i2b2_db_demo.sql
