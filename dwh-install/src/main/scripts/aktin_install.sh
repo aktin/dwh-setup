@@ -205,7 +205,7 @@ else
 fi
 
 # create link to wildfly folder in /opt
-if [[ ! -L /opt/wildlfy && ! -d /opt/wildlfy ]]; then
+if [[ ! -d /opt/wildlfy ]]; then
 	echo -e "${YEL}Ein Link zum Wildfly-Server wird in /opt abgelegt.${WHI}"
 	ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
 else
