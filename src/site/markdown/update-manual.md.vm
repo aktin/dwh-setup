@@ -1,32 +1,24 @@
-Manualles Update auf DWH-J2EE-${dwhJ2EEVersion} für Ubuntu
-===============================================
+<h3><u>Manualles Update auf DWH-J2EE-${dwhJ2EEVersion} für Ubuntu</u></h3>
 
-<!--  MACRO{toc|section=0|fromDepth=1|toDepth=6} -->
+<!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
 
-Anmelden als ROOT
----------------------
-Für die Ausführung ist wichtig, dass der User als `root` angemeldet ist. Dazu führen Sie, falls der User auf der Sudoer-Liste steht (der User `root` hat dann meist kein eigenes Passwort), folgenden Befehl aus:
-```
-sudo su -
-```
-oder, falls der User nicht auf der Sudoer-Liste steht (`root` hat ein eigenes Passwort):
-```
-su -
-```
-Alle folgende Befehle sollten als `root`-User ausgeführt werden.
+<h4>Anmelden als ROOT</h4>
+Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sollten Sie den Nutzer `root` noch nicht aktiviert haben, so folgen Sie bitte den Anweisungen im Abschnitt [Erste Schritte](install-script.html#Erste_Schritte) des Installationsskriptes. Alle folgenden Befehle sollten nur als Nutzer `root` ausgeführt werden.
+<br></br>
 
-Deployment des neuen Softwarepaketes
----------------------
-Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder heruntergeladen werden unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear). Anschließend muss es in den `deployments`-Ordner des Wildfly-Servers kopiert werden:
+<h4>Deployment des neuen Softwarepaketes</h4>
+Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear) heruntergeladen werden. Anschließend muss es in den Ordner `deployments` des Wildfly-Servers kopiert werden.
+
 ```
-cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear $WILDFLY_HOME/standalone/deployments/
+cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear /opt/wildlfy/standalone/deployments/
 ```
 
-Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Stellen Sie jedoch sicher, dass es sich bei Ihrer kopierten EAR-Datei um die einzige Datei mit dieser Endung handelt. Löschen Sie gegebenenfalls sämtliche andere Dateien mit der Endung '.ear' aus dem Ordner. Nach erfolgereichem Deployment wird die Datei `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sie können dies mit folgendem Befehl kontrollieren:
+Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Stellen Sie jedoch sicher, dass es sich bei Ihrer kopierten EAR-Datei um die einzige Datei mit dieser Endung handelt. Löschen Sie gegebenenfalls sämtliche andere Dateien mit der Endung '.ear' aus dem Ordner. Nach erfolgereichem Deployment wird die Datei `opt/wildlfy/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sie können dies mit folgendem Befehl kontrollieren:
+
 ```
-ls $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*.deployed
+ls /opt/wildfly/standalone/deployments/dwh-j2ee-*.deployed
 ```
 
-Sollte die Datei angezeigt werden, war das Update erfolgreich. Sollte stattdessen `$WILDFLY_HOME/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen oder ein anderer Fehler auftreten, so führen Sie bitte das Aktin-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Aktin Diagnose-Skript".
+Sollte die Datei angezeigt werden, war das Update erfolgreich. Sollte stattdessen `/opt/wildfly/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen oder ein anderer Fehler auftreten, so führen Sie bitte das AKTIN-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie im Bereich [AKTIN-Diagnose-Skript](install-script.html#AKTIN-Diagnose-Skript) des Installationsskriptes.
 
-Nach dem erfolgreichen Update können Sie auf der Seite `http://IHRSERVER/aktin/admin/plain/test.html` die Grundfunktionalität testen. Eine weiterführende Anleitung zum Testen der Verbindung finden Sie auf der Seite [Installationsskript](install-script.html) im Bereich "Test der Betriebsfähigkeit".
+Nach dem erfolgreichen Update können Sie auf der Seite `http://<IHR SERVER>/aktin/admin/plain/test.html` die Grundfunktionalität testen. Eine weiterführende Anleitung zum Testen der Verbindung finden Sie im Bereich [Test der Betriebsfähigkeit](install-script.html#Test_der_Betriebsfähigkeit).
