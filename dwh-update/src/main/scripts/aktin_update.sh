@@ -30,6 +30,11 @@ echo
 echo -e "${YEL}+++++ AKTIN-Update : STEP A +++++ Deployment der EAR${WHI}"
 echo
 
+# stop wildfly if running
+if  [[ ! $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
+	service wildfly stop
+fi
+
 # remove all old dwh-j2ee.ears
 if [[ $(ls /opt/wildfly/standalone/deployments/ | grep -c dwh-j2ee-*) != 0 ]]; then
 	echo -e "${YEL}Alte dwh-j2ee.ear werden gelöscht.${WHI}"
@@ -45,6 +50,11 @@ if [[ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear ]]; 
 	chown wildfly:wildfly $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear
 else
 	echo -e "${ORA}dwh-j2ee-$AKTIN_VERSION.ear ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
+fi
+
+# start wildfly if nor running
+if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
+	service wildfly start
 fi
 }
 
