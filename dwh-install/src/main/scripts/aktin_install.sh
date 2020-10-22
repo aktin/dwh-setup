@@ -349,6 +349,13 @@ cd $UPDATE_ROOT
 
 
 
+start_services(){
+set -euo pipefail # stop installation on errors
+service apache2 start
+service postgresql start
+service wildfly start
+}
+
 end_message(){
 set -euo pipefail # stop installation on errors
 echo
@@ -391,6 +398,7 @@ step_I | tee -a $LOGFILE
 step_II | tee -a $LOGFILE
 step_III | tee -a $LOGFILE
 step_IV | tee -a $LOGFILE
+start_services | tee -a $LOGFILE
 step_V # update has its own logfile
 end_message | tee -a $LOGFILE
 }
