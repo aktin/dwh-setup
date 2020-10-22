@@ -1,5 +1,3 @@
-# script create a datasource for AKTIN, is injected into wildfly/standalone.xml via JBOSS cli
-
 set jdbcUrl=jdbc:postgresql://localhost:5432/aktin
 set username=aktin
 set password=aktin

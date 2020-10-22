@@ -1,5 +1,3 @@
-# script to update logging of wildfly, is injected into wildfly/standalone.xml via JBOSS cli
-
 /subsystem=logging/root-logger=ROOT:remove-handler(name="FILE")
 /subsystem=logging/root-logger=ROOT:remove-handler(name="CONSOLE")
 

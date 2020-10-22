@@ -5,6 +5,8 @@
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
 set -euo pipefail
 
+readonly WILDFLY_VERSION=${version_wildfly}
+
 readonly UPDATE_ROOT=$(pwd)
 readonly SQL_FILES=/tmp/sql
 
@@ -50,7 +52,7 @@ service postgresql start
 # delete aktin database and respective users
 if  [[ $(sudo -u postgres psql -l | grep "aktin" | wc -l) == 1 ]]; then
 	echo -e "${YEL}Die Datenbank aktin und der entsprechende User werden entfernt.${WHI}"
-	sudo -u postgres psql -f sql/aktin_postgres_drop.sql
+	sudo -u postgres psql -f $SQL_FILES//aktin_postgres_drop.sql
 else
 	echo -e "${ORA}Die Datenbank aktin und der entsprechende User wurden bereits entfernt.${WHI}"
 fi
@@ -61,7 +63,7 @@ fi
 # - loading of i2b2 data into database
 if  [[ $(sudo -u postgres psql -l | grep "i2b2" | wc -l) == 1 ]]; then
 	echo -e "${YEL}Die Datenbank i2b2 und die entsprechenden User werden entfernt.${WHI}"
-	sudo -u postgres psql -f sql/i2b2_postgres_drop.sql
+	sudo -u postgres psql -f $SQL_FILES//i2b2_postgres_drop.sql
 else
 	echo -e "${ORA}Die Datenbank i2b2 und die entsprechenden User wurden bereits entfernt.${WHI}"
 fi
@@ -143,11 +145,18 @@ echo
 # - creation of aktin datasource
 # - setting of smtp configuration
 # - deployment of aktin.ear and given permission to user wildfly
-if [[ -d /opt/wildfly ]]; then
+if [[ -d /opt/wildfly-$WILDFLY_VERSION ]]; then
 	echo -e "${YEL}Der Wildfly-Server wird entfernt.${WHI}"
-	rm -r /opt/wildfly
+	rm -r /opt/wildfly-$WILDFLY_VERSION
 else 
 	echo -e "${ORA}Der Wildfly-Server wurde bereits entfernt.${WHI}"
+fi
+
+if [[ -d /opt/wildfly ]]; then
+	echo -e "${YEL}Der Link zum Wildfly-Server wird entfernt.${WHI}"
+	rm -r /opt/wildfly
+else 
+	echo -e "${ORA}Der Link zum Wildfly-Server wurde bereits entfernt.${WHI}"
 fi
 
 # remove wildfly service
@@ -165,11 +174,11 @@ fi
 
 # remove user wildfly and reset permission of aktin.properties
 if [[ -n $(grep "wildfly" /etc/passwd) ]]; then
-	echo -e "${YEL}Der User wildfly wird entfernt.${WHI}"
+	echo -e "${YEL}Der User wildfly wird entfernt und die Rechte für aktin.properties zurückgesetzt.${WHI}"
 	userdel wildfly
 	chown -R root:root aktin.properties
 else
-	echo -e "${ORA}Der User wildfly wurde bereits entfernt.${WHI}"
+	echo -e "${ORA}Der User wildfly wurde bereits entfernt und die Rechte für aktin.properties zurückgesetzt.${WHI}"
 fi
 }
 

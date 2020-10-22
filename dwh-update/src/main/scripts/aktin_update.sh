@@ -27,7 +27,7 @@ readonly LOGFILE=$(pwd)/aktin_update_$(date +%Y_%h_%d_%H:%M).log
 step_A(){
 set -euo pipefail
 echo
-echo -e "${YEL}+++++ AKTIN-Update : STEP A +++++ Deployment der EAR{WHI}"
+echo -e "${YEL}+++++ AKTIN-Update : STEP A +++++ Deployment der EAR${WHI}"
 echo
 
 # remove all old dwh-j2ee.ears
