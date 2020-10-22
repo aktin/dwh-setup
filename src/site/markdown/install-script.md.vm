@@ -11,13 +11,22 @@ Falls eine bestehende Betriebsversion verwendet wird, beachten Sie bitte, ob Jav
 java --version
 ````
 
-Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server. Wechseln Sie zunächst zum Benutzer `root` über den Befehl
+Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server sowie die Rechte des Nutzers `root`. Standardmäßig ist dieser Nutzer seit Ubuntu 14.04 deaktiviert. Um ihn zu reaktivieren, wechseln Sie zunächst zu einer `root`-Sitzung über den Befehl
 
 ```
-su -
+sudo -i
 ```
 
-Anschließend können Sie das Installationspaket unter folgendem Link herunterladen (evtl. mit der Option `--no-check-certificate` bei Zertifikatfehlern):
+Anschließend können Sie über den Befehl
+
+```
+sudo passwd root
+```
+
+den Nutzer `root` wieder reaktivieren. Dafür werden Sie zunächst aufgefordert, das Password des derzeitigen Nutzers anzugeben. Im Anschluss müssen Sie für `root` ein neues Passwort festlegen. Haben Sie das Passwort festgelegt, können Sie sich nach einem Abmelden mit dem Nutzer `root` anmelden.
+
+
+Das Installationspaket können Sie unter folgendem Link herunterladen (evtl. mit der Option `--no-check-certificate` bei Zertifikatfehlern):
 
 ```
 ${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
@@ -374,7 +383,7 @@ nano /opt/wildfly/standalone/configuration/aktin.properties
 service wildfly start
 ```
 
-* Für nachträgliche Änderungen in der Datei `email.config` müssen die Änderungen während eines laufenden Wildfly-Servers geschehen, da sämtliche Konfigurationen in der Datei `standalone.xml` des Servers hinterlegt sind. Bearbeiten Sie zunächst über den Befehl `nano` die im Update-Verzeichnis hinterlegte Konfigurationsdatei. Führen Sie anschießend das Skript `email_reset.sh` aus, um die derzeitigen Konfigurationseinstellungen aus `standalone.xml` zu löschen. Laden Sie anschließend Ihre aktualisierte Konfiguration über das Skript `email_create.sh` in `standalone.xml` ein. Starten Sie anschließend den Wildfly-Server neu:
+* Für nachträgliche Änderungen in der Datei `email.config` müssen die Änderungen während eines laufenden Wildfly-Servers geschehen, da sämtliche Konfigurationen in der Datei `standalone.xml` des Servers hinterlegt sind. Bearbeiten Sie zunächst über den Befehl `nano` die im Update-Verzeichnis hinterlegte Konfigurationsdatei. Führen Sie danach das Skript `email_reset.sh` aus, um die derzeitigen Konfigurationseinstellungen aus `standalone.xml` zu löschen. Laden Sie im Anschluss Ihre aktualisierte Konfiguration über das Skript `email_create.sh` in `standalone.xml` ein. Nehmen Sie den Betrieb wieder auf, indem Sie den Wildfly-Server starten:
 
 ```
 cd /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/
