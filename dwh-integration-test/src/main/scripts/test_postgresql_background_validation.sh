@@ -13,12 +13,9 @@ readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
 # stop postgresql if running
-if  [[ $(service postgresql status | grep "down" | wc -l) == 0 ]]; then
-	echo
+if systemctl is-active --quiet postgresql; then
 	service postgresql stop
-	echo
 fi
-
 
 # run test_i2b2_query.sh with offline postgresql (must fail)
 URL="http://localhost:80/webclient/"
@@ -48,9 +45,7 @@ fi
 
 
 # restart postgresql and run tests again (must succeed)
-echo
 service postgresql start
-echo
 echo "Sleep for 30s"
 sleep 30
 echo
