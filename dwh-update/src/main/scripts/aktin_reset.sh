@@ -21,13 +21,13 @@ readonly GRE=${color_green}
 readonly LOGFILE=$(pwd)/aktin_reset_$(date +%Y_%h_%d_%H:%M).log
 
 # if running, stop apache2, postgresql and wildfly service
-if  [[ ! $(service apache2 status | grep "not" | wc -l) == 1 ]]; then
+if systemctl is-active --quiet apache2; then
 	service apache2 stop
 fi
-if  [[ $(service postgresql status | grep "online" | wc -l) == 1 ]]; then
+if systemctl is-active --quiet postgresql; then
 	service postgresql stop
 fi
-if  [[ ! $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
+if systemctl is-active --quiet wildfly; then
 	service wildfly stop
 fi
 

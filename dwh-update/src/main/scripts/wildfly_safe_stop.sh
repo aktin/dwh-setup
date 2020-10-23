@@ -7,7 +7,7 @@ readonly WILDFLY_DEPLOYMENTS=/opt/wildfly/standalone/deployments
 
 
 # stop wildfly if running
-if  [[ $(service wildfly status | grep "not" | wc -l) == 0 ]]; then
+if systemctl is-active --quiet wildfly; then
 	service wildfly stop
 fi
 

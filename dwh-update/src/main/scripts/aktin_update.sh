@@ -31,7 +31,7 @@ echo -e "${YEL}+++++ AKTIN-Update : STEP A +++++ Deployment der EAR${WHI}"
 echo
 
 # stop wildfly if running
-if  [[ ! $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
+if systemctl is-active --quiet wildfly; then
 	service wildfly stop
 fi
 
@@ -53,7 +53,7 @@ else
 fi
 
 # start wildfly if not running
-if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
+if ! systemctl is-active --quiet wildfly; then
 	service wildfly start
 fi
 }
