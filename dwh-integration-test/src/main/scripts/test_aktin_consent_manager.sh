@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -euo pipefail
+
 # colors for console output
 readonly WHI=${color_white}
 readonly RED=${color_red}

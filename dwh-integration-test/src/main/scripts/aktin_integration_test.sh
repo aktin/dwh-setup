@@ -48,6 +48,7 @@ cd aktin-dwh-installer/dwh-update
 ./email_create.sh
 
 # restart wildfly to apply new aktin.properties
+echo "WILDFLY restart"
 service wildfly restart
 
 # activacte i2b2 webclient debugging
@@ -89,3 +90,9 @@ echo
 # test consent-manager
 ./test_aktin_consent_manager.sh
 
+echo
+echo -e "${YEL}+++++ STEP III +++++ Integration test postgresql${WHI}"
+echo
+
+# test background-validation
+./test_postgresql_background_validation.sh

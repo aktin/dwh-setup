@@ -7,5 +7,6 @@ set resource=postgresql-42.2.8.jar
 set name=AktinDS
 set jndiname=java:jboss/datasources/AktinDS
   
-data-source add --name=$name --jndi-name=$jndiname --driver-name=$driver --jta=false --connection-url=$jdbcUrl --user-name=$username --password=$password
+data-source add --name=$name --jndi-name=$jndiname --driver-name=$driver --jta=false --connection-url=$jdbcUrl --user-name=$username --password=$password --valid-connection-checker-class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker" --validate-on-match=false --background-validation=true --background-validation-millis=60000 --use-fast-fail=true --check-valid-connection-sql="SELECT 1"
+
 /subsystem=datasources:read-resource
