@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -euo pipefail
+
 readonly INTEGRATION_ROOT=$(pwd)
 readonly XML_FILES=$INTEGRATION_ROOT/xml
 

@@ -12,7 +12,7 @@ readonly RED=${color_red}
 
 # check for running wildlfy server
 if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
-   echo "${RED}Running instance of wildfly could not be found!${WHI}"
+   echo -e "${RED}Running instance of wildfly could not be found!${WHI}"
    exit 1
 fi
 
