@@ -181,6 +181,9 @@ if [[ ! -f $CONF ]]; then
 	echo "ProxyPassReverse /aktin http://localhost:9090/aktin" >> $CONF
 	a2enmod proxy_http
 	a2enconf aktin-j2ee-reverse-proxy
+
+	service apache2 reload
+	service apache2 restart
 else
 	echo -e "${ORA}Die Proxy für apache2 wurde bereits konfiguriert.${WHI}"
 fi
@@ -204,8 +207,17 @@ else
 	echo -e "${ORA}Der Wildfly-Server befindet sich bereits in /opt.${WHI}"
 fi
 
+# create user for wildfly server and give permissions to wildfly folder
+if [[ -z $(grep "wildfly" /etc/passwd) ]]; then
+	echo -e "${YEL}Der User wildfly für den Wildfly-Server wird erstellt.${WHI}"
+	adduser --system --group --disabled-login wildfly
+	chown -R wildfly:wildfly /opt/wildfly-$WILDFLY_VERSION
+else
+	echo -e "${ORA}Der User wildfly ist bereits vorhanden.${WHI}"
+fi
+
 # create link to wildfly folder in /opt
-if [[ ! -d /opt/wildlfy ]]; then
+if [[ ! -L /opt/wildfly && ! -d /opt/wildlfy ]]; then
 	echo -e "${YEL}Ein Link zum Wildfly-Server wird in /opt abgelegt.${WHI}"
 	ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
 else
@@ -217,20 +229,12 @@ if [[ ! -d /etc/default/wildfly ]]; then
 	echo -e "${YEL}Ein /etc/init.d-Service wird für den Wildfly-Server erstellt.${WHI}"
 	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly-init-debian.sh /etc/init.d/wildfly
 	mkdir /etc/default/wildfly
-	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly.conf /etc/default/wildfly
-	echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly/wildfly-conf
-	echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly/wildfly-conf
+	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly.conf /etc/default/wildfly/
+	echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly/wildfly.conf
+	echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djrmboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly/wildfly.conf
+	systemctl daemon-reload
 else
 	echo -e "${ORA}Ein /etc/init.d-Service existiert bereits für den Wildfly-Server.${WHI}"
-fi
-
-# create user for wildfly server and give permissions to wildfly folder
-if [[ -z $(grep "wildfly" /etc/passwd) ]]; then
-	echo -e "${YEL}Der User wildfly für den Wildfly-Server wird erstellt.${WHI}"
-	adduser --system --group --disabled-login wildfly
-	chown -R wildfly:wildfly /opt/wildfly-$WILDFLY_VERSION
-else
-	echo -e "${ORA}Der User wildfly ist bereits vorhanden.${WHI}"
 fi
 
 # increase memory storage of java vm to 1g/2g
