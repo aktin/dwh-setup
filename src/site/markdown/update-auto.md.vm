@@ -33,9 +33,6 @@ dwh-update
 - aktin_diag.sh
 - aktin_reset.sh
 - aktin_update.sh
-- email.config
-- email_create.sh
-- email_reset.sh
 - packages/
 - scripts/
 - sql/

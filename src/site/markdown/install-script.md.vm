@@ -1,5 +1,5 @@
 <h3><u>Installationsskript: Automatische Installation und Konfiguration der AKTIN-Datawarehouse-Software mit dem Installationsskript</u></h3>
-Mit diesem Installationsskript wird der AKTIN-Applikations-Server und die AKTIN-DWH-Software die auf diesem ausgeführt wird installiert. Die AKTIN-DWH-Software ist auf allen Linux Distributionen ausführbar. Das Installationsskript wurde unter Ubuntu 18.04 LTS und Ubuntu 20.04 LTS getestet. Wenn Sie eine andere Distribution verwenden möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org). Bei einer Neuinstallation beachten Sie bitte die Hinweise unter der Seite [Server-Installation](install-requirements.html).
+Mit diesem Installationsskript wird das AKTIN Data Warehouse mit einem Applikationsserver installiert. Die AKTIN-DWH-Software ist auf allen Linux Distributionen ausführbar. Das Installationsskript wurde unter Ubuntu 20.04 Server LTS getestet. Wenn Sie eine andere Distribution verwenden möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org). Bei einer Neuinstallation beachten Sie bitte die Hinweise unter der Seite [Server-Installation](install-requirements.html).
 
 <!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
 <br></br>
@@ -17,13 +17,13 @@ Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server sowie die
 sudo -i
 ```
 
-Anschließend können Sie über den Befehl
+und geben Sie das Passwort des aktiven Nutzers an. Anschließend können Sie über den Befehl
 
 ```
 sudo passwd root
 ```
 
-den Nutzer `root` wieder reaktivieren. Dafür werden Sie zunächst aufgefordert, das Password des derzeitigen Nutzers anzugeben. Im Anschluss müssen Sie für `root` ein neues Passwort festlegen. Haben Sie das Passwort festgelegt, können Sie sich nach einem Abmelden mit dem Nutzer `root` anmelden.
+den Nutzer `root` wieder reaktivieren. Dafür werden Sie aufgefordert, für `root` ein neues Passwort festzulegen und dies zu bestätigen. Haben Sie das Passwort festgelegt, können Sie sich nach einem Abmelden mit dem Nutzer `root` anmelden.
 
 
 Das Installationspaket können Sie unter folgendem Link herunterladen (evtl. mit der Option `--no-check-certificate` bei Zertifikatfehlern):
@@ -49,7 +49,7 @@ Starten Sie das Skript mit:
 ./<IHR VERZEICHNIS>/aktin-dwh-installer/aktin_install.sh
 ```
 
-Das Installationsskript wird nun automatisch ausgeführt. Im Anschluss wird außerdem auch die aktuelleste Version von `dwh-update` eingespielt. Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Sämtliche Logausgaben finden Sie nach der Installation im jeweiligen Installationsordner. Weiterhin werden nach Abschluss der Installation die Komponenten 'apache2', 'postgresql' und 'wildfly' automatisch gestartet. 
+Das Installationsskript wird nun automatisch ausgeführt. Im Anschluss wird außerdem auch die aktuelleste Version von `dwh-update` eingespielt. Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Sämtliche Logausgaben finden Sie nach der Installation im jeweiligen Installationsordner. Weiterhin werden nach Abschluss der Installation die Komponenten `apache2`, `postgresql` und `wildfly` automatisch gestartet. 
 
 Folgende Pakete werden dabei installiert und konfiguriert:
 
@@ -117,11 +117,8 @@ Folgende Pakete werden dabei installiert und konfiguriert:
 
 
 <h4>Konfiguration und lokale Einstellungen</h4>
-Nach Abschluss der Installation und vor Start der Anwendung ist es unbedingt notwendig, `aktin.properties` und `email.config` an die Anforderungen Ihres Systems zu konfigurieren. Beide Dateien befinden sich im Verzeichnis `/<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/`.
+Nach Abschluss der Installation und vor Start der Anwendung ist es unbedingt notwendig, die Datei `aktin.properties` an die Anforderungen Ihres Systems zu konfigurieren. Die Datei befindet sich im Verzeichnis `/<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/`.
 <br></br>
-
-
-<h5>aktin.properties</h5>
 
 In dieser Datei werden Angaben zum lokalen DWH und Standort-spezifische Änderungen gemacht. Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
 
@@ -132,6 +129,8 @@ nano /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/aktin.properties
 Wichtig ist hierbei das Feld `local.email`, in das die E-Mail-Adresse eingetragen wird. An diese eingetragene Adresse werden später Berichte und Meldungen geschickt. Es ist auch möglich, eine Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme). In diesem Fall müssen die Einträge komma-separiert ohne Leerzeichen erfolgen.
 
 Auch sollten Sie unter dem Feld `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde. Sollten Sie noch keinen Key bekommen haben, melden Sie sich bitte bei [it-support@aktin.org](mailto:it-support@aktin.org).
+
+Weiterhin ist es auch wichtig, die Felder für die Email-Konfiguration am Ende der Datei entsprechend zu befüllen. In diesen Feldern wird die E-Mail-Konfiguration für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll (z.B. für den Versand von monatlich erzeugten Berichtsdokumente an die angegebene Emfänger-Adresse). Die Sender-Adresse sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort oder Funktions-E-Mail-Adresse) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation. 
 
 Welche Wirkung die jeweiligen Felder haben, finden Sie in diesem Abschnitt in der Template-Datei:
 
@@ -185,8 +184,6 @@ broker.intervals=PT15M
 # used in AKTIN to connect to the broker, you can get your API key from it-support@aktin.org
 broker.keys=XXXyourapikeyXXX
 db.datasource=java:jboss/datasources/AktinDS
-email.session=java:jboss/mail/AktinMailSession
-email.replyto=it-support@aktin.org
 wildfly.management.url=http://localhost:9990/management
 wildfly.management.user=admin
 wildfly.management.password=admin2
@@ -196,8 +193,8 @@ study.id.reference=Patient
 
 # root numbers of the different reference types. Can be empty.
 cda.patient.root.preset=1.2.276.0.76.4.8
-cda.encounter.root.preset=1.2.276.0.76.3.87686 
-cda.billing.root.preset=1.2.276.0.76.3.87686.1.45 
+cda.encounter.root.preset=1.2.276.0.76.3.87686
+cda.billing.root.preset=1.2.276.0.76.3.87686.1.45
 
 # label for the extension textfield of the consent-manager, based on the reference type.
 study.id.patient.label=Patientennr.
@@ -211,6 +208,37 @@ study.id.separator=/
 import.cda.debug.dir=/tmp/
 import.cda.debug.level=none
 import.cda.fhir.outcome.level=info
+
+# mail server via java, use configuration below 
+email.session=local
+
+# adress received mails will reply to
+mail.x.replyto=it-support@aktin.org
+
+# mail server protocol
+mail.transport.protocol=smtp
+
+# mail server name
+mail.smtp.host=smtp.gmail.com
+
+# mail server port, e.g. 465 (SSL) or 587 (TLS), or 25 (no auth)
+mail.smtp.port=587
+
+# mail server authentification, false for "no login is needed"
+mail.smtp.auth=true
+
+# user name for authentication (this name is displayed as addressor of every mail)
+mail.user=userforssending
+
+# password for authentication
+mail.x.password=passwordforsending
+
+# security configuration
+mail.smtp.starttls.enable=true
+
+# connection timeout
+mail.smtp.timeout=10000
+mail.smtp.connectiontimeout=10000
 
 ````
 
@@ -244,67 +272,15 @@ Haben Sie die `aktin.properties` nach Ihren Wünschen angepasst, kopieren Sie si
 cp /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
 ```
 
-Nachdem Sie die Datei `aktin.properties` in das Konfigurationsverzeichnis kopiert haben, muss der Wildfly-Server neugestartet werden. Im Zuge der Installation wurden bereits alle Komponenten des AKTIN Data Warehous automatisch gestartet. Führen Sie also den Befehl
+Nachdem Sie die Datei `aktin.properties` in das Konfigurationsverzeichnis kopiert haben, muss der Wildfly-Server neugestartet werden. Im Zuge der Installation wurden bereits alle Komponenten des AKTIN Data Warehouse automatisch gestartet. Führen Sie also den Befehl
 
 ```
 service wildfly restart
 ```
 
-aus, um den Server neuzustarten und die neuen Einstellungen in den Wildfly-Server einzulesen.
+aus, um den Server neuzustarten und die neuen Einstellungen in den Wildfly-Server einzulesen. Haben Sie die Installation erfolgreich abgeschlossen und die Datei `aktin.properties` entsprechend konfiguriert und eingespielt, ist das AKTIN Data Warehouse nun einsatzbereit.
 
 Für nachträgliche Änderungen an `aktin.properties` beachten Sie die Hinweise im Abschnitt [Weitere Anmerkungen](install-script.html#Weitere_Anmerkungen).
-<br></br>
-
-
-<h5>email.config</h5>
-
-In dieser Datei wird die E-Mail-Konfiguration für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll (z.B. für den Versand von monatlich erzeugten Berichtsdokumente an die in `aktin.properties` angegebenen E-Mail-Adresse). Die in `email.config` angegebene Adresse sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort oder Funktions-E-Mail-Adresse) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation. Für das Anpassen der Datei `email.config` muss folgender Befehl ausgeführt werden:
-
-```
-nano /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/email.config
-```
-
-Bei der Konfiguration muss besonders auf die Einstellung des Mailservers geachtet werden, wobei die Felder `usessl`, `usetls` und `smtpport` richtig gesetzt werden müssen. Die jeweiligen Felder von `email.config` sind in folgender Template-Datei zu sehen:
-
-```
-# email config : change mail server configuration here
-
-# mail server name
-SMTPHOST=smtp.web.de
-
-# mail server port, e.g. 465 (SSL) or 587 (TLS), or 25 (no auth)
-SMTPPORT=587
-
-# mail server authentification
-# false for no login is needed for the mail server
-AUTH=true
-
-# user name for authentication
-SMTPUSER=aktin-test@web.de
-
-# password for authentication
-SMTPPASS=XXXpasswordXXX
-
-# email address (from)
-MAILFROM=aktin-test@web.de
-
-# security configuration, only one of ssl/tls can be used
-USESSL=false
-USETLS=true 
-
-```
-
-Anders als bei der Datei `aktin.properties` muss `email.config` in die Konfiguration eines laufenden Wildfly-Servers injiziert werden. Die geschieht über das Skript `email_create.sh`. Wechseln Sie in das Update-Verzeichnis und führen Sie das Skript `email_create.sh` über folgende Befehle aus:
-
-```
-cd /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/
-
-./email_create.sh
-```
-
-Für nachträgliche Änderungen an `email.config` beachten Sie die Hinweise im Abschnitt [Weitere Anmerkungen](install-script.html#Weitere_Anmerkungen).
-
-Haben Sie die Installation erfolgreich abgeschlossen und die beiden Dateien `aktin.properties` und `email.config` entsprechend konfiguriert und eingespielt, ist das AKTIN Data Warehouse nun einsatzbereit.
 <br></br>
 
 
@@ -373,25 +349,10 @@ service wildfly restart
 
 * Im Internet Explorer kommt es in der i2b2-Oberfläche zu Darstellungsfehlern. So werden z.B. keine User unter _Manage Users_ angezeigt und unter _Manage Projects_ sind die Projekte nicht einsehbar (sattdessen erscheint ein permanentes Ladezeichen). Dieser Fehler ist bereits bekannt, kann aber von unserer Seite aus nicht behoben werden, da i2b2 von i2b2 Foundation Inc. entwickelt wird. Wir würden Sie daher bitten für die Nutzerverwaltung einen anderen Browser zu verwenden (z.B. Firefox oder Chrome).
 
-* Für nachträgliche Änderungen in der Datei `aktin.properties` bearbeiten Sie über den Befehl `nano aktin.properties` die im Wildfly-Konfigurationsordner hinterlegte Datei. Nach Abschluss der Bearbeitung, speichern Sie die Änderungen ab und starten Sie den Wildfly neu.
+* Für nachträgliche Änderungen in der Datei `aktin.properties` bearbeiten Sie über den Befehl `nano` die im Wildfly-Konfigurationsordner hinterlegte Datei. Nach Abschluss der Bearbeitung, speichern Sie die Änderungen ab und starten Sie den Wildfly-Server neu.
 
 ```
 nano /opt/wildfly/standalone/configuration/aktin.properties
-```
-```
+
 service wildfly restart
-```
-
-* Für nachträgliche Änderungen in der Datei `email.config` müssen die Änderungen während eines laufenden Wildfly-Servers geschehen, da sämtliche Konfigurationen in der Datei `standalone.xml` des Servers hinterlegt sind. Vergewissern Sie sich über den Befehl `service wildfly status`, dass der Wildfly-Server online ist. Sofern er dies ist, bearbeiten Sie zunächst über den Befehl `nano` die im Update-Verzeichnis hinterlegte Konfigurationsdatei. Führen Sie danach das Skript `email_reset.sh` aus, um die derzeitigen Konfigurationseinstellungen aus `standalone.xml` zu löschen. Laden Sie im Anschluss Ihre aktualisierte Konfiguration über das Skript `email_create.sh` in `standalone.xml` ein:
-
-```
-cd /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/
-
-service wildfly status
-
-nano email.config
-
-./email_reset.sh
-
-./email_create.sh
 ```
