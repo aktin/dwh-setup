@@ -143,7 +143,6 @@ echo
 # - update of wildfly logging
 # - increase of wildlfy deployment timeout
 # - creation of aktin datasource
-# - setting of smtp configuration
 # - deployment of aktin.ear and given permission to user wildfly
 if [[ -d /opt/wildfly-$WILDFLY_VERSION ]]; then
 	echo -e "${YEL}Der Wildfly-Server und der Link zum Wildfly-Server werden entfernt.${WHI}"
