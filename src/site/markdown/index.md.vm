@@ -3,7 +3,7 @@ Diese Informationen richten sich an die System-Administratoren, die für die Ein
 <br></br>
 
 <h4>Komplette Neuinstallation</h4>
-Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionierende Installation eines auf Linux basierenden Server-Betriebsystems. Es wird empfohlen, das von uns geteste Ubuntu 20.04 LTS einzusetzen. Bitte beachten Sie auch die Seite [Server-Installation](install-requirements.html). Dort werden die verschiedenen Schritte für eine Neu-Installation beschrieben.
+Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionierende Installation eines auf Linux basierenden Server-Betriebsystems. Es wird empfohlen, das von uns geteste Ubuntu Server 20.04 LTS einzusetzen. Bitte beachten Sie auch die Seite [Server-Installation](install-requirements.html). Dort werden die verschiedenen Schritte für eine Neuinstallation beschrieben.
 <br></br>
 
 <h4>Neuinstallation des AKTIN-Applikationsservers</h4>

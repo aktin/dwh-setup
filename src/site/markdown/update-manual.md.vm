@@ -7,7 +7,7 @@ Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sol
 <br></br>
 
 <h4>Deployment des neuen Softwarepaketes</h4>
-Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear) heruntergeladen werden. Sofern Sie eine laufende Instanz des Wildlfy-Servers besitzen, so stoppen Sie diese zunächst über den folgenden Befehl:
+Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear) heruntergeladen werden. Sofern Sie eine laufende Instanz des Wildlfy-Servers haben, stoppen Sie diese zunächst über folgenden Befehl:
 
 ```
 service wildfly stop
