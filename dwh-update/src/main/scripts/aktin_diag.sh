@@ -71,34 +71,28 @@ top -b -n 1 > $LOGFOLDER/ram.txt
 
 # check permission and existence of folders
 if [ -d /var/lib/aktin/ ]; then
-    echo -e "${YEL}/var/lib/aktin${WHI}" > $LOGFOLDER/permissions.txt
     echo $(ls -ld /var/lib/aktin/) >> $LOGFOLDER/permissions.txt
         if [ -d /var/lib/aktin/reports ]; then  
-        	echo -e "${YEL}/var/lib/aktin/reports${WHI}" >> $LOGFOLDER/permissions.txt
             echo $(ls -ld /var/lib/aktin/reports) >> $LOGFOLDER/permissions.txt
         else
             echo -e "${ORA}/var/lib/aktin/reports DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
         fi
         if [ -d /var/tmp/report-temp ]; then
-        	echo -e "${YEL}/var/lib/aktin/report-temp${WHI}" >> $LOGFOLDER/permissions.txt
             echo $(ls -ld /var/tmp/report-temp) >> $LOGFOLDER/permissions.txt
         else
            echo -e "${ORA}/var/lib/aktin/report-temp DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
         fi
         if [ -d /var/lib/aktin/report-archive ]; then
-        	echo -e "${YEL}/var/lib/aktin/report-archive${WHI}" >> $LOGFOLDER/permissions.txt
             echo $(ls -ld /var/lib/aktin/report-archive) >> $LOGFOLDER/permissions.txt
         else
             echo -e "${ORA}/var/lib/aktin/report-archive DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
         fi
         if [ -d /var/lib/aktin/broker ]; then
-        	echo -e "${YEL}/var/lib/aktin/broker${WHI}" >> $LOGFOLDER/permissions.txt
             echo $(ls -ld /var/lib/aktin/broker) >> $LOGFOLDER/permissions.txt
         else
             echo -e "${ORA}/var/lib/aktin/broker DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
         fi
         if [ -d /var/lib/aktin/broker-archive ]; then
-        	echo -e "${YEL}/var/lib/aktin/broker-archive${WHI}" >> $LOGFOLDER/permissions.txt
             echo $(ls -ld /var/lib/aktin/brokéer-archive) >> $LOGFOLDER/permissions.txt
         else
             echo -e "${ORA}/var/lib/aktin/broker-archive DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
