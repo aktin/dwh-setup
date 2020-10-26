@@ -182,8 +182,10 @@ if [[ ! -f $CONF ]]; then
 	a2enmod proxy_http
 	a2enconf aktin-j2ee-reverse-proxy
 
-	service apache2 reload
-	service apache2 restart
+	if systemctl is-active --quiet apache2; then
+		service apache2 restart
+		service apache2 reload
+	fi
 else
 	echo -e "${ORA}Die Proxy für apache2 wurde bereits konfiguriert.${WHI}"
 fi
