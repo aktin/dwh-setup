@@ -373,24 +373,13 @@ echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
 echo -e "Um das AKTIN-Notaufnahmeregister zu nutzen, sind noch einige Konfigurationen nötig."
 echo
-echo -e "${RED}aktin.properties${WHI}"
-echo -e "Bearbeiten Sie die Datei aktin.properties und passen Sie die jeweiligen Felder an Ihre Einstellungen an."
+echo -e "Bearbeiten Sie die Datei ${RED}aktin.properties${WHI} und passen Sie die jeweiligen Felder an Ihre Einstellungen an."
 echo
 echo -e "${GRE} nano "$UPDATE_ROOT/aktin.properties"${WHI}"
 echo
 echo -e "Kopieren Sie die Datei anschließend in das Konfigurationsverzeichnis des Wildfly-Servers"
 echo
 echo -e "${GRE} cp "$UPDATE_ROOT/aktin.properties $WILDFLY_HOME"/standalone/configuration/${WHI}"
-echo 
-echo -e "${RED}email.config${WHI}"
-echo -e "Bearbeiten Sie die Datei email.config und passen Sie die jeweiligen Felder an Ihre Einstellungen an."
-echo
-echo -e "${GRE} nano "$UPDATE_ROOT/email.config"${WHI}"
-echo 
-echo -e "Führen Sie anschließend das Skript email_create.sh aus."
-echo
-echo -e "${GRE} cd "$UPDATE_ROOT"${WHI}"
-echo -e "${GRE} ./email_create.sh${WHI}"
 echo
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
