@@ -24,13 +24,13 @@ cd aktin-dwh-installer
 
 
 # if not running, start apache2, postgresql and wildfly service
-if  [[ $(service apache2 status | grep "not" | wc -l) == 1 ]]; then
+if ! systemctl is-active --quiet apache2; then
 	service apache2 start
 fi
-if  [[ $(service postgresql status | grep "down" | wc -l) == 1 ]]; then
+if ! systemctl is-active --quiet postgresql; then
 	service postgresql start
 fi
-if  [[ $(service wildfly status | grep "not" | wc -l) == 1 ]]; then
+if ! systemctl is-active --quiet wildfly; then
 	service wildfly start
 fi
 
