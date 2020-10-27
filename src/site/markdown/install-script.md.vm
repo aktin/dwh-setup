@@ -109,7 +109,8 @@ Folgende Pakete werden dabei installiert und konfiguriert:
     <p>python3-postgresql</p>
     <p>python3-zipp</p>
     <p>python3-plotly</p>
-    <p>python3-unicodecsv</p></td>
+    <p>python3-unicodecsv</p>
+    <p>python3-gunicorn</p></td>
   </tr>
 </tbody>
 </table>
