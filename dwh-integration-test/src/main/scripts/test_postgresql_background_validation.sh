@@ -14,6 +14,8 @@ readonly GRE=${color_green}
 
 # stop postgresql if running
 if systemctl is-active --quiet postgresql; then
+	echo "Stopping Postgresql"
+	echo
 	service postgresql stop
 fi
 
@@ -42,14 +44,18 @@ else
 	echo -e "${RED}Test consent-manager ($RESPONSE_CODE)${WHI}"
 	echo $(curl -s --location --request POST 'http://localhost:80/aktin/admin/rest/optin/ENQUIRE/Patient/1.2.276.0.76.4.8/'$RANDOM_NUMBER'' --header 'Authorization: Bearer '$BEARER_TOKEN'' --header 'Content-Type: application/json' --data-raw '{ "opt": 0, "sic": "", "comment": "'$RANDOM_STRING'" }')
 fi
-
+echo
 
 # restart postgresql and run tests again (must succeed)
+echo "Starting Postgresql"
 service postgresql start
+echo
+
 echo "Sleep for 30s"
 sleep 30
 echo
 
 ./test_i2b2_query.sh
+echo
 
 ./test_aktin_consent_manager.sh

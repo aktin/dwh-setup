@@ -42,11 +42,6 @@ echo "COPY aktin.properties"
 cd $INTEGRATION_ROOT
 cp aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
 
-# write email.config into standalone.xml
-echo "INJECT email.config"
-cd aktin-dwh-installer/dwh-update
-./email_create.sh
-
 # restart wildfly to apply new aktin.properties
 echo "WILDFLY restart"
 service wildfly restart
@@ -83,9 +78,11 @@ echo
 
 # test CDA import
 ./test_aktin_cda_import.sh
+echo
 
 # test plain modules
 ./test_aktin_plain.sh
+echo
 
 # test consent-manager
 ./test_aktin_consent_manager.sh
