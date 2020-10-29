@@ -55,7 +55,7 @@ ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # install packages
 apt-get update && apt-get install -y \
-curl sudo wget nano unzip libpq-dev \
+curl sudo wget nano unzip libpq-dev software-properties-common \
 openjdk-$JAVA_VERSION-jre-headless \
 postgresql-$PG_VERSION \
 apache2=$APACHE2_VERSION \
