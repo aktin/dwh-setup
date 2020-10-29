@@ -51,8 +51,8 @@ echo "Starting Postgresql"
 service postgresql start
 echo
 
-echo "Sleep for 30s"
-sleep 30
+echo "Sleep for 90s"
+sleep 90
 echo
 
 ./test_i2b2_query.sh
