@@ -367,6 +367,13 @@ service postgresql start
 service wildfly start
 }
 
+add_autostart(){
+set -euo pipefail # stop installation on errors
+update-rc.d apache2 defaults
+update-rc.d postgresql defaults
+update-rc.d wildfly defaults
+}
+
 end_message(){
 set -euo pipefail # stop installation on errors
 echo
@@ -399,6 +406,7 @@ step_II | tee -a $LOGFILE
 step_III | tee -a $LOGFILE
 step_IV | tee -a $LOGFILE
 start_services | tee -a $LOGFILE
+add_autostart | tee -a $LOGFILE
 step_V # update has its own logfile
 end_message | tee -a $LOGFILE
 }
