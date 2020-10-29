@@ -95,7 +95,11 @@ Folgende Pakete werden dabei installiert und konfiguriert:
     <td>${version_r}</td>
     <td><p>r-base-core</p>
     <p>r-cran-xml</p>
-    <p>r-cran-lattice</p></td>
+    <p>r-cran-lattice</p>
+    <p>libcurl4-openssl-dev</p>
+	<p>libssl-dev</p>
+	<p>libxml2-dev</p>
+    <p>tidyverse</p></td>
   </tr>
   <tr>
     <td>Python</td>
