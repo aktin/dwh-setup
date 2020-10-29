@@ -85,22 +85,22 @@ Folgende Pakete werden dabei installiert und konfiguriert:
   <tr>
     <td>PHP</td>
     <td>${version_php}</td>
-    <td><p>php${version_php}</p>
-    <p>php${version_php}-common</p>
-    <p>libapache2-mod-php${version_php}</p>
-    <p>php${version_php}-curl</p></td>
+    <td><p>php</p>
+    <p>php-common</p>
+    <p>libapache2-mod-php</p>
+    <p>php-curl</p></td>
   </tr>
   <tr>
     <td>R</td>
     <td>${version_r}</td>
-    <td><p>r-base-core=${version_r}</p>
+    <td><p>r-base-core</p>
     <p>r-cran-xml</p>
     <p>r-cran-lattice</p></td>
   </tr>
   <tr>
     <td>Python</td>
     <td>${version_python}</td>
-    <td><p>python${version_python}</p>
+    <td><p>python3</p>
     <p>python3-pandas</p>
     <p>python3-numpy</p>
     <p>python3-requests</p>

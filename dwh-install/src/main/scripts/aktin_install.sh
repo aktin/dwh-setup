@@ -11,9 +11,6 @@ readonly PG_VERSION=${version_postgresql}
 readonly JDBC_VERSION=${version_jdbc_driver}
 readonly APACHE2_VERSION=${version_apache2}
 readonly I2B2_VERSION=${version_i2b2}
-readonly PHP_VERSION=${version_php}
-readonly PYTHON_VERSION=${version_python}
-readonly R_VERSION=${version_r}
 
 readonly UPDATE_ROOT=$(pwd)/dwh-update # directory of dwh-update with installation files
 readonly SQL_FILES=/tmp/sql
@@ -56,20 +53,15 @@ echo
 local TZ=Europe/Berlin
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# repository for php and python
-apt-get update && apt-get install -y software-properties-common
-add-apt-repository -y ppa:ondrej/php
-add-apt-repository -y ppa:deadsnakes/ppa
-
 # install packages
 apt-get update && apt-get install -y \
 curl sudo wget nano unzip libpq-dev \
 openjdk-$JAVA_VERSION-jre-headless \
 postgresql-$PG_VERSION \
 apache2=$APACHE2_VERSION \
-php$PHP_VERSION php$PHP_VERSION-common libapache2-mod-php$PHP_VERSION php$PHP_VERSION-curl \
-r-base-core=$R_VERSION r-cran-lattice r-cran-xml libcurl4-openssl-dev libssl-dev libxml2-dev \
-python$PYTHON_VERSION python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv python3-gunicorn
+php php-common libapache2-mod-php php-curl \
+r-base-core r-cran-lattice r-cran-xml libcurl4-openssl-dev libssl-dev libxml2-dev \
+python3 python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv python3-gunicorn
 
 # install R tidyverse
 cd $SCRIPT_FILES
@@ -170,9 +162,9 @@ else
 fi
 
 # activate php-curl extension for apache2
-if [[ -n $(grep ";extension=curl" /etc/php/7.3/apache2/php.ini) ]]; then
+if [[ -n $(grep ";extension=curl" /etc/php/*/apache2/php.ini) ]]; then
 	echo -e "${YEL}PHP-curl für apache2 wird aktiviert.${WHI}"
-	sed -i 's/;extension=curl/extension=curl/' /etc/php/7.3/apache2/php.ini
+	sed -i 's/;extension=curl/extension=curl/' /etc/php/*/apache2/php.ini
 else
 	echo -e "${ORA}PHP-curl für apache2 wurde bereits aktiviert.${WHI}"
 fi
