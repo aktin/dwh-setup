@@ -30,8 +30,10 @@
 		<version_jdbc_driver>42.2.8</version_jdbc_driver>
 		<version_apache2>2.4.41-4ubuntu3.1</version_apache2>
 		<version_i2b2>1.7.12a</version_i2b2>
-		<version_php>7.3</version_php>
-		<version_python>3.8</version_python>
+
+		<!-- version number to show in install-script.vm.md -->
+		<version_php>7.4.3</version_php>
+		<version_python>3.8.2</version_python>
 		<version_r>3.6.3-2</version_r>
 		
 		<!-- urls for packages -->

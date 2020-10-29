@@ -94,9 +94,9 @@ else
 fi
 
 # deactivate php-curl extension for apache2
-if [[ -z $(grep ";extension=curl" /etc/php/7.3/apache2/php.ini) ]]; then
+if [[ -z $(grep ";extension=curl" /etc/php/*/apache2/php.ini) ]]; then
 	echo -e "${YEL}PHP-curl für apache2 wird deaktiviert.${WHI}"
- 	sed -i 's/extension=curl/;extension=curl/' /etc/php/7.3/apache2/php.ini
+ 	sed -i 's/extension=curl/;extension=curl/' /etc/php/*/apache2/php.ini
 else
 	echo -e "${ORA}PHP-curl für apache2 wurde bereits deaktiviert.${WHI}"
 fi
