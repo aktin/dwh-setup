@@ -332,6 +332,11 @@ Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsm
 <br></br>
 
 
+<h4>Betrieb des AKTIN Data Warehouse</h4>
+Anleitungen zur Benutzerverwaltung sowie dem Betrieb des AKTIN- und i2b2 Data Warehouses finden Sie unter der Rubrik [Support für Anwender](https://www.aktin.org/de-de/support/anwender.html).
+<br></br>
+
+
 <h4>AKTIN-Diagnose-Skript</h4>
 Sollten bei der Installation Probleme aufgetreten sein, wechseln Sie in das Update-Verzeichnis und führen Sie das AKTIN-Diagnose-Skript aus:
 
@@ -341,7 +346,7 @@ cd /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/scripts/
 ./aktin_diag.sh
 ```
 
-Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im Verzeichnis `/<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/scripts/` eine Datei namens `aktin_diag_{ZEITPUNKT DER DURCHFÜHRUNG}.tar.gz`. Diese Datei enthält eine Ansammlung von Informationen über das Betriebssystem und die Komponenten von AKTIN. Senden Sie diese Datei bitte anschließend mit einer Support-Anfrage an [it-support@aktin.org](mailto:it-support@aktin.org), um uns mit den erzeugten Protokolle helfen bei der Identifizierung des Problems zu helfen.
+Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im Verzeichnis `/<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/scripts/` eine Datei namens `aktin_diag_<ZEITPUNKT DER DURCHFÜHRUNG>.tar.gz`. Diese Datei enthält eine Ansammlung von Informationen über das Betriebssystem und die Komponenten von AKTIN. Senden Sie diese Datei bitte anschließend mit einer Support-Anfrage an [it-support@aktin.org](mailto:it-support@aktin.org), um uns mit den erzeugten Protokolle helfen bei der Identifizierung des Problems zu helfen.
 <br></br>
 
 
