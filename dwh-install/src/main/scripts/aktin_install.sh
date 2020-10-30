@@ -1,4 +1,4 @@
-#!/bin/bash
+u#!/bin/bash
 
 # script to install i2b2 with aktin-addon on ubuntu 20.04
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
@@ -384,6 +384,10 @@ echo
 echo -e "Kopieren Sie die Datei anschließend in das Konfigurationsverzeichnis des Wildfly-Servers"
 echo
 echo -e "${GRE} cp "$UPDATE_ROOT/aktin.properties $WILDFLY_HOME"/standalone/configuration/${WHI}"
+echo
+echo -e "Starten Sie anschließend den WildFly-Server neu, um die neue Konfiguration zu laden"
+echo
+echo -e "${GRE} servicve wildfly restart${WHI}"
 echo
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
