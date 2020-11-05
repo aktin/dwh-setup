@@ -324,7 +324,8 @@ cd $UPDATE_ROOT
 # give wildfly user permission for aktin.properties
 if [[ ! $(stat -c '%U' $UPDATE_ROOT/aktin.properties) == "wildfly" ]]; then
 	echo -e "${YEL}Dem User wildfly werden Rechte für die Datei aktin.properties übergeben.${WHI}"
-	chown wildfly:wildfly $UPDATE_ROOT/aktin.properties
+	cd $UPDATE_ROOT
+	chown wildfly:wildfly aktin.properties
 else
 	echo -e "${ORA}Der User wildfly besitzt bereits Rechte für die Datei aktin.properties.${WHI}"
 fi
