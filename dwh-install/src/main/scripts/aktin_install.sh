@@ -1,4 +1,4 @@
-u#!/bin/bash
+#!/bin/bash
 
 # script to install i2b2 with aktin-addon on ubuntu 20.04
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
