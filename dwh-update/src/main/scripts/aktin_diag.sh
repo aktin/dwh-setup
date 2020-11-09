@@ -93,7 +93,7 @@ if [ -d /var/lib/aktin/ ]; then
             echo -e "${ORA}/var/lib/aktin/broker DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
         fi
         if [ -d /var/lib/aktin/broker-archive ]; then
-            echo $(ls -ld /var/lib/aktin/brokéer-archive) >> $LOGFOLDER/permissions.txt
+            echo $(ls -ld /var/lib/aktin/broker-archive) >> $LOGFOLDER/permissions.txt
         else
             echo -e "${ORA}/var/lib/aktin/broker-archive DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
         fi
