@@ -1,6 +1,6 @@
 ﻿<h3><u>Changelog</u></h3>
 
-<h4>Version 1.2</h4><
+<h4>Version 1.3</h4><
 * Versionsupdate aller Komponenten:
 	* Java 11
 	* WildFly 18.0.0.Final
