@@ -329,6 +329,9 @@ Der erste Button testet die Erreichbarkeit des zentralen AKTIN-Broker. Der lokal
 Sollte der E-Mail-Test fehlschlagen und das Textfeld zeigt keine grüne Erfolgsmeldung anzeigen, könnte dies ein Hinweis auf eine fehlerhafte E-Mail-Einstellung sein. In diesem Fall muss die E-Mail-Konfiguration geändert (Abschnitt [Weitere Anmerkungen](install-script.html#Weitere_Anmerkungen)) oder die Softwarepakete erneut geladen werden.
 
 <img src="update_7_test/Screenshot_6.png" alt="img4"></img>
+
+<h5>Überprüfung der Funktionalität des AKTIN Data Warehouse</h5>
+Eine Anleitung für die Überprüfung der technischen Funktionalität des AKTIN Data Warehouse und für die Überprüfung der Plausibilität finden Sie unter der Rubrik [Checkliste für Funktionalität.](https://www.aktin.org/de-de/support/anwender.html).
 <br></br>
 
 
