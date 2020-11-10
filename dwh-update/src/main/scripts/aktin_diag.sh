@@ -45,11 +45,13 @@ df -h > $LOGFOLDER/diskspace.txt
 # check running process
 echo -e "${YEL}+++++ WILDFLY SERVICE STATUS +++++${WHI}" > $LOGFOLDER/services.txt
 echo $(service wildfly status) >> $LOGFOLDER/services.txt
+
 echo -e "${YEL}+++++ WILDFLY PS +++++${WHI}" >> $LOGFOLDER/services.txt
 echo $(ps -ef | grep wildfly) >> $LOGFOLDER/services.txt
 
 echo -e "${YEL}+++++ POSTGRES SERVICE STATUS +++++${WHI}" >> $LOGFOLDER/services.txt
 echo $(service postgresql status) >> $LOGFOLDER/services.txt
+
 echo -e "${YEL}+++++ POSTGRES PS +++++${WHI}" >> $LOGFOLDER/services.txt
 echo $(ps -ef | grep postgresql) >> $LOGFOLDER/services.txt
 
