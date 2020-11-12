@@ -14,7 +14,7 @@ readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
 # create a log folder for this diagnosis
-CURRENT=$(date +%Y_%h_%d_%H:%M)
+CURRENT=$(date +%Y_%h_%d_%H%M)
 readonly LOGFOLDER=$(pwd)/aktin_diag_$CURRENT
 if [[ ! -d $(pwd)/aktin_diag_$CURRENT ]]; then
     mkdir $(pwd)/aktin_diag_$CURRENT
@@ -22,7 +22,7 @@ fi
 
 # check for root privileges
 if [[ $EUID -ne 0 ]]; then
-   echo "${ORA}Dieses Script muss mit root-Rechten ausgeführt werden!${WHI}"
+   echo -e "${ORA}Dieses Script muss mit root-Rechten ausgeführt werden!${WHI}"
    exit 1
 fi
 

@@ -34,7 +34,7 @@ readonly URL_JDBC_DRIVER=${url_jdbc_driver}
 readonly URL_I2B2=${url_i2b2_war}
 
 # create a logfile for this installation
-readonly LOGFILE=$(pwd)/aktin_install_$(date +%Y_%h_%d_%H:%M).log
+readonly LOGFILE=$(pwd)/aktin_install_$(date +%Y_%h_%d_%H%M).log
 
 # unzip update.tar.gz to acces scripts within
 tar xvzf packages/dwh-update-*.tar.gz
