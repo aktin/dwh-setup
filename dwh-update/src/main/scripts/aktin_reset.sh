@@ -18,7 +18,7 @@ readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
 # create a logfile for this reset
-readonly LOGFILE=$(pwd)/aktin_reset_$(date +%Y_%h_%d_%H:%M).log
+readonly LOGFILE=$(pwd)/aktin_reset_$(date +%Y_%h_%d_%H%M).log
 
 # if running, stop apache2, postgresql and wildfly service
 if systemctl is-active --quiet apache2; then
@@ -52,7 +52,7 @@ service postgresql start
 # delete aktin database and respective users
 if  [[ $(sudo -u postgres psql -l | grep "aktin" | wc -l) == 1 ]]; then
 	echo -e "${YEL}Die Datenbank aktin und der entsprechende User werden entfernt.${WHI}"
-	sudo -u postgres psql -f $SQL_FILES//aktin_postgres_drop.sql
+	sudo -u postgres psql -f $SQL_FILES/aktin_postgres_drop.sql
 else
 	echo -e "${ORA}Die Datenbank aktin und der entsprechende User wurden bereits entfernt.${WHI}"
 fi
@@ -63,7 +63,7 @@ fi
 # - loading of i2b2 data into database
 if  [[ $(sudo -u postgres psql -l | grep "i2b2" | wc -l) == 1 ]]; then
 	echo -e "${YEL}Die Datenbank i2b2 und die entsprechenden User werden entfernt.${WHI}"
-	sudo -u postgres psql -f $SQL_FILES//i2b2_postgres_drop.sql
+	sudo -u postgres psql -f $SQL_FILES/i2b2_postgres_drop.sql
 else
 	echo -e "${ORA}Die Datenbank i2b2 und die entsprechenden User wurden bereits entfernt.${WHI}"
 fi

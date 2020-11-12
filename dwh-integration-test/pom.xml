@@ -19,12 +19,18 @@
     </properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.aktin.dwh</groupId>
-			<artifactId>dwh-install</artifactId>
-			<version>1.2-SNAPSHOT</version>
-			<type>tar.gz</type>
-		</dependency>
+        <dependency>
+            <groupId>org.aktin.dwh</groupId>
+            <artifactId>dwh-install</artifactId>
+            <version>1.2-SNAPSHOT</version>
+            <type>tar.gz</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.aktin.dwh</groupId>
+                    <artifactId>dwh-update</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.aktin</groupId>
             <artifactId>demo-distribution</artifactId>
