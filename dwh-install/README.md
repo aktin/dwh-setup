@@ -1,4 +1,4 @@
-1. Run `mvn clean install` to create a `tar.gz` of the installer with the name `dwh-install-{VERSION}`. The latest version of `dwh-update` is also included in the folder`packages` inside the file. 
+1. Run `mvn clean install` to create a `tar.gz`-file of the installer with the name `dwh-install-{VERSION}`. The latest version of `dwh-update` is also included in the folder`packages` inside the file. 
 
 2. Copy the file on your server and unzip it with `tar -zxvf dwh-install-{VERSION}`. Inside the newly created folder, run `./aktin_install.sh` to automatically download and install all components. `dwh-update` will also be executed automatically during the installation.
 
