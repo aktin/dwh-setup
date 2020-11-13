@@ -52,7 +52,7 @@ Das Skript wird nun eine komprimierte Datensicherung folgender Komponenten erste
 * Die Logs von `apache2`, `postgresql` und `wildfly`
 * Den Ordner `/var/lib/aktin`
 
-Sollten Sie noch weitere Dateien absichern wollen, melden Sie dies bitte an den [AKTIN IT-Support](mailto:it-support@aktin.org). Notieren Sie sich außerdem manuell den Inhalt der Datei `email.config`. Die dort enthaltenen Informationen Ihres E-Mail-Servers müssen anschließend in die aktuelle Version der `aktin.properties` eingegeben werden. Sichern Sie zum Schluss den gesamten Ordner auf einem externem Medium (beispielsweise auf einem USB-Stick).
+Sollten Sie noch weitere Dateien absichern wollen, melden Sie dies bitte an den [AKTIN IT-Support](mailto:it-support@aktin.org). Notieren Sie sich außerdem manuell den Inhalt der Datei `email.config`. Die dort enthaltenen Informationen Ihres E-Mail-Servers müssen anschließend in die aktuelle Version der `aktin.properties` eingegeben werden. Sichern Sie zum Schluss den gesamten Ordner `dwh-migration` auf einem externem Medium (beispielsweise auf einem USB-Stick).
 <br></br>
 
 <h5>2. Installation des neuen Betriebssystems</h5>
@@ -60,9 +60,11 @@ Sollten Sie noch weitere Dateien absichern wollen, melden Sie dies bitte an den 
 <br></br>
 
 <h5>3. Einspielen der Datensicherung</h5>
-Kopieren Sie nach erfolgreicher Installation alle gesicherten Dateien des externen Mediums in einen beliebigen Ordner des neu installierten Betriebssystems. Führen Sie in diesem Ordner das Skript `aktin_apply_backup.sh` aus:
+Kopieren Sie nach erfolgreicher Installation alle gesicherten Dateien des externen Mediums in einen beliebigen Ordner des neu installierten Betriebssystems. Führen Sie in diesem Ordner das Skript `aktin_apply_backup.sh` aus. Markieren Sie es gegebenenfalls als ausführbar:
 
 ```
+chmod +x *.sh
+
 ./aktin_apply_backup.sh
 ```
 
