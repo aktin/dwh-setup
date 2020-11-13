@@ -23,9 +23,9 @@ readonly CURRENT=$(date +%Y_%h_%d_%H%M)
 readonly LOGFILE=$MIGRATION_ROOT/create_backup_$CURRENT.log
 
 # get wildfly home directory
-if [ -d /opt/wildfly/ ]; then
+if [[ -d /opt/wildfly/ ]]; then
 	readonly WILDFLY_HOME=/opt/wildfly
-elif [ -d /opt/wildfly-* ]; then
+elif [[ -n $(ls /opt/wildfly-*) ]]; then
 	readonly WILDFLY_HOME=/opt/wildfly-*
 fi
 
@@ -53,7 +53,15 @@ sudo -u postgres pg_dump aktin > $BACKUP_FOLDER/backup_aktin.sql
 # backup log folders and add "backup_" to each file in backuped log folders
 echo -e "${YEL}Backup der Logs von apache2, postgresql und wildfly wird erstellt.${WHI}"
 FOLDERS=( apache2_log postgresql_log wildfly_log )
-LOG_PATH=( /var/log/apache2 /var/log/postgresql $WILDFLY_HOME/standalone/log )
+if [[ -n $(hostnamectl | grep "Debian") ]]; then
+	LOG_PATH=( /var/log/apache2 /var/log/postgresql $WILDFLY_HOME/standalone/log )
+elif [[ -n $(hostnamectl | grep "CentOS") ]]; then
+	LOG_PATH=( /var/log/httpd /var/lib/pgsql/*/data/pg_log/ $WILDFLY_HOME/standalone/log )
+else
+	echo -e "${RED}Dieses Betriebssystem ist weder Debian noch CentOS!${WHI}"
+   	exit 1
+fi
+
 for i in "${!FOLDERS[@]}"
 do
 	if [ ! -d $BACKUP_FOLDER/${FOLDERS[$i]} ]; then
