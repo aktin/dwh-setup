@@ -59,11 +59,11 @@ cp $MIGRATION_ROOT/aktin-dwh-installer/dwh-update/aktin.properties $WILDFLY_HOME
 # overwrite value in new aktin.properties if found
 echo -e "${YEL}aktin.properties in $WILDFLY_HOME/standalone/configuration/ wird mit dem Backup gepacht.${WHI}"
 while read -r line1; do
-    if [[ ! $line1 = \#* ]]; then
+    if [[ ! $line1 = \#* && ! -z $line1 ]]; then
         KEY=${line1%=*}
         VALUE=${line1#*=}
         while read -r line2; do
-            if [[ ! $line2 = \#* ]]; then
+            if [[ ! $line2 = \#* && ! -z $line2 ]]; then
                 if [[ ${line2%=*} == $KEY ]]; then
                     sed -i "s|${KEY}=.*|${KEY}=${VALUE}|" $WILDFLY_HOME/standalone/configuration/aktin.properties
                     break
@@ -74,7 +74,7 @@ while read -r line1; do
 done < $BACKUP_FOLDER/backup_aktin.properties
 
 
-echo -e "${YEL}Servie apache2 und wildfly werden gestoppt.${WHI}"
+echo -e "${YEL}Service apache2 und wildfly werden gestoppt.${WHI}"
 if ! systemctl is-active --quiet postgresql; then
     service postgresql start
 fi
@@ -132,7 +132,7 @@ echo -e "${YEL}Temporärer Backup-Ordner wird wieder entfernt.${WHI}"
 rm -r $BACKUP_FOLDER
 
 
-echo -e "${YEL}Servie apache2 und wildfly werden wieder gestartet.${WHI}"
+echo -e "${YEL}Service apache2 und wildfly werden wieder gestartet.${WHI}"
 if ! systemctl is-active --quiet apache2; then
     service apache2 start
 fi
