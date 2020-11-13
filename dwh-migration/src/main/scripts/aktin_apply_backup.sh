@@ -52,7 +52,7 @@ main(){
 echo -e "${YEL}Unbearbeitete aktin.properties wird nach $WILDFLY_HOME/standalone/configuration/ kopiert.${WHI}"
 cp $MIGRATION_ROOT/aktin-dwh-installer/dwh-update/aktin.properties $WILDFLY_HOME/standalone/configuration/
 
-# iterate through all rows in aktin.properties.old,
+# iterate through all rows in backup_aktin.properties,
 # line start until '=' -> KEY
 # '=' until line end -> VALUE
 # search key in new aktin.properties
@@ -74,11 +74,12 @@ while read -r line1; do
 done < $BACKUP_FOLDER/backup_aktin.properties
 
 
+echo -e "${YEL}Servie apache2 und wildfly werden gestoppt.${WHI}"
 if ! systemctl is-active --quiet postgresql; then
     service postgresql start
 fi
 if systemctl is-active --quiet wildfly; then
-    service wildlfy stop
+    service wildfly stop
 fi
 if systemctl is-active --quiet apache2; then
     service apache2 stop
@@ -90,8 +91,8 @@ if [[ ! -d $TMP_SQL_FILES ]]; then
     echo -e "${YEL}SQL-Dateien werden nach /tmp kopiert.${WHI}"
     mkdir $TMP_SQL_FILES
     cp $SQL_FILES/* $TMP_SQL_FILES/
-    cp $BACKUP_FOLDER/aktin.sql.old $TMP_SQL_FILES/
-    cp $BACKUP_FOLDER/i2b2.sql.old $TMP_SQL_FILES/
+    cp $BACKUP_FOLDER/backup_aktin.sql $TMP_SQL_FILES/
+    cp $BACKUP_FOLDER/backup_i2b2.sql $TMP_SQL_FILES/
     chmod 777 -R $TMP_SQL_FILES
 fi
 
@@ -131,17 +132,18 @@ echo -e "${YEL}Temporärer Backup-Ordner wird wieder entfernt.${WHI}"
 rm -r $BACKUP_FOLDER
 
 
+echo -e "${YEL}Servie apache2 und wildfly werden wieder gestartet.${WHI}"
 if ! systemctl is-active --quiet apache2; then
     service apache2 start
 fi
 if ! systemctl is-active --quiet wildfly; then
-    service wildlfy start
+    service wildfly start
 fi
 
 
 echo
-echo -e "${YEL}Migration abgeschlossen!${WHI}"
-echo -e "${YEL}Vielen Dank, dass Sie die AKTIN-Software verwenden.${WHI}"
+echo "Migration abgeschlossen!"
+echo "Vielen Dank, dass Sie die AKTIN-Software verwenden."
 echo
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
@@ -151,7 +153,7 @@ echo -e "${GRE} nano $WILDFLY_HOME/standalone/configuration/aktin.properties${WH
 echo
 echo -e "Es ist darauf hinzuweisen dass am Ende der Datei einige Felder für die Konfiguration des E-Mail-Servers hinzugekommen sind. Tragen Sie hier Ihre notierten Informationen der Datei ${RED}email.config${WHI} ein. Stellen Sie außerdem auch sicher, dass das Feld"
 echo
-echo -e "${GRE}email.session=local${WHI}"
+echo -e "${GRE} email.session=local${WHI}"
 echo
 echo -e "entsprechend bezeichnet ist. Nur mit dem Keyword ${GRE}local${WHI} wird die Konfiguration innerhalb der aktin.properties genutzt. Starten Sie nach Abschluss der Bearbeitung den WildFly-Server neu, um die neue Konfiguration zu laden"
 echo

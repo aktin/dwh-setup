@@ -50,7 +50,7 @@ echo -e "${YEL}Backup der Datenbanken aktin und i2b2 wird erstellt.${WHI}"
 sudo -u postgres pg_dump i2b2 > $BACKUP_FOLDER/backup_i2b2.sql
 sudo -u postgres pg_dump aktin > $BACKUP_FOLDER/backup_aktin.sql
 
-# backup log folders and add ".backup_TIMESTAMP" to each file in backuped log folders
+# backup log folders and add "backup_" to each file in backuped log folders
 echo -e "${YEL}Backup der Logs von apache2, postgresql und wildfly wird erstellt.${WHI}"
 FOLDERS=( apache2_log postgresql_log wildfly_log )
 LOG_PATH=( /var/log/apache2 /var/log/postgresql $WILDFLY_HOME/standalone/log )
@@ -72,7 +72,7 @@ echo -e "${YEL}Backup von /var/lib/aktin/ wird erstellt.${WHI}"
 if [ ! -d $BACKUP_FOLDER/aktin_lib ]; then
 	mkdir $BACKUP_FOLDER/aktin_lib
 fi
-cp -r /var/lib/aktin $BACKUP_FOLDER/aktin_lib
+cp -r /var/lib/aktin/* $BACKUP_FOLDER/aktin_lib
 
 # zip BACKUP_FOLDER
 echo -e "${YEL}Backup-Ordner wird komprimiert.${WHI}"
