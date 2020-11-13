@@ -157,7 +157,7 @@ echo -e "${GRE} email.session=local${WHI}"
 echo
 echo -e "entsprechend bezeichnet ist. Nur mit dem Keyword ${GRE}local${WHI} wird die Konfiguration innerhalb der aktin.properties genutzt. Starten Sie nach Abschluss der Bearbeitung den WildFly-Server neu, um die neue Konfiguration zu laden"
 echo
-echo -e "${GRE} servicve wildfly restart${WHI}"
+echo -e "${GRE} service wildfly restart${WHI}"
 echo
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
