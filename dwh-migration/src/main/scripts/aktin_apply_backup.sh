@@ -111,6 +111,12 @@ echo -e "${YEL}Das Backup der Datenbanken aktin und i2b2 wird eingespielt.${WHI}
 sudo -u postgres psql  -d i2b2 -f $TMP_SQL_FILES/backup_i2b2.sql
 sudo -u postgres psql  -d aktin -f $TMP_SQL_FILES/backup_aktin.sql
 
+# add AKTIN study to Study Manager
+if [[ -z $(sudo -u postgres psql -d i2b2 -c "SELECT id FROM i2b2crcdata.optinout_studies;"| grep "AKTIN") ]]; then
+    echo -e "${YEL}Studie AKTIN wird zur Datenbank hinzugefügt.${WHI}"
+    sudo -u postgres psql -d i2b2 -c "INSERT INTO i2b2crcdata.optinout_studies (id,title,description,created_ts,options) VALUES ('AKTIN','AKTIN','Notaufnahmeregister','2018-01-01 00:00:00', 'OPT=O');"
+fi
+
 # delete tmp sql folder
 if [[ -d $TMP_SQL_FILES ]]; then
     echo -e "${YEL}SQL-Dateien werden aus /tmp wieder gelöscht.${WHI}"
