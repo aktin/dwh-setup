@@ -4,7 +4,7 @@
 	
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
-	<version>1.3rc2</version>
+	<version>1.3rc3-SNAPSHOT</version>
   
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
@@ -56,7 +56,7 @@
 	
 	<scm>
 		<developerConnection>scm:git:https://git.rwth-aachen.de/aktin/dwh-setup.git</developerConnection>
-		<tag>v1.3rc2</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<modules>
