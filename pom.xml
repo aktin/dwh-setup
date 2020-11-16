@@ -62,7 +62,7 @@
 	<modules>
 		<module>dwh-update</module>
 		<module>dwh-install</module>
-		<module>dwh-integration-test</module>
+		<module>dwh-migration</module>
 		<!--
 		TODO fix ccd integration
 		<module>aktin-cdd</module>
