@@ -29,7 +29,7 @@ den Nutzer `root` wieder reaktivieren. Dafür werden Sie aufgefordert, für `roo
 Das Installationspaket können Sie unter folgendem Link herunterladen (evtl. mit der Option `--no-check-certificate` bei Zertifikatfehlern):
 
 ```
-${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
+wget ${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
 ```
 
 Ist das Paket heruntergeladen, kann es entpackt werden mit
