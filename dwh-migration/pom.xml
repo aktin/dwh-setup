@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<name>AKTIN : DWH Server : Integration-Test</name>
+	<name>AKTIN : DWH Server : Migration</name>
 	
 	<packaging>pom</packaging>
 	
 	<groupId>org.aktin.dwh</groupId>
-	<artifactId>dwh-integration-test</artifactId>
+	<artifactId>dwh-migration</artifactId>
 	<version>0.1-SNAPSHOT</version>
 
 	<parent>
@@ -14,29 +14,19 @@
 		<version>1.2-SNAPSHOT</version>
 	</parent>
 
-    <properties>
-        <org.aktin.demo-distribution.version>0.14-SNAPSHOT</org.aktin.demo-distribution.version>
-    </properties>
-
 	<dependencies>
-        <dependency>
-            <groupId>org.aktin.dwh</groupId>
-            <artifactId>dwh-install</artifactId>
-            <version>1.2-SNAPSHOT</version>
-            <type>tar.gz</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.aktin.dwh</groupId>
-                    <artifactId>dwh-update</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.aktin</groupId>
-            <artifactId>demo-distribution</artifactId>
-            <version>${org.aktin.demo-distribution.version}</version>
-            <type>zip</type>
-        </dependency>
+		<dependency>
+			<groupId>org.aktin.dwh</groupId>
+			<artifactId>dwh-install</artifactId>
+			<version>1.2-SNAPSHOT</version>
+			<type>tar.gz</type>
+			<exclusions>
+				<exclusion>
+					<groupId>org.aktin.dwh</groupId>
+					<artifactId>dwh-update</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
     
 	<build>
