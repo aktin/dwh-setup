@@ -53,7 +53,7 @@
 	</properties>
 	
 	<scm>
-		<developerConnection>scm:git:git@gitlab.uni-oldenburg.de:AKTIN/vagrant-vm.git</developerConnection>
+		<developerConnection>scm:git:https://git.rwth-aachen.de/aktin/dwh-setup.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
