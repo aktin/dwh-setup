@@ -17,12 +17,12 @@ RANDOM_STRING=$(echo $(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 6 | head -n 
 RANDOM_NUMBER=$(echo $(cat /dev/urandom | tr -dc '0-9' | fold -w 6 | head -n 1))
 
 # try post on aktin/admin/consentManager via token and get response code
-RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" --location --request POST 'http://localhost:80/aktin/admin/rest/optin/ENQUIRE/Patient/1.2.276.0.76.4.8/'$RANDOM_NUMBER'' --header 'Authorization: Bearer '$BEARER_TOKEN'' --header 'Content-Type: application/json' --data-raw '{ "opt": 0, "sic": "", "comment": "'$RANDOM_STRING'" }')
+RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" --location --request POST 'http://localhost:80/aktin/admin/rest/optin/AKTIN/Patient/1.2.276.0.76.4.8/'$RANDOM_NUMBER'' --header 'Authorization: Bearer '$BEARER_TOKEN'' --header 'Content-Type: application/json' --data-raw '{ "opt": 0, "sic": "", "comment": "'$RANDOM_STRING'" }')
 
 # check if response code is 200, print whole response on failure (via new request)
 if [[ $RESPONSE_CODE == 200 || $RESPONSE_CODE == 201 ]]; then
 	echo -e "${GRE}Test consent-manager successful ($RESPONSE_CODE)${WHI}"
 else
 	echo -e "${RED}Test consent-manager ($RESPONSE_CODE)${WHI}"
-	echo $(curl -s --location --request POST 'http://localhost:80/aktin/admin/rest/optin/ENQUIRE/Patient/1.2.276.0.76.4.8/'$RANDOM_NUMBER'' --header 'Authorization: Bearer '$BEARER_TOKEN'' --header 'Content-Type: application/json' --data-raw '{ "opt": 0, "sic": "", "comment": "'$RANDOM_STRING'" }')
+	echo $(curl -s --location --request POST 'http://localhost:80/aktin/admin/rest/optin/AKTIN/Patient/1.2.276.0.76.4.8/'$RANDOM_NUMBER'' --header 'Authorization: Bearer '$BEARER_TOKEN'' --header 'Content-Type: application/json' --data-raw '{ "opt": 0, "sic": "", "comment": "'$RANDOM_STRING'" }')
 fi

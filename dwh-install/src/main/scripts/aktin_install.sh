@@ -11,9 +11,6 @@ readonly PG_VERSION=${version_postgresql}
 readonly JDBC_VERSION=${version_jdbc_driver}
 readonly APACHE2_VERSION=${version_apache2}
 readonly I2B2_VERSION=${version_i2b2}
-readonly PHP_VERSION=${version_php}
-readonly PYTHON_VERSION=${version_python}
-readonly R_VERSION=${version_r}
 
 readonly UPDATE_ROOT=$(pwd)/dwh-update # directory of dwh-update with installation files
 readonly SQL_FILES=/tmp/sql
@@ -37,7 +34,7 @@ readonly URL_JDBC_DRIVER=${url_jdbc_driver}
 readonly URL_I2B2=${url_i2b2_war}
 
 # create a logfile for this installation
-readonly LOGFILE=$(pwd)/aktin_install_$(date +%Y_%h_%d_%H:%M).log
+readonly LOGFILE=$(pwd)/aktin_install_$(date +%Y_%h_%d_%H%M).log
 
 # unzip update.tar.gz to acces scripts within
 tar xvzf packages/dwh-update-*.tar.gz
@@ -56,20 +53,15 @@ echo
 local TZ=Europe/Berlin
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# repository for php and python
-apt-get update && apt-get install -y software-properties-common
-add-apt-repository -y ppa:ondrej/php
-add-apt-repository -y ppa:deadsnakes/ppa
-
 # install packages
 apt-get update && apt-get install -y \
-curl sudo wget nano unzip libpq-dev \
+curl sudo wget nano unzip libpq-dev software-properties-common \
 openjdk-$JAVA_VERSION-jre-headless \
 postgresql-$PG_VERSION \
 apache2=$APACHE2_VERSION \
-php$PHP_VERSION php$PHP_VERSION-common libapache2-mod-php$PHP_VERSION php$PHP_VERSION-curl \
-r-base-core=$R_VERSION r-cran-lattice r-cran-xml libcurl4-openssl-dev libssl-dev libxml2-dev \
-python$PYTHON_VERSION python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv python3-gunicorn
+php php-common libapache2-mod-php php-curl \
+r-base-core r-cran-lattice r-cran-xml libcurl4-openssl-dev libssl-dev libxml2-dev \
+python3 python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv python3-gunicorn
 
 # install R tidyverse
 cd $SCRIPT_FILES
@@ -170,9 +162,9 @@ else
 fi
 
 # activate php-curl extension for apache2
-if [[ -n $(grep ";extension=curl" /etc/php/7.3/apache2/php.ini) ]]; then
+if [[ -n $(grep ";extension=curl" /etc/php/*/apache2/php.ini) ]]; then
 	echo -e "${YEL}PHP-curl für apache2 wird aktiviert.${WHI}"
-	sed -i 's/;extension=curl/extension=curl/' /etc/php/7.3/apache2/php.ini
+	sed -i 's/;extension=curl/extension=curl/' /etc/php/*/apache2/php.ini
 else
 	echo -e "${ORA}PHP-curl für apache2 wurde bereits aktiviert.${WHI}"
 fi
@@ -332,7 +324,8 @@ cd $UPDATE_ROOT
 # give wildfly user permission for aktin.properties
 if [[ ! $(stat -c '%U' $UPDATE_ROOT/aktin.properties) == "wildfly" ]]; then
 	echo -e "${YEL}Dem User wildfly werden Rechte für die Datei aktin.properties übergeben.${WHI}"
-	chown wildfly:wildfly $UPDATE_ROOT/aktin.properties
+	cd $UPDATE_ROOT
+	chown wildfly:wildfly aktin.properties
 else
 	echo -e "${ORA}Der User wildfly besitzt bereits Rechte für die Datei aktin.properties.${WHI}"
 fi
@@ -367,6 +360,13 @@ service postgresql start
 service wildfly start
 }
 
+add_autostart(){
+set -euo pipefail # stop installation on errors
+update-rc.d apache2 defaults
+update-rc.d postgresql defaults
+update-rc.d wildfly defaults
+}
+
 end_message(){
 set -euo pipefail # stop installation on errors
 echo
@@ -386,6 +386,10 @@ echo -e "Kopieren Sie die Datei anschließend in das Konfigurationsverzeichnis d
 echo
 echo -e "${GRE} cp "$UPDATE_ROOT/aktin.properties $WILDFLY_HOME"/standalone/configuration/${WHI}"
 echo
+echo -e "Starten Sie anschließend den WildFly-Server neu, um die neue Konfiguration zu laden"
+echo
+echo -e "${GRE} servicve wildfly restart${WHI}"
+echo
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
 echo -e "Bitte melden Sie auftretende Fehler an it-support@aktin.org!"
@@ -399,6 +403,7 @@ step_II | tee -a $LOGFILE
 step_III | tee -a $LOGFILE
 step_IV | tee -a $LOGFILE
 start_services | tee -a $LOGFILE
+add_autostart | tee -a $LOGFILE
 step_V # update has its own logfile
 end_message | tee -a $LOGFILE
 }

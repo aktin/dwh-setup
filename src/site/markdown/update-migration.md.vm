@@ -1,0 +1,84 @@
+<h3><u>Migration von Debian 8 und CentOS 7</u></h3>
+Für die Migration von älteren AKTIN Data Warehouses der Betriebssysteme Debian 8 und CentOS 7 auf die aktuelle Version von Ubuntu Server 20.04 LTS wird ein Migrationsskript zur Verfügung gestellt. Wenn Sie zurzeit ein anderes Betriebssystem mit einer älteren Version des AKTIN Data Warehouses verwenden und mirgrieren möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org).
+
+<!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
+<br></br>
+
+<h4>Anmelden als root</h4>
+Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sollten Sie den Nutzer `root` noch nicht aktiviert haben, so folgen Sie bitte den Anweisungen im Abschnitt [Erste Schritte](install-script.html#Erste_Schritte) des Installationsskriptes. Alle folgenden Befehle sollten nur als Nutzer `root` ausgeführt werden.
+<br></br>
+
+<h4>Durchführung der Migration</h4>
+<h5>1. Datensicherung</h5>
+Für die Durchführung der Migration muss das _Migrationspaket_ heruntergeladen und entpackt werden. Haben Sie direkt vom Server aus die Möglichkeit, das Paket herunterzuladen, können Sie hierfür den folgenden Befehl nutzen:
+
+```
+wget ${releaseRepoUrl}/org/aktin/dwh/dwh-migration/${project.version}/dwh-migration-${project.version}.tar.gz
+```
+
+Besteht diese Möglichkeit nicht, können Sie das Paket alternativ über diesen [Link](${releaseRepoUrl}/org/aktin/dwh/dwh-migration/${project.version}/dwh-migration-${project.version}.tar.gz) von einem anderen Rechner aus herunterladen.
+
+Kopieren oder laden Sie anschließend die Datei ins `/root`-Verzeichnis Ihres Servers. Entpacken Sie diese Datei und wechseln Sie anschließend in das Verzeichnis des Updates:
+
+```
+cd /root
+
+tar xvzf dwh-migration-${project.version}.tar.gz
+
+cd dwh-migration
+```
+
+Der Inhalt des Ordners (über den Befehl `ls`) sollte in etwa wie folgt aussehen:
+
+```
+dwh-migration
+- packages/
+- aktin_apply_backup.sh
+- aktin_create_backup.sh
+```
+
+Markieren Sie die enthaltenen Skript gegebenenfalls als ausführbar und führen Sie anschließen das Skript `aktin_create_backup.sh` aus:
+
+```
+chmod +x *.sh
+
+./aktin_create_backup.sh
+```
+
+Das Skript wird nun eine komprimierte Datensicherung folgender Komponenten erstellen:
+
+* Die Datei `aktin.properties`
+* Die Datenbanken `i2b2` und `aktin`
+* Die Logs von `apache2`, `postgresql` und `wildfly`
+* Den Ordner `/var/lib/aktin`
+
+Sollten Sie noch weitere Dateien absichern wollen, melden Sie dies bitte an den [AKTIN IT-Support](mailto:it-support@aktin.org). Notieren Sie sich außerdem manuell den Inhalt der Datei `email.config`. Die dort enthaltenen Informationen Ihres E-Mail-Servers müssen anschließend in die aktuelle Version der `aktin.properties` eingegeben werden. Sichern Sie zum Schluss den gesamten Ordner `dwh-migration` auf einem externem Medium (beispielsweise auf einem USB-Stick).
+<br></br>
+
+<h5>2. Installation des neuen Betriebssystems</h5>
+Überschreiben Sie das Betriebssystem Ihres Servers mit Ubuntu Server 20.04 LTS oder einem ähnlichen Betriebssystem. Eine Anleitung für die Installation von Ubuntu Server finden Sie auf der Seite [Server-Installation](install-requirements.html).
+<br></br>
+
+<h5>3. Einspielen der Datensicherung</h5>
+Kopieren Sie nach erfolgreicher Installation alle gesicherten Dateien des externen Mediums in einen beliebigen Ordner des neu installierten Betriebssystems. Führen Sie in diesem Ordner das Skript `aktin_apply_backup.sh` aus. Markieren Sie es gegebenenfalls als ausführbar:
+
+```
+chmod +x *.sh
+
+./aktin_apply_backup.sh
+```
+
+Das Skript wird zunächst automatisch das [AKTIN-Installationsskript](install-script.html) und das [AKTIN-Updateskript](update-auto.html) ausführen, um die aktuellste Version des AKTIN Data Warehouse auf dem neuen Betriebssystem zu installieren. Anschließend werden Ihre gesicherten Dateien in das neu installierte Data Warehouse eingespielt.
+
+Die standardmäßige Datei `aktin.properties` wird dabei zum größten Teil mit dem Inhalt Ihrere abgesicherten `aktin.properties` überschrieben. Es ist darauf hinzuweisen, dass in `aktin.properties` einige Felder für die Konfiguration des E-Mail-Servers hinzugekommen sind. Tragen Sie dort Ihre notierten Informationen der Datei `email.config` ein. Beachten Sie außerdem auch die Hinweise im Abschnitt [Konfiguration und lokale Einstellungen](install-script.html#Konfiguration_und_lokale_Einstellungen)
+des Installationsskriptes.
+
+Die `aktin.properties` können Sie über den Befehl `nano` manuell bearbeiten. Starten Sie nach Abschluss der Bearbeitung den WildFly-Server neu, um die neue Konfiguration zu laden:
+
+```
+nano /opt/wildfly/standalone/configuration/aktin.properties
+
+service wildfly restart
+```
+
+Nach erfolgreichen Neustart können Sie auf der Seite `http://<IHR SERVER>/aktin/admin/plain/test.html` die Grundfunktionalität testen. Eine weiterführende Anleitung zum Testen der Verbindung finden Sie im Bereich [Test der Betriebsfähigkeit](install-script.html#Test_der_Betriebsfähigkeit).

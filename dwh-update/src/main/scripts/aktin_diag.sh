@@ -14,7 +14,7 @@ readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
 # create a log folder for this diagnosis
-CURRENT=$(date +%Y_%h_%d_%H:%M)
+CURRENT=$(date +%Y_%h_%d_%H%M)
 readonly LOGFOLDER=$(pwd)/aktin_diag_$CURRENT
 if [[ ! -d $(pwd)/aktin_diag_$CURRENT ]]; then
     mkdir $(pwd)/aktin_diag_$CURRENT
@@ -22,7 +22,7 @@ fi
 
 # check for root privileges
 if [[ $EUID -ne 0 ]]; then
-   echo "${ORA}Dieses Script muss mit root-Rechten ausgeführt werden!${WHI}"
+   echo -e "${ORA}Dieses Script muss mit root-Rechten ausgeführt werden!${WHI}"
    exit 1
 fi
 
@@ -45,11 +45,13 @@ df -h > $LOGFOLDER/diskspace.txt
 # check running process
 echo -e "${YEL}+++++ WILDFLY SERVICE STATUS +++++${WHI}" > $LOGFOLDER/services.txt
 echo $(service wildfly status) >> $LOGFOLDER/services.txt
+
 echo -e "${YEL}+++++ WILDFLY PS +++++${WHI}" >> $LOGFOLDER/services.txt
 echo $(ps -ef | grep wildfly) >> $LOGFOLDER/services.txt
 
 echo -e "${YEL}+++++ POSTGRES SERVICE STATUS +++++${WHI}" >> $LOGFOLDER/services.txt
 echo $(service postgresql status) >> $LOGFOLDER/services.txt
+
 echo -e "${YEL}+++++ POSTGRES PS +++++${WHI}" >> $LOGFOLDER/services.txt
 echo $(ps -ef | grep postgresql) >> $LOGFOLDER/services.txt
 
@@ -93,7 +95,7 @@ if [ -d /var/lib/aktin/ ]; then
             echo -e "${ORA}/var/lib/aktin/broker DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
         fi
         if [ -d /var/lib/aktin/broker-archive ]; then
-            echo $(ls -ld /var/lib/aktin/brokéer-archive) >> $LOGFOLDER/permissions.txt
+            echo $(ls -ld /var/lib/aktin/broker-archive) >> $LOGFOLDER/permissions.txt
         else
             echo -e "${ORA}/var/lib/aktin/broker-archive DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
         fi

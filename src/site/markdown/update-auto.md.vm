@@ -1,6 +1,7 @@
 <h3><u>Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Ubuntu</u></h3>
 
 <!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
+<br></br>
 
 <h4>Anmelden als root</h4>
 Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sollten Sie den Nutzer `root` noch nicht aktiviert haben, so folgen Sie bitte den Anweisungen im Abschnitt [Erste Schritte](install-script.html#Erste_Schritte) des Installationsskriptes. Alle folgenden Befehle sollten nur als Nutzer `root` ausgeführt werden.
