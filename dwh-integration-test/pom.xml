@@ -15,7 +15,7 @@
 	</parent>
 
     <properties>
-        <org.aktin.demo-distribution.version>0.14-SNAPSHOT</org.aktin.demo-distribution.version>
+        <org.aktin.demo-distribution.version>0.14</org.aktin.demo-distribution.version>
     </properties>
 
 	<dependencies>
