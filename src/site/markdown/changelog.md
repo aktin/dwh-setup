@@ -1,17 +1,17 @@
 ﻿<h3><u>Changelog</u></h3>
 
-<h4>Version 1.3</h4>
-* Versionsupdate aller Komponenten:
-	* Java 11
-	* WildFly 18.0.0.Final
-	* Postgres 12
-	* Apache 2.4.41
-	* PHP 7.4.3
-	* Python 3.8.2
-	* R 3.6.3-2
-* Wechsel des Betriebssystems von Debian 8/CentOS 7 zu Ubuntu Server 20.04
-* Rework des Installationsskriptes
-* Konfiguration für den Mail-Server wurde aus `email.config` nach `aktin.properties` übertragen (Versand über `email.config` trotzdem weiterhin möglich)
+<h4>Version 1.3 (11-2020)</h4>
+* Rework des Installationsskriptes:
+	* Wechsel des Betriebssystems von Debian 8/CentOS 7 zu Ubuntu Server 20.04
+	* Versionsupdate aller Komponenten:
+		* Java 11
+		* WildFly 18.0.0.Final
+		* Postgres 12
+		* Apache 2.4.41
+		* PHP 7.4.3
+		* Python 3.8.2
+		* R 3.6.3-2
+* Konfiguration für den Mail-Server wurde aus `email.config` nach `aktin.properties` übertragen (Versand über `email.config` auch weiterhin möglich)
 
 <h4>Version 1.1</h4>
 * CDA-Validierung aktualisiert
