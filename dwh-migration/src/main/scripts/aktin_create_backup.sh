@@ -56,7 +56,7 @@ FOLDERS=( apache2_log postgresql_log wildfly_log )
 if [[ -n $(hostnamectl | grep "Debian") ]]; then
 	LOG_PATH=( /var/log/apache2 /var/log/postgresql $WILDFLY_HOME/standalone/log )
 elif [[ -n $(hostnamectl | grep "CentOS") ]]; then
-	LOG_PATH=( /var/log/httpd /var/lib/pgsql/*/data/pg_log/ $WILDFLY_HOME/standalone/log )
+	LOG_PATH=( /var/log/httpd /var/lib/pgsql/data/pg_log $WILDFLY_HOME/standalone/log )
 else
 	echo -e "${RED}Dieses Betriebssystem ist weder Debian noch CentOS!${WHI}"
    	exit 1
