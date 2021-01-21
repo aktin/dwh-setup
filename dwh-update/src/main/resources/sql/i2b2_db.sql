@@ -8234,7 +8234,7 @@ COPY i2b2pm.pm_hive_params (id, datatype_cd, domain_id, param_name_cd, value, ch
 --
 
 COPY i2b2pm.pm_project_data (project_id, project_name, project_wiki, project_key, project_path, project_description, change_date, entry_date, changeby_char, status_cd) FROM stdin;
-Demo	i2b2 Demo	http://www.i2b2.org	\N	/Demo	\N	\N	\N	\N	A
+Demo	AKTIN	http://www.i2b2.org	\N	/Demo	\N	\N	\N	\N	A
 \.
 
 
