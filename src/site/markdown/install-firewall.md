@@ -1,7 +1,7 @@
 <h3><u>Firewall-Einstellungen</u></h3>
 
 <h4>Externer Zugriff</h4>
-Der AKTIN Server muss periodisch auf den Server `aktin-broker.klinikum.rwth-aachen.de` der Uniklinik RWTH Aachen mit der IP-Adresse `134.130.15.153` via `Port 443` (HTTPS) zugreifen können.
+Der AKTIN Server muss periodisch auf den Server `aktin-broker.klinikum.rwth-aachen.de` der Uniklinik RWTH Aachen mit der IP-Adresse `134.130.15.160` via `Port 443` (HTTPS) zugreifen können.
 <br></br>
 
 <h4>Interne Regeln</h4>
