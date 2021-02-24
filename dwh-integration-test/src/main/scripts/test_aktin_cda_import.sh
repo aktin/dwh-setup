@@ -21,8 +21,8 @@ URL="http://localhost:80/aktin/cda/fhir/Binary/"
 CURRENT_TIME=$(date "+%Y-%m-%d %H")
 
 # loop over all storyboards
-STORYBOARD=( aktin_test_storyboard01.xml aktin_test_storyboard01.xml aktin_test_storyboard01_error.xml aktin_test_storyboard02.xml aktin_test_storyboard03.xml )
-CODE=( 201 200 422 201 201 )
+STORYBOARD=( aktin_test_storyboard01.xml aktin_test_storyboard01.xml aktin_test_storyboard01_error.xml aktin_test_storyboard02.xml aktin_test_storyboard03.xml aktin_test_storyboard04.xml aktin_test_storyboard05.xml aktin_test_storyboard06.xml )
+CODE=( 201 200 422 201 201 201 201 201 )
 for i in "${!STORYBOARD[@]}"
 do
 	# sent CDA document via java-demo-server-fhir-client and catch response
