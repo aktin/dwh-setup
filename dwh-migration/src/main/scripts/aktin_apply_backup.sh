@@ -133,7 +133,7 @@ cp -r $BACKUP_FOLDER/wildfly_log/* $WILDFLY_HOME/standalone/log/
 # copy backup of /var/lib/aktin into real /var/lib/aktin
 echo -e "${YEL}Backup von /var/lib/aktin/ wird eingespielt.${WHI}"
 cp -r $BACKUP_FOLDER/aktin_lib/* /var/lib/aktin/
-chown -R wildfly:wildfly /var/lib/aktin/*
+chown -R wildfly:wildfly /var/lib/aktin
 
 # remove BACKUP_FOLDER
 echo -e "${YEL}Temporärer Backup-Ordner wird wieder entfernt.${WHI}"
