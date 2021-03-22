@@ -8,6 +8,7 @@ readonly AKTIN_VERSION=${dwhJ2EEVersion}
 
 readonly UPDATE_ROOT=$(pwd)
 readonly UPDATE_PACKAGES=$UPDATE_ROOT/packages
+readonly UPDATE_SCRIPTS=$UPDATE_ROOT/scripts
 
 readonly WILDFLY_HOME=/opt/wildfly
 
@@ -51,15 +52,31 @@ if [[ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear ]]; 
 else
 	echo -e "${ORA}dwh-j2ee-$AKTIN_VERSION.ear ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi
+}
 
+step_B(){
+set -euo pipefail
+echo
+echo -e "${YEL}+++++ AKTIN-Update : STEP B +++++ Konfiguration für Upload stationärer Behandlugnsdaten${WHI}"
+echo
+
+# backup aktin.properties
+cd $WILDFLY_HOME/standalone/configuration
+cp aktin.properties $UPDATE_ROOT/aktin.properties.backup_$AKTIN_VERSION
+
+# patch aktin.properties
+patch aktin.properties < $UPDATE_SCRIPTS/properties_file_import.patch
+chown wildfly:wildfly aktin.properties
+
+
+}
+
+start_wildfly(){
 # start wildfly if not running
 if ! systemctl is-active --quiet wildfly; then
 	service wildfly start
 fi
 }
-
-
-
 
 end_message(){
 set -euo pipefail # stop installation on errors
@@ -71,6 +88,8 @@ echo
 main(){
 set -euo pipefail
 step_A | tee -a $LOGFILE
+step_B | tee -a $LOGFILE
+start_wildfly | tee -a $LOGFILE
 end_message | tee -a $LOGFILE
 }
 
