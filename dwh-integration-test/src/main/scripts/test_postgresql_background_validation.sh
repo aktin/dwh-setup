@@ -33,7 +33,7 @@ do
 	fi
 done
 
-# run test_aktin_consent_manager.sh with offline postgresql (must fail)
+# run test_aktin_consent_manager.sh with offline postgresql (expected to fail)
 BEARER_TOKEN=$(curl -s --location --request POST 'http://localhost:80/aktin/admin/rest/auth/login/' --header 'Content-Type: application/json' --data-raw '{ "username": "i2b2", "password": "demouser" }')
 RANDOM_STRING=$(echo $(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 6 | head -n 1))
 RANDOM_NUMBER=$(echo $(cat /dev/urandom | tr -dc '0-9' | fold -w 6 | head -n 1))
@@ -46,7 +46,7 @@ else
 fi
 echo
 
-# restart postgresql and run tests again (must succeed)
+# restart postgresql and run tests again (expected to succeed)
 echo "Starting Postgresql"
 service postgresql start
 echo

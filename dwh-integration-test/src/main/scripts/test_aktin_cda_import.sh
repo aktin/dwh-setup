@@ -3,7 +3,7 @@
 set -euo pipefail
 
 readonly INTEGRATION_ROOT=$(pwd)
-readonly INTEGRATION_PACKAGES=$INTEGRATION_ROOT/packages
+readonly INTEGRATION_BINARIES=$INTEGRATION_ROOT/binaries
 readonly XML_FILES=$INTEGRATION_ROOT/xml
 readonly PROPERTIES_FILES=$INTEGRATION_ROOT/properties
 
@@ -21,13 +21,13 @@ URL="http://localhost:80/aktin/cda/fhir/Binary/"
 CURRENT_TIME=$(date "+%Y-%m-%d %H")
 
 # loop over all storyboards
-STORYBOARD=( aktin_test_storyboard01.xml aktin_test_storyboard01.xml aktin_test_storyboard01_error.xml aktin_test_storyboard02.xml aktin_test_storyboard03.xml aktin_test_storyboard04.xml aktin_test_storyboard05.xml aktin_test_storyboard06.xml )
-CODE=( 201 200 422 201 201 201 201 201 )
+STORYBOARD=( aktin_test_storyboard01.xml aktin_test_storyboard01.xml aktin_test_storyboard01_error.xml aktin_test_storyboard02.xml aktin_test_storyboard03.xml )
+CODE=( 201 200 422 201 201 )
 for i in "${!STORYBOARD[@]}"
 do
 	# sent CDA document via java-demo-server-fhir-client and catch response
-	RESPONSE=$(java -Djava.util.logging.config.file="$PROPERTIES_FILES/logging.properties" -cp "$INTEGRATION_PACKAGES/demo-server-${org.aktin.demo-distribution.version}.jar" org.aktin.cda.etl.demo.client.FhirClient $URL $XML_FILES/${STORYBOARD[$i]} 2<&1)
-	
+	RESPONSE=$(java -Djava.util.logging.config.file="$PROPERTIES_FILES/logging.properties" -cp "$INTEGRATION_BINARIES/demo-server-${org.aktin.demo-distribution.version}.jar" org.aktin.cda.etl.demo.client.FhirClient $URL $XML_FILES/${STORYBOARD[$i]} 2<&1)
+
 	# extract response code and compare with predefined code, print whole response on failure
 	RESPONSE_CODE=$(echo $RESPONSE | grep -oP '(?<=Response code: )[0-9]+')
 	if [[ $RESPONSE_CODE == ${CODE[$i]} ]]; then
