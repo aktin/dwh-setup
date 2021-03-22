@@ -2,7 +2,7 @@
 
 # script to diagnose errors in i2b2 and aktin installation
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
-set -euo pipefail 
+set -euo pipefail
 
 readonly WILDFLY_HOME=/opt/wildfly
 
@@ -74,7 +74,7 @@ top -b -n 1 > $LOGFOLDER/ram.txt
 # check permission and existence of folders
 if [ -d /var/lib/aktin/ ]; then
     echo $(ls -ld /var/lib/aktin/) >> $LOGFOLDER/permissions.txt
-        if [ -d /var/lib/aktin/reports ]; then  
+        if [ -d /var/lib/aktin/reports ]; then
             echo $(ls -ld /var/lib/aktin/reports) >> $LOGFOLDER/permissions.txt
         else
             echo -e "${ORA}/var/lib/aktin/reports DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
@@ -98,6 +98,16 @@ if [ -d /var/lib/aktin/ ]; then
             echo $(ls -ld /var/lib/aktin/broker-archive) >> $LOGFOLDER/permissions.txt
         else
             echo -e "${ORA}/var/lib/aktin/broker-archive DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
+        fi
+        if [ -d /var/lib/aktin/import ]; then
+            echo $(ls -ld /var/lib/aktin/import) >> $LOGFOLDER/permissions.txt
+        else
+            echo -e "${ORA}/var/lib/aktin/import DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
+        fi
+        if [ -d /var/lib/aktin/import-scripts ]; then
+            echo $(ls -ld /var/lib/aktin/import-scripts) >> $LOGFOLDER/permissions.txt
+        else
+            echo -e "${ORA}/var/lib/aktin/import-scripts DOES NOT EXIST${WHI}" >> $LOGFOLDER/permissions.txt
         fi
 else
     echo -e "${RED}FOLDER /var/lib/aktin DOES NOT EXIST${WHI}" > permissions.txt
