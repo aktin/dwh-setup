@@ -66,18 +66,23 @@ echo
 cd $WILDFLY_HOME/standalone/configuration
 
 # backup and patch aktin.properties
-c1=$(grep -cP '(^import.data.path=.*)' aktin.properties)
-c2=$(grep -cP '(^import.script.path=.*)' aktin.properties)
-c3=$(grep -cP '(^import.script.check.interval=.*)' aktin.properties)
-if [[ $(($c1 + $c2 + $c3)) == 0 ]]; then
-	echo -e "${YEL}Die aktin.properties wird für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
-	cp aktin.properties $UPDATE_ROOT/aktin.properties.backup_$AKTIN_VERSION
-	patch aktin.properties < $UPDATE_SCRIPTS/properties_file_import.patch
-	chown wildfly:wildfly aktin.properties
-elif [[ $(($c1 + $c2 + $c3)) == 3 ]]; then
-	echo -e "${ORA}Die aktin.properties wurde bereits für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
+if [[ -f aktin.properties ]]; then
+	c1=$(grep -cP '(^import.data.path=.*)' aktin.properties)
+	c2=$(grep -cP '(^import.script.path=.*)' aktin.properties)
+	c3=$(grep -cP '(^import.script.check.interval=.*)' aktin.properties)
+	if [[ $(($c1 + $c2 + $c3)) == 0 ]]; then
+		echo -e "${YEL}Die aktin.properties wird für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
+		cp aktin.properties $UPDATE_ROOT/aktin.properties.backup_$AKTIN_VERSION
+		patch aktin.properties < $UPDATE_SCRIPTS/properties_file_import.patch
+		chown wildfly:wildfly aktin.properties
+	elif [[ $(($c1 + $c2 + $c3)) == 3 ]]; then
+		echo -e "${ORA}Die aktin.properties wurde bereits für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
+	else
+		echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die Schlüssel für den Upload stationärer Behandlungsdaten${WHI}"
+	fi
 else
-	echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die Schlüssel für den Upload stationärer Behandlungsdaten${WHI}"
+	echo -e "${RED}Die aktin.properties konnte nicht gefunden werden. Stellen Sie sicher, dass sich die aktin.properties im Ordner $WILDFLY_HOME/standalone/configuration befindet und starten Sie das Skript erneut.${WHI}"
+	exit 1
 fi
 
 # create folder for import data
