@@ -18,7 +18,7 @@ readonly GRE=${color_green}
 URL="http://localhost:80/aktin/cda/fhir/Binary/"
 
 # set timestamp to compare saving of sent CDA files
-CURRENT_TIME=$(date "+%Y-%m-%d %H")
+CURRENT_HOUR=$(date "+%Y-%m-%d %H")
 
 # loop over all storyboards
 STORYBOARD=( aktin_test_storyboard01.xml aktin_test_storyboard01.xml aktin_test_storyboard01_error.xml aktin_test_storyboard02.xml aktin_test_storyboard03.xml )
@@ -39,7 +39,7 @@ do
 done
 
 # count entries in i2b2crcdata with import_date within previously set timestamp
-if [[ $(sudo -u postgres psql -d i2b2 -v ON_ERROR_STOP=1 -c "SELECT import_date FROM i2b2crcdata.encounter_mapping" | grep -c "$CURRENT_TIME") != 0 ]]; then
+if [[ $(sudo -u postgres psql -d i2b2 -v ON_ERROR_STOP=1 -c "SELECT import_date FROM i2b2crcdata.encounter_mapping" | grep -c "$CURRENT_HOUR") != 0 ]]; then
 	echo -e "${GRE} --> new entries in i2b2 detected${WHI}"
 else
 	echo -e "${RED} --> no new entries in i2b2 detected${WHI}"
