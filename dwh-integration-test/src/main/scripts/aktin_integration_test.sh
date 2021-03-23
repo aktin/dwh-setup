@@ -6,6 +6,7 @@ set -euo pipefail
 
 readonly INTEGRATION_ROOT=$(pwd)
 readonly SQL_FILES=$INTEGRATION_ROOT/sql
+readonly SCRIPTS=$INTEGRATION_ROOT/scripts
 
 # colors for console output
 readonly WHI=${color_white}
@@ -42,10 +43,6 @@ echo "COPY aktin.properties"
 cd $INTEGRATION_ROOT
 cp aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
 
-# restart wildfly to apply new aktin.properties
-echo "WILDFLY restart"
-service wildfly restart
-
 # activacte i2b2 webclient debugging
 echo "ACTIVATE debugging"
 sed -i 's|debug: false|debug: true|' /var/www/html/webclient/i2b2_config_data.js
@@ -60,6 +57,14 @@ echo "ADD db_demo"
 cp $SQL_FILES/i2b2_db_demo.sql /tmp/
 sudo -u postgres psql -d i2b2 -f /tmp/i2b2_db_demo.sql
 rm /tmp/i2b2_db_demo.sql
+
+# move integration test scripts to import-scripts
+echo "MOVE SCRIPTS"
+cp $SCRIPTS/* /var/lib/aktin/import-scripts/
+
+# restart wildfly to apply changes
+echo "WILDFLY restart"
+service wildfly restart
 fi
 
 
@@ -93,3 +98,10 @@ echo
 
 # test background-validation
 ./test_postgresql_background_validation.sh
+
+echo
+echo -e "${YEL}+++++ STEP IV +++++ Integration test p21 endpoints${WHI}"
+echo
+
+# test generic-file-import endpoints and script operations
+./test_aktin_generic_file_import.sh
