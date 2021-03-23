@@ -35,6 +35,7 @@ do
 	else
 		echo -e "${RED}${STORYBOARD[$i]} failed ($RESPONSE_CODE)${WHI}"
 		echo $RESPONSE
+		exit 1
 	fi
 done
 
