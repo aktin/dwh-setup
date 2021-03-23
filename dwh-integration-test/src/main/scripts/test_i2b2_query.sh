@@ -26,5 +26,6 @@ do
 	else
 		echo -e "${RED}$i failed${WHI}"
 		echo $RESPONSE
+		exit 1
 	fi
 done

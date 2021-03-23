@@ -25,4 +25,5 @@ if [[ $RESPONSE_CODE == 200 || $RESPONSE_CODE == 201 ]]; then
 else
 	echo -e "${RED}Test consent-manager ($RESPONSE_CODE)${WHI}"
 	echo $(curl -s --location --request POST 'http://localhost:80/aktin/admin/rest/optin/AKTIN/Patient/1.2.276.0.76.4.8/'$RANDOM_NUMBER'' --header 'Authorization: Bearer '$BEARER_TOKEN'' --header 'Content-Type: application/json' --data-raw '{ "opt": 1, "sic": "", "comment": "'$RANDOM_STRING'" }')
+	exit 1
 fi
