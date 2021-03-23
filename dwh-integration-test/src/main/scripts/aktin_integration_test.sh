@@ -62,6 +62,10 @@ rm /tmp/i2b2_db_demo.sql
 echo "MOVE SCRIPTS"
 cp $SCRIPTS/* /var/lib/aktin/import-scripts/
 
+# set script timeout in aktin.properties to 10s
+echo "SET SCRIPT TIMEOUT"
+sed -i 's|import.script.check.interval=.*|import.script.check.interval=10000|'  /opt/wildfly/standalone/configuration/aktin.properties
+
 # restart wildfly to apply changes
 echo "WILDFLY restart"
 service wildfly restart
