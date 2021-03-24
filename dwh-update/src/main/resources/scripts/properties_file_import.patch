@@ -2,5 +2,5 @@
 > # file import data and script paths, interval to check script timeout
 > import.data.path=/var/lib/aktin/import
 > import.script.path=/var/lib/aktin/import-scripts
-> import.script.check.interval=600000
+> import.script.timeout=3600000
 > 
