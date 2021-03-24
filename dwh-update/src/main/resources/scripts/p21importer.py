@@ -4,7 +4,7 @@ Created on Wed Jan 20 11:36:55 2021
 @author: akombeiz
 """
 #@VERSION=1.0
-#@VIEWNAME=P21-Import-Skript
+#@VIEWNAME=Importskript für stationäre Behandlungsdaten
 #@MIMETYPE=zip
 #@ID=p21import
 """
@@ -606,7 +606,6 @@ def import_file(path_zip):
                         check_and_delete_uploaded_encounter(connection, table_observation, num_enc)
                         upload_encounter_data(connection, table_observation, list_upload_rows)
                         df_match.drop(df_match.loc[df_match['encounter_num'] == num_enc].index, inplace=True)
-                        print('Upload of encounter {0} successful! {1} encounter remaining'.format(id_encounter, len(df_match['encounter_num'])))
     finally:
         engine.dispose()
 
