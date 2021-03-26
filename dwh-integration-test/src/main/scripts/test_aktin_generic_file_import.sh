@@ -12,6 +12,12 @@ readonly ORA=${color_orange}
 readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
+readonly WHI='\033[0m'
+readonly RED='\e[1;31m'
+readonly ORA='\e[0;33m'
+readonly YEL='\e[1;33m'
+readonly GRE='\e[0;32m'
+
 # destination url
 URL='http://localhost:80/aktin/admin/rest'
 
@@ -71,6 +77,7 @@ do
 done
 
 # wait till all scripts are finished
+echo "wait 30s"
 sleep 30s
 
 # check script processing operation and state
@@ -154,12 +161,91 @@ do
     esac
 done
 
+# check cancelling of file processing
+if [[ $(curl -s --request GET $URL/script/queue) == 0 ]]; then
+    echo -e "${GRE}Queue is currently empty${WHI}"
+else
+    echo -e "${ORA}Queue is not empty${WHI}"
+fi
 
-http://localhost:81/aktin/admin/rest/script/66d70c3f-feb1-4856-93dd-2688b7a03647/verify
-http://localhost:81/aktin/admin/rest/script/66d70c3f-feb1-4856-93dd-2688b7a03647/cancel
+RESPONSE_CODE=$(curl -s -o /dev/null -w '%{http_code}' --location --request POST ''$URL'/script/'$ID_SLEEP'/verify' --header 'Authorization: Bearer '$BEARER_TOKEN'')
+if [[ $RESPONSE_CODE == 204 ]]; then
+    echo -e "${GRE}VERIFY of FILE_$i successful ($RESPONSE_CODE)${WHI}"
+else
+    echo -e "${RED}VERIFY of FILE_$i failed ($RESPONSE_CODE)${WHI}"
+    exit 1
+fi
+
+sleep 2s
+
+OPERATION=$(grep '^operation=' /var/lib/aktin/import/$ID_SLEEP/properties | cut -d'=' -f2)
+if [[ $OPERATION == 'verifying' ]]; then
+    echo -e "${GRE}$ID_SLEEP successfully chagend operation to verifying${WHI}"
+else
+    echo -e "${ORA}$ID_SLEEP has operation $OPERATION (should be verifying)${WHI}"
+fi
+
+STATE=$(grep '^state=' /var/lib/aktin/import/$ID_SLEEP/properties | cut -d'=' -f2)
+if [[ $STATE == 'in_progress' ]]; then
+    echo -e "${GRE}$ID_SLEEP successfully chagend state to in_progress${WHI}"
+else
+    echo -e "${ORA}$ID_SLEEP has state $STATE (should be in_progress)${WHI}"
+fi
+
+RESPONSE_CODE=$(curl -s -o /dev/null -w '%{http_code}' --location --request POST ''$URL'/script/'$ID_SLEEP'/cancel' --header 'Authorization: Bearer '$BEARER_TOKEN'')
+if [[ $RESPONSE_CODE == 204 ]]; then
+    echo -e "${GRE}CANCEL of FILE_$i successful ($RESPONSE_CODE)${WHI}"
+else
+    echo -e "${RED}CANCEL of FILE_$i failed ($RESPONSE_CODE)${WHI}"
+    exit 1
+fi
+
+STATE=$(grep '^state=' /var/lib/aktin/import/$ID_SLEEP/properties | cut -d'=' -f2)
+if [[ $STATE == 'cancelled' ]]; then
+    echo -e "${GRE}$ID_SLEEP successfully chagend state to cancelled${WHI}"
+else
+    echo -e "${ORA}$ID_SLEEP has state $STATE (should be cancelled)${WHI}"
+fi
+
+if [[ $(curl -s --request GET $URL/script/queue) == 0 ]]; then
+    echo -e "${GRE}Queue is currently empty${WHI}"
+else
+    echo -e "${RED}Queue is not empty${WHI}"
+    exit 1
+fi
+
 
 
 http://localhost:81/aktin/admin/rest/script/66d70c3f-feb1-4856-93dd-2688b7a03647/import
 
 
-http://localhost:81/aktin/admin/rest/file/1dd50a8d-5457-4875-9737-17f8dc86bf65
+
+# delete all uploaded files
+for i in "${!ID_SCRIPTS[@]}"
+do
+    RESPONSE_CODE=$(curl -s -o /dev/null -w '%{http_code}' --location --request DELETE ''$URL'/file/'${UUID_SCRIPTS[$i]}'' --header 'Authorization: Bearer '$BEARER_TOKEN'')
+    if [[ $RESPONSE_CODE == 204 ]]; then
+	    echo -e "${GRE}DELETE of FILE_$i successful ($RESPONSE_CODE)${WHI}"
+    else
+	    echo -e "${RED}DELETE of FILE_$i failed ($RESPONSE_CODE)${WHI}"
+	    exit 1
+    fi
+done
+
+# check via endpoint
+COUNT_FILES=$(curl -s --location --request GET ''$URL'/file' | grep -o 'id' | wc -l)
+if [[ $COUNT_FILES == 0 ]]; then
+    echo -e "${GRE}GET file successful (GOT $COUNT_FILES)${WHI}"
+else
+    echo -e "${RED}GET file failed (GOT $COUNT_FILES)${WHI}"
+    echo $(curl -s --location --request GET $URL/file)
+    exit 1
+fi
+
+# check via folder
+if [ -z $(ls -A /var/lib/aktin/import) ]; then
+    echo -e "${GRE}/var/lib/aktin/import is emtpy${WHI}"
+else
+    echo -e "${RED}/var/lib/aktin/import is not emtpy${WHI}"
+    exit 1
+fi
