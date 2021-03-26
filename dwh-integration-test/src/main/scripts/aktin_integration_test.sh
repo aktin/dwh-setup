@@ -64,7 +64,7 @@ cp $SCRIPTS/* /var/lib/aktin/import-scripts/
 
 # set script timeout in aktin.properties to 10s
 echo "SET SCRIPT TIMEOUT"
-sed -i 's|import.script.check.interval=.*|import.script.check.interval=10000|'  /opt/wildfly/standalone/configuration/aktin.properties
+sed -i 's|import.script.timeout=.*|import.script.timeout=10000|'  /opt/wildfly/standalone/configuration/aktin.properties
 
 # restart wildfly to apply changes
 echo "WILDFLY restart"
