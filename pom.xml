@@ -1,24 +1,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
-	
+
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
 	<version>1.4-SNAPSHOT</version>
-  
+
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
 
 	<parent>
 		<groupId>org.aktin</groupId>
 		<artifactId>aktin</artifactId>
-		<version>0.10</version>
+		<version>0.11-SNAPSHOT</version>
 	</parent>
 
 	<properties>
 		<!-- specifies the package and source version to which the scripts and site refers to -->
 		<!-- dont forget to change dependency further down and in dwh-update/pom.xml -->
-		<dwhJ2EEVersion>1.3rc3-SNAPSHOT</dwhJ2EEVersion>
+		<dwhJ2EEVersion>1.4rc1-SNAPSHOT</dwhJ2EEVersion>
 		<dwhOntologyVersion>0.13</dwhOntologyVersion>
 		<dwhImportVersion>0.13</dwhImportVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
@@ -35,7 +35,7 @@
 		<version_php>7.4.3</version_php>
 		<version_python>3.8.2</version_python>
 		<version_r>3.6.3-2</version_r>
-		
+
 		<!-- urls for packages -->
 		<url_i2b2_webclient>https://github.com/i2b2/i2b2-webclient/archive/v${version_i2b2}.0002.zip</url_i2b2_webclient>
 		<url_wildfly>https://download.jboss.org/wildfly/${version_wildfly}/wildfly-${version_wildfly}.zip</url_wildfly>
@@ -53,7 +53,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
-	
+
 	<scm>
 		<developerConnection>scm:git:https://git.rwth-aachen.de/aktin/dwh-setup.git</developerConnection>
 		<tag>HEAD</tag>
