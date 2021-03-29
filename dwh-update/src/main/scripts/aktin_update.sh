@@ -11,6 +11,7 @@ readonly UPDATE_PACKAGES=$UPDATE_ROOT/packages
 readonly UPDATE_SCRIPTS=$UPDATE_ROOT/scripts
 
 readonly WILDFLY_HOME=/opt/wildfly
+readonly WILDFLY_CONFIGURATION=$WILDFLY_HOME/standalone/configuration
 
 # colors for console output
 readonly WHI=${color_white}
@@ -64,21 +65,21 @@ echo -e "${YEL}+++++ AKTIN-Update : STEP B +++++ Konfiguration für den Upload s
 echo
 
 # check if aktin.properties is in configuration folder
-cd $WILDFLY_HOME/standalone/configuration
-if [[ ! -f aktin.properties ]]; then
-	cp $UPDATE_ROOT/aktin.properties $WILDFLY_HOME/standalone/configuration/aktin.properties
+if [[ ! -f $WILDFLY_CONFIGURATION/aktin.properties ]]; then
+	echo -e "${YEL}Die aktin.properties wird nach $WILDFLY_CONFIGURATION verschoben.${WHI}"
+	cp $UPDATE_ROOT/aktin.properties $WILDFLY_CONFIGURATION/aktin.properties
 	chown wildfly:wildfly aktin.properties
 fi
 
 # backup and patch aktin.properties
-c1=$(grep -cP '(^import.data.path=.*)' aktin.properties)
-c2=$(grep -cP '(^import.script.path=.*)' aktin.properties)
-c3=$(grep -cP '(^import.script.check.interval=.*)' aktin.properties)
+c1=$(echo $(grep -cP '(^import.data.path=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
+c2=$(echo $(grep -cP '(^import.script.path=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
+c3=$(echo $(grep -cP '(^import.script.timeout=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
 if [[ $(($c1 + $c2 + $c3)) == 0 ]]; then
 	echo -e "${YEL}Die aktin.properties wird für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
-	cp aktin.properties $UPDATE_ROOT/aktin.properties.backup_$AKTIN_VERSION
-	patch aktin.properties < $UPDATE_SCRIPTS/properties_file_import.patch
-	chown wildfly:wildfly aktin.properties
+	cp $WILDFLY_CONFIGURATION/aktin.properties $UPDATE_ROOT/aktin.properties.backup_$AKTIN_VERSION
+	patch $WILDFLY_CONFIGURATION/aktin.properties < $UPDATE_SCRIPTS/properties_file_import.patch
+	chown wildfly:wildfly $WILDFLY_CONFIGURATION/aktin.properties
 elif [[ $(($c1 + $c2 + $c3)) == 3 ]]; then
 	echo -e "${ORA}Die aktin.properties wurde bereits für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
 else
@@ -114,9 +115,9 @@ else
 fi
 
 # update wildfly post-size for files with max 1 gb
-if [[ $(grep -q "max-post-size" standalone.xml) ]]; then
+if [[ $(grep -q "max-post-size" $WILDFLY_CONFIGURATION/standalone.xml) ]]; then
 	echo -e "${YEL}Die standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
-	sed -i 's|enable-http2=\"true\"/>|enable-http2=\"true\" max-post-size=\"1073741824\"/>|' standalone.xml
+	sed -i 's|enable-http2=\"true\"/>|enable-http2=\"true\" max-post-size=\"1073741824\"/>|' $WILDFLY_CONFIGURATION/standalone.xml
 else
 	echo -e "${ORA}Die standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
 fi
