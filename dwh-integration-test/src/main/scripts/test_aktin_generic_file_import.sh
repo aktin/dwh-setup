@@ -334,9 +334,9 @@ do
     if [[ ! -z $ENC_NUM ]]; then
         COUNT_P21=$(sudo -u postgres psql -X -A -d i2b2 -v ON_ERROR_STOP=1 -t -c "SELECT COUNT(provider_id) FROM i2b2crcdata.observation_fact WHERE encounter_num='$ENC_NUM' AND provider_id='P21'")
         if [[ $COUNT_P21 == ${ARRAY_COUNT_P21[$i]} ]]; then
-            echo -e "${GRE}Count of ${ARRAY_ENC_ID[$i]} ($ENC_NUM) is a match${WHI}"
+            echo -e "${GRE}Count of Encounter ${ARRAY_ENC_ID[$i]} (Num:$ENC_NUM) is a match${WHI}"
         else
-            echo -e "${RED}Count of ${ARRAY_ENC_ID[$i]} ($ENC_NUM) does not match ($COUNT_P21 instead of ${ARRAY_COUNT_P21[$i]}) ${WHI}"
+            echo -e "${RED}Count of Encounter ${ARRAY_ENC_ID[$i]} (Num:$ENC_NUM) does not match ($COUNT_P21 instead of ${ARRAY_COUNT_P21[$i]}) ${WHI}"
             exit 1
         fi
     fi

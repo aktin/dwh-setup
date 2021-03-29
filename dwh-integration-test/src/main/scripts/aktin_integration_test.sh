@@ -15,6 +15,8 @@ readonly ORA=${color_orange}
 readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
+ apt-get -y install jq
+
 # make all test skripts executable
 chmod +x *
 
@@ -38,11 +40,6 @@ fi
 
 if [[ -n $(cat /var/www/html/webclient/i2b2_config_data.js | grep "debug: false") ]]; then
 
-# copy aktin.properties in wildfly configuration folder
-echo "COPY aktin.properties"
-cd $INTEGRATION_ROOT
-cp aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
-
 # activacte i2b2 webclient debugging
 echo "ACTIVATE debugging"
 sed -i 's|debug: false|debug: true|' /var/www/html/webclient/i2b2_config_data.js
@@ -64,7 +61,7 @@ cp $SCRIPTS/* /var/lib/aktin/import-scripts/
 
 # set script timeout in aktin.properties to 10s
 echo "SET SCRIPT TIMEOUT"
-sed -i 's|import.script.timeout=.*|import.script.timeout=10000|'  /opt/wildfly/standalone/configuration/aktin.properties
+sed -i 's|import.script.timeout=.*|import.script.timeout=20000|'  /opt/wildfly/standalone/configuration/aktin.properties
 
 # restart wildfly to apply changes
 echo "WILDFLY restart"
@@ -101,7 +98,7 @@ echo -e "${YEL}+++++ STEP III +++++ Integration test postgresql${WHI}"
 echo
 
 # test background-validation
-./test_postgresql_background_validation.sh
+#./test_postgresql_background_validation.sh
 
 echo
 echo -e "${YEL}+++++ STEP IV +++++ Integration test p21 endpoints${WHI}"
