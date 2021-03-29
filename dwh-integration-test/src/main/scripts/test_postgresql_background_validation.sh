@@ -19,20 +19,6 @@ if systemctl is-active --quiet postgresql; then
 	service postgresql stop
 fi
 
-# run test_i2b2_query.sh with offline postgresql (must fail)
-URL="http://localhost:80/webclient/"
-XML=( getUserAuth getSchemes getQueryMasterList_fromUserId getCategories getModifiers runQueryInstance_fromQueryDefinition getQueryInstanceList_fromQueryMasterId getQueryResultInstanceList_fromQueryInstanceId getQueryResultInstanceList_fromQueryResultInstanceId )
-for i in "${XML[@]}"
-do
-	RESPONSE=$(curl -d $XML_FILES/@i2b2_test_$i.xml -s $URL)
-	if [ $(echo $RESPONSE | grep -c "<status type=\"FAILED\">") == 1 ]; then
-		echo -e "${GRE}$i successfully failed${WHI}"
-	else
-		echo -e "${RED}$i failed${WHI}"
-		echo $RESPONSE
-	fi
-done
-
 # run test_aktin_consent_manager.sh with offline postgresql (expected to fail)
 BEARER_TOKEN=$(curl -s --location --request POST 'http://localhost:80/aktin/admin/rest/auth/login/' --header 'Content-Type: application/json' --data-raw '{ "username": "i2b2", "password": "demouser" }')
 RANDOM_STRING=$(echo $(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 6 | head -n 1))
@@ -53,9 +39,6 @@ echo
 
 echo "Sleep for 90s"
 sleep 90
-echo
-
-./test_i2b2_query.sh
 echo
 
 ./test_aktin_consent_manager.sh
