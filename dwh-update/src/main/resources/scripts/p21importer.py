@@ -1058,6 +1058,7 @@ def create_row_critical_care(intensive):
        Observation_fact row for duration in critical care
 
     """
+    intensive = intensive.replace(',', '.')
     return {'concept_cd': 'P21:DCC', 'modifier_cd': '@', 'valtype_cd': 'N', 'nval_num': intensive, 'units_cd': 'd'}
 
 
@@ -1100,6 +1101,7 @@ def create_row_ventilation(ventilation):
         Observation_fact row for duration of ventilation
 
     """
+    ventilation = ventilation.replace(',', '.')
     return {'concept_cd': 'P21:DV', 'modifier_cd': '@', 'valtype_cd': 'N', 'nval_num': ventilation, 'units_cd': 'h'}
 
 
@@ -1694,7 +1696,7 @@ if __name__ == '__main__':
         'PLZ': '^\d{5}$',
         'Aufnahmedatum': '^\d{12}$',
         'Aufnahmegrund': '^(0[1-9]|10)\d{2}$',
-        'Aufnahmeanlass': '^[EZNRVGB]$',
+        'Aufnahmeanlass': '^[EZNRVAGB]$',
         'Fallzusammenführung': '^(J|N)$',
         'Fallzusammenführungsgrund': '^OG|MD|KO|RU|WR|MF|P[WRM]|Z[OMKRW]$',
         'Verweildauer-intensiv': '^\d*(,\d{2})?$',
