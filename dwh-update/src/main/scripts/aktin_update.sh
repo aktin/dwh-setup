@@ -116,10 +116,10 @@ fi
 
 # update wildfly post-size for files with max 1 gb
 if [[ $(grep -q "max-post-size" $WILDFLY_CONFIGURATION/standalone.xml) ]]; then
+	echo -e "${ORA}Die standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
+else
 	echo -e "${YEL}Die standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
 	sed -i 's|enable-http2=\"true\"/>|enable-http2=\"true\" max-post-size=\"1073741824\"/>|' $WILDFLY_CONFIGURATION/standalone.xml
-else
-	echo -e "${ORA}Die standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
 fi
 }
 
