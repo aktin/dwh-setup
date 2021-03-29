@@ -13,7 +13,7 @@ readonly GRE=${color_green}
 URL="http://localhost:80/aktin/admin/rest"
 
 # login into aktin/admin and get bearer-token
-BEARER_TOKEN=$(curl -s --location --request POST ''$URL'auth/login/' --header 'Content-Type: application/json' --data-raw '{ "username": "i2b2", "password": "demouser" }')
+BEARER_TOKEN=$(curl -s --location --request POST ''$URL'/auth/login/' --header 'Content-Type: application/json' --data-raw '{ "username": "i2b2", "password": "demouser" }')
 
 # create random string and number
 RANDOM_STRING=$(echo $(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 6 | head -n 1))
