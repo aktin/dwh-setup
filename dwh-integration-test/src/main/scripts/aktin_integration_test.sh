@@ -76,7 +76,7 @@ echo -e "${YEL}+++++ STEP I +++++ Integration test I2B2${WHI}"
 echo
 
 # test a basic query in i2b2
-./test_i2b2_query.sh
+#./test_i2b2_query.sh
 
 echo
 echo -e "${YEL}+++++ STEP II +++++ Integration test AKTIN${WHI}"
@@ -84,11 +84,9 @@ echo
 
 # test CDA import
 ./test_aktin_cda_import.sh
-echo
 
 # test plain modules
 ./test_aktin_plain.sh
-echo
 
 # test consent-manager
 ./test_aktin_consent_manager.sh
