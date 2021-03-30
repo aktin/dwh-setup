@@ -93,7 +93,7 @@ if  [[ $(sudo -u postgres psql -l | grep "i2b2" | wc -l) == 0 ]]; then
 	# create database i2b2 and respective users
 	echo -e "${YEL}Eine Datenbank mit Namen i2b2 und entsprechenden Usern wird erstellt.${WHI}"
 	sudo -u postgres psql -v ON_ERROR_STOP=1 -f $SQL_FILES/i2b2_postgres_init.sql
-		
+
 	# build i2b2 data and load into database
 	echo -e "${YEL}Daten werden in die Datenbank i2b2 eingelesen.${WHI}"
 	sudo -u postgres psql -d i2b2 -f $SQL_FILES/i2b2_db.sql
@@ -103,7 +103,7 @@ fi
 
 # count databases with name aktin
 if  [[ $(sudo -u postgres psql -l | grep "aktin" | wc -l) == 0 ]]; then
-	
+
 	# add aktin data to i2b2 database
 	echo -e "${YEL}AKTIN-Daten werden der Datenbank i2b2 hinzugefügt.${WHI}"
 	sudo -u postgres psql -d i2b2 -v ON_ERROR_STOP=1 -f $SQL_FILES/addon_i2b2metadata.i2b2.sql
@@ -373,23 +373,6 @@ echo
 echo -e "${YEL}"
 echo "Installation abgeschlossen!"
 echo "Vielen Dank, dass Sie die AKTIN-Software verwenden."
-echo 
-echo
-echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
-echo -e "Um das AKTIN-Notaufnahmeregister zu nutzen, sind noch einige Konfigurationen nötig."
-echo
-echo -e "Bearbeiten Sie die Datei ${RED}aktin.properties${WHI} und passen Sie die jeweiligen Felder an Ihre Einstellungen an."
-echo
-echo -e "${GRE} nano "$UPDATE_ROOT/aktin.properties"${WHI}"
-echo
-echo -e "Kopieren Sie die Datei anschließend in das Konfigurationsverzeichnis des Wildfly-Servers"
-echo
-echo -e "${GRE} cp "$UPDATE_ROOT/aktin.properties $WILDFLY_HOME"/standalone/configuration/${WHI}"
-echo
-echo -e "Starten Sie anschließend den WildFly-Server neu, um die neue Konfiguration zu laden"
-echo
-echo -e "${GRE} servicve wildfly restart${WHI}"
-echo
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
 echo -e "Bitte melden Sie auftretende Fehler an it-support@aktin.org!"
