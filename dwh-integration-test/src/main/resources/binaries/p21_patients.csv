@@ -1,0 +1,139 @@
+1000,good + 2 departments,28
+1001,no ik,25
+1002,wrong ik,26
+1003,no birthyear,24
+1004,wrong birthyear,0
+1005,wrong birthyear,0
+1006,sex w,26
+1007,sex d,26
+1008,sex x,26
+1009,wrong sex,0
+1010,no sex,25
+1011,no plz,25
+1012,wrong plz,0
+1013,wrong plz,0
+1014,cause E,26
+1015,cause Z,26
+1016,cause R,26
+1017,cause V,26
+1018,cause A,26
+1019,cause G,26
+1020,cause B,26
+1021,wrong cause,0
+1022,no cause,0
+1023,reason 0202,26
+1024,reason 0303,26
+1025,reason 0404,26
+1026,reason 0505,26
+1027,reason 0606,26
+1028,reason 0808,26
+1029,reason 1010,26
+1030,wrong reason,0
+1031,no reason,0
+1032,"merge ""no""",25
+1033,wrong merge,0
+1034,no merge,25
+1035,merge reason MD,26
+1036,merge reason KO,26
+1037,merge reason RU,26
+1038,merge reason WR,26
+1039,merge reason MF,26
+1040,merge reason PW,26
+1041,merge reason PR,26
+1042,merge reason PM,26
+1043,merge reason ZO,26
+1044,merge reason ZM,26
+1045,merge reason ZK,26
+1046,merge reason ZR,26
+1047,merge reason ZW,26
+1048,wrong merge reason,0
+1049,no merge reason,25
+1050,Intensive 10.25,26
+1051,wrong intensive,0
+1052,no intensive,25
+1053,no admission date,0
+1054,wrong admission date,0
+1055,wrong admission date,0
+1056,no discharge date,25
+1057,wrong discharge date,0
+1058,wrong discharge date,0
+1058,no discharge reason,25
+1060,discharge reason 299,26
+1061,discharge reason 289,26
+1062,discharge reason 269,26
+1063,discharge reason 119,26
+1064,wrong discharge reason,0
+1065,Ventilation 10.25,26
+1066,wrong ventilation,0
+1067,no ventilation,25
+1068,no prestation,25
+1069,wrong prestation,0
+1070,wrong prestation,0
+1071,wrong prestation,0
+1072,no poststation,25
+1073,wrong poststation,0
+1074,wrong poststation,0
+1075,wrong poststation,0
+1076,prestation days 5.5,0
+1077,wrong prestation days,0
+1078,no prestation days,25
+1079,poststation days 5.5,0
+1080,wrong poststaion days,0
+1081,no poststaion days,26
+1082,no department,0
+1083,wrong department,0
+1084,wrong department,0
+1085,no department admission,0
+1086,wrong department admission,0
+1087,wrong department admission,0
+1088,no department discharge,26
+1089,wrong department discharge,0
+1090,wrong department discharge,0
+1091,"department intensive ""J""",26
+1092,no department intensive,0
+1093,wrong department intensive,0
+1094,HD + ND,32
+1095,wrong diagnosis + sek,0
+1096,no diagnosis + sek,0
+1097,no icd version + sek,0
+1098,wrong icd version + sek,0
+1099,icd code without delimiter + sek,33
+1100,no icd code + sek,0
+1101,wrong icd code + sek,0
+1102,localisation L + sek,33
+1103,localisation R + sek,33
+1104,wrong localisation + sek,0
+1105,no localisation + sek,32
+1106,diagnosis security V + sek,33
+1107,diagnosis security Z + sek,33
+1108,diagnosis security G + sek,33
+1109,no diagnosis security + sek,25
+1110,wrong diagnosis security + sek,0
+1111,sek code B33.33,33
+1112,sek code C3333,33
+1113,wrong sek code,0
+1114,no sek code,26
+1115,sek localisation L,33
+1116,sek localisation R,33
+1117,wrong sek localisation,0
+1118,no sek localisation,32
+1119,sek diagnosis security V,33
+1120,sek diagnosis security Z,33
+1121,sek diagnosis security G,33
+1122,no sek diagnosis security,32
+1123,wrong sek diagnosis security,0
+1124,no ops version,0
+1125,wrong ops version,0
+1126,ops code 9-64922,26
+1127,ops code 9649.22,26
+1128,ops code 964922,26
+1129,wrong ops code,0
+1130,no ops code,0
+1131,ops localisation R,26
+1132,ops localisation L,26
+1133,no ops localisation,25
+1134,wrong ops localisation,0
+1135,wrong ops date,0
+1136,wrong ops date,0
+1137,no ops date,0
+1138,wrong ops date,0
