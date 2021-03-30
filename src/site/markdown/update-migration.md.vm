@@ -70,7 +70,13 @@ chmod +x *.sh
 
 Das Skript wird zunächst automatisch das [AKTIN-Installationsskript](install-script.html) und das [AKTIN-Updateskript](update-auto.html) ausführen, um die aktuellste Version des AKTIN Data Warehouse auf dem neuen Betriebssystem zu installieren. Anschließend werden Ihre gesicherten Dateien in das neu installierte Data Warehouse eingespielt.
 
-Die standardmäßige Datei `aktin.properties` wird dabei zum größten Teil mit dem Inhalt Ihrere abgesicherten `aktin.properties` überschrieben. Es ist darauf hinzuweisen, dass in `aktin.properties` einige Felder für die Konfiguration des E-Mail-Servers hinzugekommen sind. Tragen Sie dort Ihre notierten Informationen der Datei `email.config` ein. Beachten Sie außerdem auch die Hinweise im Abschnitt [Konfiguration und lokale Einstellungen](install-script.html#Konfiguration_und_lokale_Einstellungen)
+Die standardmäßige Datei `aktin.properties` wird dabei zum größten Teil mit dem Inhalt Ihrere abgesicherten `aktin.properties` überschrieben. Es ist darauf hinzuweisen, dass in `aktin.properties` einige Felder für die Konfiguration des E-Mail-Servers hinzugekommen sind. Tragen Sie dort Ihre notierten Informationen der Datei `email.config` ein. Stellen Sie außerdem auch sicher, dass das Feld
+
+```
+email.session=local
+```
+
+entsprechend bezeichnet ist. Nur mit dem Keyword `local` wird die Konfiguration innerhalb der `aktin.properties` genutzt. Beachten Sie außerdem auch die Hinweise im Abschnitt [Konfiguration und lokale Einstellungen](install-script.html#Konfiguration_und_lokale_Einstellungen)
 des Installationsskriptes.
 
 Die `aktin.properties` können Sie über den Befehl `nano` manuell bearbeiten. Starten Sie nach Abschluss der Bearbeitung den WildFly-Server neu, um die neue Konfiguration zu laden:
