@@ -327,8 +327,8 @@ ARRAY_ENC_ID=($(seq 1000 1 1138))
 for i in "${!ARRAY_ENC_ID[@]}"
 do
     ENC_IDE=$(echo -n "1.2.276.0.76.3.87686/${ARRAY_ENC_ID[$i]}"| openssl sha1 -binary | base64)
-    ENC_IDE=${ENC_IDE/\//_}
-    ENC_IDE=${ENC_IDE/+/-}
+    ENC_IDE=$(echo $ENC_IDE | tr \/ _)
+    ENC_IDE=$(echo $ENC_IDE | tr + -)
 
     ENC_NUM=$(sudo -u postgres psql -X -A -d i2b2 -v ON_ERROR_STOP=1 -t -c "SELECT encounter_num FROM i2b2crcdata.encounter_mapping WHERE encounter_ide='$ENC_IDE'")
     if [[ ! -z $ENC_NUM ]]; then
