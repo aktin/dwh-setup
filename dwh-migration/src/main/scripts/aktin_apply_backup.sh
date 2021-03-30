@@ -148,25 +148,9 @@ if ! systemctl is-active --quiet wildfly; then
     service wildfly start
 fi
 
-
 echo
 echo "Migration abgeschlossen!"
 echo "Vielen Dank, dass Sie die AKTIN-Software verwenden."
-echo
-echo
-echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
-echo "Es wurde die aktuellste Version des AKTIN Data Warehouse installiert und das Backup Ihrer Daten eingespielt. Die standardmäßig ausgelieferte aktin.properties wurde größtenteils mit dem Inhalt Ihrer alten aktin.properties gepacht. Kontrollieren Sie den Inhalt der gepachten Version mittels"
-echo
-echo -e "${GRE} nano $WILDFLY_HOME/standalone/configuration/aktin.properties${WHI}"
-echo
-echo -e "Es ist darauf hinzuweisen dass am Ende der Datei einige Felder für die Konfiguration des E-Mail-Servers hinzugekommen sind. Tragen Sie hier Ihre notierten Informationen der Datei ${RED}email.config${WHI} ein. Stellen Sie außerdem auch sicher, dass das Feld"
-echo
-echo -e "${GRE} email.session=local${WHI}"
-echo
-echo -e "entsprechend bezeichnet ist. Nur mit dem Keyword ${GRE}local${WHI} wird die Konfiguration innerhalb der aktin.properties genutzt. Starten Sie nach Abschluss der Bearbeitung den WildFly-Server neu, um die neue Konfiguration zu laden"
-echo
-echo -e "${GRE} service wildfly restart${WHI}"
-echo
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
 echo -e "Bitte melden Sie auftretende Fehler an ${GRE}it-support@aktin.org${WHI}!"

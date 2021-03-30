@@ -92,24 +92,7 @@ echo -e "${YEL}Temporärer Backup-Ordner wird wieder entfernt.${WHI}"
 rm -r $BACKUP_FOLDER
 
 echo
-echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
-echo "Um die Migration erfolgreich durchzuführen, befolgen Sie folgende Schritte:"
-echo
-echo "1. Sichern Sie alle Dateien in diesem Ordner auf ein externes Medium. Es wurde ein Backup von folgenden Komponenten erstellt:"
-echo -e "- Die Datei ${GRE}aktin.properties${WHI}"
-echo -e "- Die Datenbanken ${GRE}aktin${WHI} und ${GRE}i2b2${WHI}"
-echo -e "- Die Logs von ${GRE}apache2${WHI}, ${GRE}postgresql${WHI} und ${GRE}wildfly${WHI}"
-echo -e "- Der Ordner ${GRE}/var/lib/aktin/${WHI}"
-echo -e "Sollten Sie noch weitere Dateien absichern wollen, melden Sie dies bitte an ${GRE}it-support@aktin.org${WHI}."
-echo
-echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
-echo -e "Notieren Sie sich außerdem manuell den Inhalt der Datei ${RED}email.config${WHI}. Die dort enthaltenen Informationen Ihres E-Mail-Servers müssen anschließend in die neue aktin.properties eingegeben werden."
-echo
-echo -e "2. Überschreiben Sie das Betriebssystem dieses Servers mit ${GRE}Ubuntu Server 20.04 LTS${WHI} oder einem ähnlichen Betriebssystem. Eine Anleitung hierzu finden Sie online auf ${GRE}www.aktin.org/de-de/support.html${WHI}."
-echo
-echo "3. Kopieren Sie alle gesicherten Dateien des externen Mediums in einen beliebigen Ordner auf dem neu installierten Betriebssystems."
-echo
-echo -e "4. Führen Sie in diesem Ordner das Skript ${GRE}aktin_apply_backup.sh${WHI} aus. Das Skript wird zunächst das AKTIN-Installationsskript und das AKTIN-Updateskript ausführen, um die aktuellste Version des AKTIN Data Warehouse auf dem neuen Betriebssystem zu installieren. Anschließend werden Ihre gesicherten Dateien des Backup-Ordners in das Data Warehouse eingespielt. ${RED}Beachten Sie hierfür auch die Hinweise in der Konsolenausgabe der anderen Skripte!${WHI}"
+echo "Backup abgeschlossen!"
 echo
 }
 
