@@ -86,27 +86,15 @@ else
 	echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die Schlüssel für den Upload stationärer Behandlungsdaten${WHI}"
 fi
 
-
-# create folder for import data
-if [[ ! -d /var/lib/aktin/import ]]; then
-	echo -e "${YEL}Der Ordner /var/lib/aktin/import wird erstellt.${WHI}"
-	mkdir -p /var/lib/aktin/import
-	chown wildfly:wildfly /var/lib/aktin/import
-else
-	echo -e "${ORA}Der Ordner /var/lib/aktin/import existiert bereits.${WHI}"
-fi
-
-# create folder for import scripts
-if [[ ! -d /var/lib/aktin/import-scripts ]]; then
-	echo -e "${YEL}Der Ordner /var/lib/aktin/import-scripts wird erstellt.${WHI}"
-	mkdir -p /var/lib/aktin/import-scripts
-	chown wildfly:wildfly /var/lib/aktin/import-scripts
-else
-	echo -e "${ORA}Der Ordner /var/lib/aktin/import existiert bereits.${WHI}"
-fi
-
 # copy p21importer.py to /var/lib/aktin/import-scripts
 if [[ ! -f /var/lib/aktin/import-scripts/p21importer.py ]]; then
+	if [[ ! -d /var/lib/aktin/import-scripts ]]; then
+		echo -e "${YEL}Der Ordner /var/lib/aktin/import-scripts wird erstellt.${WHI}"
+		mkdir -p /var/lib/aktin/import-scripts
+		chown wildfly:wildfly /var/lib/aktin/import-scripts
+	else
+		echo -e "${ORA}Der Ordner /var/lib/aktin/import existiert bereits.${WHI}"
+	fi
 	echo -e "${YEL}Das P21-Importskript wird nach /var/lib/aktin/import-scripts kopiert.${WHI}"
 	cp $UPDATE_SCRIPTS/p21importer.py /var/lib/aktin/import-scripts/
 	chown wildfly:wildfly /var/lib/aktin/import-scripts/p21importer.py
