@@ -17,6 +17,7 @@
 			<item href="install-script.html" name="Installationsskript" />
 		</menu>
 		<menu name="Updates und Patches">
+			<item href="file-import-p21.html" name="Import von stationären Behandlungsdaten" />
 			<item href="update-migration.html" name="Migration von Debian 8/CentOS 7" />
 			<item href="update-auto.html" name="Automatisches Update" />
 			<item href="update-manual.html" name="Manuelles Update" />
