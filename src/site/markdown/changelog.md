@@ -1,7 +1,15 @@
 ﻿<h3><u>Changelog</u></h3>
 
+<h4>Version 1.4 (04-2021)</h4>
+* Daten-Import: Ein neues Modul für das Hochladen und Verarbeiten von generischen Daten
+    * Importskript V1.0 für den Import stationärer Behandlungsdaten gemäß §21 KHEntgG
+* Weboberfläche
+    * Neuer Reiter: Daten-Import
+* Aktualisierung des Monatsbericht auf V01.5
+    * Fehlerbehebung in der Umwandlung und Darstellung von Datumsformaten
+
 <h4>Version 1.3 (11-2020)</h4>
-* Rework des Installationsskriptes:
+* Update-Skript/Installation:
 	* Wechsel des Betriebssystems von Debian 8/CentOS 7 zu Ubuntu Server 20.04
 	* Versionsupdate aller Komponenten:
 		* Java 11
