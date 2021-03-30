@@ -1,0 +1,363 @@
+<h3><u>Import von stationären Behandlungsdaten</u></h3>
+Für das Hochladen und Importieren von stationären Behandlungsdaten gemäß §21 KHEntgG wird seit der AKTIN DWH-Version 1.4 eine Schnittstelle samt Importskript bereitgestellt. Auf dieser Seite finden Sie eine Anleitung sowie wichtige Hinweise zur Nutzung dieser Schnittstelle.
+
+
+<!-- MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
+<br></br>
+
+<h4>Vorraussetzungen für das Importieren fallbasierter Daten</h4>
+Vergewissern Sie sich vor der Nutzung der Schnittstelle, dass Sie ein AKTIN Data Warehouse in der Version 1.4 oder höher betreiben und sich das Importskript `p21importer.py` auf Ihrem Server befindet (standardmäßig unter `/var/lib/aktin/import-scripts`). Sollte das Importskript nicht mehr auffindbar sein oder es zu anderweitigen Problemen kommen, melden Sie dies bitte an den [AKTIN IT-Support](mailto:it-support@aktin.org)
+<br></br>
+
+<h4>Anforderungen an den Datensatz</h4>
+Um eine einheitliche, performante und fehlerlose Datenverarbeitung zu gewährleisten, wurden vorab einige Anforderungen an den zu importierenden Datensatz definiert. Diese Anforderungen orientieren sich an den Anforderungen des §21 KHEntgG und sind im Folgenden beschrieben. Weitere Informationen zum §21-Datensatz und den Anforderungen finden Sie unter diesem [Link](https://www.g-drg.de/Datenlieferung_gem._21_KHEntgG/Dokumente_zur_Datenlieferung/Datensatzbeschreibung)
+
+ * Die Daten werden im `.csv`-Format importiert
+ * Als Trennzeichen zwischen Datenfeldern wird das Semikolon (`;`) verwendet
+ * Als Dezimaltrennzeichen wird das Komma (`,`) verwendet
+ * Für die Zeichencodierung wird UTF-8 verwendet
+ * Die `.csv`-Dateien müssen sich in einem `zip`-Archiv befinden
+ * In dem `zip`-Archiv müssen sich mindestens `.csv`-Dateien mit folgenden Namen befinden  `FALL.csv`, `FAB.csv` `ICD.csv` und `OPS.csv`
+ * Die nachfolgende Tabelle stellt die Anforderungen an die Spalten der jeweiligen `.csv`-Dateien dar. Sonderzeichen sind in keiner Spalte erlaubt. Ein invalides Feld führt dazu, dass der gesamte Fall von dem Import ausgeschlossen wird, unabhängig ob es sich dabei um ein optionales Feld handelte. Nicht aufgeführte Spalten sind optional und vom Import ausgeschlossen.
+
+<table>
+<thead>
+<tr>
+    <th>CSV-Datei</th>
+    <th>Spaltenname (§21-Variable)</th>
+    <th>Darf leer sein?</th>
+    <th>Formatvorgabe</th>
+    <th>Anmerkung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>FALL.csv</td>
+    <td>KH-internes-Kennzeichen</td>
+    <td>Nein</td>
+    <td>keine</td>
+    <td>Dient zur Verknüpfung der csv-Dateien. Wird nicht importiert</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>IK-der-Krankenkasse</td>
+    <td>Ja</td>
+    <td>keine</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Geburtsjahr</td>
+    <td>Ja</td>
+    <td>4-stellige Zahl (YYYY)</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Geschlecht</td>
+    <td>Ja</td>
+    <td>m,w,d oder x</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>PLZ</td>
+    <td>Ja</td>
+    <td>5-stellige Zahl</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Aufnahmedatum</td>
+    <td>Nein</td>
+    <td>12-stellige Zahl (YYYYmmddHHMM)</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Aufnahmegrund</td>
+    <td>Nein</td>
+    <td>4-stelliger Code</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Aufnahmeanlass</td>
+    <td>Nein</td>
+    <td>E,Z,N,R,V,A,G oder B</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Fallzusammenführung</td>
+    <td>Ja</td>
+    <td>J oder N</td>
+    <td>Wird nur importiert, wenn "Fallzusammenführungsgrund" nicht leer ist</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Fallzusammenführungsgrund</td>
+    <td>Ja</td>
+    <td>OG, MD, KO, RU, WR, MF, PW, PR, PM, ZO, ZM, ZK, ZR, oder ZW</td>
+    <td>Wird nur importiert, wenn "Fallzusammenführung" den Wert "J" hat</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Verweildauer-intensiv</td>
+    <td>Ja</td>
+    <td>Ganze Zahl oder kaufmännisch gerundet</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Entlassungsdatum</td>
+    <td>Ja</td>
+    <td>12-stellige Zahl (YYYYmmddHHMM)</td>
+    <td>Wird nur importiert, wenn "Entlassungsgrund" nicht leer ist</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Entlassungsgrund</td>
+    <td>Ja</td>
+    <td>3-stelliger Code</td>
+    <td>Wird nur importiert, wenn "Entlassungsdatum" nicht leer ist</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Beatmungsstunden</td>
+    <td>Ja</td>
+    <td>Ganze Zahl oder kaufmännisch gerundet</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Behandlungsbeginn-vorstationär</td>
+    <td>Ja</td>
+    <td>8-stellige Zahl (YYYYmmdd)</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Behandlungstage-vorstationär</td>
+    <td>Ja</td>
+    <td>Ganze Zahl</td>
+    <td>Wird nicht importiert, wenn "Behandlungsbeginn-vorstationär" leer ist</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Behandlungsende-nachstationär</td>
+    <td>Ja</td>
+    <td>8-stellige Zahl (YYYYmmdd)</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FALL.csv</td>
+    <td>Behandlungstage-nachstationär</td>
+    <td>Ja</td>
+    <td>Ganze Zahl</td>
+    <td>Wird nicht importiert, wenn "Behandlungsende-nachstationär" leer ist</td>
+</tr>
+<tr>
+    <td>FAB.csv</td>
+    <td>KH-internes-Kennzeichen</td>
+    <td>Nein</td>
+    <td>keine</td>
+    <td>Dient zur Verknüpfung der csv-Dateien. Wird nicht importiert</td>
+</tr>
+<tr>
+    <td>FAB.csv</td>
+    <td>Fachabteilung</td>
+    <td>Nein</td>
+    <td>HA/BA/BE + 4-stellige Zahl</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FAB.csv</td>
+    <td>FAB-Aufnahmedatum</td>
+    <td>Nein</td>
+    <td>12-stellige Zahl (YYYYmmddHHMM)</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FAB.csv</td>
+    <td>FAB-Entlassungsdatum</td>
+    <td>Ja</td>
+    <td>12-stellige Zahl (YYYYmmddHHMM)</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>FAB.csv</td>
+    <td>Kennung-Intensivbett</td>
+    <td>Nein</td>
+    <td>J oder N</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>ICD.csv</td>
+    <td>KH-internes-Kennzeichen</td>
+    <td>Nein</td>
+    <td>keine</td>
+    <td>Dient zur Verknüpfung der csv-Dateien. Wird nicht importiert</td>
+</tr>
+<tr>
+    <td>ICD.csv</td>
+    <td>Diagnoseart</td>
+    <td>Nein</td>
+    <td>HD oder ND</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>ICD.csv</td>
+    <td>ICD-Version</td>
+    <td>Nein</td>
+    <td>4-stellige Zahl</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>ICD.csv</td>
+    <td>ICD-Kode</td>
+    <td>Nein</td>
+    <td>1 Großbuchstabe + zweistellige Zahl + Punkt (optional) + 0 bis 3 beliebige Zeichen</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>ICD.csv</td>
+    <td>Lokalisation</td>
+    <td>Ja</td>
+    <td>B, L, oder R</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>ICD.csv</td>
+    <td>Diagnosensicherheit</td>
+    <td>Ja</td>
+    <td>A, V, Z oder G</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>ICD.csv</td>
+    <td>Sekundär-Kode</td>
+    <td>Ja</td>
+    <td>1 Großbuchstabe + zweistellige Zahl + Punkt (optional) + 0 bis 3 beliebige Zeichen</td>
+    <td>Die Sekundärdiagnose zur Hauptdiagnose wird als Nebendiagnose behandelt</td>
+</tr>
+<tr>
+    <td>ICD.csv</td>
+    <td>Sekundär-Lokalisation</td>
+    <td>Ja</td>
+    <td>B, L, oder R</td>
+    <td>Umbenannt aus "Lokalisation2" bzw. "Lokalisation"</td>
+</tr>
+<tr>
+    <td>ICD.csv</td>
+    <td>Sekundär-Diagnosensicherheit</td>
+    <td>Ja</td>
+    <td>A, V, Z oder G</td>
+    <td>Umbenannt aus "Diagnosensicherheit2" bzw. "Diagnosensicherheit"</td>
+</tr>
+<tr>
+    <td>OPS.csv</td>
+    <td>KH-internes-Kennzeichen</td>
+    <td>Nein</td>
+    <td>keine</td>
+    <td>Dient zur Verknüpfung der csv-Dateien. Wird nicht importiert</td>
+</tr>
+<tr>
+    <td>OPS.csv</td>
+    <td>OPS-Version</td>
+    <td>Nein</td>
+    <td>4-stellige Zahl (YYYY)</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>OPS.csv</td>
+    <td>OPS-Kode</td>
+    <td>Nein</td>
+    <td>
+    <p>1-stellige Zahl + Strich (optional) + 2-stellige Zahl + beliebiges Zeichen +</p>
+    <p>Punkt (optional) + 0 bis 2 beliebige Zeichen</p>
+    </td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>OPS.csv</td>
+    <td>Lokalisation</td>
+    <td>Ja</td>
+    <td>B, L, oder R</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>OPS.csv</td>
+    <td>OPS-Datum</td>
+    <td>Nein</td>
+    <td>12-stellige Zahl (YYYYmmddHHMM)</td>
+    <td>-</td>
+</tr>
+</tbody>
+</table>
+<br></br>
+
+<h4>Wichtiger Hinweis</h4>
+Es ist nochmals darauf hinzuweisen, dass in `ICD.csv` aufgrund einer Dopplung der Spaltennamen die Spalten für die Darstellung der Diagnosensicherheit (`Diagnosensicherheit2`/`Diagnosensicherheit`) und der Lokalisation (`Lokalisation2`/`Lokalisation`) von Sekundärdiagnosen in `Sekundär-Lokalisation` bzw. `Sekundär-Diagnosensicherheit` umbenannt werden müssen. Ohne eine Umbenennung dieser Spalten, wird das Importskript nicht starten.
+<br></br>
+
+
+<h4>Ablauf des Imports von fallbasierten Daten</h4>
+
+Der Import von fallbasierten daten dreischrittiger prozess
+zuerst hochgeladen
+dann geprüft
+im rahmen der prüfung wird gerpfüt? ob die hochgeladene datei den vordefinierten anforderungen entspricht und ob entsprechende fälle in der datenbank des data warehouses gefunden werden können
+
+nach erfolgereicher prüfung wird der import ermöglicht. über den import werden die p21 variablen aus der datei in die datenbank des data warehouse hochgeladen und somit für eine abfrage über den aktin broker zugänglich
+
+
+<h5>1. Hochladen der Datei</h5>
+
+wechseln sie in ihrem data warehouse manager zunächst auf den reiter Datenimport
+ihnen sollte sich folgendes bild ergeben
+wählen sie im reiter art der Datenverarbeitung das entsprechende vearbeitungsskript ausg
+drüclen sie anschließen auf durchsuchen um eine entsprechende datei mit der die verarbeitung durchgeführt werden soll auszuwhähne.
+
+<img src="screens_p21/p21-1.png" alt="img1"></img>
+<br></br>
+
+nach bestätiogung der datei wird diese einem temporärem speicher hinzugefügt
+hier p21.zip
+
+über den button upload kann diese datei anschließen auf den speicher des data warehouses hochgeladen werden
+Achtung: der voreingestellte maximale dateigröße beträgt 1gb.
+
+<img src="screens_p21/p21-3.png" alt="img3"></img>
+<br></br>
+
+<h5>2. Prüfung der Datei</h5>
+
+nach erfolgreichem hochladen wird die datei aus dem temporärem speicher gelöscht und ist anschließend über die tabelle einsichtlich?
+datei vollständig nur noch im aktin dwh
+durch dürkcen auf prüfen wird die prüfung gestartet
+asynchroner prozess der unterschiedliche lange dauern kann?
+
+unabhängig ob fehlschlag oder erfolg wird ein output log produziert, der über die buttons rechts des prüfen uttons eingesehen werden kann
+log des processing scripts
+
+<img src="screens_p21/p21-4.png" alt="img4"></img>
+<br></br>
+
+<h5>3. Import der Datei</h5>
+
+nach prüfung der datei import wählbar
+prozess derselbe wie bei der prüfung
+ein klick startet import
+da beim import daten dauerhaft hochgeladen werden dauert er auf jedenf all länger als prüfung
+
+<img src="screens_p21/p21-5.png" alt="img5"></img>
+<br></br>
+
+nach erfolgriechem import erlischt der button und der status änder tishc zu imoport abgeschlossen
+alle validen fälle der datei sind somit in das aktin data warehouse geladen worden
+
+behalten sie die datei einfach hier
+ein klick auf den button ganz rechts
+
+<img src="screens_p21/p21-6.png" alt="img6"></img>
