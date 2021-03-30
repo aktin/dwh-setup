@@ -375,7 +375,7 @@ echo "Installation abgeschlossen!"
 echo "Vielen Dank, dass Sie die AKTIN-Software verwenden."
 echo
 echo -e "${RED}+++++ WICHTIG! +++++ ${WHI}"
-echo -e "Bitte melden Sie auftretende Fehler an it-support@aktin.org!"
+echo -e "Bitte melden Sie auftretende Fehler an ${GRE}it-support@aktin.org${WHI}!"
 echo
 }
 

@@ -50,31 +50,6 @@ echo -e "${YEL}Backup der Datenbanken aktin und i2b2 wird erstellt.${WHI}"
 sudo -u postgres pg_dump i2b2 > $BACKUP_FOLDER/backup_i2b2.sql
 sudo -u postgres pg_dump aktin > $BACKUP_FOLDER/backup_aktin.sql
 
-# backup log folders and add "backup_" to each file in backuped log folders
-echo -e "${YEL}Backup der Logs von apache2, postgresql und wildfly wird erstellt.${WHI}"
-FOLDERS=( apache2_log postgresql_log wildfly_log )
-if [[ -n $(hostnamectl | grep "Debian") ]]; then
-	LOG_PATH=( /var/log/apache2 /var/log/postgresql $WILDFLY_HOME/standalone/log )
-elif [[ -n $(hostnamectl | grep "CentOS") ]]; then
-	LOG_PATH=( /var/log/httpd /var/lib/pgsql/data/pg_log $WILDFLY_HOME/standalone/log )
-else
-	echo -e "${RED}Dieses Betriebssystem ist weder Debian noch CentOS!${WHI}"
-   	exit 1
-fi
-
-for i in "${!FOLDERS[@]}"
-do
-	if [ ! -d $BACKUP_FOLDER/${FOLDERS[$i]} ]; then
-		mkdir $BACKUP_FOLDER/${FOLDERS[$i]}
-	fi
-	cp -r ${LOG_PATH[$i]}/* $BACKUP_FOLDER/${FOLDERS[$i]}/
-	cd $BACKUP_FOLDER/${FOLDERS[$i]}
-	for file in *
-	do
-		mv $file backup_$file
-	done
-done
-
 # backup /var/lib/aktin
 echo -e "${YEL}Backup von /var/lib/aktin/ wird erstellt.${WHI}"
 if [ ! -d $BACKUP_FOLDER/aktin_lib ]; then

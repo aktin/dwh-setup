@@ -48,10 +48,6 @@ cd aktin-dwh-installer
 
 main(){
 
-# copy aktin.properties to wildfly
-echo -e "${YEL}Unbearbeitete aktin.properties wird nach $WILDFLY_HOME/standalone/configuration/ kopiert.${WHI}"
-cp $MIGRATION_ROOT/aktin-dwh-installer/dwh-update/aktin.properties $WILDFLY_HOME/standalone/configuration/
-
 # iterate through all rows in backup_aktin.properties,
 # line start until '=' -> KEY
 # '=' until line end -> VALUE
@@ -123,12 +119,6 @@ if [[ -d $TMP_SQL_FILES ]]; then
     echo -e "${YEL}SQL-Dateien werden aus /tmp wieder gelöscht.${WHI}"
     rm -r $TMP_SQL_FILES
 fi
-
-# copy backuped logs to log folders
-echo -e "${YEL}Backup der Logs von apache2, postgresql und wildfly wird eingespielt.${WHI}"
-cp -r $BACKUP_FOLDER/apache2_log/* /var/log/apache2/
-cp -r $BACKUP_FOLDER/postgresql_log/* /var/log/postgresql/
-cp -r $BACKUP_FOLDER/wildfly_log/* $WILDFLY_HOME/standalone/log/
 
 # copy backup of /var/lib/aktin into real /var/lib/aktin
 echo -e "${YEL}Backup von /var/lib/aktin/ wird eingespielt.${WHI}"
