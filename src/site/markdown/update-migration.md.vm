@@ -49,7 +49,6 @@ Das Skript wird nun eine komprimierte Datensicherung folgender Komponenten erste
 
 * Die Datei `aktin.properties`
 * Die Datenbanken `i2b2` und `aktin`
-* Die Logs von `apache2`, `postgresql` und `wildfly`
 * Den Ordner `/var/lib/aktin`
 
 Sollten Sie noch weitere Dateien absichern wollen, melden Sie dies bitte an den [AKTIN IT-Support](mailto:it-support@aktin.org). Notieren Sie sich außerdem manuell den Inhalt der Datei `email.config`. Die dort enthaltenen Informationen Ihres E-Mail-Servers müssen anschließend in die aktuelle Version der `aktin.properties` eingegeben werden. Sichern Sie zum Schluss den gesamten Ordner `dwh-migration` auf einem externem Medium (beispielsweise auf einem USB-Stick).
