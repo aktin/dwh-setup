@@ -22,7 +22,49 @@ rm /opt/wildlfy/standalone/deployments/*.ear*
 cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear /opt/wildlfy/standalone/deployments/
 ```
 
-Starten Sie nach dem Kopieren den Wildlfy-Server:
+<h4>Patch der aktin.properties</h4>
+Mit der neuen Version ${dwhJ2EEVersion} wurden einige neue Schlüssel der `aktin.properties` hinzugefügt. Diese werden im Rahmden des neuen Features, nämlich das Hochladen und den Import von stationären Behandlungsdaten, benötigt. Die drei neuen Schlüssel lauten
+
+```
+import.data.path=/var/lib/aktin/import
+import.script.path=/var/lib/aktin/import-scripts
+import.script.timeout=3600000
+```
+
+und können auf manuellem Wege über
+
+```
+nano /opt/wildfly/standalone/configuration/aktin.properties
+```
+
+oder über die Ausführung des beigelegten Patches
+
+```
+patch /opt/wildfly/standalone/configuration/aktin.properties < dwh-update/scripts/properties_file_import.patch
+```
+
+der `aktin.properties` hinzugefügt werden.
+
+<h4>Ablegen des Importskripts für stationäre Behandlungsdaten</h4>
+Für den Import von fallbasierten Daten gemäß §21 KHEntgG in das AKTIN DWH wird ein Importskript bereitgestellt. Um das Skript auch über den Data Warehouse-Manager nutzen zu können, muss dieses in einem festgelegten Ordner auf Ihrem System abgelegt werden. Der Ordnerpfad wird über den Schlüssel `import.script.path` aus der `aktin.properties` bezogen und lautet `/var/lib/aktin/import-scripts`. Erstellen Sie den Ordner und kopieren Sie das Importskript über folgende Befehle. Stellen Sie dabei auch sicher, dass sowohl der Ordner als auch das Skript dem Nutzer und der Gruppe `wildfly` zugeordnet sind.
+
+```
+mkdir -p /var/lib/aktin/import-scripts
+chown wildfly:wildfly /var/lib/aktin/import-scripts
+
+cp dwh-update/scripts/p21importer.py /var/lib/aktin/import-scripts/
+chown wildfly:wildfly /var/lib/aktin/import-scripts/p21importer.py
+```
+
+<h4>Anpassen der maximalen Dateigröße für das Hochladen von Dateien</h4>
+Um auch den Import von größeren Dateien zu ermöglichen, muss das Limit für die maximale Dateigröße in der Konfiguration des `wilfly`-Servers angepasst werden. Standardgemäß liegt dieser Wert bei 10 Megabyte. Mit folgendem Befehl setzen Sie die maximale Dateigröße auf 1 Gigybyte. Die Dateigröße wird dabei in Byte angegeben.
+
+```
+sed -i 's|enable-http2=\"true\"/>|enable-http2=\"true\" max-post-size=\"1073741824\"/>|' /opt/wildfly/standalone/configuration/standalone.xml
+```
+
+<h4>Wiederaufnahme des Betriebs</h4>
+Starten Sie zum Abschluss den Wildfly-Server:
 
 ```
 service wildfly start
