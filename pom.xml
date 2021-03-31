@@ -4,7 +4,7 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
-	<version>1.4-SNAPSHOT</version>
+	<version>1.4rc1-SNAPSHOT</version>
 
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
@@ -12,15 +12,15 @@
 	<parent>
 		<groupId>org.aktin</groupId>
 		<artifactId>aktin</artifactId>
-		<version>0.11-SNAPSHOT</version>
+		<version>0.10</version>
 	</parent>
 
 	<properties>
 		<!-- specifies the package and source version to which the scripts and site refers to -->
 		<!-- dont forget to change dependency further down and in dwh-update/pom.xml -->
-		<dwhJ2EEVersion>1.4rc1-SNAPSHOT</dwhJ2EEVersion>
-		<dwhOntologyVersion>0.13</dwhOntologyVersion>
-		<dwhImportVersion>0.13</dwhImportVersion>
+		<dwhJ2EEVersion>1.4rc1</dwhJ2EEVersion>
+		<dwhOntologyVersion>0.15</dwhOntologyVersion>
+		<dwhImportVersion>0.15</dwhImportVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
 
 		<!-- version number to use in scripts -->
