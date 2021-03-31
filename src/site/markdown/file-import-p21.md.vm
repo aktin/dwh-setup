@@ -1,5 +1,5 @@
-<h3><u>Import von stationären Behandlungsdaten</u></h3>
-Für das Hochladen und Importieren von stationären Behandlungsdaten gemäß §21 KHEntgG wird seit der AKTIN DWH-Version 1.4 eine Schnittstelle samt Importskript bereitgestellt. Auf dieser Seite finden Sie eine Anleitung sowie wichtige Hinweise zur Nutzung dieser Schnittstelle.
+<h3><u>Import von fallbasierten Behandlungsdaten</u></h3>
+Für das Hochladen und Importieren fallbasierter Behandlungsdaten gemäß §21 KHEntgG wird seit der AKTIN DWH-Version 1.4 eine Schnittstelle samt Importskript bereitgestellt. Auf dieser Seite finden Sie eine Anleitung sowie wichtige Hinweise zur Nutzung dieser Schnittstelle.
 
 
 <!-- MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
@@ -303,61 +303,31 @@ Es ist nochmals darauf hinzuweisen, dass in `ICD.csv` aufgrund einer Dopplung de
 
 
 <h4>Ablauf des Imports von fallbasierten Daten</h4>
-
-Der Import von fallbasierten daten dreischrittiger prozess
-zuerst hochgeladen
-dann geprüft
-im rahmen der prüfung wird gerpfüt? ob die hochgeladene datei den vordefinierten anforderungen entspricht und ob entsprechende fälle in der datenbank des data warehouses gefunden werden können
-
-nach erfolgereicher prüfung wird der import ermöglicht. über den import werden die p21 variablen aus der datei in die datenbank des data warehouse hochgeladen und somit für eine abfrage über den aktin broker zugänglich
-
+Der Import von fallbasierten Daten ist ein dreischrittiger Prozess. Die Daten müssen zunächst über die Schnittstelle in das Data Warehouse hochgeladen werden. Anschließend lassen sich die Daten durch das Importskript prüfen. Im Rahmen der Prüfung wird ermittelt, ob die hochgeladene Datei den vordefinierten Anforderungen entspricht und ob entsprechende Fälle in der Datenbank des Data Warehouses gefunden werden können. Nach erfolgreichem Abschluss der Prüfung wird der Import ermöglicht. Über das Importskript können die fallbasierten Daten aus der Datei anschließend in die Datenbank des Data Warehouse improtiert und somit über den AKTIN-Broker abgefragt werden.
 
 <h5>1. Hochladen der Datei</h5>
-
-wechseln sie in ihrem data warehouse manager zunächst auf den reiter Datenimport
-ihnen sollte sich folgendes bild ergeben
-wählen sie im reiter art der Datenverarbeitung das entsprechende vearbeitungsskript ausg
-drüclen sie anschließen auf durchsuchen um eine entsprechende datei mit der die verarbeitung durchgeführt werden soll auszuwhähne.
+Wechseln Sie in Ihrem Data Warehouse-Manager zunächst auf den Reiter `Daten-Import`. Ihnen sollte sich folgendes Bild ergeben. Wählen Sie in der Auswahl `Art der Datenverarbeitung` das entsprechende Datenverarbeitungsskript aus. Drücken Sie anschließend auf den Button `Durchsuchen` (Roter Kreis) um eine Datei für das gewählte Verarbeitungsskript auszuwählen.
 
 <img src="screens_p21/p21-1.png" alt="img1"></img>
-<br></br>
 
-nach bestätiogung der datei wird diese einem temporärem speicher hinzugefügt
-hier p21.zip
-
-über den button upload kann diese datei anschließen auf den speicher des data warehouses hochgeladen werden
-Achtung: der voreingestellte maximale dateigröße beträgt 1gb.
+Nach Bestätigung der Auswahl wird die Datei (hier `p21.zip`) einem temporärem Speicher hinzugefügt. Über den Button `Upload` (Roter Kreis) kann diese Datei anschließend in den Speicher des Data Warehouses geladen werden. **Achtung:** Die voreingestellte maximale Dateigröße für das Hochladen beträgt 1 Gigabyte. Diese kann unter der Datei `opt/wildfly/standalone/configuration/standalone.xml` angepasst werden. Wenden Sie sich bei Fragen an den [AKTIN IT-Support](mailto:it-support@aktin.org).
 
 <img src="screens_p21/p21-3.png" alt="img3"></img>
-<br></br>
 
 <h5>2. Prüfung der Datei</h5>
-
-nach erfolgreichem hochladen wird die datei aus dem temporärem speicher gelöscht und ist anschließend über die tabelle einsichtlich?
-datei vollständig nur noch im aktin dwh
-durch dürkcen auf prüfen wird die prüfung gestartet
-asynchroner prozess der unterschiedliche lange dauern kann?
-
-unabhängig ob fehlschlag oder erfolg wird ein output log produziert, der über die buttons rechts des prüfen uttons eingesehen werden kann
-log des processing scripts
+Nach erfolgreichem Hochladen wechselt der Status der Datei zu `Hochladen abgeschlossen` und die Datei erscheint in der Tabelle. In dieser Tabelle werden alle Dateien, die über die Import-Schnittstelle hochgeladen wurden, abgebildet. Nach dem Hochladen ist die Datei nun bereit für eine Prüfung. Durch Drücken des Buttons `Prüfen` (Roter Kreis) wird der Prüfprozess gestartet. Die Dauer des Prozesses ist abhängig von der Dateigröße und der Serverhardware und kann in manchen Fällen sogar mehrere Stunden andauern. Dieser Prozess läuft im Hintergrund ab und wird durch das Verlassen der Seite nicht beendet. Um ein Aufhängen des Prozesses zu vermeiden, wurde ein Zeitlimit für die Verarbeitung gesetzt. Nach Überschreitung des Zeitlimits wird der Prozess abgebrochen. Das Zeitlimit beträgt standardmäßig 1 Stunde und kann über den Schlüssel `import.script.timeout` in der `aktin.properties` angepasst werden. Unabhängig davon, ob der Prozess erfolgreich ist oder fehlschlägt, wird ein Ausgabe- und Fehlerlog erstellt. Beide Logs sind über die Buttons rechts des Buttons `Prüfen` einsehbar. Im Ausgabelog sind ebenso die Ergebnisse der Prüfung nach erfolgreichem Abschluss dargestellt.
 
 <img src="screens_p21/p21-4.png" alt="img4"></img>
-<br></br>
 
 <h5>3. Import der Datei</h5>
-
-nach prüfung der datei import wählbar
-prozess derselbe wie bei der prüfung
-ein klick startet import
-da beim import daten dauerhaft hochgeladen werden dauert er auf jedenf all länger als prüfung
+Nach erfolgreicher Prüfung wird der Import der Datei auswählbar. Der Ablauf des Imports ist dabei identisch mit dem der Prüfung. Klicken Sie auf den Button `Import`, um den Import der geprüften Datei zu starten. Da beim Import kontinuierlich Daten in die Datenbank des Data Warehouses geladen werden, ist davon auszugehen, dass dieser Prozess länger als die Prüfung andauern wird.
 
 <img src="screens_p21/p21-5.png" alt="img5"></img>
-<br></br>
 
-nach erfolgriechem import erlischt der button und der status änder tishc zu imoport abgeschlossen
-alle validen fälle der datei sind somit in das aktin data warehouse geladen worden
+Nach erfolgreichem Import erlischt der Button und der Status der Datei ändert sich zu `Import abgeschlossen`. Alle fallbasierten Daten der validen Fälle befinden sich nun in der Datenbank des AKTIN Data Warehouses.
 
-behalten sie die datei einfach hier
-ein klick auf den button ganz rechts
+**ACHTUNG** Der Button `Löschen` (ganz rechts) löscht nicht nur eine hochgeladene Datei vom Server des Data Warehouses, sondern auch alle importierten Fälle dieser Datei aus der Datenbank
+
+**ACHTUNG** Beim Hochladen identischer Fälle werden diese in der Datenbank überschrieben. (Beispiel: Wird ein Datei names `p21-2.zip` importiert, die sämtliche Daten von `p21.zip` enthält und noch Daten darüber hinaus, werden alle bestehenden importierten Daten von `p21.zip` mit denen von `p21-2.zip` überschrieben.)
 
 <img src="screens_p21/p21-6.png" alt="img6"></img>
