@@ -42,10 +42,12 @@ dwh-update
 - xml/
 ```
 
-Das Updateskript kann anschließend über den folgenden Befehl ausgeführt werden:
+Das Updateskript kann anschließend über den folgenden Befehl ausgeführt werden. Gegebenenfalls muss das Skript noch als ausführbar markiert werden:
 
 ```
-./aktin_dwh_update.sh
+chmod +x aktin_update.sh
+
+./aktin_update.sh
 ```
 
 Während des Update wird die Datei `/opt/wildfly/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear` erstellt. Sie können dies nach Start der Komponenten mit folgendem Befehl kontrollieren:
