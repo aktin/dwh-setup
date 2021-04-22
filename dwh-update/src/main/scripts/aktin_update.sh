@@ -86,6 +86,15 @@ else
 	echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die Schlüssel für den Upload stationärer Behandlungsdaten${WHI}"
 fi
 
+# create folder /var/lib/aktin/import
+if [[ ! -d /var/lib/aktin/import ]]; then
+	echo -e "${YEL}Der Ordner /var/lib/aktin/import wird erstellt.${WHI}"
+	mkdir -p /var/lib/aktin/import
+	chown wildfly:wildfly /var/lib/aktin/import
+else
+	echo -e "${ORA}Der Ordner /var/lib/aktin/import existiert bereits.${WHI}"
+fi
+
 # copy p21importer.py to /var/lib/aktin/import-scripts
 if [[ ! -f /var/lib/aktin/import-scripts/p21importer.py ]]; then
 	if [[ ! -d /var/lib/aktin/import-scripts ]]; then
