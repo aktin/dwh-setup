@@ -1436,11 +1436,14 @@ def convert_date_to_i2b2_format(num_date):
 def convert_icd_code_to_i2b2_format(code_icd):
     """
     Converts ICD code to i2b2crcdata.observation_fact format by checking and
-    adding (if necessary) '.'-delimiter at index 3
+    adding (if necessary) '.'-delimiter at index 3. Does not convert if icd
+    code is only 3 characters long
 
     Example:
         F2424 -> F24.24
         F24.24 -> F24.24
+        J90 -> J90
+        J21. -> J21.
 
     Parameters
     ----------
@@ -1453,8 +1456,9 @@ def convert_icd_code_to_i2b2_format(code_icd):
         ICD code with added delimiter
 
     """
-    return ''.join([code_icd[:3], '.', code_icd[3:]] if code_icd[3] != '.' else code_icd)
-
+    if len(code_icd) > 3:
+        code_icd = ''.join([code_icd[:3], '.', code_icd[3:]] if code_icd[3] != '.' else code_icd)
+    return code_icd
 
 def convert_ops_code_to_i2b2_format(code_ops):
     """
@@ -1689,7 +1693,7 @@ if __name__ == '__main__':
 
     # format requirements for each column
     DICT_P21_COLUMN_PATTERN = {
-        'KH-internes-Kennzeichen': '^\w*$',
+        'KH-internes-Kennzeichen': '^.*$',
         'IK-der-Krankenkasse': '^\w*$',
         'Geburtsjahr': '^(19|20)\d{2}$',
         'Geschlecht': '^[mwdx]$',

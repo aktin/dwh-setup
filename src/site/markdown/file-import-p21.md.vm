@@ -299,6 +299,8 @@ Um eine einheitliche, performante und fehlerlose Datenverarbeitung zu gewährlei
 
 <h4>Wichtiger Hinweis</h4>
 Es ist nochmals darauf hinzuweisen, dass in `ICD.csv` aufgrund einer Dopplung der Spaltennamen die Spalten für die Darstellung der Diagnosensicherheit (`Diagnosensicherheit2`/`Diagnosensicherheit`) und der Lokalisation (`Lokalisation2`/`Lokalisation`) von Sekundärdiagnosen in `Sekundär-Lokalisation` bzw. `Sekundär-Diagnosensicherheit` umbenannt werden müssen. Ohne eine Umbenennung dieser Spalten, wird das Importskript nicht starten.
+
+Stellen Sie unbedingt sicher, dass auch sämtliche andere Spaltennamen Ihrer `.csv`-Dateien mit den Spaltennamen aus der angebenen Tabelle (welche sich nach den Vorgaben der InEK GmbH richtet) übereinstimmen.
 <br></br>
 
 
