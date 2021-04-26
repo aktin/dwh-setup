@@ -18,7 +18,7 @@
 	<properties>
 		<!-- specifies the package and source version to which the scripts and site refers to -->
 		<!-- dont forget to change dependency further down and in dwh-update/pom.xml -->
-		<dwhJ2EEVersion>1.4rc2</dwhJ2EEVersion>
+		<dwhJ2EEVersion>1.4rc2-SNAPSHOT</dwhJ2EEVersion>
 		<dwhOntologyVersion>0.15</dwhOntologyVersion>
 		<dwhImportVersion>0.15</dwhImportVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
