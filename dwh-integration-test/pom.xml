@@ -6,12 +6,12 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>dwh-integration-test</artifactId>
-	<version>1.4rc2-SNAPSHOT</version>
+	<version>${dwhJ2EEVersion}</version>
 
 	<parent>
 		<groupId>org.aktin.dwh</groupId>
 		<artifactId>server</artifactId>
-		<version>1.4rc2-SNAPSHOT</version>
+		<version>1.4-SNAPSHOT</version>
 	</parent>
 
     <properties>
@@ -22,9 +22,10 @@
         <dependency>
             <groupId>org.aktin.dwh</groupId>
             <artifactId>dwh-install</artifactId>
-            <version>1.4rc2-SNAPSHOT</version>
+            <version>${dwhJ2EEVersion}</version>
             <type>tar.gz</type>
             <exclusions>
+                <!-- EAR already bundled/included with installer -->
                 <exclusion>
                     <groupId>org.aktin.dwh</groupId>
                     <artifactId>dwh-update</artifactId>
