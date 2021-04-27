@@ -19,6 +19,7 @@ Um eine einheitliche, performante und fehlerlose Datenverarbeitung zu gewährlei
  * Die `.csv`-Dateien müssen sich in einem `zip`-Archiv befinden
  * In dem `zip`-Archiv müssen sich mindestens `.csv`-Dateien mit folgenden Namen befinden  `FALL.csv`, `FAB.csv` `ICD.csv` und `OPS.csv`
  * Die nachfolgende Tabelle stellt die Anforderungen an die Spalten der jeweiligen `.csv`-Dateien dar. Sonderzeichen sind in keiner Spalte erlaubt. Ein invalides Feld führt dazu, dass der gesamte Fall von dem Import ausgeschlossen wird, unabhängig ob es sich dabei um ein optionales Feld handelte. Nicht aufgeführte Spalten sind optional und vom Import ausgeschlossen.
+ * Die Zuordnung zu bereits vorhandenen Fällen in der Datenbank erfolgt über das Feld `KH-internes-Kennzeichen`. Es ist darauf zu achten, dass das Format in `KH-internes-Kennzeichen` mit dem Format der Fallnummern in den importierten CDA-Dokumenten identisch ist.
 
 <table>
 <thead>
@@ -297,10 +298,12 @@ Um eine einheitliche, performante und fehlerlose Datenverarbeitung zu gewährlei
 </table>
 <br></br>
 
-<h4>Wichtiger Hinweis</h4>
-Es ist nochmals darauf hinzuweisen, dass in `ICD.csv` aufgrund einer Dopplung der Spaltennamen die Spalten für die Darstellung der Diagnosensicherheit (`Diagnosensicherheit2`/`Diagnosensicherheit`) und der Lokalisation (`Lokalisation2`/`Lokalisation`) von Sekundärdiagnosen in `Sekundär-Lokalisation` bzw. `Sekundär-Diagnosensicherheit` umbenannt werden müssen. Ohne eine Umbenennung dieser Spalten, wird das Importskript nicht starten.
+<h4>Wichtige Hinweise</h4>
+* Es ist nochmals darauf hinzuweisen, dass in `ICD.csv` aufgrund einer Dopplung der Spaltennamen die Spalten für die Darstellung der Diagnosensicherheit (`Diagnosensicherheit2`/`Diagnosensicherheit`) und der Lokalisation (`Lokalisation2`/`Lokalisation`) von Sekundärdiagnosen in `Sekundär-Lokalisation` bzw. `Sekundär-Diagnosensicherheit` umbenannt werden müssen. Ohne eine Umbenennung dieser Spalten, wird das Importskript nicht starten.
 
-Stellen Sie unbedingt sicher, dass auch sämtliche andere Spaltennamen Ihrer `.csv`-Dateien mit den Spaltennamen aus der angebenen Tabelle (welche sich nach den Vorgaben der InEK GmbH richtet) übereinstimmen.
+* Stellen Sie unbedingt sicher, dass auch sämtliche andere Spaltennamen Ihrer `.csv`-Dateien mit den Spaltennamen aus der angebenen Tabelle (welche sich nach den Vorgaben der InEK GmbH richtet) übereinstimmen.
+
+* Für die Zuordnung eiens Falles muss die Fallnummer in `KH-internes-Kennzeichen` identisch mit der Fallnummer des importierten CDA-Dokument sein.
 <br></br>
 
 
@@ -317,7 +320,7 @@ Nach Bestätigung der Auswahl wird die Datei (hier `p21.zip`) einem temporärem 
 <img src="screens_p21/p21-3.png" alt="img3"></img>
 
 <h5>2. Prüfung der Datei</h5>
-Nach erfolgreichem Hochladen wechselt der Status der Datei zu `Hochladen abgeschlossen` und die Datei erscheint in der Tabelle. In dieser Tabelle werden alle Dateien, die über die Import-Schnittstelle hochgeladen wurden, abgebildet. Nach dem Hochladen ist die Datei nun bereit für eine Prüfung. Durch Drücken des Buttons `Prüfen` (Roter Kreis) wird der Prüfprozess gestartet. Die Dauer des Prozesses ist abhängig von der Dateigröße und der Serverhardware und kann in manchen Fällen sogar mehrere Stunden andauern. Dieser Prozess läuft im Hintergrund ab und wird durch das Verlassen der Seite nicht beendet. Um ein Aufhängen des Prozesses zu vermeiden, wurde ein Zeitlimit für die Verarbeitung gesetzt. Nach Überschreitung des Zeitlimits wird der Prozess abgebrochen. Das Zeitlimit beträgt standardmäßig 1 Stunde und kann über den Schlüssel `import.script.timeout` in der `aktin.properties` angepasst werden. Unabhängig davon, ob der Prozess erfolgreich ist oder fehlschlägt, wird ein Ausgabe- und Fehlerlog erstellt. Beide Logs sind über die Buttons rechts des Buttons `Prüfen` einsehbar. Im Ausgabelog sind ebenso die Ergebnisse der Prüfung nach erfolgreichem Abschluss dargestellt.
+Nach erfolgreichem Hochladen wechselt der Status der Datei zu `Hochladen abgeschlossen` und die Datei erscheint in der Tabelle. In dieser Tabelle werden alle Dateien, die über die Import-Schnittstelle hochgeladen wurden, abgebildet. Nach dem Hochladen ist die Datei nun bereit für eine Prüfung. Durch Drücken des Buttons `Prüfen` (Roter Kreis) wird der Prüfprozess gestartet. Die Dauer des Prozesses ist abhängig von der Dateigröße und der Serverhardware und kann in manchen Fällen sogar mehrere Stunden andauern. Dieser Prozess läuft im Hintergrund ab und wird durch das Verlassen der Seite nicht beendet. Um ein Aufhängen des Prozesses zu vermeiden, wurde ein Zeitlimit für die Verarbeitung gesetzt. Nach Überschreitung des Zeitlimits wird der Prozess abgebrochen. Das Zeitlimit beträgt standardmäßig 3 Stunden und kann über den Schlüssel `import.script.timeout` in der `aktin.properties` angepasst werden. Unabhängig davon, ob der Prozess erfolgreich ist oder fehlschlägt, wird ein Ausgabe- und Fehlerlog erstellt. Beide Logs sind über die Buttons rechts des Buttons `Prüfen` einsehbar. Im Ausgabelog sind ebenso die Ergebnisse der Prüfung nach erfolgreichem Abschluss dargestellt.
 
 <img src="screens_p21/p21-4.png" alt="img4"></img>
 
