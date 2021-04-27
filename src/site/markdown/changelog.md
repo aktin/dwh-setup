@@ -1,10 +1,12 @@
 ﻿<h3><u>Changelog</u></h3>
 
-<h4>Version 1.4 (04-2021)</h4>
+<h4>Version 1.4 (05-2021)</h4>
 * Daten-Import: Ein neues Modul für das Hochladen und Verarbeiten von generischen Daten
     * Importskript V1.0 für den Import stationärer Behandlungsdaten gemäß §21 KHEntgG
 * Weboberfläche
     * Neuer Reiter: Daten-Import
+    * Berichtsübersicht: Möglichkeit zum Löschen von Berichten
+    * Generelle Überarbeitungen von Design und Animationen
 * Aktualisierung des Monatsbericht auf V01.5
     * Fehlerbehebung in der Umwandlung und Darstellung von Datumsformaten
 
