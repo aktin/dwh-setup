@@ -32,11 +32,6 @@ echo
 echo -e "${YEL}+++++ AKTIN-Update : STEP A +++++ Deployment der EAR${WHI}"
 echo
 
-# stop wildfly if running
-if systemctl is-active --quiet wildfly; then
-	service wildfly stop
-fi
-
 # remove all old dwh-j2ee.ears
 if [[ $(ls /opt/wildfly/standalone/deployments/ | grep -c dwh-j2ee-*) != 0 ]]; then
 	echo -e "${YEL}Alte dwh-j2ee.ear werden gelöscht.${WHI}"
@@ -123,25 +118,17 @@ fi
 
 
 
-step_C(){
-echo
-echo -e "${YEL}+++++ AKTIN-Update : STEP C +++++ Hinzufügen der Zertifizierungsstudie${WHI}"
-echo
-
-# add study for certification of cda import interface
-if [[ -z $(sudo -u postgres psql -d i2b2 -c "SELECT id FROM i2b2crcdata.optinout_studies;"| grep "AKTIN") ]]; then
-echo -e "${YEL}Studie Zertifizierung wird zur Datenbank hinzugefügt.${WHI}"
-sudo -u postgres psql -d i2b2 -c "INSERT INTO i2b2crcdata.optinout_studies (id,title,description,created_ts,options,sic_generate,sic_generator_state) VALUES ('CERT','Zertifizierung','Zertifizierung der CDA Schnittstelle','2021-02-25 00:00:00','OPT=I','SEQUENCE(1000,1)','1000');"
-fi
-}
-
-
-
-
 start_wildfly(){
 # start wildfly if not running
 if ! systemctl is-active --quiet wildfly; then
 	service wildfly start
+fi
+}
+
+stop_wildfly(){
+# stop wildfly if running
+if systemctl is-active --quiet wildfly; then
+	service wildfly stop
 fi
 }
 
@@ -154,9 +141,9 @@ echo
 
 main(){
 set -euo pipefail
+stop_wildfly | tee -a $LOGFILE
 step_A | tee -a $LOGFILE
 step_B | tee -a $LOGFILE
-step_C | tee -a $LOGFILE
 start_wildfly | tee -a $LOGFILE
 end_message | tee -a $LOGFILE
 }
