@@ -49,7 +49,7 @@ Starten Sie das Skript mit:
 ./<IHR VERZEICHNIS>/aktin-dwh-installer/aktin_install.sh
 ```
 
-Das Installationsskript wird nun automatisch ausgeführt. Im Anschluss wird außerdem auch die aktuelleste Version von `dwh-update` eingespielt. Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Sämtliche Logausgaben finden Sie nach der Installation im jeweiligen Installationsordner. Weiterhin werden nach Abschluss der Installation die Komponenten `apache2`, `postgresql` und `wildfly` automatisch gestartet. 
+Das Installationsskript wird nun automatisch ausgeführt. Im Anschluss wird außerdem auch die aktuelleste Version von `dwh-update` eingespielt. Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Sämtliche Logausgaben finden Sie nach der Installation im jeweiligen Installationsordner. Weiterhin werden nach Abschluss der Installation die Komponenten `apache2`, `postgresql` und `wildfly` automatisch gestartet.
 
 Folgende Pakete werden dabei installiert und konfiguriert:
 
@@ -135,7 +135,7 @@ Wichtig ist hierbei das Feld `local.email`, in das die E-Mail-Adresse eingetrage
 
 Auch sollten Sie unter dem Feld `broker.keys` den alphanumerischen API-Key eintragen, der Ihnen zugesendet wurde. Sollten Sie noch keinen Key bekommen haben, melden Sie sich bitte bei [it-support@aktin.org](mailto:it-support@aktin.org).
 
-Weiterhin ist es auch wichtig, die Felder für die Email-Konfiguration am Ende der Datei entsprechend zu befüllen. In diesen Feldern wird die E-Mail-Konfiguration für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll (z.B. für den Versand von monatlich erzeugten Berichtsdokumente an die angegebene Emfänger-Adresse). Die Sender-Adresse sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort oder Funktions-E-Mail-Adresse) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation. 
+Weiterhin ist es auch wichtig, die Felder für die Email-Konfiguration am Ende der Datei entsprechend zu befüllen. In diesen Feldern wird die E-Mail-Konfiguration für die Ausgangsmailadresse vorgenommen, welche für hausinterne Benachrichtigungen und Berichte verwendet werden soll (z.B. für den Versand von monatlich erzeugten Berichtsdokumente an die angegebene Emfänger-Adresse). Die Sender-Adresse sollte eine dedizierte E-Mail-Adresse (Dienstkonto mit festem Passwort oder Funktions-E-Mail-Adresse) sein. Eine funktionstüchtige E-Mail-Adresse ist Voraussetzung für die Installation.
 
 Welche Wirkung die jeweiligen Felder haben, finden Sie in diesem Abschnitt in der Template-Datei:
 
@@ -214,7 +214,7 @@ import.cda.debug.dir=/tmp/
 import.cda.debug.level=none
 import.cda.fhir.outcome.level=info
 
-# mail server via java, use configuration below 
+# mail server via java, use configuration below
 email.session=local
 
 # adress received mails will reply to
@@ -290,7 +290,7 @@ Für nachträgliche Änderungen an `aktin.properties` beachten Sie die Hinweise 
 
 
 <h4>Einstellungen in der i2b2-Adminoberfläche</h4>
-Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der kein i2b2-Admin ist (d.h. keinen Zugriff auf die i2b2-Adminoberfläche unter `http://<IHR SERVER>/admin` hat), sind noch die folgenden zwei Schritte für einen erfolgreichen Login in den Data Warehouse-Manager notwendig:
+Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der kein i2b2-Admin ist (d.h. keinen Zugriff auf die i2b2-Adminoberfläche unter `http://<IHR SERVER>/webclient` hat), sind noch die folgenden zwei Schritte für einen erfolgreichen Login in den Data Warehouse-Manager notwendig:
 
 1. Die Zuordnung des Nutzers zum AKTIN-Projekt
 
