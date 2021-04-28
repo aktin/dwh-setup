@@ -60,13 +60,8 @@ openjdk-$JAVA_VERSION-jre-headless \
 postgresql-$PG_VERSION \
 apache2=$APACHE2_VERSION \
 php php-common libapache2-mod-php php-curl \
-r-base-core r-cran-lattice r-cran-xml libcurl4-openssl-dev libssl-dev libxml2-dev \
+r-base-core r-cran-lattice r-cran-xml libcurl4-openssl-dev libssl-dev libxml2-dev r-cran-tidyverse \
 python3 python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv python3-gunicorn
-
-# install R tidyverse
-cd $SCRIPT_FILES
-chmod +x install_tidyverse.R
-./install_tidyverse.R
 }
 
 
