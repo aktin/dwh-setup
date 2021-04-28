@@ -75,10 +75,10 @@ echo
 
 # copy sql folder to a location where postgres user can execute them
 if [[ ! -d /tmp/sql ]]; then
-echo -e "${YEL}SQL-Dateien werden nach /tmp kopiert.${WHI}"
-mkdir $SQL_FILES
-cp $UPDATE_ROOT/sql/* $SQL_FILES/
-chmod 777 -R $SQL_FILES
+	echo -e "${YEL}SQL-Dateien werden nach /tmp kopiert.${WHI}"
+	mkdir $SQL_FILES
+	cp $UPDATE_ROOT/sql/* $SQL_FILES/
+	chmod 777 -R $SQL_FILES
 fi
 
 service postgresql start
@@ -114,8 +114,8 @@ service postgresql stop
 
 # delete sql folder from /tmp
 if [[ -d /tmp/sql ]]; then
-echo -e "${YEL}SQL-Dateien werden aus /tmp wieder gelöscht.${WHI}"
-rm -r $SQL_FILES
+	echo -e "${YEL}SQL-Dateien werden aus /tmp wieder gelöscht.${WHI}"
+	rm -r $SQL_FILES
 fi
 }
 
