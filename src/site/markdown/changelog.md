@@ -5,7 +5,8 @@
     * Importskript V1.0 für den Import stationärer Behandlungsdaten gemäß §21 KHEntgG
 * Weboberfläche
     * Neuer Reiter: Daten-Import
-    * Berichtsübersicht: Möglichkeit zum Löschen von Berichten
+    * Möglichkeit zum Löschen von Berichten in der Berichtsübersicht
+    * Hinzufügung einer Studie zur Zertifizierung der CDA-Schnittstelle
     * Generelle Überarbeitungen von Design und Animationen
 * Aktualisierung des Monatsbericht auf V01.5
     * Fehlerbehebung in der Umwandlung und Darstellung von Datumsformaten
