@@ -28,7 +28,7 @@ Mit der neuen Version ${dwhJ2EEVersion} wurden einige neue Schlüssel der `aktin
 ```
 import.data.path=/var/lib/aktin/import
 import.script.path=/var/lib/aktin/import-scripts
-import.script.timeout=3600000
+import.script.timeout=10800000
 ```
 
 und können auf manuellem Wege über
