@@ -8,7 +8,7 @@
     * Möglichkeit zum Löschen von Berichten in der Berichtsübersicht
     * Hinzufügung einer Studie zur Zertifizierung der CDA-Schnittstelle
     * Generelle Überarbeitungen von Design und Animationen
-* Aktualisierung des Monatsbericht auf V01.5
+* Aktualisierung des Monatsbericht auf V0.15
     * Fehlerbehebung in der Umwandlung und Darstellung von Datumsformaten
 
 <h4>Version 1.3 (11-2020)</h4>
