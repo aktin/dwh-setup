@@ -17,9 +17,11 @@ Um eine einheitliche, performante und fehlerlose Datenverarbeitung zu gewährlei
  * Als Dezimaltrennzeichen wird das Komma (`,`) verwendet
  * Für die Zeichencodierung wird UTF-8 verwendet
  * Die `.csv`-Dateien müssen sich in einem `zip`-Archiv befinden
- * In dem `zip`-Archiv müssen sich mindestens `.csv`-Dateien mit folgenden Namen befinden  `FALL.csv`, `FAB.csv` `ICD.csv` und `OPS.csv`
- * Die nachfolgende Tabelle stellt die Anforderungen an die Spalten der jeweiligen `.csv`-Dateien dar. Sonderzeichen sind in keiner Spalte erlaubt. Ein invalides Feld führt dazu, dass der gesamte Fall von dem Import ausgeschlossen wird, unabhängig ob es sich dabei um ein optionales Feld handelte. Nicht aufgeführte Spalten sind optional und vom Import ausgeschlossen.
- * Die Zuordnung zu bereits vorhandenen Fällen in der Datenbank erfolgt über das Feld `KH-internes-Kennzeichen`. Es ist darauf zu achten, dass das Format in `KH-internes-Kennzeichen` mit dem Format der Fallnummern in den importierten CDA-Dokumenten identisch ist.
+ * In dem `zip`-Archiv muss sich mindestens eine `.csv`-Datei mit den Namen `FALL.csv` befinden. Optional können sich in dem Archiv noch Dateien mit dem Namen `FAB.csv`, `ICD.csv` und `OPS.csv` befinden. Anderweitige Dateien werden vom Importskript ignoriert
+ * Es werden nur valide Fälle importiert, d.h. die notwendigen Felder eines Falles sind vollständig und entsprechen den Formatvorgaben. Gleichzeitig muss der Fall im Vorfeld über die CDA-Schnittstelle importiert worden sein
+ * Die Zuordnung zu bereits vorhandenen Fällen in der Datenbank erfolgt über das Feld `KH-internes-Kennzeichen`. Es ist darauf zu achten, dass das Format in `KH-internes-Kennzeichen` mit dem Format der Fallnummern aus den importierten CDA-Dokumenten identisch ist
+ * Es werden zunächst nur alle validen und verknüpfbaren Fälle aus `FALL.csv` importiert. Anschließend werden alle validen Fälle aus den optionalen `.csv`-Dateien importiert (wenn vorhanden). Damit ein Fall aus einer optionalen `.csv`-Datei importiert wird, muss er im Vorfeld aus `FALL.csv` importiert worden sein
+ * Die nachfolgende Tabelle stellt die Anforderungen an die Spalten der jeweiligen `.csv`-Dateien dar. Sonderzeichen sind in keiner Spalte erlaubt. Ein invalides Feld führt dazu, dass der gesamte Fall vom Import ausgeschlossen wird. Ein invalides optionales Feld wird ignoriert. Nicht aufgeführte Spalten sind optional und vom Import ausgeschlossen.
 
 <table>
 <thead>

@@ -1,5 +1,10 @@
 ﻿<h3><u>Changelog</u></h3>
 
+<h4>Version 1.4.1 (05-2021)</h4>
+* Importskript V1.1
+    * Nur `FALL.csv` ist notwendig für den Import (`FAB.csv`, `OPS.csv` und `ICD.csv` sind nun optional)
+    * Invalide Felder, die optional sind, werden nun ignoriert (Fall wird trotzdem importiert)
+
 <h4>Version 1.4 (05-2021)</h4>
 * Daten-Import: Ein neues Modul für das Hochladen und Verarbeiten von generischen Daten
     * Importskript V1.0 für den Import stationärer Behandlungsdaten gemäß §21 KHEntgG
