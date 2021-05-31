@@ -22,6 +22,7 @@
 		<dwhOntologyVersion>0.15</dwhOntologyVersion>
 		<dwhImportVersion>0.15</dwhImportVersion>
 		<releaseRepoUrl>http://www.aktin.org/software/repo</releaseRepoUrl>
+		<version_p21_import_script>1.1</version_p21_import_script>
 
 		<!-- version number to use in scripts -->
 		<version_java>11</version_java>

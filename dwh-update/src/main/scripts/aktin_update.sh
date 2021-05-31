@@ -103,7 +103,14 @@ if [[ ! -f /var/lib/aktin/import-scripts/p21importer.py ]]; then
 	cp $UPDATE_SCRIPTS/p21importer.py /var/lib/aktin/import-scripts/
 	chown wildfly:wildfly /var/lib/aktin/import-scripts/p21importer.py
 else
-	echo -e "${ORA}Das P21-Importskript ist bereits in /var/lib/aktin/import-scripts vorhanden.${WHI}"
+	if [[ $(grep -c "@VERSION=${version_p21_import_script}" /var/lib/aktin/import-scripts/p21importer.py) == 0 ]]; then
+		echo -e "${YEL}Das P21-Importskript existiert in einer älteren Version und wird aktualisiert.${WHI}"
+		rm /var/lib/aktin/import-scripts/p21importer.py
+		cp $UPDATE_SCRIPTS/p21importer.py /var/lib/aktin/import-scripts/
+		chown wildfly:wildfly /var/lib/aktin/import-scripts/p21importer.py
+	else
+		echo -e "${ORA}Das P21-Importskript ist bereits in der neusten Version vorhanden.${WHI}"
+	fi
 fi
 
 # update wildfly post-size for files with max 1 gb
