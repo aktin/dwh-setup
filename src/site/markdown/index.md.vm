@@ -19,13 +19,13 @@ Bei individuell konfigurierten Servern oder anderen Linux-Distributionen führen
 <br></br>
 
 <h4>Software-Pakete</h4>
-**Installationspaket mit DWH-J2EE-${dwhJ2EEVersion}** (Installation und Update)
+**Installationspaket mit DWH-J2EE-${version_dwh}** (Installation und Update)
 
-[${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz)
+[${url_release_repo}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz)
 
-**Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}** (nur Update)
+**Softwareupdate-Paket auf DWH-J2EE-${version_dwh}** (nur Update)
 
-[${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
+[${url_release_repo}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
 <br></br>
 
 <h4>AKTIN-Software-Support</h4>

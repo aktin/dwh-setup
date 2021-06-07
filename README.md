@@ -3,7 +3,7 @@ Server
 
 Release erstellen
 ----------
-J2EE version/dependency in parent pom.xml eintrage (dwhJ2EEVersion)
+J2EE version/dependency in parent pom.xml eintrage (version_dwh)
 
 Installation
 ------------

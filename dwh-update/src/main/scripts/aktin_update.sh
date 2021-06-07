@@ -4,7 +4,7 @@
 # maintainer: Alexander Kombeiz <akombeiz@ukaachen.de>
 set -euo pipefail
 
-readonly AKTIN_VERSION=${dwhJ2EEVersion}
+readonly AKTIN_VERSION=${version_dwh}
 
 readonly UPDATE_ROOT=$(pwd)
 readonly UPDATE_PACKAGES=$UPDATE_ROOT/packages

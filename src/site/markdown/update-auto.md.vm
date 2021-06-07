@@ -1,4 +1,4 @@
-<h3><u>Skriptbasiertes Update auf DWH-J2EE-${dwhJ2EEVersion} für Ubuntu</u></h3>
+<h3><u>Skriptbasiertes Update auf DWH-J2EE-${version_dwh} für Ubuntu</u></h3>
 
 <!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
 <br></br>
@@ -8,13 +8,13 @@ Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sol
 <br></br>
 
 <h4>Ausführung des Updates</h4>
-Für laufende Instanzen des Data Warehouse auf Ubuntu-Servern wird ein Update-Skript bereitgestellt. Dafür muss das Paket _Softwareupdate-Paket auf DWH-J2EE-${dwhJ2EEVersion}_ heruntergeladen und entpackt werden. Haben Sie direkt vom Server aus die Möglichkeit, das Paket herunterzuladen, können Sie hierfür den folgenden Befehl nutzen:
+Für laufende Instanzen des Data Warehouse auf Ubuntu-Servern wird ein Update-Skript bereitgestellt. Dafür muss das Paket _Softwareupdate-Paket auf DWH-J2EE-${version_dwh}_ heruntergeladen und entpackt werden. Haben Sie direkt vom Server aus die Möglichkeit, das Paket herunterzuladen, können Sie hierfür den folgenden Befehl nutzen:
 
 ```
-wget ${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz
+wget ${url_release_repo}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz
 ```
 
-Besteht diese Möglichkeit nicht, können Sie das Paket alternativ über diesen [Link](${releaseRepoUrl}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz) von einem anderen Rechner aus herunterladen.
+Besteht diese Möglichkeit nicht, können Sie das Paket alternativ über diesen [Link](${url_release_repo}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz) von einem anderen Rechner aus herunterladen.
 
 Kopieren oder laden Sie anschließend die Datei ins `/root`-Verzeichnis Ihres Servers. Entpacken Sie diese Datei und wechseln Sie anschließend in das Verzeichnis des Updates:
 
@@ -50,12 +50,12 @@ chmod +x aktin_update.sh
 ./aktin_update.sh
 ```
 
-Während des Update wird die Datei `/opt/wildfly/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear` erstellt. Sie können dies nach Start der Komponenten mit folgendem Befehl kontrollieren:
+Während des Update wird die Datei `/opt/wildfly/standalone/deployments/dwh-j2ee-${version_dwh}.ear` erstellt. Sie können dies nach Start der Komponenten mit folgendem Befehl kontrollieren:
 
 ```
 ls /opt/wildfly/standalone/deployments/dwh-j2ee-*.deployed
 ```
 
-Sollte die Datei angezeigt werden, war das Update erfolgreich. Sollte stattdessen `/opt/wildfly/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen oder ein anderer Fehler auftreten, so führen Sie bitte das AKTIN-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie im Bereich [AKTIN-Diagnose-Skript](install-script.html#AKTIN-Diagnose-Skript) des Installationsskriptes.
+Sollte die Datei angezeigt werden, war das Update erfolgreich. Sollte stattdessen `/opt/wildfly/standalone/deployments/dwh-j2ee-${version_dwh}.ear.failed` auftauchen oder ein anderer Fehler auftreten, so führen Sie bitte das AKTIN-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie im Bereich [AKTIN-Diagnose-Skript](install-script.html#AKTIN-Diagnose-Skript) des Installationsskriptes.
 
 Nach dem erfolgreichen Update können Sie auf der Seite `http://<IHR SERVER>/aktin/admin/plain/test.html` die Grundfunktionalität testen. Eine weiterführende Anleitung zum Testen der Verbindung finden Sie im Bereich [Test der Betriebsfähigkeit](install-script.html#Test_der_Betriebsfähigkeit).
