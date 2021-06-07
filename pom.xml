@@ -4,7 +4,7 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
-	<version>${revision}</version>
+	<version>1.5-SNAPSHOT</version>
 
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
@@ -17,7 +17,6 @@
 
 	<properties>
 		<!-- build versions -->
-		<revision>1.5-SNAPSHOT</revision>
 		<version_dwh>1.4</version_dwh>
 		<verison_dwh_ontology>0.15</verison_dwh_ontology>
 		<version_dwh_import>0.15</version_dwh_import>
