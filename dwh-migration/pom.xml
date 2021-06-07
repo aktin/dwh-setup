@@ -6,19 +6,19 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>dwh-migration</artifactId>
-	<version>1.5-SNAPSHOT</version>
+	<version>${revision}</version>
 
 	<parent>
 		<groupId>org.aktin.dwh</groupId>
 		<artifactId>server</artifactId>
-		<version>1.5-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.aktin.dwh</groupId>
 			<artifactId>dwh-install</artifactId>
-			<version>${dwhJ2EEVersion}</version>
+			<version>${revision}</version>
 			<type>tar.gz</type>
 			<exclusions>
                 <!-- EAR already bundled/included with installer -->

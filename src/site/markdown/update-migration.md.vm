@@ -13,10 +13,10 @@ Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sol
 Für die Durchführung der Migration muss das _Migrationspaket_ heruntergeladen und entpackt werden. Haben Sie direkt vom Server aus die Möglichkeit, das Paket herunterzuladen, können Sie hierfür den folgenden Befehl nutzen:
 
 ```
-wget ${releaseRepoUrl}/org/aktin/dwh/dwh-migration/${project.version}/dwh-migration-${project.version}.tar.gz
+wget ${url_release_repo}/org/aktin/dwh/dwh-migration/${project.version}/dwh-migration-${project.version}.tar.gz
 ```
 
-Besteht diese Möglichkeit nicht, können Sie das Paket alternativ über diesen [Link](${releaseRepoUrl}/org/aktin/dwh/dwh-migration/${project.version}/dwh-migration-${project.version}.tar.gz) von einem anderen Rechner aus herunterladen.
+Besteht diese Möglichkeit nicht, können Sie das Paket alternativ über diesen [Link](${url_release_repo}/org/aktin/dwh/dwh-migration/${project.version}/dwh-migration-${project.version}.tar.gz) von einem anderen Rechner aus herunterladen.
 
 Kopieren oder laden Sie anschließend die Datei ins `/root`-Verzeichnis Ihres Servers. Entpacken Sie diese Datei und wechseln Sie anschließend in das Verzeichnis des Updates:
 

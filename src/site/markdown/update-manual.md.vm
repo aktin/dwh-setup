@@ -1,4 +1,4 @@
-<h3><u>Manualles Update auf DWH-J2EE-${dwhJ2EEVersion} für Ubuntu</u></h3>
+<h3><u>Manualles Update auf DWH-J2EE-${version_dwh} für Ubuntu</u></h3>
 
 <!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
 <br></br>
@@ -8,7 +8,7 @@ Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sol
 <br></br>
 
 <h4>Deployment des neuen Softwarepaketes</h4>
-Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear`) oder unter [EAR Release ${dwhJ2EEVersion}](${releaseRepoUrl}/org/aktin/dwh/dwh-j2ee/${dwhJ2EEVersion}/dwh-j2ee-${dwhJ2EEVersion}.ear) heruntergeladen werden. Sofern Sie eine laufende Instanz des Wildlfy-Servers haben, stoppen Sie diese zunächst über folgenden Befehl:
+Das neue Softwarepaket kann entweder dem geladenen Updatepaket entnommen werden (`dwh-update/packages/dwh-j2ee-${version_dwh}.ear`) oder unter [EAR Release ${version_dwh}](${url_release_repo}/org/aktin/dwh/dwh-j2ee/${version_dwh}/dwh-j2ee-${version_dwh}.ear) heruntergeladen werden. Sofern Sie eine laufende Instanz des Wildlfy-Servers haben, stoppen Sie diese zunächst über folgenden Befehl:
 
 ```
 service wildfly stop
@@ -19,11 +19,11 @@ Anschließend kann die heruntergeladene Datei in den Ordner `deployments` des Wi
 ```
 rm /opt/wildlfy/standalone/deployments/*.ear*
 
-cp dwh-update/packages/dwh-j2ee-${dwhJ2EEVersion}.ear /opt/wildlfy/standalone/deployments/
+cp dwh-update/packages/dwh-j2ee-${version_dwh}.ear /opt/wildlfy/standalone/deployments/
 ```
 
 <h4>Patch der aktin.properties</h4>
-Mit der neuen Version ${dwhJ2EEVersion} wurden einige neue Schlüssel der `aktin.properties` hinzugefügt. Diese werden im Rahmden des neuen Features, nämlich das Hochladen und den Import von stationären Behandlungsdaten, benötigt. Die drei neuen Schlüssel lauten
+Mit der neuen Version ${version_dwh} wurden einige neue Schlüssel der `aktin.properties` hinzugefügt. Diese werden im Rahmden des neuen Features, nämlich das Hochladen und den Import von stationären Behandlungsdaten, benötigt. Die drei neuen Schlüssel lauten
 
 ```
 import.data.path=/var/lib/aktin/import
@@ -70,12 +70,12 @@ Starten Sie zum Abschluss den Wildfly-Server:
 service wildfly start
 ```
 
-Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Nach erfolgereichem Deployment wird die Datei `opt/wildlfy/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.deployed` erstellt. Sie können dies mit folgendem Befehl kontrollieren:
+Das Deployment wird damit automatisch gestartet und kann einige Minuten andauern. Nach erfolgereichem Deployment wird die Datei `opt/wildlfy/standalone/deployments/dwh-j2ee-${version_dwh}.ear.deployed` erstellt. Sie können dies mit folgendem Befehl kontrollieren:
 
 ```
 ls /opt/wildfly/standalone/deployments/dwh-j2ee-*.deployed
 ```
 
-Sollte die Datei angezeigt werden, war das Update erfolgreich. Sollte stattdessen `/opt/wildfly/standalone/deployments/dwh-j2ee-${dwhJ2EEVersion}.ear.failed` auftauchen oder ein anderer Fehler auftreten, so führen Sie bitte das AKTIN-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie im Bereich [AKTIN-Diagnose-Skript](install-script.html#AKTIN-Diagnose-Skript) des Installationsskriptes.
+Sollte die Datei angezeigt werden, war das Update erfolgreich. Sollte stattdessen `/opt/wildfly/standalone/deployments/dwh-j2ee-${version_dwh}.ear.failed` auftauchen oder ein anderer Fehler auftreten, so führen Sie bitte das AKTIN-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie im Bereich [AKTIN-Diagnose-Skript](install-script.html#AKTIN-Diagnose-Skript) des Installationsskriptes.
 
 Nach dem erfolgreichen Update können Sie auf der Seite `http://<IHR SERVER>/aktin/admin/plain/test.html` die Grundfunktionalität testen. Eine weiterführende Anleitung zum Testen der Verbindung finden Sie im Bereich [Test der Betriebsfähigkeit](install-script.html#Test_der_Betriebsfähigkeit).
