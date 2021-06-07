@@ -103,7 +103,7 @@ if [[ ! -f /var/lib/aktin/import-scripts/p21importer.py ]]; then
 	cp $UPDATE_SCRIPTS/p21importer.py /var/lib/aktin/import-scripts/
 	chown wildfly:wildfly /var/lib/aktin/import-scripts/p21importer.py
 else
-	if [[ $(grep -c "@VERSION=${version_p21_import_script}" /var/lib/aktin/import-scripts/p21importer.py) == 0 ]]; then
+	if [[ $(grep -wc "@VERSION=${version_p21_import_script}" /var/lib/aktin/import-scripts/p21importer.py) == 0 ]]; then
 		echo -e "${YEL}Das P21-Importskript existiert in einer älteren Version und wird aktualisiert.${WHI}"
 		rm /var/lib/aktin/import-scripts/p21importer.py
 		cp $UPDATE_SCRIPTS/p21importer.py /var/lib/aktin/import-scripts/
@@ -114,11 +114,17 @@ else
 fi
 
 # update wildfly post-size for files with max 1 gb
-if [[ $(grep -q "max-post-size" $WILDFLY_CONFIGURATION/standalone.xml) ]]; then
-	echo -e "${ORA}Die standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
+if [[ ! -z $(grep "max-post-size" $WILDFLY_CONFIGURATION/standalone.xml | grep "http-listener name=\"default\"") ]]; then
+		echo -e "${ORA}Der Eintrag default in der standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
 else
-	echo -e "${YEL}Die standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
-	sed -i 's|enable-http2=\"true\"/>|enable-http2=\"true\" max-post-size=\"1073741824\"/>|' $WILDFLY_CONFIGURATION/standalone.xml
+	echo -e "${YEL}Der Eintrag default in der standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
+	sed -i 's|http-listener name=\"default\" *|&max-post-size=\"1073741824\" |' $WILDFLY_CONFIGURATION/standalone.xml
+fi
+if [[ ! -z $(grep "max-post-size" $WILDFLY_CONFIGURATION/standalone.xml | grep "https-listener name=\"https\"") ]]; then
+		echo -e "${ORA}Der Eintrag https in der standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
+else
+	echo -e "${YEL}Der Eintrag https in der standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
+	sed -i 's|https-listener name=\"https\" *|&max-post-size=\"1073741824\" |' $WILDFLY_CONFIGURATION/standalone.xml
 fi
 }
 
