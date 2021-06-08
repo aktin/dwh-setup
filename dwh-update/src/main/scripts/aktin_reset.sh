@@ -148,7 +148,7 @@ if [[ -d /opt/wildfly-$WILDFLY_VERSION ]]; then
 	echo -e "${YEL}Der Wildfly-Server und der Link zum Wildfly-Server werden entfernt.${WHI}"
 	rm -r /opt/wildfly-$WILDFLY_VERSION
 	rm /opt/wildfly
-else 
+else
 	echo -e "${ORA}Der Wildfly-Server und der Link zum Wildfly-Server wurden bereits entfernt.${WHI}"
 fi
 
@@ -183,7 +183,7 @@ set -euo pipefail # stop installation on errors
 echo
 echo -e "${YEL}"
 echo "Reset abgeschlossen!"
-echo 
+echo
 echo "Alle Komponenten von i2b2 und AKTIN wurden entfernt. Installiete Pakete wurden nicht entfernt."
 echo "Eine Neuinstallation der Komponenten ist nun möglich."
 echo -e "${WHI}"
