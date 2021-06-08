@@ -12,6 +12,7 @@ readonly UPDATE_SCRIPTS=$UPDATE_ROOT/scripts
 
 readonly WILDFLY_HOME=/opt/wildfly
 readonly WILDFLY_CONFIGURATION=$WILDFLY_HOME/standalone/configuration
+readonly JBOSSCLI="$WILDFLY_HOME/bin/jboss-cli.sh -c"
 
 # colors for console output
 readonly WHI=${color_white}
@@ -115,16 +116,14 @@ fi
 
 # update wildfly post-size for files with max 1 gb
 if [[ ! -z $(grep "max-post-size" $WILDFLY_CONFIGURATION/standalone.xml | grep "http-listener name=\"default\"") ]]; then
-		echo -e "${ORA}Der Eintrag default in der standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
+	echo -e "${ORA}Die standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
 else
-	echo -e "${YEL}Der Eintrag default in der standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
-	sed -i 's|http-listener name=\"default\" *|&max-post-size=\"1073741824\" |' $WILDFLY_CONFIGURATION/standalone.xml
-fi
-if [[ ! -z $(grep "max-post-size" $WILDFLY_CONFIGURATION/standalone.xml | grep "https-listener name=\"https\"") ]]; then
-		echo -e "${ORA}Der Eintrag https in der standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
-else
-	echo -e "${YEL}Der Eintrag https in der standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
-	sed -i 's|https-listener name=\"https\" *|&max-post-size=\"1073741824\" |' $WILDFLY_CONFIGURATION/standalone.xml
+	echo -e "${YEL}Die standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
+	# start wildfly server safely (JBOSS cli needs running server)
+	cd $UPDATE_ROOT
+	./wildfly_safe_start.sh
+	$JBOSSCLI --file="$UPDATE_SCRIPTS/wildfly_max-post-size_update.cli"
+	./wildfly_safe_stop.sh
 fi
 }
 
