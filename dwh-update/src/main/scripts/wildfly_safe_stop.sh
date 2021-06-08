@@ -13,7 +13,6 @@ fi
 
 # redeploy undeployed .ear of wildfly_safe_start.sh
 for i in $(ls $WILDFLY_DEPLOYMENTS | grep ".UNDEPLOYED");
-	do 
-		mv "$WILDFLY_DEPLOYMENTS/$i" "$WILDFLY_DEPLOYMENTS/${i%.UNDEPLOYED}"; 
+	do
+		mv "$WILDFLY_DEPLOYMENTS/$i" "$WILDFLY_DEPLOYMENTS/${i%.UNDEPLOYED}";
 	done
-
