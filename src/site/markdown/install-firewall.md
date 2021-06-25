@@ -1,10 +1,57 @@
 <h3><u>Firewall-Einstellungen</u></h3>
 
-<h4>Externer Zugriff</h4>
-Der AKTIN Server muss periodisch auf den Server `aktin-broker.klinikum.rwth-aachen.de` der Uniklinik RWTH Aachen mit der IP-Adresse `134.130.15.160` via `Port 443` (HTTPS) zugreifen können.
+<h4>Installation</h4>
+Für die Installation des AKTIN DWH braucht das Installationsskript Zugriff auf folgende Server:
+
+<table>
+<thead>
+<tr>
+    <th>Server</th>
+    <th>IP-Adresse</th>
+    <th>HTTP</th>
+    <th>HTTPS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>de.archive.ubuntu.com</td>
+    <td>141.30.62.23</td>
+    <td>80/tcp</td>
+    <td>-</td>
+</tr>
+<tr>
+    <td>github.com</td>
+    <td>140.82.121.3</td>
+    <td>80/tcp</td>
+    <td>443/tcp</td>
+</tr>
+<tr>
+    <td>download.jboss.org</td>
+    <td>88.221.217.128</td>
+    <td>80/tcp</td>
+    <td>443/tcp</td>
+</tr>
+<tr>
+    <td>jdbc.postgresql.org</td>
+    <td>72.32.157.228</td>
+    <td>80/tcp</td>
+    <td>443/tcp</td>
+</tr>
+<tr>
+    <td>aktin.org</td>
+    <td>188.68.47.138</td>
+    <td>80/tcp</td>
+    <td>443/tcp oder 8443/tcp</td>
+</tr>
+</tbody>
+</table>
+
+
+<h4>Betrieb</h4>
+Während des Betriebs muss der AKTIN Server periodisch auf den Server `aktin-broker.klinikum.rwth-aachen.de` der Uniklinik RWTH Aachen mit der IP-Adresse `134.130.15.160` via `Port 443` (HTTPS) zugreifen können.
 <br></br>
 
-<h4>Interne Regeln</h4>
+<h4>Weitere interne Regel</h4>
 * `Port 80` (HTTP) wird verwendet, um intern auf das Data Warehouse sowie Konfigurationoberflächen zuzugreifen.
 
 * Datenimporte werden per RESTful oder SOAP-Schnittstelle über HTTP an `/aktin/cda` gesendet.
