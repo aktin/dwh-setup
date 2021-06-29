@@ -421,6 +421,8 @@ def import_file(path_zip):
 
                         ##### drop rows with invalid fields/clear invalid fields in chunk
                         chunk = chunk[chunk['KH-internes-Kennzeichen'].isin(df_match['encounter_id'])]
+                        if chunk.empty:
+                            continue
                         chunk = chunk[DICT_P21_COLUMNS[name_csv]].fillna('')
                         for column in DICT_P21_COLUMNS[name_csv]:
                             chunk = check_and_exclude_invalid_fields(chunk, column)
