@@ -235,7 +235,7 @@ fi
 if [[ -z $(grep "Xms1024m -Xmx2g" $WILDFLY_HOME/bin/appclient.conf) ]]; then
 	echo -e "${YEL}Java VM-Speicher für den Wildfly-Server wird erhöht.${WHI}"
 	sed -i 's/-Xms64m -Xmx512m/-Xms1024m -Xmx2g/' $WILDFLY_HOME/bin/appclient.conf
-	sed -i 's/-Xms64m -Xmx512m/-Xms1014m -Xmx2g/' $WILDFLY_HOME/bin/standalone.conf
+	sed -i 's/-Xms64m -Xmx512m/-Xms1024m -Xmx2g/' $WILDFLY_HOME/bin/standalone.conf
 else
 	echo -e "${ORA}Der Wildfly-Speicher für Java VM wurde bereits erhöht.${WHI}"
 fi
