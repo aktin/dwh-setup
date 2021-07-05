@@ -1,4 +1,4 @@
-<h3><u>Firewall-Einstellungen</u></h3>
+<h3><u>Netzwerk-Einstellungen</u></h3>
 
 <h4>Installation</h4>
 Für die Installation des AKTIN DWH braucht das Installationsskript Zugriff auf folgende Server:
@@ -48,8 +48,27 @@ Für die Installation des AKTIN DWH braucht das Installationsskript Zugriff auf 
 
 
 <h4>Betrieb</h4>
-Während des Betriebs muss der AKTIN Server periodisch auf den Server `aktin-broker.klinikum.rwth-aachen.de` der Uniklinik RWTH Aachen mit der IP-Adresse `134.130.15.160` via `Port 443` (HTTPS) zugreifen können.
-<br></br>
+Während des Betriebs muss der AKTIN Server periodisch auf folgenden Server der Uniklinik RWTH Aachen zugreifen können:
+
+<table>
+<thead>
+<tr>
+    <th>Server</th>
+    <th>IP-Adresse</th>
+    <th>HTTP</th>
+    <th>HTTPS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>aktin-broker.klinikum.rwth-aachen.de</td>
+    <td>134.130.15.160</td>
+    <td>-</td>
+    <td>443/tcp</td>
+</tr>
+</tbody>
+</table>
+
 
 <h4>Weitere interne Regel</h4>
 * `Port 80` (HTTP) wird verwendet, um intern auf das Data Warehouse sowie Konfigurationoberflächen zuzugreifen.
@@ -89,4 +108,16 @@ mail.smtp.starttls.enable=true
 # connection timeout
 mail.smtp.timeout=10000
 mail.smtp.connectiontimeout=10000
+````
+
+* Die Netzwerkeinstellungen können Sie über den Befehl `ip a` einsehen.
+
+* Um `ipv6` zu deaktivieren, geben Sie in der Konsole folgende Befehle ein:
+
+````
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1
+
+sudo sysctl -p
 ````
