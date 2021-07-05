@@ -26,7 +26,7 @@
 		<version_wildfly>18.0.0.Final</version_wildfly>
 		<version_postgresql>12</version_postgresql>
 		<version_jdbc_driver>42.2.8</version_jdbc_driver>
-		<version_apache2>2.4.41-4ubuntu3.1</version_apache2>
+		<version_apache2>2.4.41-4ubuntu3.3</version_apache2>
 		<version_i2b2>1.7.12a</version_i2b2>
 		<version_p21_import_script>1.1</version_p21_import_script>
 
