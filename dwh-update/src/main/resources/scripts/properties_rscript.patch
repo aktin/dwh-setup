@@ -1,0 +1,11 @@
+--- aktin.properties	2021-07-06 15:40:24.254782000 +0200
++++ aktin.properties	2021-07-06 15:42:15.057770900 +0200
+@@ -25,6 +25,8 @@
+ 
+ # location of the R standalone executable
+ rscript.binary=/usr/bin/Rscript
++rscript.timeout=1800000
++rscript.debug=false
+ 
+ # needed for read/write access to the i2b2 database
+ i2b2.project=AKTIN
