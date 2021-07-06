@@ -113,6 +113,9 @@ else
     echo -e "${RED}FOLDER /var/lib/aktin DOES NOT EXIST${WHI}" > permissions.txt
 fi
 
+# print R environment variables
+ R --vanilla --slave -e 'Sys.getenv()' > $LOGFOLDER/R_environment_vars.txt
+
 # zip all logs and send per mail
 tar -czf $LOGFOLDER/aktin_diag_$CURRENT.tar.gz --absolute-names --warning=no-file-changed $LOGFOLDER/
 #curl -u ondtmZILwmueOoS:aktindiag5918 -T $LOGFOLDER/aktindiag.tar.gz "https://cs.uol.de/public.php/webdav/aktindiag_$dt.tar.gz"
