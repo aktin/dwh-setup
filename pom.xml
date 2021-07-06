@@ -12,12 +12,12 @@
 	<parent>
 		<groupId>org.aktin</groupId>
 		<artifactId>aktin</artifactId>
-		<version>0.11</version>
+		<version>0.12-SNAPSHOT</version>
 	</parent>
 
 	<properties>
 		<!-- build versions -->
-		<version_dwh>1.4</version_dwh>
+		<version_dwh>1.5-SNAPSHOT</version_dwh>
 		<verison_dwh_ontology>0.15</verison_dwh_ontology>
 		<version_dwh_import>0.15</version_dwh_import>
 
