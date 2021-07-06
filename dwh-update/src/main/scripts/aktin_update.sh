@@ -73,13 +73,24 @@ c2=$(echo $(grep -cP '(^import.script.path=.*)' $WILDFLY_CONFIGURATION/aktin.pro
 c3=$(echo $(grep -cP '(^import.script.timeout=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
 if [[ $(($c1 + $c2 + $c3)) == 0 ]]; then
 	echo -e "${YEL}Die aktin.properties wird für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
-	cp $WILDFLY_CONFIGURATION/aktin.properties $UPDATE_ROOT/aktin.properties.backup_$AKTIN_VERSION
 	patch $WILDFLY_CONFIGURATION/aktin.properties < $UPDATE_SCRIPTS/properties_file_import.patch
 	chown wildfly:wildfly $WILDFLY_CONFIGURATION/aktin.properties
 elif [[ $(($c1 + $c2 + $c3)) == 3 ]]; then
 	echo -e "${ORA}Die aktin.properties wurde bereits für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
 else
 	echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die Schlüssel für den Upload stationärer Behandlungsdaten${WHI}"
+fi
+
+c1=$(echo $(grep -cP '(^rscript.timeout=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
+c2=$(echo $(grep -cP '(^rscript.debug=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
+if [[ $(($c1 + $c2)) == 0 ]]; then
+	echo -e "${YEL}Die aktin.properties wird für für neue Schlüssel für Rscript gepatcht.${WHI}"
+	patch $WILDFLY_CONFIGURATION/aktin.properties < $UPDATE_SCRIPTS/properties_rscript.patch
+	chown wildfly:wildfly $WILDFLY_CONFIGURATION/aktin.properties
+elif [[ $(($c1 + $c2)) == 2 ]]; then
+	echo -e "${ORA}Die aktin.properties wurde bereits mit neuen Schlüsseln für Rscript gepatcht.${WHI}"
+else
+	echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die Schlüssel für Rscript${WHI}"
 fi
 
 # create folder /var/lib/aktin/import
