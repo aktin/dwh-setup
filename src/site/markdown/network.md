@@ -69,12 +69,6 @@ Während des Betriebs muss der AKTIN Server periodisch auf folgenden Server der 
 </tbody>
 </table>
 
-
-<h4>Weitere interne Regel</h4>
-* `Port 80` (HTTP) wird verwendet, um intern auf das Data Warehouse sowie Konfigurationoberflächen zuzugreifen.
-
-* Datenimporte werden per RESTful oder SOAP-Schnittstelle über HTTP an `/aktin/cda` gesendet.
-
 * Zum Versenden von Benachrichtgungen muss der Server intern Emails an ausgewählte lokale Adressen versenden können. Dafür wird ein E-Mail-Server benötigt. Tragen Sie die Konfiguration des E-Mail-Servers in `/opt/wildfly/standalone/configuration/aktin.properties` unter folgenden Feldern ein:
 
 ````
@@ -110,7 +104,22 @@ mail.smtp.timeout=10000
 mail.smtp.connectiontimeout=10000
 ````
 
-* Die Netzwerkeinstellungen können Sie über den Befehl `ip a` einsehen.
+<h4>Weitere Einstellungen und Informationen</h4>
+* `Port 80` (HTTP) wird verwendet, um intern auf das Data Warehouse sowie Konfigurationoberflächen zuzugreifen.
+
+* Datenimporte werden per RESTful oder SOAP-Schnittstelle über HTTP an `/aktin/cda` gesendet.
+
+* Sofern für die Authentifizierung am E-Mail-Server ein Zertifikat benötigt wird, können Sie dieses über folgenden Befehl dem Java Truststore hinzufügen. Anschließend sollte ein Passwort-Aufforderung kommen. Sofern von Ihrer Seite kein Passwort festgelegt wurde, können Sie hier einfach ohne Eingabe bestätigen. Den erfolgreichen Import können Sie anschließend über den zweiten Befehl testen. Starten Sie anschließen den Wildfly-Server neu.
+
+````
+
+keytool –import –noprompt –trustcacerts –alias [SELBSTGEWÄHLTER_ALIASNAME] –f [PFAD_ZUM_ZERITIFIKAT] –keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts
+
+keytool –list –keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts | grep [ALIASNAME]
+
+serivce wildfly restart
+
+````
 
 * Um `ipv6` zu deaktivieren, geben Sie in der Konsole folgende Befehle ein:
 
@@ -120,4 +129,12 @@ sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 
 sudo sysctl -p
+````
+
+* Ein Proxy-Server muss im Wildfly händisch konfiguriert werden. Da die Netzwerkverbindung über Java läuft, muss der Proxy als JAVA_OPT unter `/opt/wildfly/bin/standalone.conf` eingetragen werden. Fügen Sie am Ende der Datei folgenden Eintrag hinzu. Nicht benötigte Felder können dabei weggelassen werden:
+
+````
+
+JAVA_OPTS="$JAVA_OPTS -Dhttps.proxyHost=xxx.x.x.xx -Dhttps.proxyPort=xxxx -Dhttps.proxyUser=MY_LOGIN -Dhttps.proxyPassword=MY_PASSWORD -Dhttp.proxyHost=xxx.x.x.xx -Dhttp.proxyPort=xxxx -Dhttp.proxyUser=MY_LOGIN -Dhttp.proxyPassword=MY_PASSWORD"
+
 ````
