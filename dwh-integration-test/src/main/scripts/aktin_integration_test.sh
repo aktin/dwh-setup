@@ -96,7 +96,7 @@ echo -e "${YEL}+++++ STEP III +++++ Integration test postgresql${WHI}"
 echo
 
 # test background-validation
-#./test_postgresql_background_validation.sh
+./test_postgresql_background_validation.sh
 
 echo
 echo -e "${YEL}+++++ STEP IV +++++ Integration test p21 endpoints${WHI}"
