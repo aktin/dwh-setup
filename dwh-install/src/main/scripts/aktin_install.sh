@@ -90,7 +90,7 @@ if  [[ $(sudo -u postgres psql -l | grep "i2b2" | wc -l) == 0 ]]; then
 	sudo -u postgres psql -v ON_ERROR_STOP=1 -f $SQL_FILES/i2b2_postgres_init.sql
 
 	# build i2b2 data and load into database
-	echo -e "${YEL}Daten werden in die Datenbank i2b2 eingelesen.${WHI}"
+	echo -e "${YEL}Terminologie-Daten werden in die Datenbank i2b2 eingelesen.${WHI}"
 	sudo -u postgres psql -d i2b2 -f $SQL_FILES/i2b2_db.sql
 else
 	echo -e "${ORA}Die Installation der i2b2-Datenbank wurde bereits durchgeführt.${WHI}"
@@ -193,7 +193,7 @@ echo -e "${YEL}+++++ STEP IV +++++ Installation des WildFly-Servers${WHI}"
 echo
 
 # download wildfly server into install destination and rename server to wildfly
-if [[ ! -d /opt/wildfly-$WILDFLY_VERSION ]]; then
+if [[ ! -d $WILDFLY_HOME-$WILDFLY_VERSION ]]; then
 	echo -e "${YEL}Der Wildfly-Server wird heruntergeladen und nach /opt entpackt.${WHI}"
 	wget $URL_WILDFLY -P /tmp
 	unzip /tmp/wildfly-$WILDFLY_VERSION.zip -d /opt
@@ -205,30 +205,31 @@ fi
 if [[ -z $(grep "wildfly" /etc/passwd) ]]; then
 	echo -e "${YEL}Der User wildfly für den Wildfly-Server wird erstellt.${WHI}"
 	adduser --system --group --disabled-login wildfly
-	chown -R wildfly:wildfly /opt/wildfly-$WILDFLY_VERSION
+	chown -R wildfly:wildfly $WILDFLY_HOME-$WILDFLY_VERSION
 else
 	echo -e "${ORA}Der User wildfly ist bereits vorhanden.${WHI}"
 fi
 
 # create link to wildfly folder in /opt
-if [[ ! -L /opt/wildfly && ! -d /opt/wildlfy ]]; then
-	echo -e "${YEL}Ein Link zum Wildfly-Server wird in /opt abgelegt.${WHI}"
-	ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
+if [[ ! -L $WILDFLY_HOME && ! -d $WILDFLY_HOME ]]; then
+	echo -e "${YEL}Ein Link zum Wildfly-Server wird in /opt/ abgelegt.${WHI}"
+	ln -s $WILDFLY_HOME-$WILDFLY_VERSION $WILDFLY_HOME
 else
-	echo -e "${ORA}Ein Link für den Wildfly-Server ist bereits in /opt vorhanden.${WHI}"
+	echo -e "${ORA}Ein Link für den Wildfly-Server ist bereits in /opt/ vorhanden.${WHI}"
 fi
 
 # set wildfly to run as a service
-if [[ ! -d /etc/default/wildfly ]]; then
-	echo -e "${YEL}Ein /etc/init.d-Service wird für den Wildfly-Server erstellt.${WHI}"
-	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly-init-debian.sh /etc/init.d/wildfly
-	mkdir /etc/default/wildfly
-	cp $WILDFLY_HOME/docs/contrib/scripts/init.d/wildfly.conf /etc/default/wildfly/
-	echo JBOSS_HOME=\"$WILDFLY_HOME\" >> /etc/default/wildfly/wildfly.conf
-	echo JBOSS_OPTS=\"-Djboss.http.port=9090 -Djrmboss.as.management.blocking.timeout=6000\" >> /etc/default/wildfly/wildfly.conf
+if [[ ! -f /lib/systemd/system/wildfly.service ]]; then
+	echo -e "${YEL}Ein systemd-Service wird für den Wildfly-Server erstellt.${WHI}"
+	mkdir /etc/wildfly
+	cp $WILDFLY_HOME/docs/contrib/scripts/systemd/wildfly.conf /etc/wildfly/
+	cp $WILDFLY_HOME/docs/contrib/scripts/systemd/launch.sh $WILDFLY_HOME/bin/
+	chown wildfly:widlfly $WILDFLY_HOME/bin/launch.sh
+	cp $SCRIPT_FILES/wildfly.service /lib/systemd/system/
+	cp -R $SCRIPT_FILES/postgresql.service /lib/systemd/system/
 	systemctl daemon-reload
 else
-	echo -e "${ORA}Ein /etc/init.d-Service existiert bereits für den Wildfly-Server.${WHI}"
+	echo -e "${ORA}Ein systemd-Service existiert bereits für den Wildfly-Server.${WHI}"
 fi
 
 # increase memory storage of java vm to 1g/2g
