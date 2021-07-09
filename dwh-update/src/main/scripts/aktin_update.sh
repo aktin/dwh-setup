@@ -9,6 +9,7 @@ readonly AKTIN_VERSION=${version_dwh}
 readonly UPDATE_ROOT=$(pwd)
 readonly UPDATE_PACKAGES=$UPDATE_ROOT/packages
 readonly UPDATE_SCRIPTS=$UPDATE_ROOT/scripts
+readonly UPDATE_XML_FILES=$UPDATE_ROOT/xml
 
 readonly WILDFLY_HOME=/opt/wildfly
 readonly WILDFLY_CONFIGURATION=$WILDFLY_HOME/standalone/configuration
@@ -30,9 +31,10 @@ readonly LOGFILE=$(pwd)/aktin_update_$(date +%Y_%h_%d_%H%M).log
 step_A(){
 set -euo pipefail
 echo
-echo -e "${YEL}+++++ AKTIN-Update : STEP A +++++ Deployment der EAR${WHI}"
+echo -e "${YEL}+++++ AKTIN-Update : STEP A +++++ Undeployment und Löschen der alten EAR${WHI}"
 echo
 
+service wildfly stop
 # remove all old dwh-j2ee.ears
 if [[ $(ls /opt/wildfly/standalone/deployments/ | grep -c dwh-j2ee-*) != 0 ]]; then
 	echo -e "${YEL}Alte dwh-j2ee.ear werden gelöscht.${WHI}"
@@ -40,15 +42,7 @@ if [[ $(ls /opt/wildfly/standalone/deployments/ | grep -c dwh-j2ee-*) != 0 ]]; t
 else
 	echo -e "${ORA}In $WILDFLY_HOME/standalone/deployments sind keine dwh-j2ee.ear vorhanden.${WHI}"
 fi
-
-# deploy aktin ear and give permissions to wildfly user
-if [[ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear ]]; then
-	echo -e "${YEL}dwh-j2ee-$AKTIN_VERSION.ear wird nach $WILDFLY_HOME/standalone/deployments verschoben.${WHI}"
-	cp $UPDATE_PACKAGES/dwh-j2ee-$AKTIN_VERSION.ear $WILDFLY_HOME/standalone/deployments/
-	chown wildfly:wildfly $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear
-else
-	echo -e "${ORA}dwh-j2ee-$AKTIN_VERSION.ear ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
-fi
+service wildfly start
 }
 
 
@@ -59,39 +53,6 @@ set -euo pipefail
 echo
 echo -e "${YEL}+++++ AKTIN-Update : STEP B +++++ Konfiguration für den Upload stationärer Behandlungsdaten${WHI}"
 echo
-
-# check if aktin.properties is in configuration folder
-if [[ ! -f $WILDFLY_CONFIGURATION/aktin.properties ]]; then
-	echo -e "${YEL}Die aktin.properties wird nach $WILDFLY_CONFIGURATION verschoben.${WHI}"
-	cp $UPDATE_ROOT/aktin.properties $WILDFLY_CONFIGURATION/aktin.properties
-	chown wildfly:wildfly aktin.properties
-fi
-
-# backup and patch aktin.properties
-c1=$(echo $(grep -cP '(^import.data.path=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
-c2=$(echo $(grep -cP '(^import.script.path=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
-c3=$(echo $(grep -cP '(^import.script.timeout=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
-if [[ $(($c1 + $c2 + $c3)) == 0 ]]; then
-	echo -e "${YEL}Die aktin.properties wird für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
-	patch $WILDFLY_CONFIGURATION/aktin.properties < $UPDATE_SCRIPTS/properties_file_import.patch
-	chown wildfly:wildfly $WILDFLY_CONFIGURATION/aktin.properties
-elif [[ $(($c1 + $c2 + $c3)) == 3 ]]; then
-	echo -e "${ORA}Die aktin.properties wurde bereits für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
-else
-	echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die Schlüssel für den Upload stationärer Behandlungsdaten${WHI}"
-fi
-
-c1=$(echo $(grep -cP '(^rscript.timeout=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
-c2=$(echo $(grep -cP '(^rscript.debug=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
-if [[ $(($c1 + $c2)) == 0 ]]; then
-	echo -e "${YEL}Die aktin.properties wird für für neue Schlüssel für Rscript gepatcht.${WHI}"
-	patch $WILDFLY_CONFIGURATION/aktin.properties < $UPDATE_SCRIPTS/properties_rscript.patch
-	chown wildfly:wildfly $WILDFLY_CONFIGURATION/aktin.properties
-elif [[ $(($c1 + $c2)) == 2 ]]; then
-	echo -e "${ORA}Die aktin.properties wurde bereits mit neuen Schlüsseln für Rscript gepatcht.${WHI}"
-else
-	echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die Schlüssel für Rscript${WHI}"
-fi
 
 # create folder /var/lib/aktin/import
 if [[ ! -d /var/lib/aktin/import ]]; then
@@ -126,33 +87,106 @@ else
 fi
 
 # update wildfly post-size for files with max 1 gb
-if [[ ! -z $(grep "max-post-size" $WILDFLY_CONFIGURATION/standalone.xml | grep "http-listener name=\"default\"") ]]; then
-	echo -e "${ORA}Die standalone.xml wurde bereits für den Upload größerer Dateien konfiguriert.${WHI}"
+echo -e "${YEL}Die standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
+$JBOSSCLI --file="$UPDATE_SCRIPTS/wildfly_max-post-size_update.cli"
+}
+
+
+
+step_B(){
+set -euo pipefail
+echo
+echo -e "${YEL}+++++ AKTIN-Update : STEP C +++++ Anpassungen in der Wildfly-Umgebung${WHI}"
+echo
+
+# set wildfly to run as a systemd-service
+if [[ ! -f /lib/systemd/system/wildfly.service ]]; then
+	echo -e "${YEL}Der Wildfly-Service wird von einem init.d-Service in einen systemd-Service umgewandelt.${WHI}"
+	rm /etc/init.d/wildfly
+	rm -r /etc/default/wildfly
+	mkdir /etc/wildfly
+	cp $WILDFLY_HOME/docs/contrib/scripts/systemd/wildfly.conf /etc/wildfly/
+	cp $WILDFLY_HOME/docs/contrib/scripts/systemd/launch.sh $WILDFLY_HOME/bin/
+	chown wildfly:widlfly $WILDFLY_HOME/bin/launch.sh
+	cp $SCRIPT_FILES/wildfly.service /lib/systemd/system/
+	cp -R $SCRIPT_FILES/postgresql.service /lib/systemd/system/
+	systemctl daemon-reload
 else
-	echo -e "${YEL}Die standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
-	# start wildfly server safely (JBOSS cli needs running server)
-	cd $UPDATE_ROOT
-	./wildfly_safe_start.sh
-	$JBOSSCLI --file="$UPDATE_SCRIPTS/wildfly_max-post-size_update.cli"
-	./wildfly_safe_stop.sh
+	echo -e "${ORA}Ein systemd-Service existiert bereits für den Wildfly-Server.${WHI}"
+fi
+
+if [[ ! -f $WILDFLY_HOME/standalone/deployments/aktin-ds.xml ]]; then
+	echo -e "${YEL}Die Datasource für AKTIN wird von der standalone.xml nach $WILDFLY_HOME/standalone/deployments verschoben.${WHI}"
+	$JBOSSCLI --command="data-source remove --name=AktinDS"
+	cp $UPDATE_XML_FILES/aktin-ds.xml $WILDFLY_HOME/standalone/deployments/
+	service wildfly restart
+else
+	echo -e "${ORA}Die Datei aktin-ds.xml ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi
 }
 
 
 
 
-start_wildfly(){
-# start wildfly if not running
-if ! systemctl is-active --quiet wildfly; then
-	service wildfly start
+step_D(){
+set -euo pipefail
+echo
+echo -e "${YEL}+++++ AKTIN-Update : STEP D +++++ Patch der aktin.properties und Deployment der neuen EAR${WHI}"
+echo
+
+service wildfly stop
+# check if aktin.properties is in configuration folder
+if [[ ! -f $WILDFLY_CONFIGURATION/aktin.properties ]]; then
+	echo -e "${YEL}Die aktin.properties wird nach $WILDFLY_CONFIGURATION verschoben.${WHI}"
+	cp $UPDATE_ROOT/aktin.properties $WILDFLY_CONFIGURATION/aktin.properties
+	chown wildfly:wildfly aktin.properties
 fi
+
+# patch aktin.properties if necessary
+c1=$(echo $(grep -cP '(^import.data.path=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
+c2=$(echo $(grep -cP '(^import.script.path=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
+c3=$(echo $(grep -cP '(^import.script.timeout=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
+if [[ $(($c1 + $c2 + $c3)) == 0 ]]; then
+	echo -e "${YEL}Die aktin.properties wird für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
+	patch $WILDFLY_CONFIGURATION/aktin.properties < $UPDATE_SCRIPTS/properties_file_import.patch
+	chown wildfly:wildfly $WILDFLY_CONFIGURATION/aktin.properties
+elif [[ $(($c1 + $c2 + $c3)) == 3 ]]; then
+	echo -e "${ORA}Die aktin.properties wurde bereits für den Upload stationärer Behandlungsdaten gepatcht.${WHI}"
+else
+	echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die Schlüssel für den Upload stationärer Behandlungsdaten${WHI}"
+fi
+
+c1=$(echo $(grep -cP '(^rscript.timeout=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
+c2=$(echo $(grep -cP '(^rscript.debug=.*)' $WILDFLY_CONFIGURATION/aktin.properties))
+if [[ $(($c1 + $c2)) == 0 ]]; then
+	echo -e "${YEL}Die aktin.properties wird für neue Schlüssel im Rscript gepatcht.${WHI}"
+	patch $WILDFLY_CONFIGURATION/aktin.properties < $UPDATE_SCRIPTS/properties_rscript.patch
+	chown wildfly:wildfly $WILDFLY_CONFIGURATION/aktin.properties
+elif [[ $(($c1 + $c2)) == 2 ]]; then
+	echo -e "${ORA}Die aktin.properties wurde bereits für neue Schlüsseln im Rscript gepatcht.${WHI}"
+else
+	echo -e "${RED}Die aktin.properties enthält Fehler im Bezug auf die neuen Schlüssel im Rscript${WHI}"
+fi
+
+# deploy aktin ear and give permissions to wildfly user
+if [[ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear ]]; then
+	echo -e "${YEL}dwh-j2ee-$AKTIN_VERSION.ear wird nach $WILDFLY_HOME/standalone/deployments verschoben.${WHI}"
+	cp $UPDATE_PACKAGES/dwh-j2ee-$AKTIN_VERSION.ear $WILDFLY_HOME/standalone/deployments/
+	chown wildfly:wildfly $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear
+else
+	echo -e "${ORA}dwh-j2ee-$AKTIN_VERSION.ear ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
+fi
+service wildfly start
 }
 
-stop_wildfly(){
-# stop wildfly if running
-if systemctl is-active --quiet wildfly; then
-	service wildfly stop
-fi
+
+
+
+start_services(){
+set -euo pipefail # stop installation on errors
+service apache2 start
+service postgresql start
+service wildfly start
 }
 
 end_message(){
@@ -167,7 +201,9 @@ set -euo pipefail
 stop_wildfly | tee -a $LOGFILE
 step_A | tee -a $LOGFILE
 step_B | tee -a $LOGFILE
-start_wildfly | tee -a $LOGFILE
+step_C | tee -a $LOGFILE
+step_D | tee -a $LOGFILE
+start_services | tee -a $LOGFILE
 end_message | tee -a $LOGFILE
 }
 
