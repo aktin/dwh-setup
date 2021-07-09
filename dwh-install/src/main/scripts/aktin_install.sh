@@ -81,8 +81,9 @@ if [[ ! -d /tmp/sql ]]; then
 	chmod 777 -R $SQL_FILES
 fi
 
-service postgresql start
-# count databases with name i2b2
+if ! systemctl is-active --quiet postgresql; then
+	service postgresql start
+fi
 if  [[ $(sudo -u postgres psql -l | grep "i2b2" | wc -l) == 0 ]]; then
 
 	# create database i2b2 and respective users
@@ -95,8 +96,6 @@ if  [[ $(sudo -u postgres psql -l | grep "i2b2" | wc -l) == 0 ]]; then
 else
 	echo -e "${ORA}Die Installation der i2b2-Datenbank wurde bereits durchgeführt.${WHI}"
 fi
-
-# count databases with name aktin
 if  [[ $(sudo -u postgres psql -l | grep "aktin" | wc -l) == 0 ]]; then
 
 	# add aktin data to i2b2 database
@@ -110,7 +109,9 @@ if  [[ $(sudo -u postgres psql -l | grep "aktin" | wc -l) == 0 ]]; then
 else
 	echo -e "${ORA}Die Integration der AKTIN-Datenbank wurde bereits durchgeführt.${WHI}"
 fi
-service postgresql stop
+if systemctl is-active --quiet postgresql; then
+	service postgresql stop
+fi
 
 # delete sql folder from /tmp
 if [[ -d /tmp/sql ]]; then
@@ -219,12 +220,12 @@ else
 fi
 
 # set wildfly to run as a service
-if [[ ! -f /lib/systemd/system/wildfly.service ]]; then
+if [[ ( ! -f /lib/systemd/system/wildfly.service ) || ( ! -f $WILDFLY_HOME/bin/launch.sh ) ]]; then
 	echo -e "${YEL}Ein systemd-Service wird für den Wildfly-Server erstellt.${WHI}"
-	mkdir /etc/wildfly
+	mkdir -p /etc/wildfly
 	cp $WILDFLY_HOME/docs/contrib/scripts/systemd/wildfly.conf /etc/wildfly/
 	cp $WILDFLY_HOME/docs/contrib/scripts/systemd/launch.sh $WILDFLY_HOME/bin/
-	chown wildfly:widlfly $WILDFLY_HOME/bin/launch.sh
+	chown wildfly:wildfly $WILDFLY_HOME/bin/launch.sh
 	cp $SCRIPT_FILES/wildfly.service /lib/systemd/system/
 	cp -R $SCRIPT_FILES/postgresql.service /lib/systemd/system/
 	systemctl daemon-reload
@@ -278,21 +279,38 @@ else
 	echo -e "${ORA}Der Ordner /var/lib/aktin existiert bereits.${WHI}"
 fi
 
-service wildfly start
+if ! systemctl is-active --quiet wildfly; then
+	service wildfly start
+	sleep 30s
+fi
 
 # change port of wildfly from 8080 to 9090
-echo -e "${YEL}Der Port des Wildfly-Servers wird von 8080 auf 9090 geändert.${WHI}"
-$JBOSSCLI --file="$SCRIPT_FILES/wildfly_socket-binding.cli"
+if [[ -z $($JBOSSCLI --command="/socket-binding-group=standard-sockets/socket-binding=http/:read-attribute(name=port)" | grep "9090") ]]; then
+	echo -e "${YEL}Der Port des Wildfly-Servers wird von 8080 auf 9090 geändert.${WHI}"
+	$JBOSSCLI --file="$SCRIPT_FILES/wildfly_socket-binding.cli"
+else
+	echo -e "${ORA}Der Port des Wildfly-Servers ist bereits 9090.${WHI}"
+fi
 
 # change logging properties of wildfly server
-echo -e "${YEL}Das Logging des Wildfly-Servers wird aktualisiert.${WHI}"
-$JBOSSCLI --file="$SCRIPT_FILES/wildfly_logging.cli"
+if [[ -z $($JBOSSCLI --command="/subsystem=logging/size-rotating-file-handler=srf/:read-resource" | grep "success") ]]; then
+	echo -e "${YEL}Das Logging des Wildfly-Servers wird aktualisiert.${WHI}"
+	$JBOSSCLI --file="$SCRIPT_FILES/wildfly_logging.cli"
+else
+	echo -e "${ORA}Das Logging des Wildfly-Servers wurde bereits aktualisiert.${WHI}"
+fi
 
 # increase deployment timeout of wildfly server
-echo -e "${YEL}Das Zeitlimit für das Deployment wird erhöht.${WHI}"
-$JBOSSCLI --file="$SCRIPT_FILES/wildfly_deployment_timeout.cli"
+if [[ -z $($JBOSSCLI --command="/system-property=jboss.as.management.blocking.timeout/:read-resource" | grep "success") ]]; then
+	echo -e "${YEL}Das Zeitlimit für das Deployment wird erhöht.${WHI}"
+	$JBOSSCLI --file="$SCRIPT_FILES/wildfly_deployment_timeout.cli"
+else
+	echo -e "${ORA}Das Zeitlimit für das Deployment wurde bereits erhöht.${WHI}"
+fi
 
-service wildfly stop
+if systemctl is-active --quiet wildfly; then
+	service wildfly stop
+fi
 }
 
 
@@ -314,9 +332,9 @@ service wildfly start
 
 add_autostart(){
 set -euo pipefail # stop installation on errors
-update-rc.d apache2 defaults
-update-rc.d postgresql defaults
-update-rc.d wildfly defaults
+systemctl enable apache2
+systemctl enable postgresql
+systemctl enable wildfly
 }
 
 end_message(){
