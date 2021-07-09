@@ -1,0 +1,1 @@
+/socket-binding-group=standard-sockets/socket-binding=http/:write-attribute(name=port,value=${jboss.http.port:9090})
