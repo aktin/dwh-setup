@@ -161,8 +161,25 @@ if [[ -f /etc/init.d/wildfly || -d /etc/default/wildfly ]]; then
 	if [[ -d /etc/default/wildfly ]]; then
 		rm -r /etc/default/wildfly
 	fi
+	systemctl daemon-reload
 else
 	echo -e "${ORA}Der /etc/init.d-Service des Wildfly-Servers wurde bereits entfernt.${WHI}"
+fi
+
+if [[ -f /lib/systemd/system/wildfly.service || -f /opt/wildfly/bin/launch.sh || -d /etc/wildfly ]]; then
+	echo -e "${YEL}Der system.d-Service des Wildfly-Servers wird entfernt.${WHI}"
+	if [[ -f /lib/systemd/system/wildfly.service ]]; then
+		rm /lib/systemd/system/wildfly.service
+	fi
+	if [[ -f /opt/wildfly/bin/launch.sh ]]; then
+		rm /opt/wildfly/bin/launch.sh
+	fi
+	if [[ -d /etc/wildfly ]]; then
+		rm -r /etc/wildfly
+	fi
+	systemctl daemon-reload
+else
+	echo -e "${ORA}Der systemd-Service des Wildfly-Servers wurde bereits entfernt.${WHI}"
 fi
 
 # remove user wildfly and reset permission of aktin.properties

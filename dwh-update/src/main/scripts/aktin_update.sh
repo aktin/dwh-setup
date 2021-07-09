@@ -34,15 +34,20 @@ echo
 echo -e "${YEL}+++++ AKTIN-Update : STEP A +++++ Undeployment und Löschen der alten EAR${WHI}"
 echo
 
-service wildfly stop
+if systemctl is-active --quiet wildfly; then
+	service wildfly stop
+fi
 # remove all old dwh-j2ee.ears
 if [[ $(ls /opt/wildfly/standalone/deployments/ | grep -c dwh-j2ee-*) != 0 ]]; then
 	echo -e "${YEL}Alte dwh-j2ee.ear werden gelöscht.${WHI}"
 	rm $WILDFLY_HOME/standalone/deployments/dwh-j2ee-*
 else
-	echo -e "${ORA}In $WILDFLY_HOME/standalone/deployments sind keine dwh-j2ee.ear vorhanden.${WHI}"
+	echo -e "${ORA}In $WILDFLY_HOME/standalone/deployments ist keine EAR vorhanden.${WHI}"
 fi
-service wildfly start
+if ! systemctl is-active --quiet wildfly; then
+	service wildfly start
+	sleep 30s
+fi
 }
 
 
@@ -87,27 +92,31 @@ else
 fi
 
 # update wildfly post-size for files with max 1 gb
-echo -e "${YEL}Die standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
-$JBOSSCLI --file="$UPDATE_SCRIPTS/wildfly_max-post-size_update.cli"
+if [[ -z $($JBOSSCLI --command="/subsystem=undertow/server=default-server/http-listener=default/:read-attribute(name=max-post-size)" | grep "1073741824") ]]; then
+	echo -e "${YEL}Die standalone.xml wird für den Upload größerer Dateien konfiguriert.${WHI}"
+	$JBOSSCLI --file="$UPDATE_SCRIPTS/wildfly_max-post-size.cli"
+else
+	echo -e "${ORA}Die standalone.xml wurde breits für den Upload größerer Dateien konfiguriert.${WHI}"
+fi
 }
 
 
 
-step_B(){
+step_C(){
 set -euo pipefail
 echo
 echo -e "${YEL}+++++ AKTIN-Update : STEP C +++++ Anpassungen in der Wildfly-Umgebung${WHI}"
 echo
 
 # set wildfly to run as a systemd-service
-if [[ ! -f /lib/systemd/system/wildfly.service ]]; then
+if [[ ( ! -f /lib/systemd/system/wildfly.service ) || ( ! -f $WILDFLY_HOME/bin/launch.sh ) ]]; then
 	echo -e "${YEL}Der Wildfly-Service wird von einem init.d-Service in einen systemd-Service umgewandelt.${WHI}"
 	rm /etc/init.d/wildfly
 	rm -r /etc/default/wildfly
 	mkdir /etc/wildfly
 	cp $WILDFLY_HOME/docs/contrib/scripts/systemd/wildfly.conf /etc/wildfly/
 	cp $WILDFLY_HOME/docs/contrib/scripts/systemd/launch.sh $WILDFLY_HOME/bin/
-	chown wildfly:widlfly $WILDFLY_HOME/bin/launch.sh
+	chown wildfly:wildfly $WILDFLY_HOME/bin/launch.sh
 	cp $SCRIPT_FILES/wildfly.service /lib/systemd/system/
 	cp -R $SCRIPT_FILES/postgresql.service /lib/systemd/system/
 	systemctl daemon-reload
@@ -134,7 +143,9 @@ echo
 echo -e "${YEL}+++++ AKTIN-Update : STEP D +++++ Patch der aktin.properties und Deployment der neuen EAR${WHI}"
 echo
 
-service wildfly stop
+if systemctl is-active --quiet wildfly; then
+	service wildfly stop
+fi
 # check if aktin.properties is in configuration folder
 if [[ ! -f $WILDFLY_CONFIGURATION/aktin.properties ]]; then
 	echo -e "${YEL}Die aktin.properties wird nach $WILDFLY_CONFIGURATION verschoben.${WHI}"
@@ -176,7 +187,10 @@ if [[ ! -f $WILDFLY_HOME/standalone/deployments/dwh-j2ee-$AKTIN_VERSION.ear ]]; 
 else
 	echo -e "${ORA}dwh-j2ee-$AKTIN_VERSION.ear ist bereits in $WILDFLY_HOME/standalone/deployments vorhanden.${WHI}"
 fi
-service wildfly start
+if ! systemctl is-active --quiet wildfly; then
+	service wildfly start
+	30s
+fi
 }
 
 
@@ -198,7 +212,6 @@ echo
 
 main(){
 set -euo pipefail
-stop_wildfly | tee -a $LOGFILE
 step_A | tee -a $LOGFILE
 step_B | tee -a $LOGFILE
 step_C | tee -a $LOGFILE
