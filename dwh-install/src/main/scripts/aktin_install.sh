@@ -241,22 +241,6 @@ else
 	echo -e "${ORA}Der Wildfly-Speicher für Java VM wurde bereits erhöht.${WHI}"
 fi
 
-# change size limit of log rotation to 1g
-if [[ -z $(grep "<rotate-size value=\"50m\"/>" $WILDFLY_HOME/standalone/configuration/standalone.xml) ]]; then
-	echo -e "${YEL}Das Limit für die Log-Rotation des Wildfly-Servers wird erhöht.${WHI}"
-	sed -i 's|<rotate-size value=\"50m\"/>|<rotate-size value=\"1g\"/>|' $WILDFLY_HOME/standalone/configuration/standalone.xml
-else
-	echo -e "${ORA}Das Limit für die Log-Rotation des Wildfly-Servers wurde bereits erhöht.${WHI}"
-fi
-
-# change port of wildfly from 8080 to 9090
-if [[ -z $(grep "port:9090" $WILDFLY_HOME/standalone/configuration/standalone.xml) ]]; then
-	echo -e "${YEL}Der Port des Wildfly-Servers wird von 8080 auf 9090 geändert.${WHI}"
-	sed -i 's|<socket-binding name="http" port="${jboss.http.port:8080}"/>|<socket-binding name="http" port="${jboss.http.port:9090}"/>|' $WILDFLY_HOME/standalone/configuration/standalone.xml
-else
-	echo -e "${ORA}Der Port des Wildfly-Servers wurde bereits von 8080 auf 9090 geändert.${WHI}"
-fi
-
 # download i2b2.war (https://community.i2b2.org/wiki/) into wildfly
 if [[ ! -f $WILDFLY_HOME/standalone/deployments/i2b2.war ]]; then
 	echo -e "${YEL}i2b2.war wird nach $WILDFLY_HOME/standalone/deployments heruntergeladen.${WHI}"
@@ -274,7 +258,7 @@ else
 fi
 
 # move datasource xml-files into wildfly
-array=( crc im ont pm work )
+array=( crc im ont pm work aktin )
 for i in "${array[@]}"
 do
 	if [[ ! -f $WILDFLY_HOME/standalone/deployments/$i-ds.xml ]]; then
@@ -285,47 +269,6 @@ do
 	fi
 done
 
-# start wildfly server safely (JBOSS cli needs running server)
-cd $UPDATE_ROOT
-./wildfly_safe_start.sh
-
-# change logging properties of wildfly server
-if [[ $(grep -c "size-rotating-file-handler name=\"srf\"" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then
-	echo -e "${YEL}Das Logging des Wildfly-Servers wird aktualisiert.${WHI}"
-	$JBOSSCLI --file="$SCRIPT_FILES/wildfly_logging_update.cli"
-else
-	echo -e "${ORA}Das Logging des Wildfly-Servers wurde bereits aktualisiert.${WHI}"
-fi
-
-# increase deployment timeout of wildfly server
-if [[ $(grep -c "deployment-timeout" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then
-	echo -e "${YEL}Das Zeitlimit für das Deployment wird erhöht.${WHI}"
-	$JBOSSCLI --file="$SCRIPT_FILES/wildfly_deployment_timeout.cli"
-else
-	echo -e "${ORA}Das Zeitlimit für das Deployment wurde bereits erhöht.${WHI}"
-fi
-
-# create aktin datasource
-if [[ $(grep -c "jndi-name=\"java:jboss/datasources/AktinDS\"" $WILDFLY_HOME/standalone/configuration/standalone.xml) == 0 ]]; then
-	echo -e "${YEL}Eine Datasource für AKTIN wird im Wildfly-Server generiert.${WHI}"
-	$JBOSSCLI --file="$SCRIPT_FILES/aktin_datasource_create.cli"
-else
-	echo -e "${ORA}Die Datasource für AKTIN wurde bereits im Wildfly-Server generiert.${WHI}"
-fi
-
-# stop wildfly server safely
-cd $UPDATE_ROOT
-./wildfly_safe_stop.sh
-
-# give wildfly user permission for aktin.properties
-if [[ ! $(stat -c '%U' $UPDATE_ROOT/aktin.properties) == "wildfly" ]]; then
-	echo -e "${YEL}Dem User wildfly werden Rechte für die Datei aktin.properties übergeben.${WHI}"
-	cd $UPDATE_ROOT
-	chown wildfly:wildfly aktin.properties
-else
-	echo -e "${ORA}Der User wildfly besitzt bereits Rechte für die Datei aktin.properties.${WHI}"
-fi
-
 # create /var/lib/aktin and give permissions to wildfly user
 if [[ ! -d /var/lib/aktin ]]; then
 	echo -e "${YEL}Der Ordner /var/lib/aktin wird erstellt.${WHI}"
@@ -334,6 +277,22 @@ if [[ ! -d /var/lib/aktin ]]; then
 else
 	echo -e "${ORA}Der Ordner /var/lib/aktin existiert bereits.${WHI}"
 fi
+
+service wildfly start
+
+# change port of wildfly from 8080 to 9090
+echo -e "${YEL}Der Port des Wildfly-Servers wird von 8080 auf 9090 geändert.${WHI}"
+$JBOSSCLI --file="$SCRIPT_FILES/wildfly_socket-binding.cli"
+
+# change logging properties of wildfly server
+echo -e "${YEL}Das Logging des Wildfly-Servers wird aktualisiert.${WHI}"
+$JBOSSCLI --file="$SCRIPT_FILES/wildfly_logging.cli"
+
+# increase deployment timeout of wildfly server
+echo -e "${YEL}Das Zeitlimit für das Deployment wird erhöht.${WHI}"
+$JBOSSCLI --file="$SCRIPT_FILES/wildfly_deployment_timeout.cli"
+
+service wildfly stop
 }
 
 
@@ -345,9 +304,6 @@ set -euo pipefail # stop installation on errors
 cd $UPDATE_ROOT
 ./aktin_update.sh
 }
-
-
-
 
 start_services(){
 set -euo pipefail # stop installation on errors
