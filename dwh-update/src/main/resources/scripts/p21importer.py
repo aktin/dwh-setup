@@ -3,7 +3,7 @@
 Created on Wed Jan 20 11:36:55 2021
 @author: akombeiz
 """
-#@VERSION=1.1
+#@VERSION=1.2
 #@VIEWNAME=Importskript für stationäre Behandlungsdaten
 #@MIMETYPE=zip
 #@ID=p21import
@@ -17,11 +17,11 @@ verify_file() checks validity of given zip-file regarding p21 requirements
 and matches valid encounters with found encounters in database
 
 import_file() runs a modified version of verify_file() and iterates through
-matched encounters in FALL.csv. All valid fields of valid encounters are
+matched encounters in fall.csv. All valid fields of valid encounters are
 uploaded into i2b2 as observation_fact rows. Prior uploading each encounter,
 it is checked if p21 data of encounter was already uploaded using this script
-and deleted if necessary. After uploading all encounter of FALL.csv, the
-script iterates through the optional csv-files (FAB,ICD,OPS) and uploades
+and deleted if necessary. After uploading all encounter of fall.csv, the
+script iterates through the optional csv-files (fab,icd,ops) and uploades
 their valid fields, too.
 """
 
@@ -36,6 +36,7 @@ import base64
 import re
 import traceback
 from datetime import datetime
+import shutil
 
 """
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -48,7 +49,9 @@ def verify_file(path_zip):
     Checks validity of a given zip-file regarding p21 requirements (path
     integrity, required column names, value formatting) and matches vaild
     encounters against optin encounters in i2b2. See docs of used methods for
-    further details
+    further details. Zip-File is unzipped into a temporary folder, where all
+    files and csv-columns are renamed to their lowercased parts to provide
+    case insensitivity.
 
     Parameters
     ----------
@@ -60,17 +63,23 @@ def verify_file(path_zip):
     None.
 
     """
-    check_file_path_integrity(path_zip)
-    set_csv_names = check_csv_names(path_zip)
-    check_csv_column_headers(path_zip, set_csv_names)
-    list_valid_FALL_encounter = get_valid_FALL_encounter(path_zip)
-    print_optional_encounter_value_syntax(path_zip, set_csv_names)
-    check_encounter_matching_with_db(list_valid_FALL_encounter)
+    try:
+        check_file_path_integrity(path_zip)
+        path_tmp_folder = create_tmp_folder(path_zip)
+        extract_zip_to_folder(path_zip, path_tmp_folder)
+        rename_files_to_lowercase(path_tmp_folder)
+        set_csv_names = check_csv_names(path_tmp_folder)
+        rename_csv_columns_to_lowercase(path_tmp_folder, set_csv_names)
+        check_csv_columns(path_tmp_folder, set_csv_names)
+        list_valid_FALL_encounter = get_valid_FALL_encounter(path_tmp_folder)
+        check_encounter_matching_with_db(list_valid_FALL_encounter)
+    finally:
+        remove_tmp_folder(path_zip)
 
 
 def check_file_path_integrity(path_zip):
     """
-    Checks, if file of given path exists and is a zip-file
+    Checks, if file of given path exists and is a zip-file.
 
     Parameters
     ----------
@@ -93,48 +102,205 @@ def check_file_path_integrity(path_zip):
         raise SystemExit('file is not a zipfile')
 
 
-def check_csv_names(path_zip):
+def create_tmp_folder(path_zip):
     """
-    Checks, if required file named 'FALL.csv' exists within given zip-file.
-    Checks existence of optional files named 'FAB.csv', 'OPS.csv' and 'ICD.csv'
+    Creates in the same folder as the given path to zip file a temporary
+    folder named 'tmp'.
 
     Parameters
     ----------
     path_zip : str
         Path to the zip-file
+
+    Returns
+    -------
+    path_tmp_folder : str
+        Path to the temporary folder
+
+    """
+    index_last_sep = path_zip.rindex(os.path.sep)
+    path_tmp_folder = os.path.join(path_zip[:index_last_sep+1], 'tmp')
+    if not os.path.isdir(path_tmp_folder):
+        os.makedirs(path_tmp_folder)
+    return path_tmp_folder
+
+
+def remove_tmp_folder(path_zip):
+    """
+    Removes (recursively) from the same folder as the given path to zip file a
+    folder named tmp.
+
+    Parameters
+    ----------
+    path_zip : str
+        Path to the zip-file
+
+    Returns
+    -------
+    None.
+
+    """
+    index_last_sep = path_zip.rindex(os.path.sep)
+    path_tmp_folder = os.path.join(path_zip[:index_last_sep+1], 'tmp')
+    if os.path.isdir(path_tmp_folder):
+        shutil.rmtree(path_tmp_folder)
+
+
+def extract_zip_to_folder(path_zip, path_target):
+    """
+    Extracts a zip-file from given path to another given location
+
+    Parameters
+    ----------
+    path_zip : str
+        Path to the zip-file
+    path_target : str
+        Path where to extract zip
+
+    Returns
+    -------
+    None.
+
+    """
+    with zipfile.ZipFile(path_zip, 'r') as file_zip:
+        file_zip.extractall(path_target)
+
+
+def rename_files_to_lowercase(path_folder):
+    """
+    Renames all files inside given folder to lowercase.
+
+    Parameters
+    ----------
+    path_folder : str
+       Path to a folder
+
+    Returns
+    -------
+    None.
+
+    """
+    list_files_dir = [file for file in os.listdir(path_folder) if os.path.isfile(os.path.join(path_folder, file))]
+    for file in list_files_dir:
+        os.rename(os.path.sep.join([path_folder, file]), os.path.sep.join([path_folder, file.lower()]))
+
+
+def check_csv_names(path_csv_folder):
+    """
+    Checks, if required file named 'fall.csv' exists within given folder.
+    Checks existence of optional files named 'fab.csv', 'ops.csv' and 'icd.csv'.
+
+    Parameters
+    ----------
+    path_zip : str
+        Path to the folder
 
     Raises
     ------
     SystemExit
-        If FALL.csv is missing
+        If fall.csv is missing
 
     Returns
     -------
     set_matched_csv : set
-        Set with found csv-files in zip (At least: FALL.csv)
+        Set with found csv-files in zip (At least: fall.csv)
 
     """
-    with zipfile.ZipFile(path_zip, 'r') as file_zip:
-        set_required_csv = set(DICT_P21_COLUMNS.keys())
-        set_matched_csv = set_required_csv.intersection(set(file_zip.namelist()))
-        if 'FALL.csv' not in set_matched_csv:
-            raise SystemExit('FALL.csv is missing in zip')
-        if set_matched_csv != set_required_csv:
-            print('following csv could not be found in zip: {0}'.format(set_required_csv.difference(set_matched_csv)))
-        return set_matched_csv
+    set_required_csv = set(DICT_P21_COLUMNS.keys())
+    set_files_dir = set([file for file in os.listdir(path_csv_folder) if os.path.isfile(os.path.join(path_csv_folder, file))])
+    set_matched_csv = set_required_csv.intersection(set_files_dir)
+    if 'fall.csv' not in set_matched_csv:
+        raise SystemExit('fall.csv is missing in zip')
+    if set_matched_csv != set_required_csv:
+        print('following csv could not be found in zip: {0}'.format(set_required_csv.difference(set_matched_csv)))
+    return set_matched_csv
 
 
-def check_csv_column_headers(path_zip, set_csv_names):
+def rename_csv_columns_to_lowercase(path_csv_folder, set_csv_names):
     """
-    Checks if found csv-files ('FALL.csv', 'FAB.csv', 'OPS.csv' and 'ICD.csv')
-    in zip-file contain the required columns (see DICT_P21_COLUMNS)
+    Renames all columns of given csv in given folder to lowercase.
+    Case differntation for csv named 'icd.csv', where possibly duplicate
+    column headers (Lokalisation and Diagnosesicherheit for Sekundärdiagnose)
+    have to be renamed.
 
     Parameters
     ----------
-    path_zip : str
-        Path to the zip-file
+    path_folder : str
+        Path to a folder.
+    set_csv_names : set
+        Set of csv names to rename columns in
+
+    Returns
+    -------
+    None.
+
+    """
+    for name_csv in set_csv_names:
+        path_csv = os.path.sep.join([path_csv_folder, name_csv])
+        path_tmp = os.path.sep.join([path_csv_folder, 'tmp.csv'])
+        encoding = get_csv_encoding(path_csv)
+        df = pd.read_csv(path_csv, nrows=0, index_col=None, sep=CSV_SEPARATOR, encoding=encoding, dtype=str)
+        df.rename(columns=str.lower, inplace=True)
+        if(name_csv == 'icd.csv'):
+            df = rename_csv_columns_ICD(df)
+        header_row = ';'.join(df.columns) + '\n'
+        with open(path_csv, 'r+', encoding=encoding) as f1, open(path_tmp, 'w+', encoding=encoding) as f2:
+            f1.readline()
+            f2.write(header_row)
+            shutil.copyfileobj(f1, f2)
+        os.remove(path_csv)
+        os.rename(path_tmp, path_csv)
+
+
+def rename_csv_columns_ICD(df_icd):
+    """
+    Searches in dataframe for a column named 'sekundär-kode' and adds a
+    'sekundär-' to following columns named 'lokalisation' and
+    'diagnosensicherheit'. Provided that the specifications of the InEK are
+    followed, no errors should occur here.
+
+    Parameters
+    ----------
+    df_icd : pandas.DataFrame
+        Header dataframe of icd.csv
+
+    Raises
+    ------
+    SystemExit
+        If multiple columns named 'lokalisation' or 'diagnosensicherheit' were
+        found after 'sekundär-kode'
+
+    Returns
+    -------
+    df_icd : pandas.DataFrame
+        Header dataframe of icd.csv with renamed columns for Sekundärdiagnosen
+
+    """
+    index = df_icd.columns.get_loc('sekundär-kode')
+    array_bool = df_icd.columns[index:].str.match('^lokalisation(\.)?(\d*)?$')
+    if(sum(array_bool) == 1):
+        df_icd.rename(columns={df_icd.columns[index:][array_bool][0]:'sekundär-lokalisation'}, inplace=True)
+    elif(sum(array_bool) > 1):
+        raise SystemExit('duplicate column for sekundär-lokalisation')
+    array_bool = df_icd.columns[index:].str.match('^diagnosensicherheit(\.)?(\d*)?$')
+    if(sum(array_bool) == 1):
+        df_icd.rename(columns={df_icd.columns[index:][array_bool][0]:'sekundär-diagnosensicherheit'}, inplace=True)
+    elif(sum(array_bool) > 1):
+        raise SystemExit('duplicate column for sekundär-diagnosensicherheit')
+    return df_icd
+
+
+def check_csv_columns(path_csv_folder, set_csv_names):
+    """
+    Checks, if found csv-files ('fall.csv', 'fab.csv', 'ops.csv' and 'icd.csv')
+    in given folder contain the required columns (see DICT_P21_COLUMNS)
+
+    Parameters
+    ----------
+    path_csv_folder : str
+        Path to the folder with csv files
     set_csv_names: set
-        Set with names of csv-files found in zip
+        Set with names of csv to check columns in
 
     Raises
     ------
@@ -146,24 +312,24 @@ def check_csv_column_headers(path_zip, set_csv_names):
     None.
 
     """
-    with zipfile.ZipFile(path_zip, 'r') as file_zip:
-        for name_csv in list(set_csv_names):
-            headers_csv = pd.read_csv(file_zip.open(name_csv, mode='r'), nrows=0, index_col=0, sep=CSV_SEPARATOR, encoding=get_csv_encoding(file_zip, name_csv))
-            set_required_columns = set(DICT_P21_COLUMNS[name_csv])
-            set_matched_columns = set_required_columns.intersection(set(headers_csv))
-            if set_matched_columns != set_required_columns:
-                raise SystemExit('following columns are missing in {0}: {1}'.format(name_csv, set_required_columns.difference(set_matched_columns)))
+    for name_csv in list(set_csv_names):
+        path_csv = os.path.sep.join([path_csv_folder, name_csv])
+        df = pd.read_csv(path_csv, nrows=0, index_col=None, sep=CSV_SEPARATOR, encoding=get_csv_encoding(path_csv), dtype=str)
+        set_required_columns = set(DICT_P21_COLUMNS[name_csv])
+        set_matched_columns = set_required_columns.intersection(set(df.columns))
+        if set_matched_columns != set_required_columns:
+            raise SystemExit('following columns are missing in {0}: {1}'.format(name_csv, set_required_columns.difference(set_matched_columns)))
 
 
-def get_valid_FALL_encounter(path_zip):
+def get_valid_FALL_encounter(path_folder_FALL):
     """
-    Extracts from FALL.csv all encounter ids, where corresponding columns values
+    Extracts from fall.csv all encounter ids, where corresponding columns values
     follow the p21 formatting requirements
 
     Parameters
     ----------
-    path_zip : str
-        Path to the zip-file
+    path_folder_FALL : str
+        Path to folder with fall.csv
 
     Raises
     ------
@@ -176,51 +342,23 @@ def get_valid_FALL_encounter(path_zip):
         List with valid encounter ids (non-hashed)
 
     """
-    list_result = []
-    with zipfile.ZipFile(path_zip, 'r') as file_zip:
-        list_result = get_valid_encounter_ids(file_zip, 'FALL.csv')
+    list_result = get_valid_encounter_ids(path_folder_FALL, 'fall.csv')
     if not list_result:
-        raise SystemExit('no valid encounter found in FALL.csv')
+        raise SystemExit('no valid encounter found in fall.csv')
     return list_result
 
 
-def print_optional_encounter_value_syntax(path_zip, set_csv_names):
-    """
-    Iterates through all found optional CSV-files in zip (but FALL.csv) and
-    prints encounter with invalid syntax formatting/invalid fields in console.
-    Same as get_valid_FALL_encounter() but only to print invalid formatting
-    of optional csv
-
-    Parameters
-    ----------
-    path_zip : str
-        Path to the zip-file
-    set_csv_names: set
-        Set with names of csv-files in zip
-
-    Returns
-    -------
-    None.
-
-    """
-    with zipfile.ZipFile(path_zip, 'r') as file_zip:
-        set_csv_names.remove('FALL.csv')
-        if set_csv_names:
-            print('\n--------------------- Optional Data ---------------------')
-            for name_csv in set_csv_names:
-                get_valid_encounter_ids(file_zip, name_csv)
-
-
-def get_valid_encounter_ids(file_zip, name_csv):
+def get_valid_encounter_ids(path_csv_folder, name_csv):
     """
     Iterates in chunks trough a given csv-file and checks each column in chunk
     for empty fields or wrong value formatting. Encounter ids of fields which
-    do not meet format criteria are removed and excluded from further processing
+    do not meet format criteria (see DICT_P21_COLUMN_PATTERN and
+    LIST_P21_COLUMN_NON_EMPTY) are removed and excluded from further processing
 
     Parameters
     ----------
-    file_zip : ZipFile
-        Zip-file with p21 csv-files
+    path_csv_folder : str
+        Path to folder where csv file is found
     name_csv : str
         Name of the csv-file to check syntax in
 
@@ -231,11 +369,12 @@ def get_valid_encounter_ids(file_zip, name_csv):
     """
     set_enc_all = set()
     set_enc_invalid_fields = set()
-    for chunk in pd.read_csv(file_zip.open(name_csv, mode='r'), chunksize=CSV_CHUNKSIZE, sep=CSV_SEPARATOR, encoding=get_csv_encoding(file_zip, name_csv), dtype=str):
+    path_csv = os.path.sep.join([path_csv_folder, name_csv])
+    for chunk in pd.read_csv(path_csv, chunksize=CSV_CHUNKSIZE, sep=CSV_SEPARATOR, encoding=get_csv_encoding(path_csv), dtype=str):
         chunk = chunk[DICT_P21_COLUMNS[name_csv]].fillna('')
         for column in DICT_P21_COLUMNS[name_csv]:
             set_enc_invalid_fields.update(get_encounter_ids_invalid_field(chunk, column))
-        set_enc_all.update(chunk['KH-internes-Kennzeichen'].unique())
+        set_enc_all.update(chunk['kh-internes-kennzeichen'].unique())
     return list(set_enc_all.difference(set_enc_invalid_fields))
 
 
@@ -244,8 +383,7 @@ def get_encounter_ids_invalid_field(chunk, column):
     Creates a set of encounter ids where fields are empty for given column
     and creates a set of encounter ids where non-empty fields do not abide
     formatting requirements. Formatting requirements are ignored for optional
-    fields but a warning is printed. A warning is not printed for empty fields
-    of Sekundärdiagnose, as these fields are empty at default
+    fields (as this is only a check-up, not the import itself)
 
     Parameters
     ----------
@@ -260,33 +398,26 @@ def get_encounter_ids_invalid_field(chunk, column):
 
     """
     pattern = DICT_P21_COLUMN_PATTERN[column]
-    set_empty_fields = set(chunk[chunk[column] == '']['KH-internes-Kennzeichen'].values)
-    set_wrong_syntax = set(chunk[(chunk[column] != '') & (chunk[column].str.match(pattern) == False)]['KH-internes-Kennzeichen'].values)
+    set_empty_fields = set(chunk[chunk[column] == '']['kh-internes-kennzeichen'].values)
+    set_wrong_syntax = set(chunk[(chunk[column] != '') & (chunk[column].str.match(pattern) == False)]['kh-internes-kennzeichen'].values)
     if len(set_wrong_syntax):
         if column not in LIST_P21_COLUMN_NON_EMPTY:
-            print('following encounter ids have invalid fields (wrong format for {0}): {1}'.format(column, set_wrong_syntax))
             set_wrong_syntax = set()
-        else:
-            print('following encounter ids are skipped (wrong format for {0}): {1}'.format(column, set_wrong_syntax))
     if len(set_empty_fields):
         if column not in LIST_P21_COLUMN_NON_EMPTY:
-            if column not in LIST_P21_COLUMN_EMPTY_FIELD_IGNORED_STDOUPUT:
-                print('following encounter ids have invalid fields (empty field in {0}): {1}'.format(column, set_empty_fields))
             set_empty_fields = set()
-        else:
-            print('following encounter ids are skipped (empty field in {0}): {1}'.format(column, set_empty_fields))
     return set_wrong_syntax.union(set_empty_fields)
 
 
 def check_encounter_matching_with_db(list_valid_FALL_encounter):
     """
-    Compares valid encounter ids of FALL.csv with optin encounter ids of
+    Compares valid encounter ids of fall.csv with optin encounter ids of
     i2b2crcdata and prints matching results
 
     Parameters
     ----------
     list_valid_FALL_encounter : list
-        List with all valid encounter ids of FALL.csv (result of
+        List with all valid encounter ids of fall.csv (result of
         get_valid_FALL_encounter())
 
     Returns
@@ -310,7 +441,7 @@ def get_AKTIN_optin_encounter(engine, connection):
     Runs a query on i2b2crcdata to get all encounter_ide in encounter_mapping
     where the corresponding patients do not appear in optinout_patients of
     AKTIN (either patients without pat_psn or patients with pat_psn, but without
-    study_id = 'AKTIN'). Streams query results into list
+    study_id = 'AKTIN'). Streams query results into a list
 
     Parameters
     ----------
@@ -344,7 +475,7 @@ def get_AKTIN_optin_encounter(engine, connection):
 
 def print_results(list_db_ide, list_FALL_ide, list_matches):
     """
-    Prints matching results of valid encounters of FALL.csv with optin
+    Prints matching results of valid encounters of fall.csv with optin
     encounters of database (total and percentual matches)
 
     Parameters
@@ -352,7 +483,7 @@ def print_results(list_db_ide, list_FALL_ide, list_matches):
     list_db : list
         List with hashed optin encounter ids from database
     list_FALL_ide : list
-        List with hashed valid encounter ids from FALL.csv
+        List with hashed valid encounter ids from fall.csv
     list_matches : list
         List with matched hashed encounter ids
 
@@ -378,13 +509,11 @@ IMPORT FILE
 def import_file(path_zip):
     """
     Imports p21 data of all valid and database matched encounters of
-    FALL.csv to i2b2crcdata.observation_fact. Checks, if p21 data of encounters
+    fall.csv to i2b2crcdata.observation_fact. Checks, if p21 data of encounters
     were already uploaded using this script and deletes entries if necessary.
     Imports optional encounter data from other csv files afterwards.
 
-    Transfering the parts marked with #### in own methods makes the script
-    significant slower, mainly because df_match is a heavy load. For now the
-    parts stay here. TODO: Move parts to own methods
+    TODO: Refactor this monstrosity
 
     Parameters
     ----------
@@ -399,96 +528,140 @@ def import_file(path_zip):
     try:
         engine = get_db_engine()
         with engine.connect() as connection:
-
-            #### get valid encounter from FALL.csv and match them with database
-            set_csv_names = check_csv_names(path_zip)
-            df_FALL_ide = get_FALL_encounter_df(path_zip)
-            print_optional_encounter_value_syntax(path_zip, set_csv_names)
-            df_match = get_matched_encounter_df(engine, connection, df_FALL_ide)
-            del df_FALL_ide
-            ####
-
-            #### get list with all csv names of zip, but with FALL.csv at first place
-            list_csv_names = list(set_csv_names)
-            list_csv_names.insert(0, 'FALL.csv')
-            ####
-
+            path_tmp_folder, set_csv_names = prepare_tmp_import_folder(path_zip)
+            list_csv_names = prepare_csv_import_order(set_csv_names)
+            df_match = get_matched_FALL_encounter_df(engine, connection, path_tmp_folder)
             table_observation = db.Table('observation_fact', db.MetaData(), autoload_with=engine)
-            with zipfile.ZipFile(path_zip, 'r') as file_zip:
-                for name_csv in list_csv_names:
-                    map_num_instances = {}
-                    for chunk in pd.read_csv(file_zip.open(name_csv, mode='r'), chunksize=CSV_CHUNKSIZE, sep=CSV_SEPARATOR, encoding=get_csv_encoding(file_zip, name_csv), dtype=str):
+            for name_csv in list_csv_names:
+                map_num_instances = {}
+                path_csv = os.path.sep.join([path_tmp_folder, name_csv])
+                for chunk in pd.read_csv(path_csv, chunksize=CSV_CHUNKSIZE, sep=CSV_SEPARATOR, encoding=get_csv_encoding(path_csv), dtype=str):
+                    chunk = chunk[chunk['kh-internes-kennzeichen'].isin(df_match['encounter_id'])]
+                    if chunk.empty:
+                        continue
+                    chunk = chunk[DICT_P21_COLUMNS[name_csv]].fillna('')
+                    for column in DICT_P21_COLUMNS[name_csv]:
+                        chunk = check_and_exclude_invalid_fields(chunk, column)
+                    list_encounter_data_upload = []
+                    for row_chunk in chunk.iterrows():
+                        list_row_upload = []
+                        row_chunk = row_chunk[1]
+                        num_enc, num_pat = get_enc_nums_from_df(row_chunk['kh-internes-kennzeichen'], df_match)
+                        index_enc = df_match[df_match['encounter_id'] == row_chunk['kh-internes-kennzeichen']].index
+                        if name_csv == 'fall.csv':
+                            date_admission = row_chunk['aufnahmedatum']
+                            df_match.at[index_enc, 'aufnahmedatum'] = date_admission
+                        else:
+                            date_admission = df_match.iloc[index_enc]['aufnahmedatum'].values[0]
+                        if name_csv == 'fall.csv':
+                            check_and_delete_uploaded_encounter(connection, table_observation, num_enc)
+                            list_row_upload = insert_upload_data_FALL(row_chunk)
+                            list_row_upload.extend(create_script_rows())
+                        elif name_csv == 'fab.csv':
+                            list_row_upload, map_num_instances = insert_upload_data_fab(row_chunk, map_num_instances)
+                        elif name_csv == 'ops.csv':
+                            list_row_upload, map_num_instances = insert_upload_data_ops(row_chunk, map_num_instances)
+                        elif name_csv == 'icd.csv':
+                            list_row_upload, map_num_instances = insert_upload_data_icd(row_chunk, date_admission, map_num_instances)
+                        for index, row_upload in enumerate(list_row_upload):
+                            list_row_upload[index] = add_fixed_values(row_upload, num_enc, num_pat, date_admission)
 
-                        ##### drop rows with invalid fields/clear invalid fields in chunk
-                        chunk = chunk[chunk['KH-internes-Kennzeichen'].isin(df_match['encounter_id'])]
-                        if chunk.empty:
-                            continue
-                        chunk = chunk[DICT_P21_COLUMNS[name_csv]].fillna('')
-                        for column in DICT_P21_COLUMNS[name_csv]:
-                            chunk = check_and_exclude_invalid_fields(chunk, column)
-                        ####
-
-                        list_encounter_data_upload = []
-                        for row_chunk in chunk.iterrows():
-                            list_row_upload = []
-                            row_chunk = row_chunk[1]
-                            num_enc, num_pat = get_enc_nums_from_df(row_chunk['KH-internes-Kennzeichen'], df_match)
-
-                            ##### if FALL.csv: Write Aufnahmedatum into df_match first, ALL: get admission_date from df_match
-                            index_enc = df_match[df_match['encounter_id'] == row_chunk['KH-internes-Kennzeichen']].index
-                            if name_csv == 'FALL.csv':
-                                date_admission = row_chunk['Aufnahmedatum']
-                                df_match.at[index_enc, 'Aufnahmedatum'] = date_admission
-                            else:
-                                date_admission = df_match.iloc[index_enc]['Aufnahmedatum'].values[0]
-                            #####
-
-                            if name_csv == 'FALL.csv':
-                                check_and_delete_uploaded_encounter(connection, table_observation, num_enc)
-                                list_row_upload = insert_upload_data_FALL(row_chunk)
-                                list_row_upload.extend(create_script_rows())
-                            elif name_csv == 'FAB.csv':
-                                list_row_upload, map_num_instances = insert_upload_data_FAB(row_chunk, map_num_instances)
-                            elif name_csv == 'OPS.csv':
-                                list_row_upload, map_num_instances = insert_upload_data_OPS(row_chunk, map_num_instances)
-                            elif name_csv == 'ICD.csv':
-                                list_row_upload, map_num_instances = insert_upload_data_ICD(row_chunk, date_admission, map_num_instances)
-                            for index, row_upload in enumerate(list_row_upload):
-                                list_row_upload[index] = add_fixed_values(row_upload, num_enc, num_pat, date_admission)
-                            list_encounter_data_upload.extend(list_row_upload)
-                        upload_encounter_data(connection, table_observation, list_encounter_data_upload)
+                        list_encounter_data_upload.extend(list_row_upload)
+                    upload_encounter_data(connection, table_observation, list_encounter_data_upload)
     finally:
         engine.dispose()
+        remove_tmp_folder(path_zip)
 
 
-def get_FALL_encounter_df(path_zip):
+def prepare_tmp_import_folder(path_zip):
     """
-    Collects all valid encounter ids from FALL.csv of given zip-file and
-    returns DataFrame with hashed and unhashed ids
+    Extracts zip file to a new temporary folder and renames all unzipped files
+    and csv columns to lowercase (Same process as the first half of
+    verify_file())
 
     Parameters
     ----------
     path_zip : str
-        Path to the zip-file
+        Path to the zip file to import
+
+    Returns
+    -------
+    path_tmp_folder : str
+        Path to the temporary folder.
+    set_csv_names : set
+        Names of csv files to import
+
+    """
+    path_tmp_folder = create_tmp_folder(path_zip)
+    extract_zip_to_folder(path_zip, path_tmp_folder)
+    rename_files_to_lowercase(path_tmp_folder)
+    set_csv_names = check_csv_names(path_tmp_folder)
+    rename_csv_columns_to_lowercase(path_tmp_folder, set_csv_names)
+    return path_tmp_folder, set_csv_names
+
+
+def prepare_csv_import_order(set_csv_names):
+    """
+    Converts input set to a list and reorders list that 'fall.csv' is first
+
+    Parameters
+    ----------
+    set_csv_names : set
+        Set of unordered csv names
+
+    Returns
+    -------
+    list_csv_names : list
+        List of ordered csv names
+
+    """
+    list_csv_names = list(set_csv_names)
+    list_csv_names.remove('fall.csv')
+    list_csv_names.insert(0, 'fall.csv')
+    return list_csv_names
+
+
+def get_matched_FALL_encounter_df(engine, connection, path_folder_FALL):
+    """
+    Extracts from fall.csv all encounter ids, where corresponding columns values
+    follow the p21 formatting requirements and matches ids with ids in
+    database. Returns all matches with hashed/unhashed id in a dataframe
+
+    Parameters
+    ----------
+    engine : sqlalchemy.engine
+        Engine object of get_db_engine()
+    connection : sqlalchemy.connection
+        Connection object of engine to run querys on
+    path_folder_FALL : str
+        Path to folder with fall.csv
+
+    Raises
+    ------
+    SystemExit
+        If no valid encounters were found in fall.csv
 
     Returns
     -------
     pandas.DataFrame
-        DataFrame with hashed and unhashed valid encounter ids
+        DataFrame with valid hashed and unhashed encounter ids
 
     """
-    list_valid_encounter = get_valid_FALL_encounter(path_zip)
+    list_valid_encounter = get_valid_encounter_ids(path_folder_FALL, 'fall.csv')
+    if not list_valid_encounter:
+        raise SystemExit('no valid encounter found in fall.csv')
     list_zip_ide = anonymize_enc(list_valid_encounter)
-    return pd.DataFrame(list(zip(list_valid_encounter, list_zip_ide)), columns=['encounter_id', 'encounter_ide'])
+    df_FALL_ide = pd.DataFrame(list(zip(list_valid_encounter, list_zip_ide)), columns=['encounter_id', 'encounter_ide'])
+    return get_matched_encounter_df(engine, connection, df_FALL_ide)
 
 
 def get_matched_encounter_df(engine, connection, df_FALL_ide):
     """
-    Compares valid encounter ids of FALL.csv with optin encounter ids of
+    Compares valid encounter ids of fall.csv with optin encounter ids of
     i2b2crcdata and returns DataFrame with matched encounter and corresponding
     patient_num and encounter_num. Adds also an empty column named
-    Aufnahmedatum to write admission date into (is written in from FALL.csv and
-    used afterwards for optional CSV files)
+    aufnahmedatum to write admission date into (is written in from fall.csv and
+    read afterwards by optional CSV files)
 
     Parameters
     ----------
@@ -497,7 +670,7 @@ def get_matched_encounter_df(engine, connection, df_FALL_ide):
     connection : sqlalchemy.connection
         Connection object of engine to run querys on
     df_FALL_ide : pandas.DataFrame
-        DataFrame with hashed and unhashed valid encounter ids from FALL.csv
+        DataFrame with hashed and unhashed valid encounter ids from fall.csv
 
     Returns
     -------
@@ -509,7 +682,7 @@ def get_matched_encounter_df(engine, connection, df_FALL_ide):
     df_db_ide = get_AKTIN_optin_pat_and_enc(engine, connection)
     df_merged = pd.merge(df_db_ide, df_FALL_ide, on=['encounter_ide'])
     df_merged = df_merged.drop(['encounter_ide'], axis=1)
-    df_merged['Aufnahmedatum'] = ''
+    df_merged['aufnahmedatum'] = ''
     return df_merged
 
 
@@ -645,7 +818,7 @@ def get_enc_nums_from_df(id_encounter, df_match):
 
 def insert_upload_data_FALL(row_FALL):
     """
-    Converts p21 variables from FALL.csv of given row into a list of
+    Converts p21 variables from fall.csv of given row into a list of
     i2b2crcdata.observation_fact rows. Only mandatory column values are
     created for each row. Default values (like provider_id or sourcesystem_cd)
     are added prior upload through add_fixed_values(). Keeps track of multiple
@@ -653,59 +826,59 @@ def insert_upload_data_FALL(row_FALL):
     corresponding num_instance
 
     Notes:
-        In Fall.csv, only the columns 'Aufnahmedatum','Aufnahmegrund' and
-        'Aufnahmeanlass' are mandatory
+        In fall.csv, only the columns 'aufnahmedatum','aufnahmegrund' and
+        'aufnahmeanlass' are mandatory
 
         Other columns may be empty and are only added, if the columns contains
         a value
 
-        Columns 'Entlassungsdatum' and 'Entlassungsgrund' are only added, if
+        Columns 'entlassungsdatum' and 'entlassungsgrund' are only added, if
         both columns contain a value
 
-        Columns 'Fallzusammenführung' and 'Fallzusammenführungsgrund' are only
-        added, if both columns contain a value and 'Fallzusammenführung' equals
+        Columns 'fallzusammenführung' and 'fallzusammenführungsgrund' are only
+        added, if both columns contain a value and 'fallzusammenführung' equals
         'J'
 
-        Column 'Behandlungstage-vorstationär' is only added, if
-        'Behandlungsbeginn-vorstationär' contains a value, but is not mandatory
-        for 'Behandlungsbeginn-vorstationär' to be added
+        Column 'behandlungstage-vorstationär' is only added, if
+        'behandlungsbeginn-vorstationär' contains a value, but is not mandatory
+        for 'behandlungsbeginn-vorstationär' to be added
 
-        Same goes for 'Behandlungstage-nachstationär' with
-        'Behandlungsende-nachstationär'
+        Same goes for 'behandlungstage-nachstationär' with
+        'behandlungsende-nachstationär'
 
     Parameters
     ----------
     row : pandas.Series
-        Single row of FALL.csv chunk to convert into observation_fact rows
+        Single row of fall.csv chunk to convert into observation_fact rows
 
     Returns
     -------
     list_observation_dicts : list
-        List of observation_fact rows of FALL.csv data
+        List of observation_fact rows of fall.csv data
 
     """
     list_observation_dicts = []
-    list_observation_dicts.extend(create_rows_admission(row_FALL['Aufnahmeanlass'], row_FALL['Aufnahmegrund']))
-    if row_FALL['IK-der-Krankenkasse']:
-        list_observation_dicts.append(create_row_insurance(row_FALL['IK-der-Krankenkasse']))
-    if row_FALL['Geburtsjahr']:
-        list_observation_dicts.extend(create_rows_birthyear(row_FALL['Geburtsjahr'], row_FALL['Aufnahmedatum']))
-    if row_FALL['Geschlecht']:
-        list_observation_dicts.append(create_row_sex(row_FALL['Geschlecht']))
-    if row_FALL['PLZ']:
-        list_observation_dicts.append(create_row_zipcode(row_FALL['PLZ']))
-    if row_FALL['Fallzusammenführung'] == 'J' and row_FALL['Fallzusammenführungsgrund']:
-        list_observation_dicts.append(create_row_encounter_merge(row_FALL['Fallzusammenführungsgrund']))
-    if row_FALL['Verweildauer-intensiv']:
-        list_observation_dicts.append(create_row_critical_care(row_FALL['Verweildauer-intensiv']))
-    if row_FALL['Entlassungsdatum'] and row_FALL['Entlassungsgrund']:
-        list_observation_dicts.append(create_row_discharge(row_FALL['Entlassungsdatum'], row_FALL['Entlassungsgrund']))
-    if row_FALL['Beatmungsstunden']:
-        list_observation_dicts.append(create_row_ventilation(row_FALL['Beatmungsstunden']))
-    if row_FALL['Behandlungsbeginn-vorstationär']:
-        list_observation_dicts.append(create_row_therapy_start_prestation(row_FALL['Behandlungsbeginn-vorstationär'], row_FALL['Behandlungstage-vorstationär']))
-    if row_FALL['Behandlungsende-nachstationär']:
-        list_observation_dicts.append(create_row_therapy_end_poststation(row_FALL['Behandlungsende-nachstationär'], row_FALL['Behandlungstage-nachstationär']))
+    list_observation_dicts.extend(create_rows_admission(row_FALL['aufnahmeanlass'], row_FALL['aufnahmegrund']))
+    if row_FALL['ik-der-krankenkasse']:
+        list_observation_dicts.append(create_row_insurance(row_FALL['ik-der-krankenkasse']))
+    if row_FALL['geburtsjahr']:
+        list_observation_dicts.extend(create_rows_birthyear(row_FALL['geburtsjahr'], row_FALL['aufnahmedatum']))
+    if row_FALL['geschlecht']:
+        list_observation_dicts.append(create_row_sex(row_FALL['geschlecht']))
+    if row_FALL['plz']:
+        list_observation_dicts.append(create_row_zipcode(row_FALL['plz']))
+    if row_FALL['fallzusammenführung'] == 'J' and row_FALL['fallzusammenführungsgrund']:
+        list_observation_dicts.append(create_row_encounter_merge(row_FALL['fallzusammenführungsgrund']))
+    if row_FALL['verweildauer-intensiv']:
+        list_observation_dicts.append(create_row_critical_care(row_FALL['verweildauer-intensiv']))
+    if row_FALL['entlassungsdatum'] and row_FALL['entlassungsgrund']:
+        list_observation_dicts.append(create_row_discharge(row_FALL['entlassungsdatum'], row_FALL['entlassungsgrund']))
+    if row_FALL['beatmungsstunden']:
+        list_observation_dicts.append(create_row_ventilation(row_FALL['beatmungsstunden']))
+    if row_FALL['behandlungsbeginn-vorstationär']:
+        list_observation_dicts.append(create_row_therapy_start_prestation(row_FALL['behandlungsbeginn-vorstationär'], row_FALL['behandlungstage-vorstationär']))
+    if row_FALL['behandlungsende-nachstationär']:
+        list_observation_dicts.append(create_row_therapy_end_poststation(row_FALL['behandlungsende-nachstationär'], row_FALL['behandlungstage-nachstationär']))
     return list_observation_dicts
 
 
@@ -717,9 +890,9 @@ def create_rows_admission(cause, reason):
     Parameters
     ----------
     cause : str
-        Value of 'Aufnahmeanlass' in FALL.csv
+        Value of 'aufnahmeanlass' in fall.csv
     reason : str
-        Value of 'Aufnahmegrund' in FALL.csv
+        Value of 'aufnahmegrund' in fall.csv
 
     Returns
     -------
@@ -740,7 +913,7 @@ def create_row_insurance(insurance):
     Parameters
     ----------
     insurance : str
-        Value of 'IK-der-Krankenkasse' in FALL.csv
+        Value of 'ik-der-krankenkasse' in fall.csv
 
     Returns
     -------
@@ -759,7 +932,7 @@ def create_rows_birthyear(birthyear, date_admission):
     Parameters
     ----------
     birthyear : str
-        Value of 'Geburtsjahr' in FALL.csv
+        Value of 'geburtsjahr' in fall.csv
     date_admission : str
         Admission date of encounter (%Y%m%d%H%M). Is saved unformatted as
         modifier 'effectiveTime'
@@ -782,7 +955,7 @@ def create_row_sex(sex):
     Parameters
     ----------
     sex : str
-        Value of 'Geschlecht' in FALL.csv
+        Value of 'geschlecht' in fall.csv
 
     Returns
     -------
@@ -801,7 +974,7 @@ def create_row_zipcode(zipcode):
     Parameters
     ----------
     zipcode : str
-         Value of 'PLZ' in FALL.csv
+         Value of 'plz' in fall.csv
 
     Returns
     -------
@@ -820,7 +993,7 @@ def create_row_encounter_merge(reason):
     Parameters
     ----------
     val_merge : str
-         Value of 'Fallzusammenführungsgrund' in FALL.csv
+         Value of 'fallzusammenführungsgrund' in fall.csv
 
     Returns
     -------
@@ -840,7 +1013,7 @@ def create_row_critical_care(intensive):
     Parameters
     ----------
     intensive : str
-        Value of 'Verweildauer-intensiv' in FALL.csv
+        Value of 'verweildauer-intensiv' in fall.csv
 
     Returns
     -------
@@ -860,9 +1033,9 @@ def create_row_discharge(date_end, reason):
     Parameters
     ----------
     date_end : str
-        Value of 'Entlassungsdatum' in FALL.csv (%Y%m%d%H%M)
+        Value of 'entlassungsdatum' in fall.csv (%Y%m%d%H%M)
     reason : str
-        Value of 'Entlassungsgrund' in FALL.csv
+        Value of 'entlassungsgrund' in fall.csv
 
     Returns
     -------
@@ -883,7 +1056,7 @@ def create_row_ventilation(ventilation):
     Parameters
     ----------
     ventilation : str
-        Value of 'Beamtungsstunden' in FALL.csv
+        Value of 'beamtungsstunden' in fall.csv
 
     Returns
     -------
@@ -905,9 +1078,9 @@ def create_row_therapy_start_prestation(date_start, days):
     Parameters
     ----------
     date_start : str
-        Value of 'Behandlungsbeginn-vorstationär' in FALL.csv (%Y%m%d)
+        Value of 'behandlungsbeginn-vorstationär' in fall.csv (%Y%m%d)
     days : str
-        Value of 'Behandlungstage-vorstationär' in FALL.csv
+        Value of 'behandlungstage-vorstationär' in fall.csv
 
     Returns
     -------
@@ -933,9 +1106,9 @@ def create_row_therapy_end_poststation(date_end, days):
     Parameters
     ----------
     date_end : str
-        Value of 'Behandlungsende-nachstationär' in FALL.csv (%Y%m%d)
+        Value of 'behandlungsende-nachstationär' in fall.csv (%Y%m%d)
     days : str
-        Value of 'Behandlungstage-nachstationär' in FALL.csv
+        Value of 'behandlungstage-nachstationär' in fall.csv
 
     Returns
     -------
@@ -951,9 +1124,9 @@ def create_row_therapy_end_poststation(date_end, days):
     return result
 
 
-def insert_upload_data_FAB(row, map_num_instances):
+def insert_upload_data_fab(row, map_num_instances):
     """
-    Converts p21 variables from FAB.csv of given row into a list of
+    Converts p21 variables from fab.csv of given row into a list of
     i2b2crcdata.observation_fact rows. Only mandatory column values are
     created for each row. Default values (like provider_id or sourcesystem_cd)
     are added prior upload through add_fixed_values(). Keeps track of multiple
@@ -963,19 +1136,19 @@ def insert_upload_data_FAB(row, map_num_instances):
     Parameters
     ----------
     row : pandas.Series
-        Single row of FAB.csv chunk to convert into observation_fact rows
+        Single row of fab.csv chunk to convert into observation_fact rows
     map_num_instances : map
         Map to keep track of instance number of reappearing encounter
 
     Returns
     -------
     list_observation_dicts : list
-        List of observation_fact rows of FAB.csv data
+        List of observation_fact rows of fab.csv data
 
     """
     map_num_instances = count_instance_num(row, map_num_instances)
-    num_instance = map_num_instances.get(row['KH-internes-Kennzeichen'])
-    return create_row_department(num_instance, row['Fachabteilung'], row['Kennung-Intensivbett'], row['FAB-Aufnahmedatum'], row['FAB-Entlassungsdatum']), map_num_instances
+    num_instance = map_num_instances.get(row['kh-internes-kennzeichen'])
+    return create_row_department(num_instance, row['fachabteilung'], row['kennung-intensivbett'], row['fab-aufnahmedatum'], row['fab-entlassungsdatum']), map_num_instances
 
 
 def create_row_department(num_instance, department, intensive, date_start, date_end):
@@ -990,13 +1163,13 @@ def create_row_department(num_instance, department, intensive, date_start, date_
     num_instance : int
         Instance_num in observation_fact
     department : str
-        Value of 'Fachabteilung' in FAB.csv
+        Value of 'fachabteilung' in fab.csv
     intensive : str
-        Value of 'Kennung-Intensivbett' in FAB.csv
+        Value of 'kennung-intensivbett' in fab.csv
     date_start : str
-        Value of 'FAB-Aufnahmedatum' in FAB.csv (%Y%m%d%H%M)
+        Value of 'fab-aufnahmedatum' in fab.csv (%Y%m%d%H%M)
     date_end : str
-        Value of 'FAB-Entlassungsdatum' in FAB.csv (%Y%m%d%H%M)
+        Value of 'fab-entlassungsdatum' in fab.csv (%Y%m%d%H%M)
 
     Returns
     -------
@@ -1010,9 +1183,9 @@ def create_row_department(num_instance, department, intensive, date_start, date_
     return [{'concept_cd': concept_dep, 'start_date': date_start, 'modifier_cd': '@', 'instance_num': num_instance, 'valtype_cd': 'T', 'tval_char': department, 'end_date': date_end}]
 
 
-def insert_upload_data_OPS(row, map_num_instances):
+def insert_upload_data_ops(row, map_num_instances):
     """
-    Converts p21 variables from OPS.csv of given row into a list of
+    Converts p21 variables from ops.csv of given row into a list of
     i2b2crcdata.observation_fact rows. Only mandatory column values are
     created for each row. Default values (like provider_id or sourcesystem_cd)
     are added prior upload through add_fixed_values(). Keeps track of multiple
@@ -1022,25 +1195,25 @@ def insert_upload_data_OPS(row, map_num_instances):
     Parameters
     ----------
     row : pandas.Series
-        Single row of OPS.csv chunk to convert into observation_fact rows
+        Single row of ops.csv chunk to convert into observation_fact rows
     map_num_instances : map
         Map to keep track of instance number of reappearing encounter
 
     Returns
     -------
     list_observation_dicts : list
-        List of observation_fact rows of OPS.csv data
+        List of observation_fact rows of ops.csv data
 
     """
     map_num_instances = count_instance_num(row, map_num_instances)
-    num_instance = map_num_instances.get(row['KH-internes-Kennzeichen'])
-    return create_rows_ops(num_instance, row['OPS-Kode'], row['OPS-Version'], row['Lokalisation'], row['OPS-Datum']), map_num_instances
+    num_instance = map_num_instances.get(row['kh-internes-kennzeichen'])
+    return create_rows_ops(num_instance, row['ops-kode'], row['ops-version'], row['lokalisation'], row['ops-datum']), map_num_instances
 
 
 def create_rows_ops(num_instance, code_ops, version, localisation, date_ops):
     """
     Creates observation_fact rows for carried out procedures on encounter
-    patient. The OPS code itself is added as a concept_cd. OPS date has to be
+    patient. The ops code itself is added as a concept_cd. OPS date has to be
     formatted in '%Y-%m-%d %H:%M'. Variable named localisation is optional and
     its row creation is skipped if localisation is empty.
 
@@ -1049,13 +1222,13 @@ def create_rows_ops(num_instance, code_ops, version, localisation, date_ops):
     num_instance : int
         Instance_num in observation_fact
     code_ops : str
-        Value of 'OPS-Kode' in OPS.csv
+        Value of 'ops-kode' in ops.csv
     version : str
-        Value of 'OPS-Version' in OPS.csv
+        Value of 'ops-version' in ops.csv
     localisation : str
-        Value of 'Lokalisation' in OPS.csv
+        Value of 'lokalisation' in ops.csv
     date_ops : str
-        Value of 'OPS-Datum' in OPS.csv (%Y%m%d%H%M)
+        Value of 'ops-datum' in ops.csv (%Y%m%d%H%M)
 
     Returns
     -------
@@ -1072,9 +1245,9 @@ def create_rows_ops(num_instance, code_ops, version, localisation, date_ops):
     return result
 
 
-def insert_upload_data_ICD(row, date_admission, map_num_instances):
+def insert_upload_data_icd(row, date_admission, map_num_instances):
     """
-    Converts p21 variables from ICD.csv of given row into a list of
+    Converts p21 variables from icd.csv of given row into a list of
     i2b2crcdata.observation_fact rows. Only mandatory column values are
     created for each row. Default values (like provider_id or sourcesystem_cd)
     are added prior upload through add_fixed_values(). Keeps track of multiple
@@ -1084,30 +1257,30 @@ def insert_upload_data_ICD(row, date_admission, map_num_instances):
     Parameters
     ----------
     row : pandas.Series
-        Single row of OPS.csv chunk to convert into observation_fact rows
+        Single row of ops.csv chunk to convert into observation_fact rows
     map_num_instances : map
         Map to keep track of instance number of reappearing encounter
 
     Returns
     -------
     list_observation_dicts : list
-        List of observation_fact rows of OPS.csv data
+        List of observation_fact rows of ops.csv data
 
     """
     list_observation_dicts = []
     map_num_instances = count_instance_num(row, map_num_instances)
-    num_instance = map_num_instances.get(row['KH-internes-Kennzeichen'])
-    list_observation_dicts.extend(create_rows_icd(num_instance, row['ICD-Kode'], row['Diagnoseart'], row['ICD-Version'], row['Lokalisation'], row['Diagnosensicherheit'], date_admission))
+    num_instance = map_num_instances.get(row['kh-internes-kennzeichen'])
+    list_observation_dicts.extend(create_rows_icd(num_instance, row['icd-kode'], row['diagnoseart'], row['icd-version'], row['lokalisation'], row['diagnosensicherheit'], date_admission))
 
     map_num_instances = count_instance_num(row, map_num_instances)
-    num_instance = map_num_instances.get(row['KH-internes-Kennzeichen'])
-    list_observation_dicts.extend(create_row_icd_sek(num_instance, row['Sekundär-Kode'], row['ICD-Kode'], row['ICD-Version'], row['Sekundär-Lokalisation'], row['Sekundär-Diagnosensicherheit'], date_admission)) if row['Sekundär-Kode'] else None
+    num_instance = map_num_instances.get(row['kh-internes-kennzeichen'])
+    list_observation_dicts.extend(create_row_icd_sek(num_instance, row['sekundär-kode'], row['icd-kode'], row['icd-version'], row['sekundär-lokalisation'], row['sekundär-diagnosensicherheit'], date_admission)) if row['sekundär-kode'] else None
     return list_observation_dicts, map_num_instances
 
 
 def create_rows_icd(num_instance, code_icd, diag_type, version, localisation, certainty, date_adm):
     """
-    Creates observation_fact rows for an encounter diagnosis. The ICD code
+    Creates observation_fact rows for an encounter diagnosis. The icd code
     itself is added as a concept_cd. Variables named localisation and certainty
     are optional and row creation is skipped if these are empty.
 
@@ -1116,15 +1289,15 @@ def create_rows_icd(num_instance, code_icd, diag_type, version, localisation, ce
     num_instance : int
         Instance_num in observation_fact
     code_icd : str
-        Value of 'ICD-Kode' in ICD.csv
+        Value of 'icd-kode' in icd.csv
     diag_type : str
-        Value of 'Diagnoseart' in ICD.csv
+        Value of 'diagnoseart' in icd.csv
     version : str
-        Value of 'ICD-Version' in ICD.csv
+        Value of 'icd-version' in icd.csv
     localisation : str
-        Value of 'Lokalisation' in ICD.csv
+        Value of 'lokalisation' in icd.csv
     certainty : str
-        Value of 'Diagnosensicherheit' in ICD.csv
+        Value of 'diagnosensicherheit' in icd.csv
     date_adm : str
         Admission date of encounter (%Y%m%d%H%M). Is safed unformatted
         as modifier 'EffectiveTimeLow'
@@ -1158,15 +1331,15 @@ def create_row_icd_sek(num_instance, code_icd, code_parent, version, localisatio
     num_instance : int
         Instance_num in observation_fact
     code_icd : str
-        Value of 'Sekundär-Kode' in ICD.csv
+        Value of 'sekundär-kode' in icd.csv
     code_parent : str
-        Value of 'ICD-Kode' in ICD.csv
+        Value of 'icd-kode' in icd.csv
     version : str
-        Value of 'ICD-Version' in ICD.csv
+        Value of 'icd-version' in icd.csv
     localisation : str
-        Value of 'Sekundär-Lokalisation' in ICD.csv
+        Value of 'sekundär-lokalisation' in icd.csv
     certainty : str
-        Value of 'Sekundär-Diagnosensicherheit' in ICD.csv
+        Value of 'sekundär-diagnosensicherheit' in icd.csv
     date_adm : str
         Admission date of encounter (%Y%m%d%H%M). Is safed unformatted
         as modifier 'EffectiveTimeLow'
@@ -1174,7 +1347,7 @@ def create_row_icd_sek(num_instance, code_icd, code_parent, version, localisatio
     Returns
     -------
     result : list
-         List with dicts (observation_fact rows) for given Sekundärdiagnose
+         List with dicts (observation_fact rows) for given sekundärdiagnose
 
     """
     result = create_rows_icd(num_instance, code_icd, 'SD', version, localisation, certainty, date_adm)
@@ -1203,10 +1376,10 @@ def count_instance_num(row, map_num_instances):
 
     """
 
-    if row['KH-internes-Kennzeichen'] not in map_num_instances:
-        map_num_instances[row['KH-internes-Kennzeichen']] = 1
+    if row['kh-internes-kennzeichen'] not in map_num_instances:
+        map_num_instances[row['kh-internes-kennzeichen']] = 1
     else:
-        map_num_instances[row['KH-internes-Kennzeichen']] += 1
+        map_num_instances[row['kh-internes-kennzeichen']] += 1
     return map_num_instances
 
 
@@ -1285,8 +1458,8 @@ def check_and_delete_uploaded_encounter(connection, table_obs, num_enc):
     data from database if true
 
     Notes:
-        Check is done by looking, if modifier 'scriptId' of concept
-        'P21:SCRIPT' of given encounter equals the id of this script
+        Check is done by matching modifier 'scriptId' of the concept
+        'P21:SCRIPT' of given encounter with the id of this script
 
         If this is the case, the sourcesystem_cd of concept 'P21:SCRIPT'
         is returned
@@ -1381,17 +1554,15 @@ MISC
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 """
 
-def get_csv_encoding(file_zip, name_csv):
+def get_csv_encoding(path_csv):
     """
-    Reads the first {CSV_BYTES_CHECK_ENCODER} Bytes of a given csv file in
-    given zip and returns the csv encoding as a str
+    Reads the first {CSV_BYTES_CHECK_ENCODER} Bytes of a given csv file and
+    returns the csv encoding as a str
 
     Parameters
     ----------
-    file_zip : ZipFile
-        Zip-file with p21 csv-files
-    name_csv : str
-        Name of the csv-file to check encoding of
+    path_csv : str
+        path to the csv-file to check encoding of
 
     Returns
     -------
@@ -1399,7 +1570,7 @@ def get_csv_encoding(file_zip, name_csv):
         Encoding of given csv-file
 
     """
-    return chardet.detect(file_zip.open(name_csv).read(CSV_BYTES_CHECK_ENCODER))['encoding']
+    return chardet.detect(open(path_csv, 'rb').read(CSV_BYTES_CHECK_ENCODER))['encoding']
 
 
 def get_db_engine():
@@ -1546,7 +1717,7 @@ def convert_date_to_i2b2_format(date):
 
 def convert_icd_code_to_i2b2_format(code_icd):
     """
-    Converts ICD code to i2b2crcdata.observation_fact format by checking and
+    Converts icd code to i2b2crcdata.observation_fact format by checking and
     adding (if necessary) '.'-delimiter at index 3. Does not add delimiter if
     icd code is only 3 characters long
 
@@ -1559,12 +1730,12 @@ def convert_icd_code_to_i2b2_format(code_icd):
     Parameters
     ----------
     code_icd : str
-        ICD code to convert
+        icd code to convert
 
     Returns
     -------
     str
-        ICD code with added delimiter
+        icd code with added delimiter
 
     """
     if len(code_icd) > 3:
@@ -1574,7 +1745,7 @@ def convert_icd_code_to_i2b2_format(code_icd):
 
 def convert_ops_code_to_i2b2_format(code_ops):
     """
-    Converts OPS code to i2b2crcdata.observation_fact format by checking and
+    Converts ops code to i2b2crcdata.observation_fact format by checking and
     adding (if necessary) '-'-delimiter at index 1 and '.'-delimiter at index 5.
     Second delimiter is only added, if more than three digits follow first
     delimiter
@@ -1591,12 +1762,12 @@ def convert_ops_code_to_i2b2_format(code_ops):
     Parameters
     ----------
     code_ops : str
-        OPS code to convert
+        ops code to convert
 
     Returns
     -------
     code_ops : str
-        OPS code with added delimiter
+        ops code with added delimiter
 
     """
     code_ops = ''.join([code_ops[:1], '-', code_ops[1:]] if code_ops[1] != '-' else code_ops)
@@ -1615,75 +1786,68 @@ if __name__ == '__main__':
 
     # required file names in zip-file and required columns for each file
     DICT_P21_COLUMNS = {
-        'FALL.csv': ['KH-internes-Kennzeichen', 'IK-der-Krankenkasse', 'Geburtsjahr', 'Geschlecht', 'PLZ', 'Aufnahmedatum',
-                     'Aufnahmegrund', 'Aufnahmeanlass', 'Fallzusammenführung', 'Fallzusammenführungsgrund', 'Verweildauer-intensiv',
-                     'Entlassungsdatum', 'Entlassungsgrund', 'Beatmungsstunden', 'Behandlungsbeginn-vorstationär',
-                     'Behandlungstage-vorstationär', 'Behandlungsende-nachstationär', 'Behandlungstage-nachstationär'],
-        'FAB.csv': ['KH-internes-Kennzeichen', 'Fachabteilung', 'FAB-Aufnahmedatum', 'FAB-Entlassungsdatum', 'Kennung-Intensivbett'],
-        'ICD.csv': ['KH-internes-Kennzeichen', 'Diagnoseart', 'ICD-Version', 'ICD-Kode', 'Lokalisation', 'Diagnosensicherheit',
-                    'Sekundär-Kode', 'Sekundär-Lokalisation', 'Sekundär-Diagnosensicherheit'],
-        'OPS.csv': ['KH-internes-Kennzeichen', 'OPS-Version', 'OPS-Kode', 'OPS-Datum', 'Lokalisation']
+        'fall.csv': ['kh-internes-kennzeichen', 'ik-der-krankenkasse', 'geburtsjahr', 'geschlecht', 'plz', 'aufnahmedatum',
+                     'aufnahmegrund', 'aufnahmeanlass', 'fallzusammenführung', 'fallzusammenführungsgrund', 'verweildauer-intensiv',
+                     'entlassungsdatum', 'entlassungsgrund', 'beatmungsstunden', 'behandlungsbeginn-vorstationär',
+                     'behandlungstage-vorstationär', 'behandlungsende-nachstationär', 'behandlungstage-nachstationär'],
+        'fab.csv': ['kh-internes-kennzeichen', 'fachabteilung', 'fab-aufnahmedatum', 'fab-entlassungsdatum', 'kennung-intensivbett'],
+        'icd.csv': ['kh-internes-kennzeichen', 'diagnoseart', 'icd-version', 'icd-kode', 'lokalisation', 'diagnosensicherheit',
+                    'sekundär-kode', 'sekundär-lokalisation', 'sekundär-diagnosensicherheit'],
+        'ops.csv': ['kh-internes-kennzeichen', 'ops-version', 'ops-kode', 'ops-datum', 'lokalisation']
     }
 
     # columns which must not contain an empty field
     LIST_P21_COLUMN_NON_EMPTY = [
-        'KH-internes-Kennzeichen',
-        'Aufnahmedatum',
-        'Aufnahmegrund',
-        'Aufnahmeanlass',
-        'Fachabteilung',
-        'FAB-Aufnahmedatum',
-        'Kennung-Intensivbett',
-        'Diagnoseart',
-        'ICD-Version',
-        'ICD-Kode',
-        'OPS-Version',
-        'OPS-Kode',
-        'OPS-Datum'
-    ]
-
-    # columns where empty field warning is ignored (Sekundärdiagnose are mostly empty)
-    LIST_P21_COLUMN_EMPTY_FIELD_IGNORED_STDOUPUT = [
-        'Sekundär-Kode',
-        'Sekundär-Lokalisation',
-        'Sekundär-Diagnosensicherheit'
+        'kh-internes-kennzeichen',
+        'aufnahmedatum',
+        'aufnahmegrund',
+        'aufnahmeanlass',
+        'fachabteilung',
+        'fab-aufnahmedatum',
+        'kennung-intensivbett',
+        'diagnoseart',
+        'icd-version',
+        'icd-kode',
+        'ops-version',
+        'ops-kode',
+        'ops-datum'
     ]
 
     # format requirements for each column
     DICT_P21_COLUMN_PATTERN = {
-        'KH-internes-Kennzeichen': '^.*$',
-        'IK-der-Krankenkasse': '^\w*$',
-        'Geburtsjahr': '^(19|20)\d{2}$',
-        'Geschlecht': '^[mwdx]$',
-        'PLZ': '^\d{5}$',
-        'Aufnahmedatum': '^\d{12}$',
-        'Aufnahmegrund': '^(0[1-9]|10)\d{2}$',
-        'Aufnahmeanlass': '^[EZNRVAGB]$',
-        'Fallzusammenführung': '^(J|N)$',
-        'Fallzusammenführungsgrund': '^OG|MD|KO|RU|WR|MF|P[WRM]|Z[OMKRW]$',
-        'Verweildauer-intensiv': '^\d*(,\d{2})?$',
-        'Entlassungsdatum': '^\d{12}$',
-        'Entlassungsgrund': '^\d{2}.{1}$',
-        'Beatmungsstunden': '^\d*(,\d{2})?$',
-        'Behandlungsbeginn-vorstationär': '^\d{8}$',
-        'Behandlungstage-vorstationär': '^\d$',
-        'Behandlungsende-nachstationär': '^\d{8}$',
-        'Behandlungstage-nachstationär': '^\d$',
-        'Fachabteilung': '^(HA|BA|BE)\d{4}$',
-        'FAB-Aufnahmedatum': '^\d{12}$',
-        'FAB-Entlassungsdatum': '^\d{12}$',
-        'Kennung-Intensivbett': '^(J|N)$',
-        'Diagnoseart': '^(HD|ND|SD)$',
-        'ICD-Version': '^20\d{2}$',
-        'ICD-Kode': '^[A-Z]\d{2}(\.)?.{0,3}$',
-        'Lokalisation': '^[BLR]$',
-        'Diagnosensicherheit': '^[AVZG]$',
-        'Sekundär-Kode': '^[A-Z]\d{2}(\.)?.{0,3}$',
-        'Sekundär-Lokalisation': '^[BLR]$',
-        'Sekundär-Diagnosensicherheit': '^[AVZG]$',
-        'OPS-Version': '^20\d{2}$',
-        'OPS-Kode': '^\d{1}(\-)?\d{2}(.{1})?(\.)?.{0,2}$',
-        'OPS-Datum': '^\d{12}$'
+        'kh-internes-kennzeichen': '^.*$',
+        'ik-der-krankenkasse': '^\w*$',
+        'geburtsjahr': '^(19|20)\d{2}$',
+        'geschlecht': '^[mwdx]$',
+        'plz': '^\d{5}$',
+        'aufnahmedatum': '^\d{12}$',
+        'aufnahmegrund': '^(0[1-9]|10)\d{2}$',
+        'aufnahmeanlass': '^[EZNRVAGB]$',
+        'fallzusammenführung': '^(J|N)$',
+        'fallzusammenführungsgrund': '^OG|MD|KO|RU|WR|MF|P[WRM]|Z[OMKRW]$',
+        'verweildauer-intensiv': '^\d*(,\d{2})?$',
+        'entlassungsdatum': '^\d{12}$',
+        'entlassungsgrund': '^\d{2}.{1}$',
+        'beatmungsstunden': '^\d*(,\d{2})?$',
+        'behandlungsbeginn-vorstationär': '^\d{8}$',
+        'behandlungstage-vorstationär': '^\d$',
+        'behandlungsende-nachstationär': '^\d{8}$',
+        'behandlungstage-nachstationär': '^\d$',
+        'fachabteilung': '^(HA|BA|BE)\d{4}$',
+        'fab-aufnahmedatum': '^\d{12}$',
+        'fab-entlassungsdatum': '^\d{12}$',
+        'kennung-intensivbett': '^(J|N)$',
+        'diagnoseart': '^(HD|ND|SD)$',
+        'icd-version': '^20\d{2}$',
+        'icd-kode': '^[A-Z]\d{2}(\.)?.{0,3}$',
+        'lokalisation': '^[BLR]$',
+        'diagnosensicherheit': '^[AVZG]$',
+        'sekundär-kode': '^[A-Z]\d{2}(\.)?.{0,3}$',
+        'sekundär-lokalisation': '^[BLR]$',
+        'sekundär-diagnosensicherheit': '^[AVZG]$',
+        'ops-version': '^20\d{2}$',
+        'ops-kode': '^\d{1}(\-)?\d{2}(.{1})?(\.)?.{0,2}$',
+        'ops-datum': '^\d{12}$'
     }
 
     CSV_SEPARATOR = ';'
