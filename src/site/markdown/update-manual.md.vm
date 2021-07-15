@@ -23,7 +23,7 @@ cp dwh-update/packages/dwh-j2ee-${version_dwh}.ear /opt/wildlfy/standalone/deplo
 ```
 
 <h4>Patch der aktin.properties</h4>
-Mit der neuen Version ${version_dwh} wurden einige neue Schlüssel der `aktin.properties` hinzugefügt. Diese werden im Rahmden des neuen Features, nämlich das Hochladen und den Import von stationären Behandlungsdaten, benötigt. Die drei neuen Schlüssel lauten
+Mit der neuen Version 1.4 wurden einige neue Schlüssel der `aktin.properties` hinzugefügt. Diese werden im Rahmden des neuen Features, nämlich das Hochladen und den Import von stationären Behandlungsdaten, benötigt. Die drei neuen Schlüssel lauten
 
 ```
 import.data.path=/var/lib/aktin/import

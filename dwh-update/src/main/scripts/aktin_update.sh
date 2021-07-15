@@ -189,7 +189,7 @@ else
 fi
 if ! systemctl is-active --quiet wildfly; then
 	service wildfly start
-	30s
+	sleep 30s
 fi
 }
 

@@ -1,5 +1,14 @@
 ﻿<h3><u>Changelog</u></h3>
 
+<h4>Version 1.5 (07-2021)</h4>
+* rscript hat neue felder in aktin.properties zum debuggen
+* aktin datasource aus standalone.xml in deployments ordner verschoben
+* wildfly ist nun ein systemd service und hat eine abhängigkeit zu postgresl
+* Importskript V1.2
+    * Datenverarbeitung unabhängig von Groß/Kleinschreibung gemacht
+    * Spalten für Sekundärdiagnosen werden automatisch umbenannt, wenn notwendig
+
+
 <h4>Version 1.4.1 (05-2021)</h4>
 * Importskript V1.1
     * Nur `FALL.csv` ist notwendig für den Import (`FAB.csv`, `OPS.csv` und `ICD.csv` sind nun optional)
