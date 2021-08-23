@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<name>AKTIN : DWH Server : Updater</name>
+
+	<packaging>pom</packaging>
+
+	<groupId>org.aktin.dwh</groupId>
+	<artifactId>dwh-migration-deb</artifactId>
+	<version>${project.parent.version}</version>
+
+	<parent>
+		<groupId>org.aktin.dwh</groupId>
+		<artifactId>server</artifactId>
+		<version>1.5-SNAPSHOT</version>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>de.sekmi.histream.maven</groupId>
+				<artifactId>histream-maven-plugin</artifactId>
+				<version>0.13</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>dependency-properties</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>aktin-dwh-migration-deb-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/assembly/package.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
