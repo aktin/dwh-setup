@@ -20,45 +20,6 @@ function check_root_privileges() {
    fi
 }
 
-function stop_wildfly() {
-   if systemctl is-active --quiet wildfly; then
-	   service wildfly stop
-   fi
-}
-
-function backup_aktin_properties() {
-   mkdir -p /etc/aktin
-   cp -f /opt/wildfly/standalone/configuration/aktin.properties /etc/aktin/backup_aktin.properties
-}
-
-function remove_wildfly_services() {
-   rm -rf /etc/wildfly
-   rm -rf /etc/default/wildfly
-   rm -f /etc/init.d/wildfly
-   rm -f /lib/systemd/system/wildfly.service
-   systemctl daemon-reload
-}
-
-function remove_wildfly() {
-   rm -f /opt/wildfly
-   rm -rf /opt/wildfly-*
-}
-
-function remove_apache2_webclient() {
-   rm -rf /var/www/html/webclient
-}
-
-function remove_apache2_proxy_conf() {
-   a2dismod proxy_http >/dev/null 2>&1 || true
-   a2disconf aktin-j2ee-reverse-proxy >/dev/null 2>&1 || true
-   service apache2 restart
-   rm -f /etc/apache2/conf-available/aktin-j2ee-reverse-proxy.conf
-}
-
-function remove_old_import_scripts() {
-   rm -f /var/lib/aktin/import-scripts/*
-}
-
 function include_aktin_repo() {
    wget -O - http://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
    echo "deb http://www.aktin.org/software/repo/org/apt focal main" | tee /etc/apt/sources.list.d/aktin.list
@@ -90,44 +51,13 @@ update.time=$(date)
 EOF
 }
 
-function apply_aktin_properties_backup() {
-# iterate through all rows in backup_aktin.properties,
-# line start until '=' -> KEY
-# '=' until line end -> VALUE
-# search key in new aktin.properties
-# overwrite value in new aktin.properties if found
-while read -r line_backup; do
-    if [[ ! $line_backup = \#* && ! -z $line_backup ]]; then
-        KEY=${line_backup%=*}
-        VALUE=${line_backup#*=}
-        while read -r line_org; do
-            if [[ ! $line_org = \#* && ! -z $line_org ]]; then
-                if [[ ${line_org%=*} == $KEY ]]; then
-                    sed -i "s|${KEY}=.*|${KEY}=${VALUE}|" /etc/aktin/aktin.properties
-                    break
-                fi
-            fi
-        done < /etc/aktin/aktin.properties
-    fi
-done < /etc/aktin/backup_aktin.properties
-chown wildfly:wildfly /etc/aktin/aktin.properties
-}
-
 function main() {
 check_root_privileges
-stop_wildfly
-backup_aktin_properties
-remove_wildfly_services
-remove_wildfly
-remove_apache2_webclient
-remove_apache2_proxy_conf
-remove_old_import_scripts
 include_aktin_repo
 apt-get update
 install_required_packages
 install_aktin_deb_packages
 initialize_updateagent
-apply_aktin_properties_backup
 service wildfly restart
 }
 
