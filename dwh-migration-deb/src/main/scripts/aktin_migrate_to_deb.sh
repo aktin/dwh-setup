@@ -113,6 +113,15 @@ done < /etc/aktin/backup_aktin.properties
 chown wildfly:wildfly /etc/aktin/aktin.properties
 }
 
+function update_script_keys_of_imported_files() {
+# change script key of all files uploaded with the
+# p21 script to p21_enc (as script was split in two with
+# two new keys)
+   for folder in /var/lib/aktin/import/*; do
+      sed -i "s|script=p21import|script=p21_enc|" $folder/properties
+   done
+}
+
 function main() {
 check_root_privileges
 stop_wildfly
@@ -128,6 +137,7 @@ install_required_packages
 install_aktin_deb_packages
 initialize_updateagent
 apply_aktin_properties_backup
+update_script_keys_of_imported_files
 service wildfly restart
 }
 
