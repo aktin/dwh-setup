@@ -10,8 +10,10 @@ readonly ORA=${color_orange}
 readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
+CURRENT_DATE=$(date +%Y_%h_%d_%H%M)
+
 # create timestamp and log file
-readonly LOGFILE=$(pwd)/deb_migration_$(date +%Y_%h_%d_%H%M).log
+readonly LOGFILE=$(pwd)/deb_migration_$CURRENT_DATE.log
 
 function check_root_privileges() {
    if [[ $EUID -ne 0 ]]; then
@@ -28,7 +30,7 @@ function stop_wildfly() {
 
 function backup_aktin_properties() {
    mkdir -p /etc/aktin
-   cp -f /opt/wildfly/standalone/configuration/aktin.properties /etc/aktin/backup_aktin.properties
+   cp -f /opt/wildfly/standalone/configuration/aktin.properties /etc/aktin/backup_$CURRENT_DATE.properties
 }
 
 function remove_wildfly_services() {
@@ -109,7 +111,7 @@ while read -r line_backup; do
             fi
         done < /etc/aktin/aktin.properties
     fi
-done < /etc/aktin/backup_aktin.properties
+done < /etc/aktin/backup_$CURRENT_DATE.properties
 chown wildfly:wildfly /etc/aktin/aktin.properties
 }
 
