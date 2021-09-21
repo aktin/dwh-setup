@@ -20,7 +20,6 @@
 			<item href="file-import-p21.html" name="Import von fallbasierten Behandlungsdaten" />
 			<item href="update-migration.html" name="Migration von Debian 8/CentOS 7" />
 			<item href="update-auto.html" name="Automatisches Update" />
-			<item href="update-manual.html" name="Manuelles Update" />
 		</menu>
 		<menu name="Changelog">
 			<item href="changelog.html" name="Changelog" />
