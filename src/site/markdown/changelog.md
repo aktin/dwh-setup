@@ -1,13 +1,18 @@
 ﻿<h3><u>Changelog</u></h3>
 
-<h4>Version 1.5 (07-2021)</h4>
-* rscript hat neue felder in aktin.properties zum debuggen
-* aktin datasource aus standalone.xml in deployments ordner verschoben
-* wildfly ist nun ein systemd service und hat eine abhängigkeit zu postgresl
-* Importskript V1.2
-    * Datenverarbeitung unabhängig von Groß/Kleinschreibung gemacht
+<h4>Version 1.5 (09-2021)</h4>
+* Umstellung des Installationpakets von `.tar.gz` zu einem Debian-Paket
+    * Automatische Updatemöglichkeit über die Ansicht
+    * Elektrische Signatur für jedes Paket
+    * Offline Installation möglich
+* Neue Felder in der aktin.properties für das Debugging von `rscript`
+* Datasource für AKTIN wurde aus der `standalone.xml` in den Ordner `deployments` verschoben
+* Engere Abhängigkeit zwischen den Paketen `wildfly` und `postgresql-12`
+    * Start/Stop eines Services startet/stoppt automatisch den anderen
+* Importskript V1.3
+    * Datenverarbeitung nun unabhängig von Groß/Kleinschreibung
     * Spalten für Sekundärdiagnosen werden automatisch umbenannt, wenn notwendig
-
+    * Verbesserte Zusammenfassung in der Konsolenausgabe nach erfolgreicher Verifizierung/erfolgreichem Import
 
 <h4>Version 1.4.1 (05-2021)</h4>
 * Importskript V1.1
