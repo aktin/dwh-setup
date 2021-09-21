@@ -1,0 +1,34 @@
+<assembly>
+	<id>package</id>
+	<!-- Specifies that our binary distribution is a tar.gz package -->
+	<formats>
+		<format>tar.gz</format>
+		<!--zip, dir-->
+	</formats>
+
+	<includeBaseDirectory>false</includeBaseDirectory>
+
+	<!-- Add dependencies for the J2EE server to the /packages directory -->
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>dwh-newinstall-deb/packages</outputDirectory>
+			<useProjectArtifact>false</useProjectArtifact>
+			<unpack>false</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.scriptSourceDirectory}</directory>
+            <outputDirectory>dwh-newinstall-deb</outputDirectory>
+            <filtered>true</filtered>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>dwh-newinstall-deb</outputDirectory>
+            <filtered>false</filtered>
+        </fileSet>
+    </fileSets>
+
+</assembly>

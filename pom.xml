@@ -63,6 +63,8 @@
 		<module>dwh-update</module>
 		<module>dwh-install</module>
 		<module>dwh-migration</module>
+		<module>dwh-migration-deb</module>
+		<module>dwh-newinstall-deb</module>
 		<!--
 		TODO fix ccd integration
 		<module>aktin-cdd</module>
