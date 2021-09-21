@@ -11,7 +11,7 @@ Für Ubuntu Server 20.04 LTS werden Skripte für eine automatische Installation 
 
 <h5>1. Download der Installationsdatei</h5>
 
-Für eine Neuinstallation wird [Ubuntu Server 20.04 LTS](https://releases.ubuntu.com/20.04/ubuntu-20.04.2-live-server-amd64.iso) empfohlen. Dabei handelt es sich um eine minimalistische Ubuntu-Version, optimiert für das Betreiben von Servern. Unter dem angegebenen Link finden Sie die Möglichkeit, eine `.iso`-Datei herunterzuladen. Diese Datei muss anschließend auf ein Installationsmedium (CD oder bootfähiger USB-Stick) kopiert werden und kann dann genutzt werden, um auf einem gegebenen System Ubuntu zu installieren.
+Für eine Neuinstallation wird [Ubuntu Server 20.04 LTS](https://releases.ubuntu.com/20.04/ubuntu-20.04.3-live-server-amd64.iso) empfohlen. Dabei handelt es sich um eine minimalistische Ubuntu-Version, optimiert für das Betreiben von Servern. Unter dem angegebenen Link finden Sie die Möglichkeit, eine `.iso`-Datei herunterzuladen. Diese Datei muss anschließend auf ein Installationsmedium (CD oder bootfähiger USB-Stick) kopiert werden und kann dann genutzt werden, um auf einem gegebenen System Ubuntu zu installieren.
 <br></br>
 
 <h5>2. Welcome!</h5>
