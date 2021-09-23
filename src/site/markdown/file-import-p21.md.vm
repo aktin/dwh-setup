@@ -1,8 +1,5 @@
 <h3><u>Import von fallbasierten Behandlungsdaten</u></h3>
 Für das Hochladen und Importieren fallbasierter Behandlungsdaten gemäß §21 KHEntgG wird seit der AKTIN DWH-Version 1.4 eine Schnittstelle samt Importskript bereitgestellt. Auf dieser Seite finden Sie eine Anleitung sowie wichtige Hinweise zur Nutzung dieser Schnittstelle.
-
-
-<!-- MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
 <br></br>
 
 <h4>Vorraussetzungen für das Importieren fallbasierter Daten</h4>
@@ -10,7 +7,7 @@ Vergewissern Sie sich vor der Nutzung der Schnittstelle, dass Sie ein AKTIN Data
 <br></br>
 
 <h4>Anforderungen an den Datensatz</h4>
-Um eine einheitliche, performante und fehlerlose Datenverarbeitung zu gewährleisten, wurden vorab einige Anforderungen an den zu importierenden Datensatz definiert. Diese Anforderungen orientieren sich an den Anforderungen des §21 KHEntgG und sind im Folgenden beschrieben. Weitere Informationen zum §21-Datensatz und den Anforderungen finden Sie unter diesem [Link](https://www.g-drg.de/Datenlieferung_gem._21_KHEntgG/Dokumente_zur_Datenlieferung/Datensatzbeschreibung)
+Um eine einheitliche, performante und fehlerlose Datenverarbeitung zu gewährleisten, wurden vorab einige Anforderungen an den zu importierenden Datensatz definiert. Diese Anforderungen orientieren sich an den Anforderungen des §21 KHEntgG und sind im Folgenden beschrieben. Weitere Informationen zum §21-Datensatz und den Anforderungen finden Sie unter diesem [Link](https://www.g-drg.de/Datenlieferung_gem._21_KHEntgG2)
 
  * Die Daten werden im `.csv`-Format importiert
  * Als Trennzeichen zwischen Datenfeldern wird das Semikolon (`;`) verwendet
@@ -20,7 +17,6 @@ Um eine einheitliche, performante und fehlerlose Datenverarbeitung zu gewährlei
  * In dem `zip`-Archiv muss sich mindestens eine `.csv`-Datei mit den Namen `FALL.csv` befinden. Optional können sich in dem Archiv noch Dateien mit dem Namen `FAB.csv`, `ICD.csv` und `OPS.csv` befinden. Anderweitige Dateien werden vom Importskript ignoriert
  * Es werden nur valide Fälle importiert, d.h. die notwendigen Felder eines Falles sind vollständig und entsprechen den Formatvorgaben. Gleichzeitig muss der Fall im Vorfeld über die CDA-Schnittstelle importiert worden sein
  * Die Zuordnung zu bereits vorhandenen Fällen in der Datenbank erfolgt über das Feld `KH-internes-Kennzeichen`. Es ist darauf zu achten, dass das Format in `KH-internes-Kennzeichen` mit dem Format der Fallnummern aus den importierten CDA-Dokumenten identisch ist
- * Es werden zunächst nur alle validen und verknüpfbaren Fälle aus `FALL.csv` importiert. Anschließend werden alle validen Fälle aus den optionalen `.csv`-Dateien importiert (wenn vorhanden). Damit ein Fall aus einer optionalen `.csv`-Datei importiert wird, muss er im Vorfeld aus `FALL.csv` importiert worden sein
  * Die nachfolgende Tabelle stellt die Anforderungen an die Spalten der jeweiligen `.csv`-Dateien dar. Sonderzeichen sind in keiner Spalte erlaubt. Ein invalides Feld führt dazu, dass der gesamte Fall vom Import ausgeschlossen wird. Ein invalides optionales Feld wird ignoriert. Nicht aufgeführte Spalten sind optional und vom Import ausgeschlossen.
 
 <table>
@@ -299,15 +295,6 @@ Um eine einheitliche, performante und fehlerlose Datenverarbeitung zu gewährlei
 </tbody>
 </table>
 <br></br>
-
-<h4>Wichtige Hinweise</h4>
-* Es ist nochmals darauf hinzuweisen, dass in `ICD.csv` aufgrund einer Dopplung der Spaltennamen die Spalten für die Darstellung der Diagnosensicherheit (`Diagnosensicherheit2`/`Diagnosensicherheit`) und der Lokalisation (`Lokalisation2`/`Lokalisation`) von Sekundärdiagnosen in `Sekundär-Lokalisation` bzw. `Sekundär-Diagnosensicherheit` umbenannt werden müssen. Ohne eine Umbenennung dieser Spalten, wird das Importskript nicht starten.
-
-* Stellen Sie unbedingt sicher, dass auch sämtliche andere Spaltennamen Ihrer `.csv`-Dateien mit den Spaltennamen aus der angebenen Tabelle (welche sich nach den Vorgaben der InEK GmbH richtet) übereinstimmen.
-
-* Für die Zuordnung eiens Falles muss die Fallnummer in `KH-internes-Kennzeichen` identisch mit der Fallnummer des importierten CDA-Dokument sein.
-<br></br>
-
 
 <h4>Ablauf des Imports von fallbasierten Daten</h4>
 Der Import von fallbasierten Daten ist ein dreischrittiger Prozess. Die Daten müssen zunächst über die Schnittstelle in das Data Warehouse hochgeladen werden. Anschließend lassen sich die Daten durch das Importskript prüfen. Im Rahmen der Prüfung wird ermittelt, ob die hochgeladene Datei den vordefinierten Anforderungen entspricht und ob entsprechende Fälle in der Datenbank des Data Warehouses gefunden werden können. Nach erfolgreichem Abschluss der Prüfung wird der Import ermöglicht. Über das Importskript können die fallbasierten Daten aus der Datei anschließend in die Datenbank des Data Warehouse improtiert und somit über den AKTIN-Broker abgefragt werden.
