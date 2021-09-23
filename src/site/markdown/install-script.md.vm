@@ -1,5 +1,5 @@
-<h3><u>Installationsskript: Automatische Installation und Konfiguration der AKTIN-Datawarehouse-Software mit dem Installationsskript</u></h3>
-Mit diesem Installationsskript wird das AKTIN Data Warehouse mit einem Applikationsserver installiert. Die AKTIN-DWH-Software ist auf allen Linux Distributionen ausführbar. Das Installationsskript wurde unter Ubuntu 20.04 Server LTS getestet. Wenn Sie eine andere Distribution verwenden möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org). Bei einer Neuinstallation beachten Sie bitte die Hinweise unter der Seite [Server-Installation](install-requirements.html).
+<h3><u>Installationsskript: Automatische Installation und Konfiguration der AKTIN Data Warehouse</u></h3>
+Mit diesem Installationsskript wird das AKTIN Data Warehouse installiert. Die AKTIN-DWH-Software steht derzeit nur als Debian Paket zur Verfügung. Das Installationsskript fügt automatisch das AKTIN Repository zur Paketliste des Linux-Betriebssystem hinzu und installiert im Anschluss die notwendigen AKTIN Pakete. Das Installationsskript wurde unter Ubuntu 20.04 Server LTS getestet. Wenn Sie eine andere Distribution verwenden möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org). Bei einer Neuinstallation beachten Sie bitte die Hinweise unter der Seite [Server-Installation](install-requirements.html).
 
 <!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
 <br></br>
@@ -26,19 +26,19 @@ sudo passwd root
 den Nutzer `root` wieder reaktivieren. Dafür werden Sie aufgefordert, für `root` ein neues Passwort festzulegen und dies zu bestätigen. Haben Sie das Passwort festgelegt, können Sie sich nach einem Abmelden mit dem Nutzer `root` anmelden.
 
 
-Das Installationspaket können Sie unter folgendem Link herunterladen (evtl. mit der Option `--no-check-certificate` bei Zertifikatfehlern):
+Das Installationspaket können Sie mit folgendem Befehl herunterladen (evtl. mit der Option `--no-check-certificate` bei Zertifikatfehlern):
 
 ```
-wget ${url_release_repo}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz
+wget ${url_release_repo}/org/aktin/dwh/dwh-newinstall-deb/${project.version}/dwh-newinstall-deb-${project.version}.tar.gz
 ```
 
-Ist das Paket heruntergeladen, kann es entpackt werden mit
+Ist das Paket heruntergeladen, kann es entpackt werden mit dem Befehl
 
 ```
-tar xvzf dwh-install-${project.version}.tar.gz
+tar xvzf dwh-newinstall-deb-${project.version}.tar.gz
 ```
 
-Die Dateien werden dabei automatisch im Ordner `aktin-dwh-installer` entpackt.
+Das enthaltene Installationsskript wird dabei automatisch in einen Ordner namens `dwh-newinstall-deb` entpackt.
 <br></br>
 
 
@@ -46,10 +46,10 @@ Die Dateien werden dabei automatisch im Ordner `aktin-dwh-installer` entpackt.
 Starten Sie das Skript mit:
 
 ```
-./<IHR VERZEICHNIS>/aktin-dwh-installer/aktin_install.sh
+./<IHR VERZEICHNIS>/dwh-newinstall-deb/aktin_new_install.sh
 ```
 
-Das Installationsskript wird nun automatisch ausgeführt. Im Anschluss wird außerdem auch die aktuelleste Version von `dwh-update` eingespielt. Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Sämtliche Logausgaben finden Sie nach der Installation im jeweiligen Installationsordner. Weiterhin werden nach Abschluss der Installation die Komponenten `apache2`, `postgresql` und `wildfly` automatisch gestartet.
+Das Installationsskript wird nun automatisch ausgeführt. Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Die notwendige Zugriffe können Sie im Bereich [Netzwerk-Einstellungen](network.html) einsehen. Sämtliche Logausgaben finden Sie nach der Installation im Installationsordner. Weiterhin werden nach Abschluss der Installation die Komponenten `apache2`, `postgresql` und `wildfly` automatisch gestartet.
 
 Folgende Pakete werden dabei installiert und konfiguriert:
 
@@ -75,7 +75,7 @@ Folgende Pakete werden dabei installiert und konfiguriert:
   <tr>
     <td>Apache2</td>
     <td>${version_apache2}</td>
-    <td>apache2=${version_apache2}</td>
+    <td>apache2</td>
   </tr>
   <tr>
     <td>Java Runtime Environment</td>
@@ -122,13 +122,10 @@ Folgende Pakete werden dabei installiert und konfiguriert:
 
 
 <h4>Konfiguration und lokale Einstellungen</h4>
-Nach Abschluss der Installation und vor Start der Anwendung ist es unbedingt notwendig, die Datei `aktin.properties` an die Anforderungen Ihres Systems zu konfigurieren. Die Datei befindet sich im Verzeichnis `/<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/`.
-<br></br>
-
-In dieser Datei werden Angaben zum lokalen DWH und Standort-spezifische Änderungen gemacht. Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
+Nach Abschluss der Installation und vor Start der Anwendung ist es unbedingt notwendig, die Datei `aktin.properties` an die Anforderungen Ihres Systems zu konfigurieren. Die Datei befindet sich im Verzeichnis `/opt/wildfly/standalone/configuration/aktin.properties`. In dieser Datei werden Angaben zum lokalen DWH und Standort-spezifische Änderungen gemacht. Für das Anpassen der Datei `aktin.properties` muss folgender Befehl ausgeführt werden:
 
 ```
-nano /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/aktin.properties
+nano /opt/wildfly/standalone/configuration/aktin.properties
 ```
 
 Wichtig ist hierbei das Feld `local.email`, in das die E-Mail-Adresse eingetragen wird. An diese eingetragene Adresse werden später Berichte und Meldungen geschickt. Es ist auch möglich, eine Liste von E-Mailadressen anzugeben, an die der Bericht gesendet werden soll (wie z.B. alle Oberärzte der Notaufnahme). In diesem Fall müssen die Einträge komma-separiert ohne Leerzeichen erfolgen.
@@ -276,13 +273,7 @@ Hier befinden sich die jeweiligen Root- und Extension-Nummern der Referenzen. Be
 
 Sollte in der Klinik keine feste Root-Nummer verwendet werden, darf auch keine Root-Nummer in `aktin.properties` hinterlegt werden – lassen Sie das Feld in diesem Fall einfach leer. Dies kann der Fall sein, wenn entweder die Extension-Nummer direkt als Root-Nummer verwendet wird oder sich die Root-Nummer klinikintern unterscheidet. Im ersteren Fall tragen Sie im Consent-Manager ganz normal die Identifikationsnummer ein, welche dann als Root-Nummer erkannt wird. Im letzteren Fall geben Sie unter `study.id.separator` ein Trennzeichen ein und tragen im Consent-Manager die Root-Nummer und die Extension-Nummer mit dem definierten Trennzeichen dazwischen ein.
 
-Haben Sie die `aktin.properties` nach Ihren Wünschen angepasst, kopieren Sie sie anschließend in das Konfigurationsverzeichnis des Wildfly-Servers über den Befehl:
-
-```
-cp /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/aktin.properties /opt/wildfly/standalone/configuration/
-```
-
-Nachdem Sie die Datei `aktin.properties` in das Konfigurationsverzeichnis kopiert haben, muss der Wildfly-Server neugestartet werden. Im Zuge der Installation wurden bereits alle Komponenten des AKTIN Data Warehouse automatisch gestartet. Führen Sie also den Befehl
+Nachdem Sie die Datei `aktin.properties` konfiguriert und abgespeichert haben, muss der Wildfly-Server neugestartet werden. Im Zuge der Installation wurden bereits alle Komponenten des AKTIN Data Warehouse automatisch gestartet. Führen Sie also den Befehl
 
 ```
 service wildfly restart
@@ -303,7 +294,6 @@ Falls Sie den Data-Warehouse-Manager mit einem Benutzer verwenden wollen, der ke
 
 Das genaue Vorgehen hierfür können Sie in den letzten beiden Abschnitten **Benutzer einem Projekt hinzufügen** und **AKTIN-Rolle zuweisen** der [i2b2-Benutzeranleitung](https://www.na-register.de/de-de/support/anwender.html) nachlesen.
 <br></br>
-
 
 
 <h4>Test der Betriebsfähigkeit</h4>
@@ -344,26 +334,7 @@ Eine Anleitung für die Überprüfung der technischen Funktionalität des AKTIN 
 Anleitungen zur Benutzerverwaltung sowie dem Betrieb des AKTIN- und i2b2 Data Warehouses finden Sie unter der Rubrik [Support für Anwender](https://www.aktin.org/de-de/support/anwender.html).
 <br></br>
 
-
-<h4>AKTIN-Diagnose-Skript</h4>
-Sollten bei der Installation Probleme aufgetreten sein, wechseln Sie in das Update-Verzeichnis und führen Sie das AKTIN-Diagnose-Skript aus:
-
-```
-cd /<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/scripts/
-
-./aktin_diag.sh
-```
-
-Nachdem das Skript erfolgreich durchgelaufen ist, befindet sich im Verzeichnis `/<IHR VERZEICHNIS>/aktin-dwh-installer/dwh-update/scripts/` eine Datei namens `aktin_diag_<ZEITPUNKT DER DURCHFÜHRUNG>.tar.gz`. Diese Datei enthält eine Ansammlung von Informationen über das Betriebssystem und die Komponenten von AKTIN. Senden Sie diese Datei bitte anschließend mit einer Support-Anfrage an [it-support@aktin.org](mailto:it-support@aktin.org), um uns mit den erzeugten Protokolle helfen bei der Identifizierung des Problems zu helfen.
-<br></br>
-
-
 <h4>Weitere Anmerkungen</h4>
-* Der Wildfly-Server hat ist während des Betriebs abhängig vom Postgres Datenbank-Server. Der Wildfly-Server sollte daher nur gestartet werden, wenn eine laufende Instanz des Postgres Datenbank-Servers vorhanden ist. Ebenso sollte bei einem Neustart der Postgres Datenbank auch der Wildfly-Server neugestartet werden mit dem Befehl
-
-```
-service wildfly restart
-```
 
 * Im Internet Explorer kommt es in der i2b2-Oberfläche zu Darstellungsfehlern. So werden z.B. keine User unter _Manage Users_ angezeigt und unter _Manage Projects_ sind die Projekte nicht einsehbar (sattdessen erscheint ein permanentes Ladezeichen). Dieser Fehler ist bereits bekannt, kann aber von unserer Seite aus nicht behoben werden, da i2b2 von i2b2 Foundation Inc. entwickelt wird. Wir würden Sie daher bitten für die Nutzerverwaltung einen anderen Browser zu verwenden (z.B. Firefox oder Chrome).
 
