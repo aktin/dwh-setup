@@ -1,61 +1,67 @@
-<h3><u>Skriptbasiertes Update auf DWH-J2EE-${version_dwh} für Ubuntu</u></h3>
+<h3><u>Automatisches Update des AKTIN DWH</u></h3>
+Seit der Version 1.5 des AKTIN Data Warehouse und der damit verbundenen Debian-Paketierung ist der Updateprozess stark vereinfacht worden. Statt dem Ausführen eines Update-Skriptes wird der gesamte Prozess von dem Debian Paket-Manager übernommen und im Hintergrund ausgeführt. Der Prozess selbst kann entweder über die [Kommandozeile](update-auto.html#Ausfhrung_des_Updates_ber_die_Kommandozeile) oder über die [Ansicht des Data Warehouse](update-auto.html#Ausfhrung_des_Updates_ber_die_Ansicht_des_DWH) angestoßen werden. Beachten Sie dabei, dass im Laufe des Updates das AKTIN Data Warehouse neu gestartet wird. Nach Abschluss des Updates werden Sie beim Aufruf der Ansicht mit einem Popup begrüßt, welches das Ergebnis des Updates mitteilt. Dieses Popup dient nur zur Information und wird nach jedem Update einmalig erscheinen. Manuell können Sie diese Popup auch über einen Klick auf die Versionsnummer des AKTIN Data Warehouse erscheinen lassen.
 
-<!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
-<br></br>
+Im Falle eines Fehlschlags wird zur Gewährleistung der Betriebsfähigkeit die alte Version des Data Warehouse wiederhergestellt. Melden Sie sich in diesem Fall bei uns unter it-support@aktin.org. Nähere Informationen zum Grund des Fehlschlagens können Sie auch dem anfügten Log im Popup entnehmen.
 
-<h4>Anmelden als root</h4>
+
+<h4>Ausführung des Updates über die Kommandozeile</h4>
 Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sollten Sie den Nutzer `root` noch nicht aktiviert haben, so folgen Sie bitte den Anweisungen im Abschnitt [Erste Schritte](install-script.html#Erste_Schritte) des Installationsskriptes. Alle folgenden Befehle sollten nur als Nutzer `root` ausgeführt werden.
+
+Führen Sie zunächst den Befehl
+
+````
+apt-get update
+````
+
+aus, um die Paketlisten des Paketmanagers neu einzulesen. Anschließend können Sie über den Befehl
+
+````
+apt-get --only-upgrade install aktin-notaufnahme-dwh
+````
+
+das neuste verfügbare Paket des AKTIN Data Warehouse installieren. Weitere Schritte sind für das Update nicht mehr nötig. Beachten Sie dabei, dass das AKTIN Data Warehouse während des Updateprozesses nicht zur Verfügung steht. Sollte die neueste Version bereits installiert sein, werden Sie in der Konsole entsprechend darauf hingewiesen. Nach dem Abschluss des Updates können Sie auf die Ansicht Ihres AKTIN Data Warehouse wechseln und den Normalbetrieb wieder aufnehmen.
 <br></br>
 
-<h4>Ausführung des Updates</h4>
-Für laufende Instanzen des Data Warehouse auf Ubuntu-Servern wird ein Update-Skript bereitgestellt. Dafür muss das Paket _Softwareupdate-Paket auf DWH-J2EE-${version_dwh}_ heruntergeladen und entpackt werden. Haben Sie direkt vom Server aus die Möglichkeit, das Paket herunterzuladen, können Sie hierfür den folgenden Befehl nutzen:
+<h4>Ausführung des Updates über die Ansicht des DWH</h4>
+Um das AKTIN Data Warehouse über die Ansicht zu aktualisieren, wechseln Sie zunächst zum AKTIN Data Warehouse in Ihrem Browser
 
-```
-wget ${url_release_repo}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz
-```
+<h5>1. Suche nach einer neuen Version</h5>
+Per Klick auf den Button oben rechts können Sie im Hintergrund der Applikation nach einer neuen Version suchen. Während der Suche wird im Button eine entsprechende Animation abgespielt.
+Sollte die Animation beendet werden, konnte in diesem Fall keine neue Version gefunden werden und die aktuellste Version des Data Warehouse ist bereits installiert.
 
-Besteht diese Möglichkeit nicht, können Sie das Paket alternativ über diesen [Link](${url_release_repo}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz) von einem anderen Rechner aus herunterladen.
+<div style="text-align:center">
+<img src="screens_update/1_search_update.png" alt="img1" style="width:1035px;height:450px;"></img>
+</div>
+<br></br>
 
-Kopieren oder laden Sie anschließend die Datei ins `/root`-Verzeichnis Ihres Servers. Entpacken Sie diese Datei und wechseln Sie anschließend in das Verzeichnis des Updates:
+<h5>2. Initialisierung des Update-Vorgangs</h5>
+Sollte eine neue Version verfügbar sein, wird sich der Button umändern. Per Klick auf diesen kann nun der Update-Vorgang gestartet werden.
 
-```
-cd /root
+<div style="text-align:center">
+<img src="screens_update/2_update_available.png" alt="img2" style="width:1035px;height:450px;"></img>
+</div>
+<br></br>
 
-tar xvzf dwh-update-${project.version}.tar.gz
+Vor dem eigentlichen Update werden Sie über ein Popup darauf hingewiesen, dass das Data Warehouse während des Updates nicht zur Verfügung stehen wird und nach Abschluss des Updates neugestartet wird. Bestätigen Sie diese Popup, um den Updateprozess zu starten.
 
-cd dwh-update
-```
+<div style="text-align:center">
+<img src="screens_update/3_update_confirmation.png" alt="img3" style="width:1035px;height:450px;"></img>
+</div>
+<br></br>
 
-Der Inhalt des Ordners (über den Befehl `ls`) sollte in etwa wie folgt aussehen:
+<h5>3. Durchführung des Updates</h5>
+Während der Updateprozesses im Hintergrund ausgeführt wird, werden Sie auf eine externe Seite weitergeleitet. Nach Abschluss des Updates werden Sie wieder auf die Startseite des Data Warehouse zurückgeleitet.
 
-```
-dwh-update
-- aktin.properties
-- aktin_diag.sh
-- aktin_reset.sh
-- aktin_update.sh
-- packages/
-- scripts/
-- sql/
-- wildfly_safe_start.sh
-- wildfly_safe_stop.sh
-- xml/
-```
+<div style="text-align:center">
+<img src="screens_update/4_updating.png" alt="img4" style="width:1035px;height:450px;"></img>
+</div>
+<br></br>
 
-Das Updateskript kann anschließend über den folgenden Befehl ausgeführt werden. Gegebenenfalls muss das Skript noch als ausführbar markiert werden:
+<h5>Abschluss des Updates</h5>
+Auf der Startseite des AKTIN Data Warehouse werden Sie nach Abschluss jedes Updates mit einem Popup begrüßt, welches Ihnen das Ergebnis des Updates mitteilt.
+Für nähere Information ist in dem Popup ebenso die Konsolenausgabe während des Updateprozesses hinterlegt. Per Klick auf den unteren Button schließen Sie das Popup und können den Normalbetrieb wieder aufnehmen. Sollten Sie das Popup zu einem späteren Zeitpunkt wieder aufrufen wollen, so können Sie dies per Klick auf die Versionsnummer des AKTIN Data Warehouse (rechts neben dem Button für das Update).
 
-```
-chmod +x aktin_update.sh
-
-./aktin_update.sh
-```
-
-Während des Update wird die Datei `/opt/wildfly/standalone/deployments/dwh-j2ee-${version_dwh}.ear` erstellt. Sie können dies nach Start der Komponenten mit folgendem Befehl kontrollieren:
-
-```
-ls /opt/wildfly/standalone/deployments/dwh-j2ee-*.deployed
-```
-
-Sollte die Datei angezeigt werden, war das Update erfolgreich. Sollte stattdessen `/opt/wildfly/standalone/deployments/dwh-j2ee-${version_dwh}.ear.failed` auftauchen oder ein anderer Fehler auftreten, so führen Sie bitte das AKTIN-Diagnose-Skript aus. Eine genauere Beschreibung finden Sie im Bereich [AKTIN-Diagnose-Skript](install-script.html#AKTIN-Diagnose-Skript) des Installationsskriptes.
-
-Nach dem erfolgreichen Update können Sie auf der Seite `http://<IHR SERVER>/aktin/admin/plain/test.html` die Grundfunktionalität testen. Eine weiterführende Anleitung zum Testen der Verbindung finden Sie im Bereich [Test der Betriebsfähigkeit](install-script.html#Test_der_Betriebsfähigkeit).
+<div style="text-align:center">
+<img src="screens_update/5_success.png" alt="img5" style="width:1035px;height:450px;"></img>
+</div>
+<br></br>
