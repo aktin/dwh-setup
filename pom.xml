@@ -60,9 +60,11 @@
 	</scm>
 
 	<modules>
+	<!--
 		<module>dwh-update</module>
 		<module>dwh-install</module>
 		<module>dwh-migration</module>
+	-->
 		<module>dwh-migration-deb</module>
 		<module>dwh-newinstall-deb</module>
 		<!--
