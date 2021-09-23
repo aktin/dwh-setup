@@ -20,24 +20,6 @@ Für die Installation des AKTIN DWH braucht das Installationsskript Zugriff auf 
     <td>-</td>
 </tr>
 <tr>
-    <td>github.com</td>
-    <td>140.82.121.3</td>
-    <td>80/tcp</td>
-    <td>443/tcp</td>
-</tr>
-<tr>
-    <td>download.jboss.org</td>
-    <td>88.221.217.128</td>
-    <td>80/tcp</td>
-    <td>443/tcp</td>
-</tr>
-<tr>
-    <td>jdbc.postgresql.org</td>
-    <td>72.32.157.228</td>
-    <td>80/tcp</td>
-    <td>443/tcp</td>
-</tr>
-<tr>
     <td>aktin.org</td>
     <td>188.68.47.138</td>
     <td>80/tcp</td>
@@ -68,6 +50,11 @@ Während des Betriebs muss der AKTIN Server periodisch auf folgenden Server der 
 </tr>
 </tbody>
 </table>
+
+<h4>Weitere Einstellungen und Informationen</h4>
+* `Port 80` (HTTP) wird verwendet, um intern auf das Data Warehouse sowie Konfigurationoberflächen zuzugreifen.
+
+* Datenimporte werden per RESTful oder SOAP-Schnittstelle über HTTP an `/aktin/cda` gesendet.
 
 * Zum Versenden von Benachrichtgungen muss der Server intern Emails an ausgewählte lokale Adressen versenden können. Dafür wird ein E-Mail-Server benötigt. Tragen Sie die Konfiguration des E-Mail-Servers in `/opt/wildfly/standalone/configuration/aktin.properties` unter folgenden Feldern ein:
 
@@ -103,11 +90,6 @@ mail.smtp.starttls.enable=true
 mail.smtp.timeout=10000
 mail.smtp.connectiontimeout=10000
 ````
-
-<h4>Weitere Einstellungen und Informationen</h4>
-* `Port 80` (HTTP) wird verwendet, um intern auf das Data Warehouse sowie Konfigurationoberflächen zuzugreifen.
-
-* Datenimporte werden per RESTful oder SOAP-Schnittstelle über HTTP an `/aktin/cda` gesendet.
 
 * Sofern für die Authentifizierung am E-Mail-Server ein Zertifikat benötigt wird, können Sie dieses über folgenden Befehl dem Java Truststore hinzufügen. Anschließend sollte ein Passwort-Aufforderung kommen. Sofern von Ihrer Seite kein Passwort festgelegt wurde, können Sie hier einfach ohne Eingabe bestätigen. Den erfolgreichen Import können Sie anschließend über den zweiten Befehl testen. Starten Sie anschließen den Wildfly-Server neu.
 
