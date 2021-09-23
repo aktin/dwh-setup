@@ -1,5 +1,17 @@
 <h3><u>Installation und Update des AKTIN-Applikationsserver</u></h3>
-Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung des AKTIN-Data Warehouse zuständig sind. Auf diesen Seiten wird das Vorgehen für eine Neuinstallation, für das Update und andere optionale Konfigurationsschritte beschrieben.
+Diese Informationen richten sich an die System-Administratoren, die für die Einrichtung bzw. Wartung des AKTIN-Data Warehouse zuständig sind. Auf diesen Seiten wird das Vorgehen für eine Neuinstallation, für das Update und andere optionale Konfigurationsschritte beschrieben. Der Server für den Betrieb des AKTIN Data Warehouse sollte sich im Verantwortungsbereich des Klinikums befinden.
+
+Folgende Hardware wird für den AKTIN Server empfohlen:
+
+ * 2 Kerne
+ * 16 GB RAM
+ * 100 GB Festplatte
+
+Minimal:
+
+ * 1 Kern
+ * 8 GB RAM
+ * 50 GB Festplatte
 <br></br>
 
 <h4>Komplette Neuinstallation</h4>
@@ -11,24 +23,22 @@ Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu in
 <br></br>
 
 <h4>Automatisches Update für Ubuntu</h4>
-Für das Update eines vorhandenen AKTIN-Data Warehouse auf Version ${project.version}, folgen Sie der Anleitung zum [skriptbasierten Update](update-auto.html). Dieses Skript ist für Systeme mit Ubuntu vorgesehen, kann nach manueller Anpassung aber auch bei anderen Linux-Distributionen genutzt werden.
+Seit der Version 1.5 des AKTIN Data Warehouse und der damit verbundenen Debian-Paketierung ist jederzeit eine automatische Aktualisierung über die Ansicht des Data Warehouse möglich. Folgen Sie hierfür den Hinweisen auf der Seite [Automatisches Update](update-auto.html)
 <br></br>
 
-<h4>Manuelles Update für Ubuntu oder andere Betriebssysteme</h4>
-Bei individuell konfigurierten Servern oder anderen Linux-Distributionen führen Sie die einzelnen Schritte des Skriptes manuell durch und passen Sie gegebenenfalls die Pfade oder andere Besonderheiten entsprechend an. Bitte folgen Sie dabei der Anleitung zum [manuellen Update](update-manual.html)
+<h4>Migration von DWH Version 1.3 oder 1.4</h4>
+Mit der Veröffentlichung der Version 1.5 wurde der Installationsprozess von einem `.tar.gz`-Archiv zu einem Debian Paket umgestellt. Für ältere Versionen ist daher eine Migration auf die Debian-Paketierung notwendig. Zu diesem Zweck wird ein Migrationsskript bereitgestellt. Der Prozess für die Migration ist dabei identisch mit den beschriebenen Schritten für die Installation unter der Seite [Installationsskript](install-script.html). Entpacken Sie das Migrationspaket auf dem AKTIN Server und führen Sie das darin enthaltene Skript aus, um eine automatische Migration auf die Debian-Paketierung und die Installation der aktuellsten Version des AKTIN Data Warehouse vorzunehmen.
 <br></br>
 
 <h4>Software-Pakete</h4>
-**Installationspaket mit DWH-J2EE-${version_dwh}** (Installation und Update)
+**Installationspaket mit DWH-J2EE-${version_dwh}** (Neuinstallation)
 
-[${url_release_repo}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-install/${project.version}/dwh-install-${project.version}.tar.gz)
+[${url_release_repo}/org/aktin/dwh/dwh-newinstall-deb/${project.version}/dwh-newinstall-deb-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-newinstall-deb/${project.version}/dwh-newinstall-deb-${project.version}.tar.gz)
 
-**Softwareupdate-Paket auf DWH-J2EE-${version_dwh}** (nur Update)
+**Migrationspaket auf DWH-J2EE-${version_dwh}** (Migration von Version 1.3/1.4)
 
-[${url_release_repo}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-update/${project.version}/dwh-update-${project.version}.tar.gz)
+[${url_release_repo}/org/aktin/dwh/dwh-migration-deb/${project.version}/dwh-migration-deb-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-migration-deb/${project.version}/dwh-migration-deb-${project.version}.tar.gz)
 <br></br>
 
 <h4>AKTIN-Software-Support</h4>
-Sollten Sie bei der Installation, dem Update oder dem Betrieb der AKTIN-Software auf Probeleme stoßen, so führen Sie bitte das AKTIN-Diagnose-Skript `aktin_diag.sh` aus. Eine genauere Beschreibung finden sie auf der Seite [Installationsskript](install-script.html#AKTIN-Diagnose-Skript).
-
-Senden Sie die dabei erzeugte Datei bitte mit einer Support-Anfrage an den AKTIN-Support unter [it-support@aktin.org](mailto:it-support@aktin.org). Die durch das Skript erzeugten Logs helfen uns bei der Identifizierung des Problems. Bei weiteren Infos und Fragen stehen wir Ihnen selbstverständlich ebenso unter der genannte E-Mail-Adresse zur Verfügung.
+Sollten Sie bei der Installation, dem Update oder dem Betrieb der AKTIN-Software auf Probeleme stoßen, kontaktieren Sie den AKTIN-Support unter [it-support@aktin.org](mailto:it-support@aktin.org).
