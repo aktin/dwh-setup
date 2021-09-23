@@ -108,6 +108,7 @@ Im Dialogfeld für die Softwareauswahl ist darauf zu achten, dass NUR “SSH ser
 <div style="text-align:center">
 <img src="screens_ubuntu/ubuntu_11.png" alt="img11" style="width:600px;height:450px;"></img>
 </div>
+<br></br>
 
 <div style="text-align:center">
 <img src="screens_ubuntu/ubuntu_12.png" alt="img12" style="width:600px;height:450px;"></img>
