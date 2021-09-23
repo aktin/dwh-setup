@@ -1,7 +1,5 @@
 <h3><u>Migration von Debian 8 und CentOS 7</u></h3>
-Für die Migration von älteren AKTIN Data Warehouses der Betriebssysteme Debian 8 und CentOS 7 auf die aktuelle Version von Ubuntu Server 20.04 LTS wird ein Migrationsskript zur Verfügung gestellt. Wenn Sie zurzeit ein anderes Betriebssystem mit einer älteren Version des AKTIN Data Warehouses verwenden und mirgrieren möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org).
-
-<!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
+Für die Migration von älteren AKTIN Data Warehouses der Betriebssysteme Debian 8 und CentOS 7 auf Ubuntu Server 20.04 LTS wird ein Migrationsskript zur Verfügung gestellt. Bitte beachten Sie, dass über dieses Migrationsskript nur die Version 1.4.1 installiert wird. Um die aktuellste Version des AKTIN Data Warehouse mit Debian-Paketierung zu installieren, müssen Sie anschließend noch eine Migration zu der aktuellen AKTIN Version durchführen. Folgen Sie hierzu den Hinweisen auf [Migration von DWH Version 1.3 oder 1.4](index.html#Migration_von_DWH_Version_1.3_oder_1.4) Wenn Sie ein anderes Betriebssystem mit einer älteren Version des AKTIN Data Warehouses verwenden und migrieren möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org).
 <br></br>
 
 <h4>Anmelden als root</h4>
@@ -13,17 +11,17 @@ Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sol
 Für die Durchführung der Migration muss das _Migrationspaket_ heruntergeladen und entpackt werden. Haben Sie direkt vom Server aus die Möglichkeit, das Paket herunterzuladen, können Sie hierfür den folgenden Befehl nutzen:
 
 ```
-wget ${url_release_repo}/org/aktin/dwh/dwh-migration/${project.version}/dwh-migration-${project.version}.tar.gz
+wget ${url_release_repo}/org/aktin/dwh/dwh-migration/1.4.1/dwh-migration-1.4.1.tar.gz
 ```
 
-Besteht diese Möglichkeit nicht, können Sie das Paket alternativ über diesen [Link](${url_release_repo}/org/aktin/dwh/dwh-migration/${project.version}/dwh-migration-${project.version}.tar.gz) von einem anderen Rechner aus herunterladen.
+Besteht diese Möglichkeit nicht, können Sie das Paket alternativ über diesen [Link](${url_release_repo}/org/aktin/dwh/dwh-migration/1.4.1/dwh-migration-1.4.1.tar.gz) von einem anderen Rechner aus herunterladen.
 
 Kopieren oder laden Sie anschließend die Datei ins `/root`-Verzeichnis Ihres Servers. Entpacken Sie diese Datei und wechseln Sie anschließend in das Verzeichnis des Updates:
 
 ```
 cd /root
 
-tar xvzf dwh-migration-${project.version}.tar.gz
+tar xvzf dwh-migration-1.4.1.tar.gz
 
 cd dwh-migration
 ```
