@@ -1,8 +1,8 @@
 <h3><u>Automatisches Update des AKTIN DWH</u></h3>
 Seit der Version 1.5 des AKTIN Data Warehouse und der damit verbundenen Debian-Paketierung ist der Updateprozess stark vereinfacht worden. Statt dem Ausführen eines Update-Skriptes wird der gesamte Prozess von dem Debian Paket-Manager übernommen und im Hintergrund ausgeführt. Der Prozess selbst kann entweder über die [Kommandozeile](update-auto.html#Ausfhrung_des_Updates_ber_die_Kommandozeile) oder über die [Ansicht des Data Warehouse](update-auto.html#Ausfhrung_des_Updates_ber_die_Ansicht_des_DWH) angestoßen werden. Beachten Sie dabei, dass im Laufe des Updates das AKTIN Data Warehouse neu gestartet wird. Nach Abschluss des Updates werden Sie beim Aufruf der Ansicht mit einem Popup begrüßt, welches das Ergebnis des Updates mitteilt. Dieses Popup dient nur zur Information und wird nach jedem Update einmalig erscheinen. Manuell können Sie diese Popup auch über einen Klick auf die Versionsnummer des AKTIN Data Warehouse erscheinen lassen.
 
-Im Falle eines Fehlschlags wird zur Gewährleistung der Betriebsfähigkeit die alte Version des Data Warehouse wiederhergestellt. Melden Sie sich in diesem Fall bei uns unter it-support@aktin.org. Nähere Informationen zum Grund des Fehlschlagens können Sie auch dem anfügten Log im Popup entnehmen.
-
+Im Falle eines Fehlschlags wird zur Gewährleistung der Betriebsfähigkeit die alte Version des Data Warehouse wiederhergestellt. Melden Sie sich in diesem Fall bei dem AKTIN IT-Team unter it-support@aktin.org. Nähere Informationen zum Grund des Fehlschlagens können Sie auch dem angefügten Log im Popup entnehmen.
+<br></br>
 
 <h4>Ausführung des Updates über die Kommandozeile</h4>
 Für die Ausführung ist wichtig, dass der Nutzer als `root` angemeldet ist. Sollten Sie den Nutzer `root` noch nicht aktiviert haben, so folgen Sie bitte den Anweisungen im Abschnitt [Erste Schritte](install-script.html#Erste_Schritte) des Installationsskriptes. Alle folgenden Befehle sollten nur als Nutzer `root` ausgeführt werden.
@@ -32,7 +32,6 @@ Sollte die Animation beendet werden, konnte in diesem Fall keine neue Version ge
 <div style="text-align:center">
 <img src="screens_update/1_search_update.png" alt="img1" style="width:1035px;height:450px;"></img>
 </div>
-<br></br>
 
 <h5>2. Initialisierung des Update-Vorgangs</h5>
 Sollte eine neue Version verfügbar sein, wird sich der Button umändern. Per Klick auf diesen kann nun der Update-Vorgang gestartet werden.
@@ -40,14 +39,12 @@ Sollte eine neue Version verfügbar sein, wird sich der Button umändern. Per Kl
 <div style="text-align:center">
 <img src="screens_update/2_update_available.png" alt="img2" style="width:1035px;height:450px;"></img>
 </div>
-<br></br>
 
 Vor dem eigentlichen Update werden Sie über ein Popup darauf hingewiesen, dass das Data Warehouse während des Updates nicht zur Verfügung stehen wird und nach Abschluss des Updates neugestartet wird. Bestätigen Sie diese Popup, um den Updateprozess zu starten.
 
 <div style="text-align:center">
 <img src="screens_update/3_update_confirmation.png" alt="img3" style="width:1035px;height:450px;"></img>
 </div>
-<br></br>
 
 <h5>3. Durchführung des Updates</h5>
 Während der Updateprozesses im Hintergrund ausgeführt wird, werden Sie auf eine externe Seite weitergeleitet. Nach Abschluss des Updates werden Sie wieder auf die Startseite des Data Warehouse zurückgeleitet.
@@ -55,7 +52,6 @@ Während der Updateprozesses im Hintergrund ausgeführt wird, werden Sie auf ein
 <div style="text-align:center">
 <img src="screens_update/4_updating.png" alt="img4" style="width:1035px;height:450px;"></img>
 </div>
-<br></br>
 
 <h5>Abschluss des Updates</h5>
 Auf der Startseite des AKTIN Data Warehouse werden Sie nach Abschluss jedes Updates mit einem Popup begrüßt, welches Ihnen das Ergebnis des Updates mitteilt.
@@ -64,4 +60,3 @@ Für nähere Information ist in dem Popup ebenso die Konsolenausgabe während de
 <div style="text-align:center">
 <img src="screens_update/5_success.png" alt="img5" style="width:1035px;height:450px;"></img>
 </div>
-<br></br>
