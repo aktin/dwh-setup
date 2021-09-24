@@ -31,11 +31,11 @@ Mit der Veröffentlichung der Version 1.5 wurde der Installationsprozess von ein
 <br></br>
 
 <h4>Software-Pakete</h4>
-**Installationspaket mit DWH-J2EE-${version_dwh}** (Neuinstallation)
+**Installationspaket mit DWH-J2EE-${project.version}** (Neuinstallation)
 
 [${url_release_repo}/org/aktin/dwh/dwh-newinstall-deb/${project.version}/dwh-newinstall-deb-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-newinstall-deb/${project.version}/dwh-newinstall-deb-${project.version}.tar.gz)
 
-**Migrationspaket auf DWH-J2EE-${version_dwh}** (Migration von Version 1.3/1.4)
+**Migrationspaket auf DWH-J2EE-${project.version}** (Migration von Version 1.3/1.4)
 
 [${url_release_repo}/org/aktin/dwh/dwh-migration-deb/${project.version}/dwh-migration-deb-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-migration-deb/${project.version}/dwh-migration-deb-${project.version}.tar.gz)
 <br></br>
