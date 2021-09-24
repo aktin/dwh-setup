@@ -43,9 +43,11 @@ Das enthaltene Installationsskript wird dabei automatisch in einen Ordner namens
 
 
 <h4>Installation der AKTIN-DWH-Software</h4>
-Starten Sie das Skript mit:
+Starten Sie das Skript über folgende Befehle. Der erste Befehl macht das Skript als Programm ausführbar während der zweite Befehl es ausführt.
 
 ```
+chmod +x <IHR VERZEICHNIS>/dwh-newinstall-deb/aktin_new_install.sh
+
 ./<IHR VERZEICHNIS>/dwh-newinstall-deb/aktin_new_install.sh
 ```
 
