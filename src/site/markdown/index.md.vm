@@ -22,12 +22,12 @@ Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionieren
 Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu installiert, müssen Sie die Installation des AKTIN-Applikationsservers vornehmen. Eine Anleitung für die Verwendung des automatischen Installationsskriptes finden Sie auf der Seite [Installationsskript](install-script.html). Sie erhalten mit einer Neuinstallation automatisch den aktuellesten Stand von Version ${project.version}.
 <br></br>
 
-<h4>Automatisches Update für Ubuntu</h4>
-Seit der Version 1.5 des AKTIN Data Warehouse und der damit verbundenen Debian-Paketierung ist jederzeit eine automatische Aktualisierung über die Ansicht des Data Warehouse möglich. Folgen Sie hierfür den Hinweisen auf der Seite [Automatisches Update](update-auto.html)
+<h4>Update von DWH Version 1.3 oder 1.4</h4>
+Mit der Veröffentlichung der Version 1.5 wurde der Installationsprozess von einem `.tar.gz`-Archiv zu einem Debian Paket umgestellt. Für ältere Versionen ist daher eine Migration auf die Debian-Paketierung notwendig. Zu diesem Zweck wird ein Migrationsskript bereitgestellt. Folgen Sie hierzu der Anleitung auf der Seite [Update von der Version 1.3/1.4](update-script.html).
 <br></br>
 
-<h4>Migration von DWH Version 1.3 oder 1.4</h4>
-Mit der Veröffentlichung der Version 1.5 wurde der Installationsprozess von einem `.tar.gz`-Archiv zu einem Debian Paket umgestellt. Für ältere Versionen ist daher eine Migration auf die Debian-Paketierung notwendig. Zu diesem Zweck wird ein Migrationsskript bereitgestellt. Der Prozess für die Migration ist dabei identisch mit den beschriebenen Schritten für die Installation unter der Seite [Installationsskript](install-script.html). Entpacken Sie das Migrationspaket auf dem AKTIN Server und führen Sie das darin enthaltene Skript aus, um eine automatische Migration auf die Debian-Paketierung und die Installation der aktuellsten Version des AKTIN Data Warehouse vorzunehmen.
+<h4>Automatisches Update für Ubuntu</h4>
+Seit der Version 1.5 des AKTIN Data Warehouse und der damit verbundenen Debian-Paketierung ist jederzeit eine automatische Aktualisierung über die Ansicht des Data Warehouse möglich. Folgen Sie hierfür den Hinweisen auf der Seite [Automatisches Update](update-auto.html)
 <br></br>
 
 <h4>Software-Pakete</h4>

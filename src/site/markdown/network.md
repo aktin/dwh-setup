@@ -3,13 +3,13 @@
 <h4>Installation</h4>
 Für die Installation des AKTIN DWH braucht das Installationsskript Zugriff auf folgende Server:
 
-<table>
+<table style="width:50%;">
 <thead>
 <tr>
-    <th>Server</th>
-    <th>IP-Adresse</th>
-    <th>HTTP</th>
-    <th>HTTPS</th>
+    <th style="width:40%;">Server</th>
+    <th style="width:20%;">IP-Adresse</th>
+    <th style="width:20%;">HTTP</th>
+    <th style="width:20%;">HTTPS</th>
 </tr>
 </thead>
 <tbody>
@@ -32,13 +32,13 @@ Für die Installation des AKTIN DWH braucht das Installationsskript Zugriff auf 
 <h4>Betrieb</h4>
 Während des Betriebs muss der AKTIN Server periodisch auf folgenden Server zugreifen können:
 
-<table>
+<table style="width:50%;">
 <thead>
 <tr>
-    <th>Server</th>
-    <th>IP-Adresse</th>
-    <th>HTTP</th>
-    <th>HTTPS</th>
+    <th style="width:40%;">Server</th>
+    <th style="width:20%;">IP-Adresse</th>
+    <th style="width:20%;">HTTP</th>
+    <th style="width:20%;">HTTPS</th>
 </tr>
 </thead>
 <tbody>

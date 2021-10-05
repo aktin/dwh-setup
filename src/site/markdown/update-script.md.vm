@@ -1,0 +1,54 @@
+<h3><u>Updateskript: Automatische Migration zur AKTIN DWH Version 1.5 mit Debian Paketierung</u></h3>
+Ab der Version 1.5 ist der Releaseprozess des AKTIN Data Warehouse auf eine Debian Paketierung umgestellt worden. Dies bringt den Vorteil, dass alle zukünftigen Updates aufwandslos über die Ansicht durchgeführt werden können. Der Installationsprozess über ein Skript entfällt damit komplett. Für die Umstellung älterer Versionen auf die Debian Paketierung sind einige Konfigurationen nötig. Das hier beschrieben Updateskript automatisiert dabei diesen Prozess.
+<!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
+<br></br>
+
+
+<h4>Vorbereitung des Updates</h4>
+Falls eine bestehende Betriebsversion verwendet wird, beachten Sie bitte, ob Java installiert ist. Mittels des AKTIN-Updateskriptes wird Java Version ${version_java} von OpenJDK installiert. Sind bereits niedrigere Versionen von Java vorhanden, kann dies zu Problemen während des Updates und im Betrieb führen. Sofern Java installiert ist, können Sie die Version über folgenden Befehl herausfinden:
+
+````
+java --version
+````
+
+Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server sowie die Rechte des Nutzers `root`. Standardmäßig ist dieser Nutzer seit Ubuntu 14.04 deaktiviert. Um ihn zu reaktivieren, wechseln Sie zunächst zu einer `root`-Sitzung über den Befehl
+
+```
+sudo -i
+```
+
+und geben Sie das Passwort des aktiven Nutzers an. Anschließend können Sie über den Befehl
+
+```
+sudo passwd root
+```
+
+den Nutzer `root` wieder reaktivieren. Dafür werden Sie aufgefordert, für `root` ein neues Passwort festzulegen und dies zu bestätigen. Haben Sie das Passwort festgelegt, können Sie sich nach einem Abmelden mit dem Nutzer `root` anmelden.
+
+
+Das Installationspaket können Sie mit folgendem Befehl herunterladen (evtl. mit der Option `--no-check-certificate` bei Zertifikatfehlern):
+
+```
+wget ${url_release_repo}/org/aktin/dwh/dwh-migration-deb/${project.version}/dwh-migration-deb-${project.version}.tar.gz
+```
+
+Ist das Paket heruntergeladen, kann es entpackt werden mit dem Befehl
+
+```
+tar xvzf dwh-migration-deb-${project.version}.tar.gz
+```
+
+Das enthaltene Installationsskript wird dabei automatisch in einen Ordner namens `dwh-migration-deb` entpackt.
+<br></br>
+
+
+<h4>Update der AKTIN-DWH-Software</h4>
+Starten Sie das Skript über folgende Befehle. Der erste Befehl macht das Skript als Programm ausführbar während der zweite Befehl es ausführt.
+
+```
+chmod +x <IHR VERZEICHNIS>/dwh-migration-deb/aktin_migrate_to_deb.sh
+
+./<IHR VERZEICHNIS>/dwh-migration-deb/aktin_migrate_to_deb.sh
+```
+
+Das Updateskript wird nun automatisch ausgeführt. Weitere Schritte sind nicht mehr notwendig. Es ist anzumerken, dass für das Update Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Die notwendige Zugriffe können Sie im Bereich [Netzwerk-Einstellungen](network.html) einsehen. Sämtliche Logausgaben finden Sie nach dem Update im Updateordner. Nach dem Abschluss des Updates können Sie auf die Ansicht Ihres AKTIN Data Warehouse wechseln und den Normalbetrieb wieder aufnehmen.
