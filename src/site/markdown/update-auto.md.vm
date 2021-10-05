@@ -2,6 +2,9 @@
 Seit der Version 1.5 des AKTIN Data Warehouse und der damit verbundenen Debian-Paketierung ist der Updateprozess stark vereinfacht worden. Statt dem Ausführen eines Update-Skriptes wird der gesamte Prozess von dem Debian Paket-Manager übernommen und im Hintergrund ausgeführt. Der Prozess selbst kann entweder über die [Kommandozeile](update-auto.html#Ausfhrung_des_Updates_ber_die_Kommandozeile) oder über die [Ansicht des Data Warehouse](update-auto.html#Ausfhrung_des_Updates_ber_die_Ansicht_des_DWH) angestoßen werden. Beachten Sie dabei, dass im Laufe des Updates das AKTIN Data Warehouse neu gestartet wird. Nach Abschluss des Updates werden Sie beim Aufruf der Ansicht mit einem Popup begrüßt, welches das Ergebnis des Updates mitteilt. Dieses Popup dient nur zur Information und wird nach jedem Update einmalig erscheinen. Manuell können Sie diese Popup auch über einen Klick auf die Versionsnummer des AKTIN Data Warehouse erscheinen lassen.
 
 Im Falle eines Fehlschlags wird zur Gewährleistung der Betriebsfähigkeit die alte Version des Data Warehouse wiederhergestellt. Melden Sie sich in diesem Fall bei dem AKTIN IT-Team unter it-support@aktin.org. Nähere Informationen zum Grund des Fehlschlagens können Sie auch dem angefügten Log im Popup entnehmen.
+
+<h4>Achtung</h4>
+Die nachfolgenden Informationen gelten nur für das AKTIN Datawarehouse <strong>ab der Version 1.5</strong>. Um Ihr Data Warehouse von der Version 1.3 bzw. 1.4 auf die Version 1.5 zu aktualisieren, folgen Sie den Anweisungen unter [Update von der Version 1.3/1.4](update-script.html).
 <br></br>
 
 <h4>Ausführung des Updates über die Kommandozeile</h4>
