@@ -10,10 +10,7 @@ readonly ORA=${color_orange}
 readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
-CURRENT_DATE=$(date +%Y_%h_%d_%H%M)
-
-# create timestamp and log file
-readonly LOGFILE=$(pwd)/deb_migration_$CURRENT_DATE.log
+CURRENT_DATE=$(date +%Y_%H_%d_%H%M)
 
 function check_root_privileges() {
    if [[ $EUID -ne 0 ]]; then
@@ -30,7 +27,10 @@ function stop_wildfly() {
 
 function backup_aktin_properties() {
    mkdir -p /etc/aktin
-   cp -f /opt/wildfly/standalone/configuration/aktin.properties /etc/aktin/backup_$CURRENT_DATE.properties
+   PATH_PROPERTIES=/opt/wildfly/standalone/configuration/aktin.properties
+   if [[ -f $PATH_PROPERTIES ]]; then
+      cp -f $PATH_PROPERTIES /etc/aktin/backup_$CURRENT_DATE.properties;
+   fi
 }
 
 function remove_wildfly_services() {
@@ -61,13 +61,13 @@ function remove_old_import_scripts() {
    rm -f /var/lib/aktin/import-scripts/*
 }
 
-function include_aktin_repo() {
-   wget -O - http://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
-   echo "deb http://www.aktin.org/software/repo/org/apt focal main" | tee /etc/apt/sources.list.d/aktin.list
+function update_root_certificates() {
+   apt-get update && apt-get install -y ca-certificates
 }
 
-function install_required_packages() {
-   apt-get install -y debconf curl sudo libpq-dev software-properties-common openjdk-11-jre-headless apache2 php php-common libapache2-mod-php php-curl libcurl4-openssl-dev libssl-dev libxml2-dev postgresql-12 r-base-core r-cran-lattice r-cran-xml r-cran-tidyverse python3 python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv python3-gunicorn
+function include_aktin_repo() {
+   wget -O - http://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
+   echo "deb http://www.aktin.org/software/repo/org/apt focal main" > /etc/apt/sources.list.d/aktin.list
 }
 
 function install_aktin_deb_packages() {
@@ -93,34 +93,41 @@ EOF
 }
 
 function apply_aktin_properties_backup() {
-# iterate through all rows in backup_aktin.properties,
-# line start until '=' -> KEY
-# '=' until line end -> VALUE
-# search key in new aktin.properties
-# overwrite value in new aktin.properties if found
-while read -r line_backup; do
-    if [[ ! $line_backup = \#* && ! -z $line_backup ]]; then
-        KEY=${line_backup%=*}
-        VALUE=${line_backup#*=}
-        while read -r line_org; do
-            if [[ ! $line_org = \#* && ! -z $line_org ]]; then
-                if [[ ${line_org%=*} == $KEY ]]; then
-                    sed -i "s|${KEY}=.*|${KEY}=${VALUE}|" /etc/aktin/aktin.properties
-                    break
-                fi
-            fi
-        done < /etc/aktin/aktin.properties
-    fi
-done < /etc/aktin/backup_$CURRENT_DATE.properties
-chown wildfly:wildfly /etc/aktin/aktin.properties
+   PATH_PROPERTIES=/etc/aktin/aktin.properties
+   # get newest backup of aktin.properties
+   # if there are no backups, skip this function
+   if [[ $(ls /etc/aktin/ | grep -c "backup_*") > 0 ]]; then
+      BACKUP_NEWEST=$(ls -t /etc/aktin/backup_* | head -1);
+   else
+      chown wildfly:wildfly $PATH_PROPERTIES
+      return 1
+   fi
+
+   # iterate through all rows in backup,
+   # line start until '=' -> KEY
+   # '=' until line end -> VALUE
+   # overwrite value in aktin.properties with backup if found
+   while read -r line_backup; do
+      if [[ ! $line_backup = \#* && ! -z $line_backup ]]; then
+         KEY=${line_backup%=*}
+         VALUE=${line_backup#*=}
+         while read -r line_org; do
+               if [[ ! $line_org = \#* && ! -z $line_org ]]; then
+                  if [[ ${line_org%=*} == $KEY ]]; then
+                     sed -i "s|${KEY}=.*|${KEY}=${VALUE}|" $PATH_PROPERTIES
+                     break
+                  fi
+               fi
+         done < $PATH_PROPERTIES
+      fi
+   done < $BACKUP_NEWEST
+   chown wildfly:wildfly $PATH_PROPERTIES
 }
 
 function update_script_keys_of_imported_files() {
-# change script key of all files uploaded with the
-# p21 script to p21_enc (as script was split in two with
-# two new keys)
+# change script key of all files uploaded to p21
    for folder in /var/lib/aktin/import/*; do
-      sed -i "s|script=p21import|script=p21_enc|" $folder/properties
+      sed -i "s|script=.*|script=p21|" $folder/properties
    done
 }
 
@@ -133,9 +140,9 @@ remove_wildfly
 remove_apache2_webclient
 remove_apache2_proxy_conf
 remove_old_import_scripts
+update_root_certificates
 include_aktin_repo
 apt-get update
-install_required_packages
 install_aktin_deb_packages
 initialize_updateagent
 apply_aktin_properties_backup
@@ -143,4 +150,4 @@ update_script_keys_of_imported_files
 service wildfly restart
 }
 
-main | tee -a $LOGFILE
+main
