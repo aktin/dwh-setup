@@ -20,19 +20,16 @@ function check_root_privileges() {
    fi
 }
 
-function include_aktin_repo() {
-   wget -O - http://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
-   echo "deb http://www.aktin.org/software/repo/org/apt focal main" | tee /etc/apt/sources.list.d/aktin.list
+function update_root_certificates() {
+   apt-get update && apt-get install -y ca-certificates
 }
 
-function install_required_packages() {
-   apt-get install -y debconf curl sudo libpq-dev software-properties-common openjdk-11-jre-headless apache2 php php-common libapache2-mod-php php-curl libcurl4-openssl-dev libssl-dev libxml2-dev postgresql-12 r-base-core r-cran-lattice r-cran-xml r-cran-tidyverse python3 python3-pandas python3-numpy python3-requests python3-sqlalchemy python3-psycopg2 python3-postgresql python3-zipp python3-plotly python3-unicodecsv python3-gunicorn
+function include_aktin_repo() {
+   wget -O - http://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
+   echo "deb http://www.aktin.org/software/repo/org/apt focal main" > /etc/apt/sources.list.d/aktin.list
 }
 
 function install_aktin_deb_packages() {
-   if ! systemctl is-active --quiet postgresql; then
-	   service postgresql start
-   fi
    apt-get install -y aktin-notaufnahme-i2b2
    apt-get install -y aktin-notaufnahme-dwh
    apt-get install -y aktin-notaufnahme-updateagent
@@ -53,9 +50,9 @@ EOF
 
 function main() {
 check_root_privileges
+update_root_certificates
 include_aktin_repo
 apt-get update
-install_required_packages
 install_aktin_deb_packages
 initialize_updateagent
 service wildfly restart
