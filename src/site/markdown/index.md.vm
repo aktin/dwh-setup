@@ -3,41 +3,46 @@ Diese Informationen richten sich an die System-Administratoren, die für die Ein
 
 Folgende Hardware wird für den AKTIN Server empfohlen:
 
- * 2 Kerne
- * 16 GB RAM
- * 100 GB Festplatte
-
-Minimal:
-
- * 1 Kern
- * 8 GB RAM
- * 50 GB Festplatte
+<table style="width:50%;">
+<thead>
+<tr>
+    <th style="width:20%;"></th>
+    <th style="width:20%;">Kerne</th>
+    <th style="width:20%;">RAM</th>
+    <th style="width:20%;">Festplattenspeicher</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td style="font-weight:bold">Empfohlen</td>
+    <td>2</td>
+    <td>16 GB</td>
+    <td>100 GB</td>
+</tr>
+<tr>
+    <td style="font-weight:bold">Minimum</td>
+    <td>1</td>
+    <td>8 GB</td>
+    <td>50 GB</td>
+</tr>
+</tbody>
+</table>
 <br></br>
 
-<h4>Komplette Neuinstallation</h4>
-Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionierende Installation eines auf Linux basierenden Server-Betriebsystems. Es wird empfohlen, das von uns geteste Ubuntu Server 20.04 LTS einzusetzen. Bitte beachten Sie die Seite [Server-Installation](install-requirements.html) für eine schrittweise Durchführung einer erstmaligen Installation.
+<h4>Installation des Linuxservers</h4>
+Für den Betrieb des AKTIN-Applikationsservers benötigen Sie eine funktionierende Installation eines auf Linux basierenden Server-Betriebsystems. Es wird empfohlen, das von uns geteste Ubuntu Server 20.04 LTS einzusetzen. Bitte beachten Sie die Seite [Server-Installation](install-requirements.html) für eine schrittweise Durchführung der Installation.
 <br></br>
 
 <h4>Neuinstallation des AKTIN-Applikationsservers</h4>
-Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu installiert, müssen Sie die Installation des AKTIN-Applikationsservers vornehmen. Eine Anleitung für die Verwendung des automatischen Installationsskriptes finden Sie auf der Seite [Installationsskript](install-script.html). Sie erhalten mit einer Neuinstallation automatisch den aktuellesten Stand von Version ${project.version}.
+Besteht bereits ein laufender Server oder wurde das Server-Betriebssystem neu installiert, müssen Sie die Installation des AKTIN-Applikationsservers vornehmen. Eine Anleitung mit den durchzuführenden Schritten finden Sie auf der Seite [AKTIN Installation](install-script.html). Sie erhalten mit einer Neuinstallation automatisch den aktuellesten Stand von Version ${version_dwh}.
 <br></br>
 
 <h4>Update von DWH Version 1.3 oder 1.4</h4>
 Mit der Veröffentlichung der Version 1.5 wurde der Installationsprozess von einem `.tar.gz`-Archiv zu einem Debian Paket umgestellt. Für ältere Versionen ist daher eine Migration auf die Debian-Paketierung notwendig. Zu diesem Zweck wird ein Migrationsskript bereitgestellt. Folgen Sie hierzu der Anleitung auf der Seite [Update von der Version 1.3/1.4](update-script.html).
 <br></br>
 
-<h4>Automatisches Update für Ubuntu</h4>
-Seit der Version 1.5 des AKTIN Data Warehouse und der damit verbundenen Debian-Paketierung ist jederzeit eine automatische Aktualisierung über die Ansicht des Data Warehouse möglich. Folgen Sie hierfür den Hinweisen auf der Seite [Automatisches Update](update-auto.html)
-<br></br>
-
-<h4>Software-Pakete</h4>
-**Installationspaket mit DWH-J2EE-${project.version}** (Neuinstallation)
-
-[${url_release_repo}/org/aktin/dwh/dwh-newinstall-deb/${project.version}/dwh-newinstall-deb-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-newinstall-deb/${project.version}/dwh-newinstall-deb-${project.version}.tar.gz)
-
-**Migrationspaket auf DWH-J2EE-${project.version}** (Migration von Version 1.3/1.4)
-
-[${url_release_repo}/org/aktin/dwh/dwh-migration-deb/${project.version}/dwh-migration-deb-${project.version}.tar.gz](${url_release_repo}/org/aktin/dwh/dwh-migration-deb/${project.version}/dwh-migration-deb-${project.version}.tar.gz)
+<h4>Automatisches Update des DWH</h4>
+Seit der Version 1.5 des AKTIN Data Warehouse und der damit verbundenen Debian-Paketierung ist jederzeit eine automatische Aktualisierung über die Konsole oder über die Ansicht des Data Warehouse möglich. Folgen Sie hierfür den Hinweisen auf der Seite [Automatisches Update](update-auto.html)
 <br></br>
 
 <h4>AKTIN-Software-Support</h4>

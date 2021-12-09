@@ -117,7 +117,7 @@ Im Dialogfeld für die Softwareauswahl ist darauf zu achten, dass NUR “SSH ser
 
 <h5>11. Installation complete!</h5>
 
-Nach Abschluss aller Einstellungen beginnt die eigentliche Installation des Betriebssystems. Sie müssen hier keine weiteren Eingriffe mehr vornehmen. Sofern vorhanden, werden am Ende der Installation noch Sicherheitsupdates installiert. Lassen Sie auch diese einfach durchlaufen. Anschließend müssen Sie das System neustarten. Die Installation ist somit abgeschlossen und das AKTIN Data Warehouse kann im nächsten Schritt von dem [AKTIN-Installationsskript](install-script.html) installiert werden.
+Nach Abschluss aller Einstellungen beginnt die eigentliche Installation des Betriebssystems. Sie müssen hier keine weiteren Eingriffe mehr vornehmen. Sofern vorhanden, werden am Ende der Installation noch Sicherheitsupdates installiert. Lassen Sie auch diese einfach durchlaufen. Anschließend müssen Sie das System neustarten. Die Installation ist somit abgeschlossen und das AKTIN Data Warehouse kann im nächsten Schritt installiert werden.
 
 <div style="text-align:center">
 <img src="screens_ubuntu/ubuntu_13.png" alt="img13" style="width:600px;height:450px;"></img>

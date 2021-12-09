@@ -1,5 +1,17 @@
 ﻿<h3><u>Changelog</u></h3>
 
+<h4>Version 1.5.1 (12-2021)</h4>
+* Fehlerbehebungen im Monatsbericht
+* Fehlerbehebung beim Löschen von importierten §21-Daten
+* Fehlerbehebung im Anzeigen des Popups nach einem erfolgreichen Update des DWH
+* Importskript V1.5
+    * Architekturelle Überarbeitung des Skriptes zur Verbesserung der Laufzeit
+    * Fehlerbehebung beim Löschen von importierten §21-Daten älterer Skripte
+    * Behebung der Kollision von ICD-Kodes aus §21-Daten mit AKTIN Monatsberichten
+* Anpassung der Abhängigkeit zwischen den Paketen `wildfly` und `postgresql-12`
+    * Service `wildfly` ist nun einseitig von `postgresql-12` abhängig
+    * Deaktivierung der _unattended upgrades_ für `postgresql-12`
+
 <h4>Version 1.5 (09-2021)</h4>
 * Umstellung des Installationpakets von `.tar.gz` zu einem Debian-Paket
     * Automatische Updatemöglichkeit über die Ansicht

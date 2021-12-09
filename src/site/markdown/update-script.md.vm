@@ -1,4 +1,4 @@
-<h3><u>Updateskript: Automatische Migration zur AKTIN DWH Version 1.5 mit Debian Paketierung</u></h3>
+<h3><u>Update von der DWH Version 1.3 oder 1.4 zur AKTIN DWH Version mit Debian Paketierung</u></h3>
 Ab der Version 1.5 ist der Releaseprozess des AKTIN Data Warehouse auf eine Debian Paketierung umgestellt worden. Dies bringt den Vorteil, dass alle zukünftigen Updates aufwandslos über die Ansicht durchgeführt werden können. Der Installationsprozess über ein Skript entfällt damit komplett. Für die Umstellung älterer Versionen auf die Debian Paketierung sind einige Konfigurationen nötig. Das hier beschrieben Updateskript automatisiert dabei diesen Prozess.
 <!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
 <br></br>
