@@ -10,7 +10,10 @@ readonly ORA=${color_orange}
 readonly YEL=${color_yellow}
 readonly GRE=${color_green}
 
-CURRENT_DATE=$(date +%Y_%H_%d_%H%M)
+CURRENT_DATE=$(date +%Y_%m_%d_%H%M)
+
+# create timestamp and log file
+readonly LOGFILE=$(pwd)/deb_migration_$CURRENT_DATE.log
 
 function check_root_privileges() {
    if [[ $EUID -ne 0 ]]; then
@@ -100,7 +103,7 @@ function apply_aktin_properties_backup() {
       BACKUP_NEWEST=$(ls -t /etc/aktin/backup_* | head -1);
    else
       chown wildfly:wildfly $PATH_PROPERTIES
-      return 1
+      return 0
    fi
 
    # iterate through all rows in backup,
@@ -125,7 +128,10 @@ function apply_aktin_properties_backup() {
 }
 
 function update_script_keys_of_imported_files() {
-# change script key of all files uploaded to p21
+   # change script key of all files uploaded to p21
+   if [[ -z $(ls /var/lib/aktin/import) ]]; then
+      return 0
+   fi
    for folder in /var/lib/aktin/import/*; do
       sed -i "s|script=.*|script=p21|" $folder/properties
    done
@@ -150,4 +156,4 @@ update_script_keys_of_imported_files
 service wildfly restart
 }
 
-main
+main | tee -a $LOGFILE
