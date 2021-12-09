@@ -4,7 +4,7 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
-	<version>1.5</version>
+	<version>1.5.1-SNAPSHOT</version>
 
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
@@ -12,12 +12,12 @@
 	<parent>
 		<groupId>org.aktin</groupId>
 		<artifactId>aktin</artifactId>
-		<version>0.11</version>
+		<version>0.12</version>
 	</parent>
 
 	<properties>
 		<!-- build versions -->
-		<version_dwh>1.5</version_dwh>
+		<version_dwh>1.5.1rc1</version_dwh>
 		<verison_dwh_ontology>0.15</verison_dwh_ontology>
 		<version_dwh_import>0.15</version_dwh_import>
 
@@ -60,15 +60,13 @@
 	</scm>
 
 	<modules>
-	<!--
+		<!--
 		<module>dwh-update</module>
 		<module>dwh-install</module>
 		<module>dwh-migration</module>
-
-		<module>dwh-migration-deb</module>
 		<module>dwh-newinstall-deb</module>
--->
-
+		-->
+		<module>dwh-migration-deb</module>
 		<!--
 		TODO fix ccd integration
 		<module>aktin-cdd</module>
