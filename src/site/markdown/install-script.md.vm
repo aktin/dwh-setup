@@ -1,17 +1,13 @@
-<h3><u>Installationsskript: Automatische Installation und Konfiguration der AKTIN Data Warehouse</u></h3>
-Mit diesem Installationsskript wird das AKTIN Data Warehouse installiert. Die AKTIN-DWH-Software steht derzeit nur als Debian Paket zur Verfügung. Das Installationsskript fügt automatisch das AKTIN Repository zur Paketliste des Linux-Betriebssystem hinzu und installiert im Anschluss die notwendigen AKTIN Pakete. Das Installationsskript wurde unter Ubuntu 20.04 Server LTS getestet. Wenn Sie eine andere Distribution verwenden möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org). Bei einer Neuinstallation beachten Sie bitte die Hinweise unter der Seite [Server-Installation](install-requirements.html).
+<h3><u>Installation und Konfiguration des AKTIN Data Warehouse</u></h3>
+ Auf dieser Seite wird der Prozess der Installation und Konfiguration des AKTIN DWH beschrieben. Die AKTIN-DWH-Software steht derzeit nur als Debian Paket zur Verfügung und wurde nur unter Ubuntu 20.04 Server LTS getestet. Wenn Sie eine andere Distribution verwenden möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org). Bei einer Neuinstallation beachten Sie bitte die Hinweise unter der Seite [Server-Installation](install-requirements.html).
 
 <!--  MACRO{toc|section=0|fromDepth=2|toDepth=6} -->
 <br></br>
 
 <h4>Vorbereitung der Installation</h4>
-Falls eine bestehende Betriebsversion verwendet wird, beachten Sie bitte, ob Java installiert ist. Mittels des AKTIN-Installationsskriptes wird Java Version ${version_java} von OpenJDK installiert. Sind bereits niedrigere Versionen von Java vorhanden, kann dies zu Problemen bei der Installation und im Betrieb führen. Sofern Java installiert ist, können Sie die Version über folgenden Befehl herausfinden:
 
-````
-java --version
-````
-
-Um das Skript zu starten, brauchen Sie einen Konsolenzugang zum Server sowie die Rechte des Nutzers `root`. Standardmäßig ist dieser Nutzer seit Ubuntu 14.04 deaktiviert. Um ihn zu reaktivieren, wechseln Sie zunächst zu einer `root`-Sitzung über den Befehl
+<h5>Freischaltung von root</h5>
+Für die Installation des AKTIN DWH brauchen Sie einen Konsolenzugang zum Server sowie empfehlenswert die Rechte des Nutzers `root`. Standardmäßig ist dieser Nutzer seit Ubuntu 14.04 deaktiviert. Um ihn zu reaktivieren, wechseln Sie zunächst zu einer `root`-Sitzung über den Befehl
 
 ```
 sudo -i
@@ -25,37 +21,77 @@ sudo passwd root
 
 den Nutzer `root` wieder reaktivieren. Dafür werden Sie aufgefordert, für `root` ein neues Passwort festzulegen und dies zu bestätigen. Haben Sie das Passwort festgelegt, können Sie sich nach einem Abmelden mit dem Nutzer `root` anmelden.
 
+<h5>Freischaltung der Server-Adressen</h5>
+Das AKTIN DWH braucht Zugriff auf folgende Server. Stellen Sie sicher, dass diese Adresse nicht von Ihrer Firewall blockiert bzw. zu den Ausnahmen hinzugefügt werden. 
 
-Das Installationspaket können Sie mit folgendem Befehl herunterladen (evtl. mit der Option `--no-check-certificate` bei Zertifikatfehlern):
+<table style="width:70%;">
+<thead>
+<tr>
+    <th style="width:20%;">Zugriff</th>
+    <th style="width:30%;">Server</th>
+    <th style="width:20%;">IP-Adresse</th>
+    <th style="width:15%;">HTTP</th>
+    <th style="width:15%;">HTTPS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Installation</td>
+    <td>de.archive.ubuntu.com</td>
+    <td>141.30.62.23</td>
+    <td>80/tcp</td>
+    <td>-</td>
+</tr>
+<tr>
+  <td>Installation und Betrieb</td>
+    <td>aktin.org</td>
+    <td>188.68.47.138</td>
+    <td>80/tcp</td>
+    <td>443/tcp oder 8443/tcp</td>
+</tr>
+<tr>
+  <td>Betrieb</td>
+    <td>aktin-broker.klinikum.rwth-aachen.de</td>
+    <td>134.130.15.160</td>
+    <td>-</td>
+    <td>443/tcp</td>
+</tr>
+</tbody>
+</table>
+
+<h5>Aktualisierung der Zertifkate</h5>
+Stellen Sie sicher, dass Ihr Ubuntu-Server die aktuellesten Zertifikate besitzt. Anderenfalls kann ein Zugriff auf das AKTIN Repository mit den Installationspaketen fehlschlagen. Die Zertifikate können Sie über folgenden Befehl aktualisieren.
 
 ```
-wget ${url_release_repo}/org/aktin/dwh/dwh-newinstall-deb/${project.version}/dwh-newinstall-deb-${project.version}.tar.gz
+apt-get update && apt-get install -y ca-certificates
 ```
 
-Ist das Paket heruntergeladen, kann es entpackt werden mit dem Befehl
+<h5>Hinzufügen des AKTIN Repository</h5>
+Um das AKTIN DWH installieren zu können, müssen Sie zunächst das AKTIN Repository zu Ihrem Ubuntu-Server hinzufügen. Dies geht über folgende Befehle:
 
 ```
-tar xvzf dwh-newinstall-deb-${project.version}.tar.gz
+wget -O - http://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
+echo "deb http://www.aktin.org/software/repo/org/apt focal main" > /etc/apt/sources.list.d/aktin.list
 ```
-
-Das enthaltene Installationsskript wird dabei automatisch in einen Ordner namens `dwh-newinstall-deb` entpackt.
 <br></br>
 
 
 <h4>Installation der AKTIN-DWH-Software</h4>
-Starten Sie das Skript über folgende Befehle. Der erste Befehl macht das Skript als Programm ausführbar während der zweite Befehl es ausführt.
+Haben Sie alle Vorbereitungen für die Installation abgeschlossen, können Sie das AKTIN DWH über folgende drei Befehle installieren:
 
 ```
-chmod +x <IHR VERZEICHNIS>/dwh-newinstall-deb/aktin_new_install.sh
+apt-get update
 
-./<IHR VERZEICHNIS>/dwh-newinstall-deb/aktin_new_install.sh
+apt-get install -y aktin-notaufnahme-i2b2
+apt-get install -y aktin-notaufnahme-dwh
+apt-get install -y aktin-notaufnahme-updateagent
 ```
 
-Das Installationsskript wird nun automatisch ausgeführt. Es ist anzumerken, dass für die Installation Zugriff auf das Internet benötigt wird, damit entsprechende Pakete und Komponente heruntergeladen werden können. Die notwendige Zugriffe können Sie im Bereich [Netzwerk-Einstellungen](network.html) einsehen. Sämtliche Logausgaben finden Sie nach der Installation im Installationsordner. Weiterhin werden nach Abschluss der Installation die Komponenten `apache2`, `postgresql` und `wildfly` automatisch gestartet.
+Das Paket `aktin-notaufnahme-i2b2` installiert den für den Betrieb des DWH benötigten Applikationsserver und die Datenbank. Zusätzlich wird ein `apache2`-Server installiert, der im Betrieb als _Reverse Proxy_ fungiert. Das Paket `aktin-notaufnahme-dwh` enthält die eigentliche Data Warehouse-Software. In der Regel ist dies das Paket, das im Laufe der Zeit von dem AKTIN Team weiterentwickelt wird und aktualisiert werden muss. Das letzte Paket `aktin-notaufnahme-updateagent` enthält zwei Ubuntu-Services, die es ermöglichen, den Prozess für die Aktualisierung des Paketes `aktin-notaufnahme-dwh` über die Oberfläche des AKTIN DWH durchzuführen. Dieses Paket ist optional und ist für den Betrieb des DWH nicht notwendig.
 
-Folgende Pakete werden dabei installiert und konfiguriert:
+Insgesamt werden im Laufe der Installation folgende Pakete installiert und konfiguriert:
 
-<table>
+<table style="width:40%;">
 <thead>
   <tr>
     <th>Software</th>

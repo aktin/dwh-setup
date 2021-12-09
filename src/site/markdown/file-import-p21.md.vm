@@ -3,7 +3,7 @@ Für das Hochladen und Importieren fallbasierter Behandlungsdaten gemäß §21 K
 <br></br>
 
 <h4>Vorraussetzungen für das Importieren fallbasierter Daten</h4>
-Vergewissern Sie sich vor der Nutzung der Schnittstelle, dass Sie ein AKTIN Data Warehouse in der Version 1.4 oder höher betreiben und sich das Importskript `p21importer.py` auf Ihrem Server befindet (standardmäßig unter `/var/lib/aktin/import-scripts`). Sollte das Importskript nicht mehr auffindbar sein oder es zu anderweitigen Problemen kommen, melden Sie dies bitte an den [AKTIN IT-Support](mailto:it-support@aktin.org)
+Vergewissern Sie sich vor der Nutzung der Schnittstelle, dass Sie ein AKTIN Data Warehouse in der Version 1.4 oder höher betreiben und sich das Importskript `p21import.py` auf Ihrem Server befindet (standardmäßig unter `/var/lib/aktin/import-scripts`). Sollte das Importskript nicht mehr auffindbar sein oder es zu anderweitigen Problemen kommen, melden Sie dies bitte an den [AKTIN IT-Support](mailto:it-support@aktin.org)
 <br></br>
 
 <h4>Anforderungen an den Datensatz</h4>

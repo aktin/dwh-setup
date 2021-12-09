@@ -1,5 +1,5 @@
 <h3><u>Migration von Debian 8 und CentOS 7</u></h3>
-Für die Migration von älteren AKTIN Data Warehouses der Betriebssysteme Debian 8 und CentOS 7 auf Ubuntu Server 20.04 LTS wird ein Migrationsskript zur Verfügung gestellt. Bitte beachten Sie, dass über dieses Migrationsskript nur die Version 1.4.1 installiert wird. Um die aktuellste Version des AKTIN Data Warehouse mit Debian-Paketierung zu installieren, müssen Sie anschließend noch eine Migration zu der aktuellen AKTIN Version durchführen. Folgen Sie hierzu den Hinweisen auf [Migration von DWH Version 1.3 oder 1.4](index.html#Migration_von_DWH_Version_1.3_oder_1.4) Wenn Sie ein anderes Betriebssystem mit einer älteren Version des AKTIN Data Warehouses verwenden und migrieren möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org).
+Für die Migration von älteren AKTIN Data Warehouses der Betriebssysteme Debian 8 und CentOS 7 auf Ubuntu Server 20.04 LTS wird ein Migrationsskript zur Verfügung gestellt. Bitte beachten Sie, dass über dieses Migrationsskript nur die Version 1.4.1 installiert wird. Um die aktuellste Version des AKTIN Data Warehouse mit Debian-Paketierung zu installieren, müssen Sie anschließend noch eine Migration zu der aktuellen AKTIN Version durchführen. Folgen Sie hierzu den Hinweisen auf [Update von DWH Version 1.3 oder 1.4](update-script.html) Wenn Sie ein anderes Betriebssystem mit einer älteren Version des AKTIN Data Warehouses verwenden und migrieren möchten, kontaktieren Sie den [AKTIN IT-Support](mailto:it-support@aktin.org).
 <br></br>
 
 <h4>Anmelden als root</h4>
@@ -65,9 +65,9 @@ chmod +x *.sh
 ./aktin_apply_backup.sh
 ```
 
-Das Skript wird zunächst automatisch das [AKTIN-Installationsskript](install-script.html) und das [AKTIN-Updateskript](update-auto.html) ausführen, um die aktuellste Version des AKTIN Data Warehouse auf dem neuen Betriebssystem zu installieren. Anschließend werden Ihre gesicherten Dateien in das neu installierte Data Warehouse eingespielt.
+Das Skript wird zunächst automatisch das AKTIN-Installationsskript und das AKTIN-Updateskript ausführen, um die Version 1.4.1 des AKTIN Data Warehouse auf dem neuen Betriebssystem zu installieren. Anschließend werden Ihre gesicherten Dateien in das neu installierte Data Warehouse eingespielt.
 
-Die standardmäßige Datei `aktin.properties` wird dabei zum größten Teil mit dem Inhalt Ihrere abgesicherten `aktin.properties` überschrieben. Es ist darauf hinzuweisen, dass in `aktin.properties` einige Felder für die Konfiguration des E-Mail-Servers hinzugekommen sind. Tragen Sie dort Ihre notierten Informationen der Datei `email.config` ein. Stellen Sie außerdem auch sicher, dass das Feld
+Die standardmäßige Datei `aktin.properties` wird dabei zum größten Teil mit dem Inhalt Ihrer abgesicherten `aktin.properties` überschrieben. Es ist darauf hinzuweisen, dass in `aktin.properties` einige Felder für die Konfiguration des E-Mail-Servers hinzugekommen sind. Tragen Sie dort Ihre notierten Informationen der Datei `email.config` ein. Stellen Sie außerdem auch sicher, dass das Feld
 
 ```
 email.session=local
