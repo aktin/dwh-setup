@@ -1,4 +1,4 @@
-<h3><u>Automatisches Update des AKTIN DWH</u></h3>
+<h3><u>Update des AKTIN DWH</u></h3>
 Seit der Version 1.5 des AKTIN Data Warehouse und der damit verbundenen Debian-Paketierung ist der Updateprozess stark vereinfacht worden. Statt dem Ausführen eines Update-Skriptes wird der gesamte Prozess von dem Debian Paket-Manager übernommen und im Hintergrund ausgeführt. Der Prozess selbst kann entweder über die [Kommandozeile](update-auto.html#Ausfhrung_des_Updates_ber_die_Kommandozeile) oder über die [Ansicht des Data Warehouse](update-auto.html#Ausfhrung_des_Updates_ber_die_Ansicht_des_DWH) angestoßen werden. Beachten Sie dabei, dass im Laufe des Updates das AKTIN Data Warehouse neu gestartet wird. Nach Abschluss des Updates werden Sie beim Aufruf der Ansicht mit einem Popup begrüßt, welches das Ergebnis des Updates mitteilt. Dieses Popup dient nur zur Information und wird nach jedem Update einmalig erscheinen. Manuell können Sie diese Popup auch über einen Klick auf die Versionsnummer des AKTIN Data Warehouse erscheinen lassen.
 
 Im Falle eines Fehlschlags wird zur Gewährleistung der Betriebsfähigkeit die alte Version des Data Warehouse wiederhergestellt. Melden Sie sich in diesem Fall bei dem AKTIN IT-Team unter it-support@aktin.org. Nähere Informationen zum Grund des Fehlschlagens können Sie auch dem angefügten Log im Popup entnehmen.
@@ -19,7 +19,10 @@ apt-get update
 aus, um die Paketlisten des Paketmanagers neu einzulesen. Anschließend können Sie über den Befehl
 
 ````
+apt-get --only-upgrade install aktin-notaufnahme-i2b2
+apt-get --only-upgrade install aktin-notaufnahme-updateagent
 apt-get --only-upgrade install aktin-notaufnahme-dwh
+nc -w 2 127.0.0.1 1002
 ````
 
 das neuste verfügbare Paket des AKTIN Data Warehouse installieren. Weitere Schritte sind für das Update nicht mehr nötig. Beachten Sie dabei, dass das AKTIN Data Warehouse während des Updateprozesses nicht zur Verfügung steht. Sollte die neueste Version bereits installiert sein, werden Sie in der Konsole entsprechend darauf hingewiesen. Nach dem Abschluss des Updates können Sie auf die Ansicht Ihres AKTIN Data Warehouse wechseln und den Normalbetrieb wieder aufnehmen.
