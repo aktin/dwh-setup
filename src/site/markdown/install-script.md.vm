@@ -46,7 +46,7 @@ Das AKTIN DWH braucht Zugriff auf folgende Server. Stellen Sie sicher, dass dies
   <td>Installation und Betrieb</td>
     <td>aktin.org</td>
     <td>188.68.47.138</td>
-    <td>80/tcp</td>
+    <td>-</td>
     <td>443/tcp oder 8443/tcp</td>
 </tr>
 <tr>
@@ -70,8 +70,8 @@ apt-get update && apt-get install -y ca-certificates
 Um das AKTIN DWH installieren zu können, müssen Sie zunächst das AKTIN Repository zu Ihrem Ubuntu-Server hinzufügen. Dies geht über folgende Befehle:
 
 ```
-wget -O - http://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
-echo "deb http://www.aktin.org/software/repo/org/apt focal main" > /etc/apt/sources.list.d/aktin.list
+wget -O - https://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
+echo "deb https://www.aktin.org/software/repo/org/apt focal main" > /etc/apt/sources.list.d/aktin.list
 ```
 <br></br>
 
