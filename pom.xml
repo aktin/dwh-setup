@@ -36,7 +36,7 @@
 		<version_r>3.6.3-2</version_r>
 
 		<!-- urls for release and packages -->
-		<url_release_repo>http://www.aktin.org/software/repo</url_release_repo>
+		<url_release_repo>https://www.aktin.org/software/repo</url_release_repo>
 		<url_i2b2_webclient>https://github.com/i2b2/i2b2-webclient/archive/v${version_i2b2}.0002.zip</url_i2b2_webclient>
 		<url_wildfly>https://download.jboss.org/wildfly/${version_wildfly}/wildfly-${version_wildfly}.zip</url_wildfly>
 		<url_jdbc_driver>https://jdbc.postgresql.org/download/postgresql-${version_jdbc_driver}.jar</url_jdbc_driver>
