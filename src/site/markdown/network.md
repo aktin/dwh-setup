@@ -97,10 +97,10 @@ mail.smtp.timeout=10000
 mail.smtp.connectiontimeout=10000
 ````
 
-* Sofern für die Authentifizierung am E-Mail-Server ein Zertifikat benötigt wird, können Sie dieses über folgenden Befehl dem Java Truststore hinzufügen. Anschließend sollte ein Passwort-Aufforderung kommen. Sofern von Ihrer Seite kein Passwort festgelegt wurde, können Sie hier einfach ohne Eingabe bestätigen. Den erfolgreichen Import können Sie anschließend über den zweiten Befehl testen. Starten Sie anschließen den Wildfly-Server neu.
+* Sofern für die Authentifizierung am E-Mail-Server ein Zertifikat benötigt wird, können Sie dieses über folgenden Befehl dem Java Truststore hinzufügen. Anschließend sollte ein Passwort-Aufforderung kommen. Sofern von Ihrer Seite kein Passwort festgelegt wurde, lautet das Standardpassword `changeit`. Den erfolgreichen Import können Sie anschließend über den zweiten Befehl testen. Starten Sie anschließen den Wildfly-Server neu.
 
 ````
-keytool –import –noprompt –trustcacerts –alias [SELBSTGEWÄHLTER_ALIASNAME] –f [PFAD_ZUM_ZERITIFIKAT] –keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts
+keytool -importcert -alias [SELBSTGEWÄHLTER ALIASNAME] -file [PFAD ZUM ZERITIFIKAT] -keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts 
 
 keytool –list –keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts | grep [ALIASNAME]
 
