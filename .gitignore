@@ -44,3 +44,7 @@ Thumbs.db
 ######################
 .idea
 *.iml
+
+# Flatten-Maven Plugin #
+########################
+.flattened-pom.xml
