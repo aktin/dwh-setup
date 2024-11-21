@@ -55,7 +55,7 @@
 	</properties>
 
 	<scm>
-		<developerConnection>scm:git:https://git.rwth-aachen.de/aktin/dwh-setup.git</developerConnection>
+		<developerConnection>scm:git:https://github.com/aktin/dwh-setup.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
