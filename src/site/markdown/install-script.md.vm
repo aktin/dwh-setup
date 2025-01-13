@@ -66,13 +66,21 @@ Stellen Sie sicher, dass Ihr Ubuntu-Server die aktuellesten Zertifikate besitzt.
 apt-get update && apt-get install -y ca-certificates
 ```
 
-<h5>Hinzufügen des AKTIN Repository</h5>
-Um das AKTIN DWH installieren zu können, müssen Sie zunächst das AKTIN Repository zu Ihrem Ubuntu-Server hinzufügen. Dies geht über folgende Befehle:
+<h5>AKTIN Repository einbinden</h5>
+Um das AKTIN DWH installieren zu können, müssen Sie zunächst das AKTIN Repository zu Ihrem Ubuntu-Server hinzufügen. Fügen Sie zunächst den Repository-Schlüssel hinzu:
 
 ```
 sudo wget -O - https://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/aktin.gpg
-echo "deb https://www.aktin.org/software/repo/org/apt focal main" > /etc/apt/sources.list.d/aktin.list
 ```
+
+Anschließend können Sie die Repository-Quelle einbinden:
+
+```
+echo "deb https://www.aktin.org/software/repo/org/apt jammy main" > /etc/apt/sources.list.d/aktin.list
+```
+
+**Hinweis**: Das Paket wurde nur mit Ubuntu 22.04 LTS getestet und verifiziert.
+
 <br></br>
 
 
@@ -102,27 +110,27 @@ Insgesamt werden im Laufe der Installation folgende Pakete installiert und konfi
 <tbody>
   <tr>
     <td>Wildfly</td>
-    <td>${version_wildfly}</td>
+    <td>22.0.1.Final</td>
     <td>-</td>
   </tr>
   <tr>
     <td>Postgres Datenbank Server</td>
-    <td>${version_postgresql}</td>
-    <td>postgresql-${version_postgresql}</td>
+    <td>14.15</td>
+    <td>postgresql-14</td>
   </tr>
   <tr>
     <td>Apache2</td>
-    <td>${version_apache2}</td>
+    <td>2.4.52</td>
     <td>apache2</td>
   </tr>
   <tr>
     <td>Java Runtime Environment</td>
-    <td>${version_java}</td>
-    <td>openjdk-${version_java}-jre-headless</td>
+    <td>11.0.25</td>
+    <td>openjdk-11-jre-headless</td>
   </tr>
   <tr>
     <td>PHP</td>
-    <td>${version_php}</td>
+    <td>8.1.2</td>
     <td><p>php</p>
     <p>php-common</p>
     <p>libapache2-mod-php</p>
@@ -130,7 +138,7 @@ Insgesamt werden im Laufe der Installation folgende Pakete installiert und konfi
   </tr>
   <tr>
     <td>R</td>
-    <td>${version_r}</td>
+    <td>4.1.2</td>
     <td><p>r-base-core</p>
     <p>r-cran-xml</p>
     <p>r-cran-lattice</p>
@@ -141,7 +149,7 @@ Insgesamt werden im Laufe der Installation folgende Pakete installiert und konfi
   </tr>
   <tr>
     <td>Python</td>
-    <td>${version_python}</td>
+    <td>3.10.12</td>
     <td><p>python3</p>
     <p>python3-pandas</p>
     <p>python3-numpy</p>
@@ -151,7 +159,6 @@ Insgesamt werden im Laufe der Installation folgende Pakete installiert und konfi
     <p>python3-postgresql</p>
     <p>python3-zipp</p>
     <p>python3-plotly</p>
-    <p>python3-unicodecsv</p>
     <p>python3-gunicorn</p></td>
   </tr>
 </tbody>
