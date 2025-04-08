@@ -76,7 +76,7 @@ sudo wget -O - https://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | 
 Anschließend können Sie die Repository-Quelle einbinden:
 
 ```
-echo "deb https://www.aktin.org/software/repo/org/apt jammy main" > /etc/apt/sources.list.d/aktin.list
+echo "deb https://www.aktin.org/software/repo/org/apt jammy main" | sudo tee /etc/apt/sources.list.d/aktin.list
 ```
 
 **Hinweis**: Das Paket wurde nur mit Ubuntu 22.04 LTS getestet und verifiziert.
