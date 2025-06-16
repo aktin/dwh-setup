@@ -1,5 +1,26 @@
 ﻿<h3><u>Changelog</u></h3>
 
+<h4>Version 1.6 (04-2025)</h4>
+* Komplettes Refactoring der Debian-Maintainer-Skripte
+* Update der i2b2-Komponenten auf Version 1.8.1a
+* Versionsupdate aller Komponenten aufgrund der neuen Basis (Ubuntu Server 22.04 LTS)
+    * Java 11
+    * WildFly 22.0.1.Final
+    * PostgreSQL 14
+    * Apache 2.4.52
+    * PHP 8.1
+    * Python 3.10.12
+    * R 4.1.2
+* Rücknahme instabiler Abhängigkeitsänderungen
+* UI-Verbesserungen
+    * Update-Prüfungen beim ersten Laden der Ansicht
+    * Neue Icons und Popups
+    * Verbesserte Anzeige des Anfrage-Status
+    * Überarbeitete Texte, Layouts und Interaktionen
+* Überarbeitung der Update-Logik
+    * Zusammenführung redundanter Methoden
+    * Trennung von Geschäftslogik und Benutzeroberfläche
+
 <h4>Version 1.5.1 (12-2021)</h4>
 * Fehlerbehebungen im Monatsbericht
 * Fehlerbehebung beim Löschen von importierten §21-Daten
