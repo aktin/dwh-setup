@@ -4,7 +4,7 @@
 
 	<groupId>org.aktin.dwh</groupId>
 	<artifactId>server</artifactId>
-	<version>1.5.1</version>
+	<version>1.6rc1</version>
 
 	<name>AKTIN : DWH Server</name>
 	<description>Installation and updates for the AKTIN DWH Server</description>
@@ -17,23 +17,23 @@
 
 	<properties>
 		<!-- build versions -->
-		<version_dwh>1.5.1rc1</version_dwh>
+		<version_dwh>1.6rc1</version_dwh>
 		<verison_dwh_ontology>0.15</verison_dwh_ontology>
-		<version_dwh_import>0.15</version_dwh_import>
+		<version_dwh_import>0.18</version_dwh_import>
 
 		<!-- version number to use in scripts -->
 		<version_java>11</version_java>
-		<version_wildfly>18.0.0.Final</version_wildfly>
-		<version_postgresql>12</version_postgresql>
-		<version_jdbc_driver>42.2.8</version_jdbc_driver>
-		<version_apache2>2.4.41-4ubuntu3.3</version_apache2>
-		<version_i2b2>1.7.12a</version_i2b2>
-		<version_p21_import_script>1.2</version_p21_import_script>
+		<version_wildfly>22.0.1.Final</version_wildfly>
+		<version_postgresql>14</version_postgresql>
+		<version_jdbc_driver>42.7.4</version_jdbc_driver>
+		<version_apache2>apache2 2.4.52-1ubuntu4</version_apache2>
+		<version_i2b2>1.8.1a</version_i2b2>
+		<version_p21_import_script>1.5.1</version_p21_import_script>
 
 		<!-- only for install-script.vm.md -->
-		<version_php>7.4.3</version_php>
-		<version_python>3.8.2</version_python>
-		<version_r>3.6.3-2</version_r>
+		<version_php>8.1</version_php>
+		<version_python>3.10.12</version_python>
+		<version_r>4.1.2</version_r>
 
 		<!-- urls for release and packages -->
 		<url_release_repo>https://www.aktin.org/software/repo</url_release_repo>
@@ -65,9 +65,7 @@
 		<module>dwh-install</module>
 		<module>dwh-migration</module>
 		<module>dwh-newinstall-deb</module>
-		-->
 		<module>dwh-migration-deb</module>
-		<!--
 		TODO fix ccd integration
 		<module>aktin-cdd</module>
 		-->
