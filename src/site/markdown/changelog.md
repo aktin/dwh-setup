@@ -1,5 +1,19 @@
 ﻿<h3><u>Changelog</u></h3>
 
+<h4>Version 1.7 (04-2026)</h4>
+* Study Manager 
+  * Neue Oberfläche zur effizienten Verwaltung von Patienten in Forschungsprojekten
+* P21 Import
+  * Direkte Anzeige bereits importierter P21-Daten in der Benutzeroberfläche 
+  * Optimierte Hintergrundprozesse für die Verifikation und den Import 
+* CDA Import 
+  * Aktualisierte Importschnittstelle mit Unterstützung für die CDA-Version 2025TR 
+  * Erweiterte Validierungsprozesse zur fehlerfreien Datenverarbeitung 
+* System und Backend 
+  * Überarbeitete Monatsberichte zur Steigerung der Systemstabilität 
+* Benutzeroberfläche 
+  * Allgemeine Anpassungen für eine intuitivere und einfachere Bedienung
+
 <h4>Version 1.6 (04-2025)</h4>
 * Komplettes Refactoring der Debian-Maintainer-Skripte
 * Update der i2b2-Komponenten auf Version 1.8.1a
