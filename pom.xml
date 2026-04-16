@@ -17,7 +17,7 @@
 
 	<properties>
 		<!-- build versions -->
-		<version_dwh>1.6rc1</version_dwh>
+		<version_dwh>1.7rc1</version_dwh>
 		<verison_dwh_ontology>0.15</verison_dwh_ontology>
 		<version_dwh_import>0.18</version_dwh_import>
 
