@@ -69,8 +69,8 @@ function update_root_certificates() {
 }
 
 function include_aktin_repo() {
-   wget -O - https://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
-   echo "deb https://www.aktin.org/software/repo/org/apt focal main" > /etc/apt/sources.list.d/aktin.list
+   wget -O - https://www.na-register.de/software/repo/org/apt/conf/aktin.gpg.key | sudo apt-key add -
+   echo "deb https://www.na-register.de/software/repo/org/apt focal main" > /etc/apt/sources.list.d/aktin.list
 }
 
 function install_aktin_deb_packages() {

@@ -38,12 +38,64 @@ Sie richtet sich an **System-AdminstratorInnen einer IT Abteilung.**
 </table>
 
 ### Netzwerk-Anforderungen
-- **TCP-Port 80** verfügbar (oder alternativer Port via `HTTP_PORT`)
-- Ausgehende Internetverbindung zu `github.com`
-- Durchgehende Verbindung zum AKTIN Broker:
-	- Server: `aktin-broker.klinikum.rwth-aachen.de`
-	- IP-Adresse: `134.130.15.160`
-	- Port: `443/tcp `
+
+#### Für Installation und Updates
+Diese Freischaltungen können nach der jeweiligen Aktion wieder deaktiviert werden.
+<table>
+  <thead style="width:50%;">
+    <tr>
+      <th>Adresse</th>
+      <th>Beschreibung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>de.archive.ubuntu.com</td>
+      <td>Ubuntu Repository</td>
+    </tr>
+	<tr>
+      <td>download.docker.com</td>
+      <td>Offizielles Docker Repository</td>
+    </tr>
+	<tr>
+      <td>github.com</td>
+      <td>GitHub Repositories</td>
+    </tr>
+	<tr>
+      <td>pkg-containers.githubusercontent.com</td>
+      <td>Docker Image Repository</td>
+    </tr>
+	<tr>
+      <td>ghcr.io</td>
+      <td>GitHub Weiterleitung zum Docker Image Repository</td>
+    </tr>
+	<tr>
+      <td>localhost:53</td>
+      <td>Lokaler DNS Service zum Auflösen von <i>ghcr.io</i></td>
+    </tr>
+  </tbody>
+</table>
+
+#### Für den regulären Data Warehouse Betrieb
+Diese Freischaltungen müssen für den Regelbetrieb geöffnet bleiben.
+<table>
+  <thead style="width:50%;">
+    <tr>
+      <th>Adresse</th>
+      <th>Beschreibung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>localhost:80</td>
+      <td>TCP Port oder alternativer Port via `HTTP_PORT`. DWH-Weboberfläche</td>
+    </tr>    
+	<tr>
+      <td>aktin-broker.klinikum.rwth-aachen.de</td>
+      <td>AKTIN Broker. IP: 134.130.15.160, Port: 443/tcp</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Empfohlene Zusatzkonfiguration
 - Statische IP-Adresse oder DNS-Alias

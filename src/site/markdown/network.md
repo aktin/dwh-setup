@@ -20,7 +20,7 @@ Für die Installation des AKTIN DWH braucht das Installationsskript Zugriff auf 
     <td>-</td>
 </tr>
 <tr>
-    <td>aktin.org</td>
+    <td>na-register.de</td>
     <td>188.68.47.138</td>
     <td>-</td>
     <td>443/tcp oder 8443/tcp</td>
@@ -43,7 +43,7 @@ Während des Betriebs muss der AKTIN Server periodisch auf folgenden Server zugr
 </thead>
 <tbody>
 <tr>
-    <td>aktin.org</td>
+    <td>na-register.de</td>
     <td>188.68.47.138</td>
     <td>-</td>
     <td>443/tcp oder 8443/tcp</td>
