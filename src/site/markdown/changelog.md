@@ -1,4 +1,12 @@
 ﻿<h3><u>Changelog</u></h3>
+<h4>Version 1.8 (12-2026)</h4>
+* Daten-Import
+  * Fixes für die CDA 2026 Transformation
+* Benutzeroberfläche
+  * Dockerisierte Data Warehouses unterstützen automatische Updates über den Updateagent
+  * P21 Tabellen Fixes
+* Studien-Manager
+  * Multi-Registrierung: Gleichzeitige Registrierung mehrerer Patienten
 
 <h4>Version 1.7 (04-2026)</h4>
 * Study Manager 
