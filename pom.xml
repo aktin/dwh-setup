@@ -36,11 +36,11 @@
 		<version_r>4.1.2</version_r>
 
 		<!-- urls for release and packages -->
-		<url_release_repo>https://www.aktin.org/software/repo</url_release_repo>
+		<url_release_repo>https://www.na-register.de/software/repo</url_release_repo>
 		<url_i2b2_webclient>https://github.com/i2b2/i2b2-webclient/archive/v${version_i2b2}.0002.zip</url_i2b2_webclient>
 		<url_wildfly>https://download.jboss.org/wildfly/${version_wildfly}/wildfly-${version_wildfly}.zip</url_wildfly>
 		<url_jdbc_driver>https://jdbc.postgresql.org/download/postgresql-${version_jdbc_driver}.jar</url_jdbc_driver>
-		<url_i2b2_war>https://www.aktin.org/software/repo/org/i2b2/${version_i2b2}/i2b2.war</url_i2b2_war>
+		<url_i2b2_war>https://www.na-register.de/software/repo/org/i2b2/${version_i2b2}/i2b2.war</url_i2b2_war>
 
 		<!-- colors for bash scripting -->
 		<color_white>'\033[0m'</color_white>

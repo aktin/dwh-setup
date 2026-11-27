@@ -44,7 +44,7 @@ Das AKTIN DWH braucht Zugriff auf folgende Server. Stellen Sie sicher, dass dies
 </tr>
 <tr>
   <td>Installation und Betrieb</td>
-    <td>aktin.org</td>
+    <td>na-register.de</td>
     <td>188.68.47.138</td>
     <td>-</td>
     <td>443/tcp oder 8443/tcp</td>
@@ -70,13 +70,13 @@ apt-get update && apt-get install -y ca-certificates
 Um das AKTIN DWH installieren zu können, müssen Sie zunächst das AKTIN Repository zu Ihrem Ubuntu-Server hinzufügen. Fügen Sie zunächst den Repository-Schlüssel hinzu:
 
 ```
-sudo wget -O - https://www.aktin.org/software/repo/org/apt/conf/aktin.gpg.key | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/aktin.gpg
+sudo wget -O - https://www.na-register.de/software/repo/org/apt/conf/aktin.gpg.key | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/aktin.gpg
 ```
 
 Anschließend können Sie die Repository-Quelle einbinden:
 
 ```
-echo "deb https://www.aktin.org/software/repo/org/apt jammy main" | sudo tee /etc/apt/sources.list.d/aktin.list
+echo "deb https://www.na-register.de/software/repo/org/apt jammy main" | sudo tee /etc/apt/sources.list.d/aktin.list
 ```
 
 **Hinweis**: Das Paket wurde nur mit Ubuntu 22.04 LTS getestet und verifiziert.
@@ -348,7 +348,7 @@ Wenn die Installation erfolgreich durchgeführt wurde, kann anschließend per We
 
 <h5>CDA Importschnittstelle</h5>
 
-Die Importschnittstelle des Servers kann mit den Client-Programmen aus dem Software-Paket (ZIP) des [Demo-Server](https://www.aktin.org/software/0.11/dwh-import/demo-server.html) getestet werden:
+Die Importschnittstelle des Servers kann mit den Client-Programmen aus dem Software-Paket (ZIP) des [Demo-Server](https://www.na-register.de/software/0.11/dwh-import/demo-server.html) getestet werden:
 
 ```
 java-client-fhir.bat http://<IHR SERVER>/aktin/cda/fhir/Binary examples\basismodul-beispiel-storyboard01.xml
